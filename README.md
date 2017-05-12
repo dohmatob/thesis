@@ -1,2 +1,7 @@
 # thesis
-sources for my PhD thesis, the PDF version can be found at http://fa.bianp.net/uploads/2014/phd_thesis_pedregosa.pdf
+Sources for my PhD thesis. Template forked from https://github.com/fabianp/thesis.
+
+- To build, simply run "make".
+
+- Open index.pdf (contains the compiled thesis report proper)
+

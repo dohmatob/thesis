@@ -147,14 +147,14 @@
 %   []% after the title body
 
 
-
 \newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
 
 \allsectionsfont{\rm \bf \color{msblue} \sffamily}
 
 
-\title{Feature extraction and supervised learning on fMRI: from practice to theory}
-\author{Fabian Pedregosa}
+\title{Enhancement of functional brain connectome analysis by the use of deformable
+models in the estimation of spatial decompositions of the brain images}
+\author{Elvis Dohmatob}
 
 
 \makeglossaries
@@ -215,7 +215,7 @@
 
 \begin{textblock}{4}(1.5,0.5)
 \begin{figure}
-\includegraphics[width=\linewidth]{figures/logo_upmc.pdf}
+\includegraphics[width=\linewidth]{figures/unips_logo.png}
 \end{figure}
 \end{textblock}
 
@@ -232,9 +232,9 @@
 
 
 \vspace*{30pt}
-\textsc{{\huge université pierre et marie curie} \\
+\textsc{{\huge université paris-saclay} \\
 % {\vspace{10pt} \LARGE école doctorale informatique, \\télécommunications et électronique} \\
-{\vspace{10pt} \LARGE doctoral school  of computer science}  \\
+{\vspace{10pt} \LARGE doctoral school  of computer science, Paris-Sud}  \\
 {\vspace{10pt}\LARGE prepared at parietal team - inria saclay} \\
 }
 % \textsc{\Large PhD thesis}\\[0.5cm]
@@ -248,7 +248,8 @@
 
 \vspace{2pc}
 { \Huge
-{\color{msblue} {Feature extraction and supervised learning on fMRI: from practice to theory}} \\[0.5cm]
+{\color{msblue} {Enhancement of functional brain connectome analysis by the use of deformable
+models in the estimation of spatial decompositions of the brain images}} \\[0.5cm]
 % {\color{msblue} {Estimation de variables et apprentissage supervisé en IRMf: de la pratique à la théorie}} \\[0.5cm]
 % {\it {from practice to theory}} \\[1.2cm]
 % {\it multi-voxel pattern analysis.}
@@ -261,38 +262,38 @@
 
 
 \vspace{3pc}
-{\Huge \it Fabian Pedregosa-Izquierdo} \\
+{\Huge \it Elvis Dohmatob} \\
 
 \vspace{3pc}
 
 
 
-{\LARGE A dissertation submitted in partial fulfillement \\ \vspace{10pt} of the requirements for the degree of doctor of science, \\ \vspace{10pt} specialized in computer science.} \\
+{\LARGE A dissertation submitted in partial fulfillement \\ \vspace{10pt} of the requirements for the degree of Doctor of Philosophy, \\ \vspace{10pt} specialized in Computer Science.} \\
+\vspace{1pc}
+
+{\LARGE Supervised par {Bertrand Thirion} and {Gael Varoquaux}.}
+
+% \vspace{1pc}
+
 \vspace{2pc}
-{\LARGE Defended publicly the 20th of February 2015 in front of a jury composed of}
+{\LARGE Defended publicly the 20th of September 2017 in front of a jury composed of:}
 \vspace{2pc}
 
 
-%\begin{table}
 {\LARGE
 \begin{tabular}{lll}
-%{\bf Loss}  &{\bf Surrogate}  &{\bf Prediction} \\
 \vspace{1pc}
-{Advisors} & Francis Bach &  INRIA / ENS, Paris, France \\
+{Advisors} & Bertrand Thirion & Parietal Team, INRIA / CEA, France \\
+  \vspace{1pc}
+ & Gael Varoquaux & Parietal Team, INRIA / CEA, France \\
 \vspace{1pc}
-& Alexandre Gramfort & Telecom Paristech, Paris, France\\
+{Reviewers} & John Ashburner  & University College London, UK  \\
 \vspace{1pc}
-{Reviewers} & Dimitri Van de Ville  & Univ. Geneva / EPFL,  Geneva, CH \\
+{Examiners} &Gabriel Peyr\'e  & CERAMADE, Universit\'e Paris Dolphine, France  \\
 \vspace{1pc}
- &Alain Rakotomamonjy  & University of Rouen, Rouen, France \\
+& Olivier Fercoq & Telecom ParisTech, France \\
 \vspace{1pc}
-{Examiners} & Ludovic Denoyer & UPMC, Paris, France \\
-\vspace{1pc}
-& Bertrand Thirion & INRIA / CEA, Saclay, France \\
-\vspace{1pc}
- & Marcel Van Gerven & Donders Instute, Nijmegen, NL \\
 \end{tabular}
-%\end{table}
 }
 
 
@@ -307,7 +308,7 @@
 
 \begin{textblock}{4}(1.5,0.5)
 \begin{figure}
-\includegraphics[width=\linewidth]{figures/logo_upmc.pdf}
+\includegraphics[width=\linewidth]{figures/unips_logo.png}
 \end{figure}
 \end{textblock}
 
@@ -324,8 +325,8 @@
 
 
 \vspace*{30pt}
-\textsc{{\huge université pierre et marie curie} \\
-{\vspace{10pt} \LARGE école doctorale informatique, \\télécommunications et électronique} \\
+\textsc{{\huge université paris-saclay} \\
+ {\vspace{10pt} \LARGE école doctorale informatique, \\ Paris-Sud} \\
 {\vspace{10pt}\LARGE équipe parietal - inria saclay}}
 
 % \textsc{\Large PhD thesis}\\[0.5cm]
@@ -339,7 +340,7 @@
 
 \vspace{2pc}
 { \Huge
-{\color{msblue} {Estimation de variables et apprentissage supervisé en IRMf: de la pratique à la théorie}} \\[0.5cm]
+{\color{msblue} {Amelioration de connectivit\'e fonctionnelle par utilisation de mod\`eles deformables dans l'estimation de decompositions spatiales des images de cerveau}} \\[0.5cm]
 % {\it {from practice to theory}} \\[1.2cm]
 % {\it multi-voxel pattern analysis.}
 }
@@ -351,49 +352,41 @@
 
 
 \vspace{3pc}
-{\Huge \it Fabian Pedregosa-Izquierdo} \\
+{\Huge \it Elvis Dohmatob} \\
 
 \vspace{3pc}
 
 
 
 {\LARGE Thèse de doctorat pour obtenir le grade de \ \\[1ex]
-{\bf DOCTEUR de l'UNIVERSIT\'E PIERRE ET MARIE CURIE} \ \\
+{\bf DOCTEUR de l'UNIVERSIT\'E PARIS-SACLAY} \ \\
 }
 \vspace{1pc}
 
-{\LARGE Dirig\'ee par {Francis Bach} et {Alexandre Gramfort}.}
+{\LARGE Dirig\'ee par {Bertrand Thirion} et {Gael Varoquaux}.}
 
 \vspace{1pc}
 
 
-{\LARGE Présentée et soutenue publiquement le 20 Février 2015 devant \\ \vspace{10pt} un jury composé de :}
+{\LARGE Présentée et soutenue publiquement le 20 Septembre 2017 devant \\ \vspace{10pt} un jury composé de:}
 
 \vspace{1pc}
 
-
-%\begin{table}
 {\LARGE
 \begin{tabular}{lll}
-%{\bf Loss}  &{\bf Surrogate}  &{\bf Prediction} \\
 \vspace{1pc}
-{Directeurs} & Francis Bach &  INRIA / ENS, Paris, France \\
+{Advisors} & Bertrand Thirion & Parietal Team, INRIA / CEA, France \\
+  \vspace{1pc}
+ & Gael Varoquaux & Parietal Team, INRIA / CEA, France \\
 \vspace{1pc}
-& Alexandre Gramfort & Telecom Paristech, Paris, France\\
+{Reviewers} & John Ashburner  & University College London, UK  \\
 \vspace{1pc}
-{ Rapporteurs} & Dimitri Van de Ville  & Univ. Geneva / EPFL,  Geneva, CH \\
+{Examiners} &Gabriel Peyr\'e  & CERAMADE, Universit\'e Paris Dolphine, France  \\
 \vspace{1pc}
- &Alain Rakotomamonjy  & University of Rouen, Rouen, France \\
+ & Olivier Fercoq & Telecom ParisTech, France \\
 \vspace{1pc}
-{ Examinateurs} & Ludovic Denoyer & UPMC, Paris, France \\
-\vspace{1pc}
-& Bertrand Thirion & INRIA / CEA, Saclay, France \\
-\vspace{1pc}
- & Marcel Van Gerven & Donders Instute, Nijmegen, NL \\
 \end{tabular}
-%\end{table}
 }
-
 
 \end{center}
 \end{fullwidth}
@@ -452,89 +445,97 @@
 \newpage\null\thispagestyle{empty}\newpage
 \vspace*{\fill}
 
-{\section*{\Huge \it Abstract}}
+% {\section*{\Huge \it Abstract}}
 
 
-Until the advent of non-invasive neuroimaging modalities the knowledge of the human brain came from the study of its lesions, post-mortem analyses and invasive experimentations. Nowadays, modern imaging techniques such as fMRI are revealing several aspects of the human brain with progressively high spatio-temporal resolution. However, in order to answer increasingly complex neuroscientific questions the technical improvements in acquisition must be matched with novel data analysis methods. In this thesis we examine different applications of machine learning to the processing of fMRI data. We propose novel extensions and investigate the theoretical properties of different models.
+% Mapping brain functional connectivity from functional Magnetic Resonance Imaging (MRI) data has become
+% a very active field of research. However, analysis tools are limited and many important tasks, such as the empirical
+% definition of brain networks, remain difficult due to the lack of a good framework for the statistical
+% modeling of these networks. We propose to develop population models of anatomical and functional connectivity
+% data to improve the alignment of subjects brain structures of interest while inferring an average template
+% of these structures. Based on this essential contribution, we will design new statistical inference procedures to
+% compare the functional connections between conditions or populations and improve the sensitivity of connectivity
+% analysis performed on noisy data. Finally, we will test and validate the methods on multiple datasets and
+% distribute them to the brain imaging community.
 
-% The goal of an fMRI experiments is to answer a neuroscientific question. However, it is usually not possible to perform hypothesis testing directly on the data output by the fMRI scanner. Instead, fMRI data enters a processing pipeline in which it suffers several transformations before conclusions are drawn. 
+% ...
 
-Often the data acquired through the fMRI scanner follows a \emph{feature extraction} step in which time-independent activation coefficients are extracted from the fMRI signal. The first contribution of this thesis is the introduction a model named Rank-1 GLM (R1-GLM) for the joint estimation of time-independent activation coefficients and the hemodynamic response function (HRF). We quantify the improvement of this approach with respect to existing procedures on different fMRI datasets.
+% In many scientific fields, the data acquisition devices have benefited from hardware improvement to increase the
+% resolution of the observed phenomena, leading to ever larger datasets (both in sample size $n$ and dimensionality $p$). These are the so-called ``big-data'' regimes in which
+% $min(n, p) \rightarrow \infty$  and $n \ll p$ simultaneously.
+% %% While the dimensionality has increased,
+% %% the number of samples $n$ available is often limited, due to physical or financial limits.
+% Things become instantly problematic both computationally and statistically when these
+% data are processed with estimators that have a large complexity in the data size, such as
+% mass-univariate models.
+% In such cases, it is very useful to rely on structured priors, so that the results reflect the state of knowledge on the phenomena of interest, and we avoid sampling from empty regions of the likelihood landscape. The study of human brain activity through high-field MRI belongs to
+% this class of problems.
+% However, we are missing fast estimators for multivariate models for brain decoding or the study of inter-subject variability,  with structured priors, that furthermore provide statistical control on the solution.
 
-The second part of this thesis is devoted to the problem of fMRI-based \emph{decoding}, i.e., the task of predicting some information about the stimuli from brain activation maps. From a statistical standpoint, this problem is challenging
-due to the high dimensionality of the data, often thousands of
-variables, while the number of images available for training is small,
-typically a few hundreds. We examine the case in which the target variable consist of discretely ordered values. The second contribution of this thesis is to propose the following two metrics to assess the performance of a decoding model: the absolute error and pairwise disagreement. We describe several models that optimize a convex surrogate of these loss functions and examine their performance on different fMRI datasets.
+% The goal of this PhD thesis is develop new statistical methods for studying inter-subject variability, the prime goal being to improve analysis of functional connectivity in the human brain. This naturally leads to problems related to data-driven extraction of functional atlases, and
+% multivariate models for brain decoding, inter-subject registration of MRI images, 
 
+% ...
 
-Motivated by the success of some ordinal regression models for the task of fMRI-based decoding, we turn to study some theoretical properties of these methods. The property that we investigate is known as \emph{consistency} or \emph{Fisher consistency} and relates the minimization of a loss to the minimization of its surrogate. The third, and most theoretical, contribution of this thesis is to examine the consistency properties of a rich family of surrogate loss functions that are used in the context of ordinal regression. 
-We give sufficient conditions for the consistency of the surrogate loss functions considered. This allows us to give theoretical reasons for some empirically observed differences in performance between surrogates.
+% % \section{Plan}
+% % In this report, I shall present a selection (chapters \ref{sec:spacenet}, \ref{sec:online},
+% % and \ref{sec:reg}) of the work I have done during my ongoing PhD project. This selection will be
+% % centered around structured penalties for brain decoding (section \ref{sec:spacenet}), and online
+% % structured decomposition methods for brain data (section \ref{sec:online}).
+% % We shall also discuss
+% % some preliminary results on new inter-subject registration methods for functional brain data
+% % (chapter \ref{sec:reg}).
+% % My precise contributions w.r.t these topics will be outlined  as we proceed.
+% % The report will be concluded with a synthesis of the progress made so far, and detailed plans for
+% % the future.
 
+% \vspace*{\fill}
 
-% This results allows us to identify (at least from a theoretical perspective) the most appropriate surrogate loss functions.
+% \clearpage
 
-% The study of consistency allows us to identify the surrogate loss functions that enjoy certain advantageous properties with respect to a given metric.
-
-
-\vspace{10pt}
-\paragraph{Keywords: } fMRI, BOLD, HRF, feature extraction, supervised learning, ranking, ordinal regression, decoding, encoding.
-
-\vspace*{\fill}
-\clearpage
-
-% \newpage\null\newpage
-
-
-\vspace*{\fill}
-{\section*{\Huge \it Acknowledgements}}
-
-My first words of gratitude will be for my advisors. I would like to thank Alexandre Gramfort for sharing with me during these three years his passion, his expertise and his time. You have introduced me into the world of research while at the same time living me the freedom to pursue my goals, and I will always be in debt for this. Also a great thanks to Francis Bach, who always had time for my quesions. Thanks you for your patience, for encouraging me when I drifted me into areas that were new to me and for enlightening remarks on several aspects of my work. I would also like to thank Bertrand Thirion, my ``advisor in the shadow'', for hosting me within the Parietal team and for sharing with many of the ideas that are developed within this thesis. Your honesty, patience and thoroughness are a continuous source of inspiration. I would also like to thank Bertrand and Gael Varoquaux for creating a unique work environment at the Parietal team: it has been a pleasure to be a part of this lab.
-
-This work would not have been possible without the help of my co-authors. I would first like to thank Michael Eickenberg for the work we did together and for being always enthusiastic about new ideas. I would also like to thank Philippe Ciuciu for sharing his expertise on HRF estimation with me. The rest of the Parietal team also deserves a mention for coping with me during so much time: Gael Varoquaux (for bringing me to France five years ago), Régine Bricquet (a dedicated assistant makes a big difference), Elvis ``amigo amigo computador'' Dohmatob, Danilo Bzdok, Vincent ``comme ta soeur'' Michel, Aina ``sobrasada'' Frau, Fernando Yepes, Mehdi Rahim, Alexandre Abraham, Virgile Fritsch, Jean Kossaifi, Andres Hoyos, Loic Esteve, Yannick ``horrible personne'' Schwarz, Olivier Grisel, Salma Bougacha, Philippe Gervais, Benoit ``petaflop'' Da Mota, Bernard Ng, Viviana ``reghishtrashion'' Siless, Solveig Badillo,  Nicolas Chauffert and Matthieu Kowalski. I've also had the pleasure to interact with people from the Unicog team, from which I would like to mention Valentina Borghesani, Manuela Piazza, Christophe Pallier, Elodie Cauvet, Evelyn Eger, Lucie Charles, Pedro Pinhero Chagas and Ramón Guevara. I'm also grateful to the scikit-learn crowd for teaching me so much about programming and machine learning: Andreas Mueller, Vlad Niculae, Lars Buitinck, Mathieu Blondel, Jake VanderPlas, Peter Prettenhofer and many others.
-
-I would equally like to thanks Alain Rakotomamonjy and Dimitri Van de Ville for accepting to review this manuscript and to Ludovic Denoyer, Marcel Van Gerven and Bertrand Thirion for accepting to be part of the thesis defense jury.
-
-Mis últimas palabras son para mi familia: para mi madre, mi padre y mi abuela. Nada de esto habría sido posible sin vuestro apoyo.  Un agradecimento especial para Vale, por todo y por llegar en el momento adecuado. También para los amigos de toda la vida, aquellos con los que no existe la distancia: Aitor Frías, Hugo Romero y Ángel Soler. Un grazie anche alla mia nuova famiglia italiana, per avermi fatto sentire il benvenuto nella vostra vita.
-
-\vspace*{\fill}
-
-\clearpage
-
-\newpage\null\newpage
+% % \newpage\null\newpage
 
 
-\vspace*{\fill}
+% \vspace*{\fill}
 
-{\section*{\Huge \it Notation}}
+% \tableofcontents
 
-\vspace{50pt}
+% \newpage
 
-\begin{fullwidth}
-\def\arraystretch{1.5}
-\begin{tabular}{p{3cm} p{5cm} p{5cm}}
-% \toprule
-% \multicolumn{3}{c}{Different Approaches to Ordinal Regression}\\ 
-\cmidrule{1-3}
-Notation & Name & Definition\\ 
-\midrule 
-$\Gamma(x)$ & Gamma function & $\Gamma(x) = \int_{0}^{\infty} x^{t-1} e^{-x} dx$\\
-$\mathcal{N}(\mu, \sigma^2)$ & Normal distribution with mean $\mu$ and variance $\sigma$ & \\
-$\| \B{x} \|$ \text{ or } $\| \B{x} \|_2$ & Euclidean norm for vectors & $\sqrt{\sum_i {x}_i^2}$ \\
-$\| \B{x} \|_{\mathcal{F}}$ & Frobenius norm of a matrix & $\sqrt{ \sum_{i} \sum_{j} \B{X}_{i j} ^2}$ \\
-$\B{I}_n$ & Identity matrix of size $n$ &  $I_{ij} = \delta_{ij}, ~\forall 1 \leq i, j \leq n$\\
-$\B{1}_n$ & Vector of ones of size $n$ &  $1_{i} = 1, ~\forall 1 \geq i \geq n$ \\
-$\text{tr}(\B{A})$ & Trace of a matrix & $\sum_{i} A_{ii}$ \\
-$\B{X}^{\dagger}$ & Moore-Penrose pseudoinverse & Generalized inverse matrix\\
-$\B{A}\otimes\B{B}$ & Kronecker product of matrices $\B{A}$ and $\B{B}$ & \\
-$\text{vec}(\B{A})$ & Vectorization of a matrix & Concatenation of the columns of a matrix into a single column vector\\
-$\mathbb{E}(X)$ & Expectation of the random variable X & $\int X dP$\\
-$\mathcal{R}_{\ell}(h)$ & Risk of the estimator $h$ & $\EE_{X \times Y}(\ell(Y, h(X)))$ \\
-$\mathcal{H}(x)$ & Heaviside function & $\mathcal{H}(x) = 1$ if $x \geq 0$ and $0$ otherwise\\
-$[k]$ & Integers from 1 to $k$ & $[k] = \{1,~2, \ldots,~k \}$ \\
-\bottomrule
-\end{tabular}
-\end{fullwidth}
-\vspace*{\fill}
+% {\section*{\Huge \it Notation}}
+
+% \vspace{50pt}
+
+% \begin{fullwidth}
+% \def\arraystretch{1.5}
+% \begin{tabular}{p{3cm} p{5cm} p{5cm}}
+% % \toprule
+% % \multicolumn{3}{c}{Different Approaches to Ordinal Regression}\\ 
+% \cmidrule{1-3}
+% Notation & Name / synopsis & Definition\\ 
+%   \midrule
+%   $[k]$ & Integers from $1$ to $k$ (inclusive) & $[k] = \{1,~2, \ldots,~k \}$ \\
+%   $\mathcal{N}(\mu, \sigma^2)$ & Normal distribution with mean $\mu$ and variance $\sigma$ & $p(x) = \frac{1}{\sqrt{2\pi\sigma}}
+%    \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$\\
+%  $\| \B{v} \|_r$ & $\ell_r$ norm for vectors & $\sqrt[r]{\sum_i |v_i|^r}$ \\
+% $\text{tr}(\B{X})$ & Trace of a matrix & $\sum_{i} a_{ii}$ \\  
+% $\langle \B{A}, \B{B}\rangle_{\text{Fro}}$ & Frobenius / Hilbert-Schmidt inner-product of two matrices $\B{A}$ and $\B{B}$  & $\text{tr}(\B{A}\B{B}^T)$\\
+%   $\| \B{X} \|_{\textbf{Fro}}$ & Frobenius norm of a matrix & $\sqrt{\langle \B{X}, \B{X}\rangle_{\text{Fro}}}$ \\
+%   $\|\B{X}\|_2$ & Spectral norm of matrix & $\sup\{\|\B{X}\B{u}\|_2 \text{ s.t } \|\B{u}\|_2 \le 1\}$ \\
+%   $\|\B{X}\|_{r,s}$ & Mixed-norm of matrix $\B{X} \in \mathbb R^{n \times m}$ &  $\left\|\left[\|\B{X}_1\|_r,\|\B{X}_2\|_r,\ldots,\|\B{X}_n\|_r\right]\right\|_s$ \\
+% $\B{I}_n$ & Identity matrix of size $n$ &  $I_{ij} = \delta_{ij}, ~\forall 1 \leq i, j \leq n$\\
+% $\B{1}_n$ & Vector of ones of size $n$ &  $1_{i} = 1, ~\forall 1 \geq i \geq n$ \\
+% $\B{X}^{\dagger}$ & Moore-Penrose pseudoinverse & Generalized inverse matrix\\
+% $\B{A}\otimes\B{B}$ & Kronecker product of matrices $\B{A}$ and $\B{B}$ & \\
+% $\text{vec}(\B{A})$ & Vectorization of a matrix & Concatenation of the columns of a matrix into a single giant column vector\\
+% $\mathbb{E}(X)$ & Expectation of the random variable X & $\int X dP$\\
+%   $\mathcal{R}_{\ell}(h)$ & Risk of the estimator $h$ & $\EE_{X \times Y}(\ell(Y, h(X)))$ \\
+%   $\text{Lap}(\B{v})$ & Laplacian regularization of a 3D image $\B{v}$ & $\frac{1}{2}\sum_{k=1}^p(\nabla_x \B{v})_k^2 + (\nabla_y \B{v})_k^2 + (\nabla_z \B{v})_k^2$ \\ % = \frac{1}{2}{\B{v}}^T\Delta \B{v} \ge 0$
+%   $\|\B{v}\|_{\text{TV}}$ & Total-Variation (isotropic) regularization & $\sum_{k=1}^p\sqrt{(\nabla_x \B{v})_k^2 + (\nabla_y \B{v})_k^2 + (\nabla_z \B{v})_k^2}$\\
+% \bottomrule
+% \end{tabular}
+% \end{fullwidth}
+% \vspace*{\fill}
 
 
 %\newpage
@@ -555,9 +556,9 @@ $[k]$ & Integers from 1 to $k$ & $[k] = \{1,~2, \ldots,~k \}$ \\
 
 \include{chapter_3/chapter_3}
 
-\include{chapter_4/chapter_4}
+% \include{chapter_4/chapter_4}
 
-\include{chapter_5/chapter_5}
+% \include{chapter_5/chapter_5}
 
 \include{chapter_6/chapter_6}
 
