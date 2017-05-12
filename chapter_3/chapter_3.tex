@@ -4,7 +4,8 @@
 
 \markright{{~{\rm \ref{chap:hrf_estimation}}. Data-driven HRF estimation}\hfill}{}
 
-\newthought{We have seen} in Chapter~\ref{chap:stats_fmri} that%  encoding and decoding models take as input  brain activation coefficients (also known as activation patterns or beta-maps). These are usually computed by means of the general linear model (GLM), which
+\newthought{We have seen} in Chapter~\ref{chap:stats_fmri} that%  encoding and decoding models take 
+as input  brain activation coefficients (also known as activation patterns or beta-maps). These are usually computed by means of the general linear model (GLM), which
 % relies on a \mbox{data-independent} \emph{canonical} form of the hemodynamic response function
 % (HRF).
 
@@ -135,7 +136,7 @@
 % of a given stimulus. We will denote by $k$ the total number of stimuli, $\B{y} \in \RR^n$
 % the BOLD signal at a single voxel and $n$ the total number of images acquired.
 
-% \subsection{Basis-constrained GLM}
+% \section{Basis-constrained GLM}
 
 
 
@@ -156,7 +157,7 @@
 
 
 
-% \subsection{Basis and rank-constrained GLM}
+% \section{Basis and rank-constrained GLM}
 
 % In the basis-constrained GLM, the HRF estimation is performed 
 % independently for each condition. This method works reliably whenever
@@ -243,11 +244,11 @@
 % In section \ref{sub:optim} we will discuss optimization strategies for both
 % models.
 
-% % \subsection{Alternative formulations}
+% % \section{Alternative formulations}
 
 % % We present two alternative formulations
 
-% \subsection{Extension to separate designs}
+% \section{Extension to separate designs}
 
 % \begin{marginfigure}[8cm]
 % \center \includegraphics[width=.6\linewidth]{chapter_3/ls-s.pdf}
@@ -300,7 +301,7 @@
 % %
 
 
-% \subsection{Optimization}
+% \section{Optimization}
 % \label{sub:optim}
 
 
@@ -439,20 +440,20 @@
 % the 17 subjects was less than four hours.
 
 
-% \subsection{Software}
+% \section{Software}
 
 % We provide a software implementation of all the models discussed in this section
 % in the freely available (BSD licensed) pure-Python package \textsf{hrf\_estimation}
 % available at {\href{https://pypi.python.org/pypi/hrf\_estimation}{https://pypi.python.org/pypi/hrf\_estimation}}~. This software is further described in Section~\ref{subsec:hrf_estimation}.
 
-\section{SSODL: Smooth Sparse Online Dictionary Learning}
+\section{Smooth Sparse Online Dictionary Learning}
 
 % With the aim of making the results easily reproducible, we have
 % chosen two freely available datasets to validate our approach and to compare
 % different HRF modeling techniques.
 
 
-% \subsection{Dataset 1: encoding of visual information}\label{subsec:encoding_dataset}
+% \section{Dataset 1: encoding of visual information}\label{subsec:encoding_dataset}
 
 % The first dataset we will consider is 
 % described in~\citep{Kay2008,naselaris2009bayesian,kay2011data}. It contains 
@@ -518,7 +519,7 @@
 % conditions. Finally, linear predictions on the left out fold were compared to
 % the measured BOLD signals.
 
-% \subsection{Dataset 2: decoding of potential gain levels}
+% \section{Dataset 2: decoding of potential gain levels}
 
 % The second dataset described in~\citep{Tom2007} is a gambling task where each
 % of the 17 subjects was asked to accept or reject gambles that offered a 50/50
@@ -557,7 +558,7 @@
 % proposed for fMRI decoding with ordered labels in~\citep{pedregosa:hal-00717990}.
 
 
-% %\section{Results}
+% %\chapter{Results}
 
 % In order to compare the different methods discussed previously, we ran
 % the same encoding and decoding studies while varying the
@@ -577,7 +578,7 @@
 % this reason we report encoding and decoding scores but we do not investigate
 % any of the possible HRF variability factors.
 
-% \subsection{Dataset 1: encoding of visual information}
+% \section{Dataset 1: encoding of visual information}
 
 % In the original study, 500 voxels were used to perform image identification. These voxels were selected as the voxels with the highest correlation with the true BOLD signal on left-out data using a (classical) GLM with the reference HRF. These voxels are therefore not the ones naturally benefiting the most from HRF estimation. 
 
@@ -766,7 +767,7 @@
 % could be related either to the shape of the HRF deviating more from a canonical
 % shape in lateral visual areas or to the higher signal-to-noise ratio often found in the visual cortex when compared to lateral visual areas.
 
-% \subsection{Dataset 2: decoding of potential gain levels}
+% \section{Dataset 2: decoding of potential gain levels}
 
 % The mean decoding score was computed over 50 random splittings of the data,
 % with a test set of size 10\%. The decoding regression model consisted of
@@ -796,7 +797,7 @@
 
 
 
-% % \section{Discussion}
+% % \chapter{Discussion}
 
 % We have compared different HRF modeling techniques and examined their
 % generalization score on two different datasets: one in which the main task was
@@ -884,22 +885,6 @@
 % % A possible extension to this work would consist in determining the optimal
 % % ammount of basis functions to use for a given dataset. Indeed, we have observed
 % % that smaller basis sets obtain a better score 
-
-\section{Conclusion}
-
-% We have presented a method for the joint estimation of HRF and
-% activation coefficients within the GLM framework. Based on ideas from previous
-% literature~\citep{Makni2008,vincent2010spatially} we assume the HRF to be equal
-% across conditions but variable across voxels. Unlike previous work, we cast
-% our model as an optimization problem and use a quasi-Newton method for its optimization. We also extend this approach to the setting of GLM
-% with separate designs.
-
-% We quantify the improvement in terms of generalization score in both encoding
-% and decoding settings. Our results show that the rank-1 constrained method
-% (R1-GLM and R1-GLMS) outperforms competing methods in both encoding and
-% decoding settings. 
-
-% \newpage
 
 \begin{fullwidth}
 \bibliographystyle{plainnat}

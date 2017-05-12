@@ -122,29 +122,29 @@
 \makeatother
 \urlstyle{leo}
 
-% chapter format
-\titleformat{\chapter}%
-  {\Huge \sffamily \itshape\color{msblue}}% format applied to label+text
-  {\llap{\colorbox{msblue}{\parbox{1.5cm}{\hfill\itshape\Huge\color{white}\thechapter}}}}% label
-  {2pt}% horizontal separation between label and title body
-  {}% before the title body
-  []% after the title body
-
-% % section format
-% \titleformat{\section}%
-%   {\normalfont\LARGE\itshape\color{msblue}}% format applied to label+text
-%   {\llap{\colorbox{orange}{\parbox{1.5cm}{\hfill\color{white}\thesection}}}}% label
-%   {1em}% horizontal separation between label and title body
+% % chapter format
+% \titleformat{\chapter}%
+%   {\Huge \sffamily \itshape\color{msblue}}% format applied to label+text
+%   {\llap{\colorbox{msblue}{\parbox{1.5cm}{\hfill\itshape\Huge\color{white}\thechapter}}}}% label
+%   {2pt}% horizontal separation between label and title body
 %   {}% before the title body
 %   []% after the title body
 
-% % subsection format
-% \titleformat{\subsection}%
-%   {\normalfont\large\itshape\color{blue}}% format applied to label+text
-%   {\llap{\colorbox{blue}{\parbox{1.5cm}{\hfill\color{white}\thesubsection}}}}% label
-%   {1em}% horizontal separation between label and title body
-%   {}% before the title body
-%   []% after the title body
+% % % section format
+% % \titleformat{\section}%
+% %   {\normalfont\LARGE\itshape\color{msblue}}% format applied to label+text
+% %   {\llap{\colorbox{orange}{\parbox{1.5cm}{\hfill\color{white}\thesection}}}}% label
+% %   {1em}% horizontal separation between label and title body
+% %   {}% before the title body
+% %   []% after the title body
+
+% % % subsection format
+% % \titleformat{\subsection}%
+% %   {\normalfont\large\itshape\color{blue}}% format applied to label+text
+% %   {\llap{\colorbox{blue}{\parbox{1.5cm}{\hfill\color{white}\thesubsection}}}}% label
+% %   {1em}% horizontal separation between label and title body
+% %   {}% before the title body
+% %   []% after the title body
 
 
 \newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
@@ -205,7 +205,7 @@ models in the estimation of spatial decompositions of the brain images}
 
 
 
-
+\makeatletter\@addtoreset{chapter}{part}\makeatother
 \begin{document}
 % \dominitoc
 
@@ -283,15 +283,15 @@ models in the estimation of spatial decompositions of the brain images}} \\[0.5c
 {\LARGE
 \begin{tabular}{lll}
 \vspace{1pc}
-{Advisors} & Bertrand Thirion & Parietal Team, INRIA / CEA, France \\
-  \vspace{1pc}
+\textbf{Advisors} & Bertrand Thirion & Parietal Team, INRIA / CEA, France \\
+\vspace{1pc}
  & Gael Varoquaux & Parietal Team, INRIA / CEA, France \\
 \vspace{1pc}
-{Reviewers} & John Ashburner  & University College London, UK  \\
-\vspace{1pc}
-{Examiners} &Gabriel Peyr\'e  & CERAMADE, Universit\'e Paris Dolphine, France  \\
-\vspace{1pc}
-& Olivier Fercoq & Telecom ParisTech, France \\
+  \textbf{Reviewers} & John Ashburner  & University College London, UK  \\
+  \vspace{1pc}  
+& Gabriel Peyr\'e  & CERAMADE, Universit\'e Paris Dolphine, France  \\  \\
+  \vspace{1pc}
+\textbf{Examiners} & Olivier Fercoq & Telecom ParisTech, France \\
 \vspace{1pc}
 \end{tabular}
 }
@@ -375,15 +375,15 @@ models in the estimation of spatial decompositions of the brain images}} \\[0.5c
 {\LARGE
 \begin{tabular}{lll}
 \vspace{1pc}
-{Advisors} & Bertrand Thirion & Parietal Team, INRIA / CEA, France \\
-  \vspace{1pc}
+\textbf{Directeurs} & Bertrand Thirion & Parietal Team, INRIA / CEA, France \\
+\vspace{1pc}
  & Gael Varoquaux & Parietal Team, INRIA / CEA, France \\
 \vspace{1pc}
-{Reviewers} & John Ashburner  & University College London, UK  \\
-\vspace{1pc}
-{Examiners} &Gabriel Peyr\'e  & CERAMADE, Universit\'e Paris Dolphine, France  \\
-\vspace{1pc}
- & Olivier Fercoq & Telecom ParisTech, France \\
+  \textbf{Rapporteurs} & John Ashburner  & University College London, UK  \\
+  \vspace{1pc}  
+& Gabriel Peyr\'e  & CERAMADE, Universit\'e Paris Dolphine, France  \\  \\
+  \vspace{1pc}
+\textbf{Examinateurs} & Olivier Fercoq & Telecom ParisTech, France \\
 \vspace{1pc}
 \end{tabular}
 }

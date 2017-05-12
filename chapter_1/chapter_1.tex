@@ -1,34 +1,34 @@
 
 
-\chapter{Understanding inter-subject functional variability}\label{chap:intro_fmri}
-\markright{{~{\rm \ref{chap:intro_fmri}}. Introduction to fMRI}\hfill}{}
+% \chapter{Understanding inter-subject functional variability}\label{chap:intro_fmri}
+% \markright{{~{\rm \ref{chap:intro_fmri}}. Introduction to fMRI}\hfill}{}
 
-\label{Chapter_1}
-
-
-
-\vspace*{\fill}
-\newthought{In this chapter}%  we introduce functional magnetic resonance imaging (fMRI). We will start by providing some insight into human brain structure and function. Then, we will introduce the principal brain imaging techniques in use nowadays. Different imaging techniques can be used to answer different neuroscientific questions. Functional MRI, due to its good spatial resolution and whole brain coverage is specially well suited to answer questions relating the localization of brain activity for a given task.
-
-% Before the data acquired through fMRI can be used in statistical analysis it has to go through a  preprocessing pipeline. In the last part of this chapter we detail the different steps of this pipeline, with special emphasis on the general linear model (GLM), a model that allows to extract time-independent activation coefficients from the fMRI time series in event-related designs.  These activation coefficients will form the basis of statistical studies presented in later chapters. 
-
-% % In the last part of the chapter we focus on fMRI and we relate the different steps from the scanner images to the statistical studies of later chapters.
-
-% % The objective of cognitive studies relating the brain's structure to its function is the output of time-independent activation maps for a given task. We will present a model, known as general linear model (GLM) .
+% \label{Chapter_1}
 
 
-% % {\blue
-% % fMRI consist of successive  brain scans, given in intervals ranging from 1 to 4 seconds. However,  Because of the inherent delay of oxygen consumption in the brain, construction of these maps is not straightforward in the case of fMRI for fast event-related designs. We will describe a model known as general linear model (GLM) that .
-% % }
 
-% \hspace{20pt}
-% \minitoc
 % \vspace*{\fill}
+% \newthought{In this chapter}%  we introduce functional magnetic resonance imaging (fMRI). We will start by providing some insight into human brain structure and function. Then, we will introduce the principal brain imaging techniques in use nowadays. Different imaging techniques can be used to answer different neuroscientific questions. Functional MRI, due to its good spatial resolution and whole brain coverage is specially well suited to answer questions relating the localization of brain activity for a given task.
 
-% \newpage
+% % Before the data acquired through fMRI can be used in statistical analysis it has to go through a  preprocessing pipeline. In the last part of this chapter we detail the different steps of this pipeline, with special emphasis on the general linear model (GLM), a model that allows to extract time-independent activation coefficients from the fMRI time series in event-related designs.  These activation coefficients will form the basis of statistical studies presented in later chapters. 
+
+% % % In the last part of the chapter we focus on fMRI and we relate the different steps from the scanner images to the statistical studies of later chapters.
+
+% % % The objective of cognitive studies relating the brain's structure to its function is the output of time-independent activation maps for a given task. We will present a model, known as general linear model (GLM) .
 
 
-\section{Functional neuroimaging modalities}
+% % % {\blue
+% % % fMRI consist of successive  brain scans, given in intervals ranging from 1 to 4 seconds. However,  Because of the inherent delay of oxygen consumption in the brain, construction of these maps is not straightforward in the case of fMRI for fast event-related designs. We will describe a model known as general linear model (GLM) that .
+% % % }
+
+% % \hspace{20pt}
+% % \minitoc
+% % \vspace*{\fill}
+
+% % \newpage
+
+
+% \chapter{Functional neuroimaging modalities}
 
 
 % The human brain has a volume of around $1200 \; cm^3$ and an average weight  of 1.5 kg. It is composed of neurons, glia cells and blood vessels. Glia cells are responsible for the structural and metabolic support of neurons. About $86$ billion neurons~\citep{Azevedo2009} process and transmit information through electrical and chemical signals. The information is transmitted along the neuron by \emph{action potentials}
@@ -95,7 +95,13 @@
 % \end{figure}
 
 
-\section{EPI-to-EPI inter-subject nonlinear registration}\label{Chapter_1_Section_1}
+\chapter{Inter-subject variability}
+\section{Brains vary in structure, size and shape, and function!}
+\section{Brief overview of registration algorithms}
+
+\chapter{EPI-to-EPI inter-subject nonlinear registration}\label{Chapter_1_Section_1}
+\section{Related work}
+\section{Proposed method}
 
 
 % Until the advent in the 1920s of non-invasive neuroimaging modalities, most of the accumulated knowledge of the brain came from the study of lesions, post-mortem analysis and invasive experimentations. With the advent of modern, non-invasive imaging techniques, several aspects of the human brain are revealed in vivo with high degree of precision.
@@ -212,8 +218,10 @@
 % Certain imaging techniques are more adapted than other to answer certain neuroscientific questions. Due to its good spatial resolution and whole brain coverage, fMRI is particularly well adapted to \emph{localize} the effect of a certain experimental condition. This task is not reduced to the construction of brain maps, but also involves the understanding of the underlying brain connectivity~\citep{johansen2005functional,behrens2006consistent} and the effects regions exert on each other in a certain experimental context~\citep{pessiglione2007brain, behrens2007learning}. One of the main hopes in functional imagining is that it might be used as an objective diagnosis tool for several diseases. In particular, the aim is to find some \emph{biomarkers} for psychiatric diseases by comparing different population of patients: this is the case for autism, schizophrenia or Alzheimer's disease. 
 
 
-\section{Learning patterns of inter-subject functional variability}
-
+\chapter{Learning patterns of inter-subject functional variability}
+\section{Brains are different in function}
+\section{Introduction to brain decomposition and matrix factorization}
+\section{ SSODL: Smooth Sparse Online Dictionary-Learning}
 
 % \newglossaryentry{MRI}{name=MRI,description={{Magnetic Resonance Imaging}}}
 
@@ -283,8 +291,11 @@
 
 
 
-\section{Prediction of cognitive activation maps from resting-state data}\label{chapter1_activation_maps}
+\chapter{Prediction of cognitive activation maps from resting-state data}\label{chapter1_activation_maps}
 
+\section{Feature extraction}
+\section{Classical methods}
+\section{Proposed techniques}
 
 % In this section we present a model that allows to extract time-independent \gls{activation coefficient}s relative to a given task given the BOLD time course and an experimental design. This model is known as the \emph{general linear model}~\citep{Friston1995}. We start by describing the \emph{hemodynamic response function} (Section~\ref{subsec:hrf}) and then describe an assumption behind the general linear model, the linear-time-invariant property (Section~\ref{subsec:lti}) between the BOLD signal and the neural response. The general linear model is then presented in Section~\ref{chapter_1_GLM}.
 
@@ -299,7 +310,7 @@
 % Because it will not be referenced in later chapters we do not mention several \emph{preprocessing} steps that can be applied to the BOLD signal in order to remove artifacts that might have occurred during acquisition or to enhance the signal to noise ratio. These include slice-timing correction, motion correction, spatial normalization and spatial smoothing.
 
 
-% \subsection{Hemodynamic response function (HRF)}\label{subsec:hrf}
+% \section{Hemodynamic response function (HRF)}\label{subsec:hrf}
 % \newglossaryentry{HRF}{name=HRF,description=Hemodynamic Response Function}
 
 % One of the difficulties associated with fMRI studies is that BOLD signal does not increase instantaneously after the stimulus presentation nor does it return to baseline immediately after the stimulus ends. Instead, the BOLD signal peaks approximately 5 seconds after stimulation, and is followed by an undershoot that lasts as long as 30 seconds.
@@ -336,7 +347,7 @@
 % \newglossaryentry{activation coefficient}{name={activation coefficient},description={amplitude for a single voxel associated with a stimuli in an fMRI study}}
 
 
-% \subsection{The linear-time-invariant assumption}\label{subsec:lti}
+% \section{The linear-time-invariant assumption}\label{subsec:lti}
 
 % \newglossaryentry{LTI}{name=LTI,description=Linear Time Invariant assumption}
 
@@ -370,7 +381,7 @@
 % \label{eq:chap1_predicted_bold}
 % \end{equation}
 
-% \subsection{The general linear model (GLM)}\label{chapter_1_GLM}
+% \section{The general linear model (GLM)}\label{chapter_1_GLM}
 
 
 % The General Linear Model (\gls{GLM}) makes use of the knowledge of the hemodynamic response function and linear-time-invariant assumption to model the observed BOLD signal. This model states that the BOLD signal can be expressed in terms of a linear combination of the predicted fMRI responses for different stimuli (also denoted \gls{conditions}) plus a noise term. Let $\{x_1(t), x_2(t), \ldots, x_k(t)\}$ be the predicted response for $k$ different stimulus functions computed from Equation~\eqref{eq:chap1_predicted_bold}. We define the design matrix $\B{X}$ as the columnwise stacking of different regressors, each one defined as the discretization of $x_i(t)$ to match the acquisition time of a given BOLD signal. The GLM in its basic form can be expressed as:
@@ -394,7 +405,7 @@
 % In this setting we have considered the HRF to be known and fixed across the different conditions. We can easily generalize this setting to accommodate the case in which the HRF is generated by a given basis set. We will call this method \emph{basis-constrained GLM}.
 
 
-% \subsection{High-pass filtering and prewhitening}\label{subsec:prewhite}
+% \section{High-pass filtering and prewhitening}\label{subsec:prewhite}
 
 % The BOLD signal contains low frequency trends that are usually removed before or during the estimation of activation coefficients. One popular approach of high-pass filtering is to add a discrete cosine transform (DCT) basis set to the design matrix. When using this basis set, the highest frequency that is desired to be removed from the data has to be chosen to avoid removing the frequency of the experimental task that is also being modeled. Another approach that is becoming increasingly popular, is to fit a local regression model to the time series and remove the estimated trend from the data. The software FSL uses LOWESS (locally weighted scatterplot smoothing)~\citep{cleveland1979robust} while recent studies have successfully used a Savizky-Golay filter
 % \sidenote{Savitzky-Golay filter are available in Matlab under the name \texttt{\small sgolayfilt} and in Python's Scipy module under the name \texttt{\small scipy.signal.savgol\_filter}}
@@ -406,11 +417,6 @@
 
 % The most common solution to take this special structure into account is to \emph{prewhiten} the data, that is, to remove the temporal correlation. Since the correlation matrix $\B{V}$ is symmetric and positive definite, the Cholesky decomposition can be used to find a matrix $\B{K}$ such that $\B{V}^{-1} = \B{K}^T \B{K}$. To prewhiten the data, $\B{K}$ is premultiplied on both sides of the GLM (Eq.~\eqref{eq:chapter_1_glm}) to give $\B{K}\B{y} = \B{K}\B{X} \bfbeta + \B{K}\bfvarepsilon$. This makes the errors be independent, i.e., $\B{K}\bfvarepsilon \sim \mathcal{N}(0, \sigma^2 \B{I})$.
 
-
-\section{Conclusion}
-% In this first chapter we have presented the principal structures of the human brain. We have then presented the principal functional imaging modalities in use today, with special emphasis on functional MRI. We have seen that functional MRI is an attractive modality for functional imaging with good spatial resolution for a whole brain coverage modality. The signal measured in fMRI studies is the BOLD signal, given in the form of a succession of scans in intervals of 1-4 seconds. The extraction of time-independent activation maps from the BOLD signal relies on the linear-time-invariant property between neural response and the BOLD signal. These can be estimated by solving a least-squares problem, a setting commonly referred to in neuroimaging as the \emph{general linear model} (GLM). The GLM is usually formulated using a known form of the Hemodynamic Response Function.
-
-% \newpage
 
 \begin{fullwidth}
 \bibliographystyle{plainnat}

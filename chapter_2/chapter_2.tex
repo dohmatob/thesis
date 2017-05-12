@@ -1,11 +1,12 @@
-\chapter{Extraction of brain patterns via sparsity and smoothness priors}\label{chap:stats_fmri}
-\markright{{~{\rm \ref{chap:stats_fmri}}. Statistical Inference in fMRI}\hfill}{}
-\label{Chapter_2}
+% \chapter{Extraction of brain patterns via sparsity and smoothness priors}\label{chap:stats_fmri}
+% \markright{{~{\rm \ref{chap:stats_fmri}}. Statistical Inference in fMRI}\hfill}{}
+% \label{Chapter_2}
 
 
 
 \vspace*{\fill}
-\newthought{In chapter~\ref{chap:intro_fmri}},%  we have presented fMRI as functional imaging modality that is non-invasive and enjoys good spatial resolution and full brain coverage. In this chapter we present the statistical methods that will be used for drawing conclusions from fMRI experiments in further chapters. 
+\newthought{In chapter~\ref{chap:intro_fmri}},%  we have presented fMRI as functional imaging modali
+ty that is non-invasive and enjoys good spatial resolution and full brain coverage. In this chapter we present the statistical methods that will be used for drawing conclusions from fMRI experiments in further chapters. 
 
 
 % The chapter is divided into two sections. The first section summarizes the basics of statistical hypothesis testing. We present two parametric test: the $t$-test and the $F$-test and one non-parametric test: the signed-rank Wilcoxon test. We discuss the voxel-wise parametric testing of the activation coefficients computed by the GLM. The result can be assembled into an image or map, a setting known as statistical parametric maps (SPMs).
@@ -32,7 +33,7 @@
 
 % % This chapter relies on concepts from probability and measure theory that will be used without definition, such as \emph{probability space}, \emph{random variable}, \emph{population}, \emph{measurable function}, \emph{expectation}, etc. 
 
-\section{Sparsity and smoothness priors for improved brain decoding}
+% \chapter{Regularized brain decoding}
 
 % A \emph{statistical hypothesis} is a statement about the parameter of a given distribution. The two complementary hypotheses in a hypothesis testing problem are called the \emph{null hypothesis} and the \emph{alternative hypothesis}. They will be denoted by $H_0$ and $H_1$, respectively. 
 
@@ -52,7 +53,7 @@
 
 % Statistical tests can be broadly divided into \emph{parametric} and \emph{nonparametric} tests. Parametric test assume a known probability distribution for the distribution parameter that is under consideration. Nonparametric tests do not assume a known form of this probability distribution although they might require some regularity conditions on the distribution such as symmetry. In the following subsection we will describe two parametric statistical tests: the $t$-test and the $F$-test. In this thesis, the $t$ and $F$-test will be used to perform voxel-wise inference in section~\ref{subsec:spms}. We will also present the Wilcoxon signed-rank test, a nonparametric test that will be used to compare the performance of machine learning models in Chapter~\ref{chap:hrf_estimation} and Chapter~\ref{chap:decoding_ordinal}. The derivation of these tests is omitted but can be found in statistical textbooks such as~\citep{casella2002statistical, rice2006mathematical}.
 
-% \subsection{Parametric tests: $t$-test and $F$-test.}\label{subsec:parametric_tests}
+% \section{Parametric tests: $t$-test and $F$-test.}\label{subsec:parametric_tests}
 
 % \marginnote[-2cm]{Student was the pseudonym of Willian Sealy Gosset (England 1876 - England 1937). As a worker of the brewery Arthur Guiness \& Son he was forbidden to publish under his real name to protect the firm from its competitors. Gosset made important contributions to the field of small sample statistics. In the seminal paper \emph{The probable error of a mean}~\citep{student1908probable}, he introduced small sample estimation by means of the (Student) $t$-distribution family.}
 
@@ -105,7 +106,7 @@
 % where the square root is taken element-wise. This expression follows an $F$ distribution with $r$ numerator and ${n - (p+1)}$ denominator degrees of freedom ($F_{r, n - (p+1)}$), where $r$ is the rank of $\B{C}$.
 % }
 
-% \subsection{Nonparametric tests: Wilcoxon signed-rank test.}\label{subsec:wilcoxon}
+% \section{Nonparametric tests: Wilcoxon signed-rank test.}\label{subsec:wilcoxon}
 
 
 % The \emph{Wilcoxon signed-rank} test can be used to asses whether two population means differ. That is, given the samples $\{x_1, \ldots, x_n\}$ and $\{y_1, \ldots, y_n\}$, we would like to test the following hypothesis $H_0: \bar{\B{x}} = \bar{\B{y}}, ~~ H_1: \bar{\B{x}} \neq \bar{\B{y}}$, where $\bar{\B{x}}$ is the sample mean, $\bar{\B{x}} = \frac{1}{n}\sum_{i=1}^n x_i$.
@@ -122,7 +123,7 @@
 % As $n_r$ increases, the distribution of $W$ converges to a normal distribution. For small samples ($n_r < 10$), $W$ is compared to a critical value from a reference table.
 
 % %
-% % \subsection{Likelihood Ratio Tests}
+% % \section{Likelihood Ratio Tests}
 
 % % For a given hypothesis, different tests can be derived. The Neymann-Pearson lemma shows that the likelihood-ratio test is optimal.
 
@@ -148,7 +149,7 @@
 
 
 
-% \subsection{Voxel-wise hypothesis testing: Statistical Parametric Maps} \label{subsec:spms}
+% \section{Voxel-wise hypothesis testing: Statistical Parametric Maps} \label{subsec:spms}
 
 
 
@@ -171,7 +172,7 @@
 
 
 
-% % \subsection{Permutations testing}
+% % \section{Permutations testing}
 
 % % {\blue 
 % % Discuss parametric and nonparametric. \citep{nichols2002nonparametric, goodpermutation} and Polina for the classification side. 
@@ -189,7 +190,7 @@
 % % the theoretical distribution of the test statistic may only be known under particular assumptions that may be be violated in practice. The specificity of the test is then impacted. Alternatively, one may want to use a specificc test statistic, the theoretical distribution of which is not known under the null hypothesis. This is likely to happen for computational reasons for instance. The Monte-Carlo method [33] can be used to empirically approximate the unknown distribution: N artificial datasets are created on the model of the original data under the null hypothesis, so that N realizations of the test statistic are observed. However, it is difficult to reproduce the real-data problem with simulations. Permutation testing can be seen as a way to build the unknown H0 distribution from the observed data. Those are transformed in such a way the decision statistics' distribution remains the same under the null hypothesis, 
 
 
-% \subsection{Multiple comparisons issues}
+% \section{Multiple comparisons issues}
 
 
 
@@ -233,7 +234,7 @@
 
 
 
-\section{Sparsity and smoothness priors for improved brain decompositions}
+% \chapter{Regularized dictionary-learning for  brain decompositions}
 
 % \newglossaryentry{decoding}{name=decoding,description=distinguish patterns of neural activity associated with different stimuli or cognitive states}
 % \newglossaryentry{encoding}{name=encoding,description=predicting patterns of brain response to novel stimuli based on their features}
@@ -250,7 +251,7 @@
 
 % % The shift from univariate methods to multivariate methods also entails a change in the questions that can be asked to fMRI studies. While univariate methods ask the question of which regions of the brain which are more active for one condition compared to another, multivariate methods can ask what information is represented in a region in terms of brain states associated with distinct patterns of activity, and how that information is encoded and organized~\citep{Haxby2012}.
 
-% \subsection{Supervised Learning}\label{subsec:supervised_learning}
+% \section{Supervised Learning}\label{subsec:supervised_learning}
 
 % Supervised learning is the task of learning a function from labeled training data. We will now give a formal definition of the task. 
 
@@ -291,7 +292,7 @@
 
 
 
-% \subsection{Surrogate loss functions.}\label{subsec:surrogate_loss_functions}
+% \section{Surrogate loss functions.}\label{subsec:surrogate_loss_functions}
 
 % \begin{marginfigure}[2cm]
 % \hspace{-20pt}\includegraphics[width=1.2\linewidth]{chapter_2/loss_01.png}
@@ -388,7 +389,7 @@
 
 
 
-% \subsection{Regularization}\label{subsec:regularization}
+% \section{Regularization}\label{subsec:regularization}
 
 % Regularization has long played a fundamental role in statistics and related mathematical fields. First introduced by~\citet{tikhonov1977solutions} in the context of solving ill-posed integral equations, it has since become a standard part of the statistical toolkit. 
 
@@ -440,7 +441,7 @@
 
 
 
-% \subsection{Model evaluation and cross-validation.}
+% \section{Model evaluation and cross-validation.}
 
 
 % Since it is possible to construct a classifier that predicts perfectly on the train set but with very poor generalization performance (e.g. the classifier that returns the right label for a sample it has already seen and random otherwise), computing the empirical error on the training set yields a very poor estimator of the true risk of a model.
@@ -492,7 +493,7 @@
 
 
 
-% \subsection{fMRI-based brain activity decoding}\label{chap2_decoding}
+% \section{fMRI-based brain activity decoding}\label{chap2_decoding}
 
 
 % The paradigm of predicting the stimuli provided to the subject from the concurrent brain activity is known as \emph{brain decoding} and accurate predictions support the hypothesis that the brain activity encodes those stimuli. Early studies \citep{dehaene1998inferring} were able to predict right hand versus left hand movement based on fMRI images. In~\citep{haxby2001distributed, cox2003}, the authors showed that different high-level visual stimulus categories (faces, animals and objects) were associated with distinct patterns of brain activity in visual areas. Subsequent work has shown that decoding can also distinguish many other brain states, for example low-level visual features in the early visual cortex~\citep{haynes2005predicting, kamitani2005decoding} and auditory stimuli in the auditory cortex~\citep{formisano2008saying, staeren2009sound}, as well as more abstract brain states such as intentions~\citep{haynes2007reading, soon2008unconscious} and the contents of working memory~\citep{harrison2009decoding}. 
@@ -544,7 +545,7 @@
 
 
 
-% \subsection{fMRI-based brain activity encoding}\label{chap2_encoding}
+% \section{fMRI-based brain activity encoding}\label{chap2_encoding}
 
 % fMRI-based \emph{encoding} models (also known as \emph{voxel-wise modelling}) \citep{thirion2006, Kay2008, mitchell2008predicting}, seek to predict the patterns of brain activity from the the stimuli features. A machine learning model is learned from the stimuli features to the \gls{activation coefficient}s of a single voxel.
 % %\marginnote{Although it would be possible to construct encoding models that predict a set of voxels simultaneously, the models that have appeared in the literature until now consider the different voxels separately.} 
@@ -562,18 +563,6 @@
 
 % Encoding and decoding can be seen as complementary operations: while encoding uses stimuli to predict activity,  decoding uses activity to predict information about the stimuli. Furthermore, encoding offers the advantage over decoding models that they can be used to predict information about an unseen stimuli. In this setting encoding models have been used to reconstruct stimuli from brain activity patterns in~\citep{miyawaki2008visual, naselaris2009bayesian, nishimoto2011reconstructing}. A similar setting was used in~\citep{Kay2008} to identify natural images. Here, the predicted activation coefficients were used to select the image that matched most closely the measured activation coefficients.
 
-
-
-\section{Conclusion}
-
-% In this chapter we  have presented the statistical methods that will be used for drawing conclusions from fMRI experiments in further chapters. The chapter is divided into two sections. In the first section we have introduced the framework of statistical hypothesis testing and presented several parametric and non-parametric tests. We have presented an application of voxel-wise hypothesis testing known as Statistical Parametric Maps (SPMs).
-
-
-
-% In the second part of this chapter we have presented the setting of supervised learning. We described different surrogate loss functions and penalties that have found applications in the context of fMRI analysis. The surrogate loss functions that we described are  as Support Vector Machines, Logistic Regression, Support Vector Regression and Least Squares. The penalties that we have present are: squared $\ell_2$, $\ell_1$, elastic-net ($\ell_2^2 + \ell_1$) and total-variation (TV). Finally, we present two neuroscientific problems that can be model as a supervised learning problem: \emph{encoding} and \emph{decoding}.
-
-
-\newpage
 
 
 \begin{fullwidth}
