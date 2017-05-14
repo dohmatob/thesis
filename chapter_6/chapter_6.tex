@@ -15,7 +15,7 @@
 
 % \newpage
 
-% \section{Contributions}
+\section{Main contributions}
 
 % In this thesis we have examined several aspects of the pipeline through which an fMRI datasets can be analyzed. We have made contributions at different stages of this pipeline.
 
@@ -29,7 +29,49 @@
 % Motivated by its applicability to decoding studies we turned in Chapter~\ref{chap:consistency} to study some theoretical properties of \emph{ordinal regression} models. We provided an analysis of the Fisher consistency properties of a rich family of surrogate loss functions, including proportional odds and support vector ordinal regression. For all the surrogates considered, we either proved consistency or provided sufficient conditions under which these approaches are consistent. 
 
 
-% \section{Research Perspectives}
+\section{Software}
+
+% A number of software distributions have been developed within the context of this thesis.
+
+% \subsection{hrf\_estimation}\label{subsec:hrf_estimation}
+
+% This package implements method for the joint estimation of hemodynamic response function (HRF) and activation coefficients (aka beta-maps) from fMRI data presented in Chapter~\ref{chap:hrf_estimation}. Full documentation for this package, including an example IPython notebook can be found at 
+
+% \vspace{15pt}
+% \centerline{ \url{http://pythonhosted.org/hrf_estimation/}}
+
+% \subsection{mord}
+
+% Ordinal Regression algorithms. Module that implements the ordinal regression models used in Chapter~\ref{chap:decoding_ordinal}. The code can be found at the URL
+
+% \vspace{15pt}
+% \centerline{ \url{https://github.com/fabianp/mord}}
+
+% \subsection{pysofia}~\label{subsec:pysofia}
+
+% PySofia is a python wrapper around the methods present in the C++ sofia-ml library. These include Stochastic Gradient Descent implementations of some ranking algorithms, notably RankSVM~\citep{sculley2009large}.
+
+% \vspace{15pt}
+% \centerline{\url{https://pypi.python.org/pypi/pysofia/}}
+
+% \subsection{memory\_profiler}
+
+% \begin{marginfigure}
+% \includegraphics[width=1.2\linewidth]{chapter_6/memory_profiler_screenshot.png}
+% \vspace{-10pt}\caption{The memory\_profiler module allows to quickly analyze the memory consumption of a program by using the line-by-line profiling (in the picture) or the time-based memory profiling.}
+% \end{marginfigure}
+
+% This is a python module for monitoring memory consumption of a process as well as line-by-line analysis of memory consumption for python programs. It is a pure python module.
+
+% \vspace{15pt}
+% \centerline{\url{https://pypi.python.org/pypi/memory_profiler}}
+% \vspace{10pt}
+
+
+
+% The presentation of this module won the \emph{Best Poster Award} at the conference EuroScipy 2012 (European Scientific Computing in Python)
+
+\section{Research Perspectives}
 
 
 
@@ -188,47 +230,6 @@
 
 % \newpage
 
-% \section{Software}
-
-% A number of software distributions have been developed within the context of this thesis.
-
-% \subsection{hrf\_estimation}\label{subsec:hrf_estimation}
-
-% This package implements method for the joint estimation of hemodynamic response function (HRF) and activation coefficients (aka beta-maps) from fMRI data presented in Chapter~\ref{chap:hrf_estimation}. Full documentation for this package, including an example IPython notebook can be found at 
-
-% \vspace{15pt}
-% \centerline{ \url{http://pythonhosted.org/hrf_estimation/}}
-
-% \subsection{mord}
-
-% Ordinal Regression algorithms. Module that implements the ordinal regression models used in Chapter~\ref{chap:decoding_ordinal}. The code can be found at the URL
-
-% \vspace{15pt}
-% \centerline{ \url{https://github.com/fabianp/mord}}
-
-% \subsection{pysofia}~\label{subsec:pysofia}
-
-% PySofia is a python wrapper around the methods present in the C++ sofia-ml library. These include Stochastic Gradient Descent implementations of some ranking algorithms, notably RankSVM~\citep{sculley2009large}.
-
-% \vspace{15pt}
-% \centerline{\url{https://pypi.python.org/pypi/pysofia/}}
-
-% \subsection{memory\_profiler}
-
-% \begin{marginfigure}
-% \includegraphics[width=1.2\linewidth]{chapter_6/memory_profiler_screenshot.png}
-% \vspace{-10pt}\caption{The memory\_profiler module allows to quickly analyze the memory consumption of a program by using the line-by-line profiling (in the picture) or the time-based memory profiling.}
-% \end{marginfigure}
-
-% This is a python module for monitoring memory consumption of a process as well as line-by-line analysis of memory consumption for python programs. It is a pure python module.
-
-% \vspace{15pt}
-% \centerline{\url{https://pypi.python.org/pypi/memory_profiler}}
-% \vspace{10pt}
-
-
-
-% The presentation of this module won the \emph{Best Poster Award} at the conference EuroScipy 2012 (European Scientific Computing in Python)
 
 
 % \newpage

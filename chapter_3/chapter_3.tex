@@ -1,11 +1,11 @@
 \begin{fullwidth}
-\chapter{Algorithms}\label{chap:hrf_estimation}
+\chapter{Structured priors for analyzing brain data: the models and algorithms}\label{chap:hrf_estimation}
 \end{fullwidth}
 
 \markright{{~{\rm \ref{chap:hrf_estimation}}. Data-driven HRF estimation}\hfill}{}
 
-\newthought{We have seen} in Chapter~\ref{chap:stats_fmri} that%  encoding and decoding models take 
-as input  brain activation coefficients (also known as activation patterns or beta-maps). These are usually computed by means of the general linear model (GLM), which
+% \newthought{We have seen} in Chapter~\ref{chap:stats_fmri} that%  encoding and decoding models take 
+% as input  brain activation coefficients (also known as activation patterns or beta-maps). These are usually computed by means of the general linear model (GLM), which
 % relies on a \mbox{data-independent} \emph{canonical} form of the hemodynamic response function
 % (HRF).
 
@@ -37,7 +37,11 @@ as input  brain activation coefficients (also known as activation patterns or be
 % \newpage
 
 
-\section{Efficient optimization of structured (sparsity + smoothness) models}
+\section{Sparsity and smoothness priors for improved estimation in high dimensions}
+\newthought{Michel et al. 2011, Baldasarre et al. 2012, Gramfort et al. 2013, Abraham et al. 2013, Dohmatob et al. 2014(5), Varoquaux et al. 2016}, ...
+
+\section{Efficient optimization of sparsity and smoothness regularized models}
+\newthought{In our PRNI 2014 (``Benchmarking ...'') and 2015 (``Speeding-up ...'') papers}, ...
 
 % \begin{marginfigure}[4cm]
 % \hspace{-20pt}\includegraphics[width=1.2\linewidth]{chapter_3/hrfs_age.pdf}
@@ -128,7 +132,8 @@ as input  brain activation coefficients (also known as activation patterns or be
 
 % % {\blue With respect to the work published in ~\citep{Pedregosa2015209}, we have included in this chapter the results on a new datasets and examined the gain obtained by this model across different regions of the brain}.
 
-\section{A result on the rate of convergence of ADMM}
+\section{A small result on the rate of convergence of the ADMM algorithm}
+\newthought{In our ICASSP 2016 paper}, ...
 
 % In this section we describe different methods for extracting the HRF and
 % activation coefficients from BOLD signals. We will refer to each different
@@ -136,7 +141,9 @@ as input  brain activation coefficients (also known as activation patterns or be
 % of a given stimulus. We will denote by $k$ the total number of stimuli, $\B{y} \in \RR^n$
 % the BOLD signal at a single voxel and $n$ the total number of images acquired.
 
-% \section{Basis-constrained GLM}
+\section{Generalized online dictionary learning: richer penalties on the components}
+\newthought{In our NIPS 2017 paper}, ...
+
 
 
 
@@ -446,7 +453,7 @@ as input  brain activation coefficients (also known as activation patterns or be
 % in the freely available (BSD licensed) pure-Python package \textsf{hrf\_estimation}
 % available at {\href{https://pypi.python.org/pypi/hrf\_estimation}{https://pypi.python.org/pypi/hrf\_estimation}}~. This software is further described in Section~\ref{subsec:hrf_estimation}.
 
-\section{Smooth Sparse Online Dictionary Learning}
+% \section{Smooth Sparse Online Dictionary Learning}
 
 % With the aim of making the results easily reproducible, we have
 % chosen two freely available datasets to validate our approach and to compare
