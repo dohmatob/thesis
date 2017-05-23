@@ -1,8 +1,261 @@
 \begin{fullwidth}
 \chapter{Structured priors for analyzing brain data: the models and algorithms}\label{chap:hrf_estimation}
 \end{fullwidth}
-
 \markright{{~{\rm \ref{chap:hrf_estimation}}. Data-driven HRF estimation}\hfill}{}
+
+\section{SpaceNet: spatial priors for brain analysis}
+Sparsity- and structure-inducing priors are used to
+perform jointly the prediction of a target variable and region
+segmentation in multivariate analysis settings.
+%
+Specifically, it has been shown that one can employ priors like Total
+Variation (TV)  \cite{michel2011tv}, TV-$\ell_1$
+ \cite{baldassarre2012,gramfort2013}, TV-ElasticNet
+ \cite{dubois2014predictive},
+and GraphNet  \cite{grosenick2013}
+(aka Smooth-Lasso  \cite{hebiri2011})
+%\footnote{Henceforth, we will use GraphNet and S-Lasso
+%interchangeably.}
+to regularize regression and classification
+problems in brain imaging.
+%
+We denote by ${\y} \in \mathbb{R}^{n}$ the targets to
+be predicted (age, sex, IQ, etc.); the \textit{design matrix}
+${\X}\in\mathbb{R}^{n \times p}$ are the
+brain images related to the presentation of different
+stimuli, or other brain acquisition (e.g gray-matter concentration
+maps from anatomy, etc.). The integer $p$ is the number of voxels,
+and $n$ the number of samples (images). In brain imaging, $n \ll p$;
+typically, $p \sim 10^3-10^6$ (in full-brain analysis),
+while $n \sim 10-10^3$ ($n$ being limited by the cost of acquisition,
+etc.).
+
+\begin{marginfigure}[4cm]
+  \centering
+  \includegraphics[width=.7\linewidth]{cartoon.pdf}
+  \caption{A cartoon showing a sparse and blobby brain map,
+  as would be sought for by SpaceNet models \eqref{eq:ss}.}
+  \label{fig:roi}
+\end{marginfigure}
+%\begin{marginfigure}[4cm]
+
+
+%% Let $\Omega \subset \mathbb{R}^3$ be
+%% the 3D image domain representing the region occupied by the brain --or
+%% ROI (region of interest) thereof-- under  study, discretized regularly
+%% on a finite grid.
+
+Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)
+   \citep{michel2011tv}, TV-$\ell_1$  \citep{baldassarre2012,gramfort2013}, GraphNet  \citep{grosenick2013,hebiri2011},
+  TV-ElasticNet  \citep{dubois2014predictive}, Sparse Variation  \citep{eickenberg2015total}, and social-sparsity  \citep{kowalski2013social}. These can all be written in a general framework as follows
+
+\begin{equation}
+  \underset{\w \in \mathbb R^p}{\text{minimize }}E(\w) := \ell(\y,\X\w) + \alpha \Omega(\nabla_\tau\w).
+    \label{eq:opt_pb}
+\end{equation}
+The coefficients ${\w}$ define a spatial map in over the brain (one value per voxel).
+$\Omega \circ \nabla_\tau$ is the penalty term ($\nabla_\tau$ is the extended discrete gradient operator defined in equation \eqref{eq:extau} of section{sec:notation}), which simultaneously imposes both sparsity and structure (blobs). The different spatial regularization
+methods that have appeared in neuro-imaging literature can be cast into this
+correspond to different choices of the convex penalty $\Omega$ acting on the extended gradient of the coefficients $\w$. Viz,
+\[
+  \begin{split}
+  \Omega(\z) = \begin{cases}
+      \|\z_4\|_1 + \frac{1}{2}\|\z_{1:3}\|_{\text{Fro}}^2 := \sum_{j=1}^p|\z_{4,j}| + \frac{1}{2}\sum_{j=1}^{p}\sum_{k=1}^3\z_{k,j}^2, &\mbox{ GraphNet \citep{grosenick2013,hebiri2011}},\\\\
+      \|\z_4\|_1 + \|\z_{1:3}\|_{2,1} := \sum_{j=1}^p|\z_{4,j}| + \sum_{j=1}^{p}\sqrt{\sum_{k=1}^3\z_{k,j}^2}, &\mbox{ for TV-$\ell_1$ \citep{baldassarre2012,gramfort2013}},\\
+      \|\z\|_{2,1} = \sum_{j=1}^{p}\sqrt{\sum_{k=1}^4\z_{k,j}^2}, &\mbox{ for Sparse Variation \citep{eickenberg2015total}},\\
+      ...
+    \end{cases}
+  \end{split}
+\]
+{$\alpha > 0$} controls the total amount of regularization, while
+  {$\tau$
+    ($0 < \tau \le 1$)} is a
+  mixing constant between
+  the {sparsity-inducing} $\ell_1$ part and the
+  {cluster-promoting} part of the penalty term.
+  The particular case {$\tau = 1$} corresponds to the usual Lasso. Vanilla TV  \citep{michel2011tv} corresponds to TV-$\ell_1$ with $\tau = 0$.
+The term {$\ell(\y,\X\w)$} is the
+  {loss / data-fit term}. Popular choices include:
+  $$
+  \ell(\y,\X\w) = \frac{1}{n}\begin{cases}\frac{1}{2}\|\X\w - \y\|_2^2 = \frac{1}{2}\sum_{i=1}^n(\X^T_i\w - \y_i)^2,
+    &\mbox{ \text{ for least-squares (e.g in regression settings)}}\\
+    \sum_{i=1}^n \log(1+\exp(-\y_i\X_i^T\w)),
+    &\mbox{ \text{ for logistic regression (e.g in classification)}},\\\ldots\end{cases}$$
+
+ \begin{figure}[!htb] 
+  \includegraphics[width=.325\linewidth]{figures/svm.png}
+  \includegraphics[width=.325\linewidth]{figures/graphnet.png}
+  \includegraphics[width=.325\linewidth]{figures/tvl1.png}  
+  \caption{The figure shows results of comparing the SpaceNet  models TV-$\ell_1$ and
+    Graph-Net against an SVM (Support Vector Machine) classifier on
+    the visual-recognition dataset  \citep{haxby2001}
+    As can be seen from the figure, SpaceNet priors (TV-$\ell_1$, GraphNet, etc.)
+    yield stable and more intepretable maps. Figure taken from OHBM
+    presentation  \citep{spacenetohbm}.}
+  \label{fig:spacenet_maps}
+%  \end{marginfigure}
+\end{figure}
+  The result of such regularized models, dubbed \emph{SpaceNet}
+ \citep{spacenetohbm}, are brain maps which are both
+sparse (i.e regression coefficients $\w$ are zero everywhere, except at
+predictive voxels) and structured (blobby). The superiority of such
+methods over methods without structured priors like the Lasso, ANOVA,
+Ridge, SVM, etc. for yielding more intepretable maps and improved
+prediction scores is now well established. See for example
+ \citep{baldassarre2012,gramfort2013}. These priors are fast becoming
+popular for brain decoding and segmentation. Indeed, they leverage a
+feature-selection function
+(since they limit the number of active voxels),
+and also a structuring function
+(since they penalize local
+differences in the values of the brain map). For example, see Fig.
+\ref{fig:spacenet_maps}.
+Also, such priors produce state-of-the-art methods for automatic
+extraction of functional brain atlases  \citep{abraham2013}.
+  
+%%  \citep{dohmatob2015spacenet}, \citep{abraham2013}, \citep{abrahamregion},
+%%  \citep{eickenberg2015total},
+\section{Efficient optimization of sparsity and smoothness regularized models}
+Though the SpaceNet model presented above leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet,
+the penalty term $\Omega \circ \nabla_\tau$ is neither smooth nor proximable.
+% \footnote{ A function $f$ is said to be \textit{proximable} is the operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for Lp-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}
+For the penalty to fully exercise its
+\begin{figure}[!htb]
+    \includegraphics[width=.331\linewidth]{face_vs_house_tol_0_1.pdf}%
+\llap{\color{white}\raisebox{.17\linewidth}{\rlap{\sffamily Stopping:
+      $\Delta E < 10^{-1}$}}\hspace*{.315\linewidth}}\hfill%
+\includegraphics[width=.331\linewidth]{face_vs_house_tol_0_001.pdf}%
+\llap{\color{white}\raisebox{.17\linewidth}{\rlap{\sffamily Stopping:
+      $\Delta E < 10^{-3}$}}\hspace*{.315\linewidth}}\hfill%
+\includegraphics[width=.331\linewidth]{face_vs_house_tol_1e-05.pdf}%
+\llap{\color{white}\raisebox{.17\linewidth}{\rlap{\sffamily Stopping:
+      $\Delta E < 10^{-5}$}}\hspace*{.315\linewidth}}%
+
+\caption{TV-$\ell_1$ maps for the face-house discrimination task on
+  the visual recognition dataset.
+  Note that
+  the stopping criterion is defined as a threshold on the energy
+  decrease per one iteration of the algorithm, and thus differs from
+  the tolerance displayed in figure \ref{Fig:benchmarks_prni}.  This figure shows
+  the importance of convergence for problem \eqref{eq:opt_pb}, and motivates
+  the need for fast solvers for SpaceNet priors, especially the non-smooth ones like TV-$\ell_1$ and Sparse Variation. See the full story in
+ \citep{dohmatob2014benchmarking}}
+  \label{Fig:benchmarks_prni}
+\end{figure}
+
+structuring effect on the maps, this optimization problem must be
+solved to a good tolerance resulting in a computational challenge. Lack of good solver and explicit control of
+tolerance can lead to brain maps and conclusions that reflect
+properties of the solver more than of model coefficients, as illustrated in Fig. \ref{Fig:benchmarks_prni}.
+In our prize-winning PRNI paper  \citep{dohmatob2014benchmarking}, we did an extensive study of all solvers applicable to the problem in TV-$\ell_1$ special case (which happens to be the most difficult scenario).
+Our results outlined the best strategy: a double FISTA loop, where the
+inner loop computes the proximal operator of the penalty term, with approximate precision on the duality-gap. This was
+further refined and implemented in  \citep{varoquaux2015faasta}.
+
+  %% \begin{itemize}
+  %% \item{proximal methods}
+  %%   \begin{itemize}
+  %%     \item single-step\\
+  %%       {-} ISTA (Iterative Soft-Thresholding Algorithm)  \citep{daubechies2004}
+  %%     \item multi-step / accelerated\\
+  %%       {-} FISTA (Fast ISTA)  \citep{beck09fista}
+  %%   \end{itemize}
+  %% \item {primal-dual \& splitting methods}
+  %%   \begin{itemize}
+  %%   \item ADMM (Alternating Directions Method of Multipliers)  \citep{boyd2011distributed}
+  %%     % (\textit{Alternating Directions Method of Multipliers})
+  %%   \item Chambolle-Pock's Primal-Dual  \citep{chambolle2010}
+  %%   \end{itemize}
+  %% \item {quasi-Newton methods}
+  %%   \begin{itemize}
+  %%   \item HANSO ({Hybrid Algorithm for Non-smooth Optimization})  \citep{lewis2008}
+  %%   \item L-BFGS  \citep{ciyou1994} on smooth surrogates of the penalty
+  %%   \end{itemize}
+  %% \end{itemize}
+  
+
+%% \begin{figure*}
+%%   \begin{subfigure}[t]{1\linewidth}
+%%     \hspace*{-.01\linewidth}%
+%%     \includegraphics[width=.6\linewidth]{haxby_lr_energy.pdf}
+%%     \hspace*{-.09\linewidth}%
+%%     \includegraphics[width=.6\linewidth]{haxby_lr.pdf}%
+%%     % \vspace{-2ex}
+%%     \caption{\textbf{Classification} with logistic regression model
+%%       \eqref{eq:opt_pb}. on the visual recognition face-house
+%%     discrimination task. \textbf{Left}: excess energy $E(\mathbf{w}_t) -
+%%     E(\mathbf{w})_{t \rightarrow \infty}$ as a function 
+%%     of time.
+%%     \textbf{Right}: convergence time of the various solvers for different
+%%     choice of regularization parameters.
+%%     Broken lines correspond to a tolerance of $10^{0}$,
+%%     whilst full-lines correspond to $10^{-2}$.  The thick vertical line
+%%     indicates the best model selected by cross-validation.}
+%%     \label{Fig:HaxbyLR}
+%%   \end{subfigure}
+%%   \begin{subfigure}[t]{1\linewidth}
+%%     \includegraphics[width=.6\linewidth]{haxby_mse.pdf}%
+%%     \hspace{-.09\linewidth}%
+%%     % generate with: ipython ../wip/tv_l1_solver/plot_parallel_plots.py poldrack_mse_12th.json 2e1 --pdb
+%%     \includegraphics[width=.6\linewidth]{poldrack_mse.pdf}
+%%     % \vspace{-2ex}
+%%     \caption{\textbf{Regression.} results. \textbf{Left}:
+%%       on the visual recognition  face-house discrimination task; \textbf{Right}: on the
+%%       Mixed gambles dataset. Broken lines correspond to a tolerance of $10^{0}$,
+%%       whilst full-lines correspond to $10^{-2}$. The thick vertical line
+%%       indicates the best model selected by cross-validation.}
+%%     \label{Fig:MSEtimes}
+%%   \end{subfigure}
+%% \caption{Benchmarks for different solvers for the TV-$\ell_1$ model
+%%   \eqref{eq:opt_pb} on the visual recognition face-house
+%%   discrimination task. See  \citep{dohmatob2014benchmarking} for more details.}
+%% \end{figure*}
+
+  \section{More speed via univariate feature-screening and early-stopping}
+ \begin{figure}[!htb]
+  \includegraphics[width=.24\linewidth]{figures/poldrack_demo_sp10.png}
+  \hspace{-1em}
+  \includegraphics[width=.24\linewidth]{figures/poldrack_demo_sp20.png}
+  \hspace{-1em}
+  \includegraphics[width=.24\linewidth]{figures/poldrack_demo_sp50.png}
+  \hspace{-1em}
+  \includegraphics[width=.31\linewidth]{figures/poldrack_demo_sp100.png}
+\caption{Univariate feature-screening for Face vs House
+  classification on the visual recognition dataset  \citep{jimura2012}.
+  % $(X,y)$.
+  This figure shows spatial maps of
+  $X^T_jy$, thresholded so that only voxels $j$ with (from left to
+  rightmost column)  $|X^T_jy| \ge p_{10\%}(|X^Ty|)$, $|X^T_jy| \ge
+  p_{20\%}(|X^Ty|)$, $|X^T_jy| \ge p_{50\%}(|X^Ty|)$, and $|X^T_jy|
+  \ge p_{100\%}(|X^Ty|)$ (full-brain) respectively, survive. The
+  green contours enclose the elite voxels which are selected by the
+  screening procedure at the respective threshold
+  levels.}
+\label{Fig:potato}
+\end{figure}
+In our PRNI 2015 conference paper  \citep{dohmatob2015speeding}, we presented some heuristics for speeding up the overall optimization process: (a) Early-stopping, whereby one  halts
+the optimization process when the test score (performance on left-out
+data) for the internal cross-validation for model-selection stops
+improving, and (b) univariate feature-screening, whereby irrelevant
+(non-predictive) voxels are detected and eliminated before the
+optimization problem is entered, thus reducing the size of the
+problem. Empirical results with GraphNet on real MRI (Magnetic
+Resonance Imaging)
+datasets indicate that these heuristics are a win-win strategy, as
+they add speed without sacrificing the quality of the predictions
+/ classifications. Some experimental results from this work are presented in
+Fig. \ref{Fig:potato}.  These heuristics can lead to up to 10-fold speedups.
+We expect the proposed heuristics to work on other variants of SpaceNet models \eqref{eq:opt_pb} like TV-$\ell_1$,
+etc.
+
+ In  \citep{dohmatob2015speeding}, we empirically showed on various
+datasets that such screening leads to linear speed-up in the computation
+time, while sacrificing prediction / classification power as long as the
+screening is not very savage. We also showed that early-stopping the
+estimator does not harm the accuracy of the predictions, and can also lead
+to considerable (though less systematic speedups).
+The result of these numerous ramblings on optimizing the SpaceNet model \eqref{eq:opt_pb} have been implemented as part of the \textit{Nilearn} package  \citep{nilearn}.
+
 
 % \newthought{We have seen} in Chapter~\ref{chap:stats_fmri} that%  encoding and decoding models take 
 % as input  brain activation coefficients (also known as activation patterns or beta-maps). These are usually computed by means of the general linear model (GLM), which
@@ -37,46 +290,43 @@
 % \newpage
 
 
-\section{Sparsity and smoothness priors for improved estimation in high dimensions}
-\newthought{Michel et al. 2011, Baldasarre et al. 2012, Gramfort et al. 2013, Abraham et al. 2013, Dohmatob et al. 2014(5), Varoquaux et al. 2016}, ...
-
-\section{Efficient optimization of sparsity and smoothness regularized models}
-\newthought{In our PRNI 2014 (``Benchmarking ...'') and 2015 (``Speeding-up ...'') papers}, ...
+% \section{Sparsity and smoothness priors for improved estimation in high dimensions}
+% \newthought{Michel et al. 2011, Baldasarre et al. 2012, Gramfort et al. 2013, Abraham et al. 2013, Dohmatob et al. 2014(5), Varoquaux et al. 2016}, ...
 
 % \begin{marginfigure}[4cm]
 % \hspace{-20pt}\includegraphics[width=1.2\linewidth]{chapter_3/hrfs_age.pdf}
 % \caption{
-% 	The HRF can vary substantially between subjects, brain regions and age. In \citet{colonnese2007development}, the authors studied the evolution of the HRF across age in rats. By comparing fMRI measurements with electrophysiological recordings, they observed two significant trends as age increased: growing amplitude and decreasing time to peak. In the figure, estimated HRF for three groups of rats (with age P13-15 < P20-30< Adult). Source: \citep{colonnese2007development}. A comparison of the HRF in human subjects was performed in~\citep{badillo2014multi}.
+% 	The HRF can vary substantially between subjects, brain regions and age. In \citept{colonnese2007development}, the authors studied the evolution of the HRF across age in rats. By comparing fMRI measurements with electrophysiological recordings, they observed two significant trends as age increased: growing amplitude and decreasing time to peak. In the figure, estimated HRF for three groups of rats (with age P13-15 < P20-30< Adult). Source: \citepp{colonnese2007development}. A comparison of the HRF in human subjects was performed in~\citepp{badillo2014multi}.
 % }
 % \end{marginfigure}
 
 
 % fMRI acquisitions consist of successive brain scans, given in intervals ranging from 1 to 4 seconds. The extraction of time-independent \gls{activation coefficient} from the BOLD time course is commonly done with a model known as Linear General Model
-% (GLM)~\citep{Friston1995}. While
+% (GLM)~\citepp{Friston1995}. While
 % this approach has been successfully used in a wide range of studies, it does
-% suffer from limitations~\citep{Poline2012}. For instance, the GLM commonly
+% suffer from limitations~\citepp{Poline2012}. For instance, the GLM commonly
 % relies on a \mbox{data-independent} \emph{reference} form of the hemodynamic response function
 % (HRF) to estimate the activation coefficient (also known as \emph{canonical HRF}). However it is
-% known~\citep{Handwerker2004,Badillo2013} that the shape of this response function
+% known~\citepp{Handwerker2004,Badillo2013} that the shape of this response function
 % can vary substantially across subjects, age and brain regions. This suggests that an adaptive modeling of this
 %  response function should improve the accuracy of subsequent analysis.
 
 % % \emph{feature-extraction} model that extracts 
 
-% % In this section we describe a method that allows to estimate time-independent \gls{activation coefficient} given the BOLD time course. {\blue Feature extraction}. This model is known as the \emph{general linear model}~\citep{Friston1995}. In this chapter we describe the main assumptions behind this model: a known form of the hemodynamic response function and the linear-time-invariant property between the BOLD signal and the neural response. 
+% % In this section we describe a method that allows to estimate time-independent \gls{activation coefficient} given the BOLD time course. {\blue Feature extraction}. This model is known as the \emph{general linear model}~\citepp{Friston1995}. In this chapter we describe the main assumptions behind this model: a known form of the hemodynamic response function and the linear-time-invariant property between the BOLD signal and the neural response. 
 
 % % We have seen in Chapter 2 that both encoding and decoding models take as input voxel-wise activation coefficients. These are commonly are computed by means of the General Linear Model
-% % (GLM)~\citep{Friston1995}. While
+% % (GLM)~\citepp{Friston1995}. While
 % % this approach has been successfully used in a wide range of studies, it does
-% % suffer from limitations~\citep{Poline2012}. For instance, the GLM commonly
+% % suffer from limitations~\citepp{Poline2012}. For instance, the GLM commonly
 % % relies on a \mbox{data-independent} \emph{reference} form of the hemodynamic response function
 % % (HRF) to estimate the activation coefficient (also known as \emph{canonical HRF}). However it is
-% % known~\citep{Handwerker2004,Badillo2013} that the shape of this response function
+% % known~\citepp{Handwerker2004,Badillo2013} that the shape of this response function
 % % can vary substantially across subjects, age and brain regions. This suggests that an adaptive modeling of this
 % %  response function should improve the accuracy of subsequent analysis.
 
 % To overcome the aforementioned limitation, Finite Impulse Response (FIR) models have been
-% proposed within the GLM framework~\citep{Dale1999,Glover1999}.
+% proposed within the GLM framework~\citepp{Dale1999,Glover1999}.
 % These models do not assume any particular shape for the HRF and amount to
 % estimating a large number of parameters in order to identify it. 
 % While the FIR-based modeling makes it possible to estimate the
@@ -85,26 +335,26 @@
 % In general, FIR
 % models are most appropriate for studies focused on the characterization of the
 % shape of the hemodynamic response, and not for studies that are primarily
-% focused on detecting activation~\cite[Chapter~5]{Poldrack}.
+% focused on detecting activation~\citep[Chapter~5]{Poldrack}.
 
 % Several strategies aiming at reducing the number of degrees of freedom of the
 % FIR model - and thus at limiting the risk of overfitting - have been proposed.
 % One possibility is to constrain the shape of the HRF to be a linear
 % combination of a small number of basis functions. A common choice of basis is 
 % formed by three elements consisting of a reference HRF as well as its time and dispersion
-% derivatives~\citep{friston1998nonlinear}, although it is also possible to compute a
+% derivatives~\citepp{friston1998nonlinear}, although it is also possible to compute a
 % basis set that spans a desired function
-% space~\citep{Woolrich2004}. More generally, one can also define a parametric
+% space~\citepp{Woolrich2004}. More generally, one can also define a parametric
 % model of the HRF and estimate the parameters that best fit this
-% function~\citep{Lindquist2007}. However, in this case the estimated HRF may no longer be a linear function of the input parameters. 
+% function~\citepp{Lindquist2007}. However, in this case the estimated HRF may no longer be a linear function of the input parameters. 
 
 % Sensitivity to noise and overfitting can also be reduced through
 % regularization. For example, temporal regularization has been used in the
-% smooth FIR ~\citep{Goutte2000,Ciuciu2003,Casanova2008} to favor solutions with
+% smooth FIR ~\citepp{Goutte2000,Ciuciu2003,Casanova2008} to favor solutions with
 % small second order time derivative. These approaches require the setting of
 % one or several hyperparameters, at the voxel or potentially at the parcel
 % level (if several voxels in a pre-defined parcel are assumed to share some aspects of the HRF time course). Even if efficient techniques such as generalized   
-% \mbox{cross-validation}~\citep{golub1979generalized} can be used to choose the
+% \mbox{cross-validation}~\citepp{golub1979generalized} can be used to choose the
 % regularization parameters, these methods are inherently more costly than 
 % \mbox{basis-constrained} methods. \mbox{Basis-constrained} methods also require
 % setting the number of basis elements; however, this parameter is not
@@ -115,8 +365,8 @@
 % the goal of remaining computationally attractive.  A different approach to
 % increase robustness of the estimates consists in linking the estimated HRFs
 % across a predefined brain parcel, taking advantage of the spatially dependent nature of
-% fMRI~\citep{Wang2013}. However, \mbox{hemodynamically-informed}
-% parcellations~\citep{Chaari2012,Badillo2013a} rely on the computation of 
+% fMRI~\citepp{Wang2013}. However, \mbox{hemodynamically-informed}
+% parcellations~\citepp{Chaari2012,Badillo2013a} rely on the computation of 
 % a large number of estimations at the voxel or \mbox{sub-parcel} level.
 % In this setting, the development of voxel-wise estimation procedures is complementary to the
 % development of parcellation methods in that more robust estimation
@@ -127,13 +377,13 @@
 
 % \paragraph{Contribution}
 
-% In this chapter we have described a method for the simultaneous estimation of HRF and activation coefficients based on low-rank modeling. While the assumptions of this model are not novel (cf.~\citep{Makni2008,vincent2010spatially,Degras2014}), the formulation of this model as a least squares problem with a rank-one constraint is a novel contribution. This formulation allows to efficiently solve the problem using gradient-based methods.
+% In this chapter we have described a method for the simultaneous estimation of HRF and activation coefficients based on low-rank modeling. While the assumptions of this model are not novel (cf.~\citepp{Makni2008,vincent2010spatially,Degras2014}), the formulation of this model as a least squares problem with a rank-one constraint is a novel contribution. This formulation allows to efficiently solve the problem using gradient-based methods.
 % Finally, we evaluate the proposed model on three publicly available datasets. 
 
-% % {\blue With respect to the work published in ~\citep{Pedregosa2015209}, we have included in this chapter the results on a new datasets and examined the gain obtained by this model across different regions of the brain}.
+% % {\blue With respect to the work published in ~\citepp{Pedregosa2015209}, we have included in this chapter the results on a new datasets and examined the gain obtained by this model across different regions of the brain}.
 
 \section{A small result on the rate of convergence of the ADMM algorithm}
-\newthought{In our ICASSP 2016 paper}, ...
+\newthought{In our ICASSP 2016 paper} \citep{dohmatob2015local}, ...
 
 % In this section we describe different methods for extracting the HRF and
 % activation coefficients from BOLD signals. We will refer to each different
@@ -142,12 +392,12 @@
 % the BOLD signal at a single voxel and $n$ the total number of images acquired.
 
 \section{Generalized online dictionary learning: richer penalties on the components}
-\newthought{In our NIPS 2017 paper}, ...
+\newthought{In our NIPS 2017 paper} \citep{dohmatob2016},
 
 
 
 
-% The reference HRF models a general response function that has been proven successful under a wide range of circumstances. However, a number of studies have shown that the shape of the hemodynamic response differ substantially among subjects~\citep{Aguirre1998360} and brain regions~\citep{Schacter1997259}. One popular approach to model small offsets in the time to peak and dispersion is to consider that the HRF is modeled from a basis set consisting of the reference HRF plus its derivative with respect to time and dispersion (see Figure~\ref{fig:hrf_basis}). The rationale for considering this basis set comes from the fact that it corresponds to the first-order approximation to the Taylor expansion of the reference HRF. Given the reference HRF, $h(t)$, a time-shifted version of the hemodynamic response can be described as $h(t + \delta)$. A Taylor series expansion of $h(t + \delta)$ with respect to $\delta$ gives the approximation $h(t) + \delta h'(t) + \ldots$~, implying that small offsets can be modeled by considering a linear combination of the reference HRF plus its time derivative. In similar fashion we can model small perturbations in dispersion (the width of the response) by considering the reference HRF plus its dispersion derivative. 
+% The reference HRF models a general response function that has been proven successful under a wide range of circumstances. However, a number of studies have shown that the shape of the hemodynamic response differ substantially among subjects~\citepp{Aguirre1998360} and brain regions~\citepp{Schacter1997259}. One popular approach to model small offsets in the time to peak and dispersion is to consider that the HRF is modeled from a basis set consisting of the reference HRF plus its derivative with respect to time and dispersion (see Figure~\ref{fig:hrf_basis}). The rationale for considering this basis set comes from the fact that it corresponds to the first-order approximation to the Taylor expansion of the reference HRF. Given the reference HRF, $h(t)$, a time-shifted version of the hemodynamic response can be described as $h(t + \delta)$. A Taylor series expansion of $h(t + \delta)$ with respect to $\delta$ gives the approximation $h(t) + \delta h'(t) + \ldots$~, implying that small offsets can be modeled by considering a linear combination of the reference HRF plus its time derivative. In similar fashion we can model small perturbations in dispersion (the width of the response) by considering the reference HRF plus its dispersion derivative. 
 
 
 % \begin{figure*}
@@ -173,7 +423,7 @@
 % % put ref?
 
 % % In this model we promote a common HRF
-% % across the various stimuli, which should result in more robust estimates~\citep{Makni2008,vincent2010spatially}.
+% % across the various stimuli, which should result in more robust estimates~\citepp{Makni2008,vincent2010spatially}.
 % In this work we consider a model in which a common HRF is shared
 % across the different stimuli. Besides the estimation of the HRF,
 % a unique coefficient is obtained per column of our event
@@ -259,13 +509,13 @@
 
 % \begin{marginfigure}[8cm]
 % \center \includegraphics[width=.6\linewidth]{chapter_3/ls-s.pdf}
-% \caption{In the GLM with separate designs model of~\citet{Mumford2012}, the design matrix contains two regressors. The first one is the
+% \caption{In the GLM with separate designs model of~\citept{Mumford2012}, the design matrix contains two regressors. The first one is the
 % regressor associated with a given condition and the second one is the sum of all
-% other regressors. Source: \citep{Turner2012}}
+% other regressors. Source: \citepp{Turner2012}}
 % \end{marginfigure}
 
 % An extension to the classical GLM that improves the estimation with correlated
-% designs was proposed in~\citep{Mumford2012}.
+% designs was proposed in~\citepp{Mumford2012}.
 % In this setting, each voxel is modeled as a linear combination of two
 % regressors in a design matrix $\B{X}_\text{GLM}$. The first one is the
 % regressor associated with a given condition and the second one is the sum of all
@@ -276,9 +526,9 @@
 % condition $i$. We will 
 % denote this model GLM with separate designs (GLMS). It has been reported to find
 % a better estimate in rapid event designs leading to a boost in accuracy for
-% decoding tasks~\citep{Mumford2012, Schoenmakers2013, Lei2013}.
+% decoding tasks~\citepp{Mumford2012, Schoenmakers2013, Lei2013}.
 
-% This approach was further extended in~\citep{Turner2012} to
+% This approach was further extended in~\citepp{Turner2012} to
 % include FIR basis instead of the predefined canonical function. Here we employ it 
 % in the more general setting of a  
 % predefined basis set. Given a set of basis
@@ -288,7 +538,7 @@
 % with the current condition in the GLM matrix and $\B{X}^1_{\text{BS}i}$ is
 % the sum of all other columns.
 % In this case, the vector of estimates is given by the first $d$ vectors of
-% $\B{X}_{\text{BS}i}^{\dagger} \B{y}$. See~\citep{Turner2012} for a more complete description of the matrices $\B{X}^0_{\text{BS}i}$ and $\B{X}^1_{\text{BS}i}$.
+% $\B{X}_{\text{BS}i}^{\dagger} \B{y}$. See~\citepp{Turner2012} for a more complete description of the matrices $\B{X}^0_{\text{BS}i}$ and $\B{X}^1_{\text{BS}i}$.
 
 % It is possible to use the same rank-1
 % constraint as before in the setting of separate designs, linking the HRF 
@@ -316,7 +566,7 @@
 
 
 % One approach to minimize \eqref{eq:r1} is to alternate the minimization
-% with respect to the variables $\bfbeta$, $\B{h}$ and $\bfomega$. By recalling the Kronecker product identities~\cite[Chapter 4.3]{horn1991topics}, and using the identity \(\vecop(\B{h}\bfbeta^T) = \bfbeta\otimes \B{h}\)
+% with respect to the variables $\bfbeta$, $\B{h}$ and $\bfomega$. By recalling the Kronecker product identities~\citep[Chapter 4.3]{horn1991topics}, and using the identity \(\vecop(\B{h}\bfbeta^T) = \bfbeta\otimes \B{h}\)
 % we can rewrite the objective function~\eqref{eq:r1} to be minimized as:
 % %
 % \begin{gather}
@@ -325,7 +575,7 @@
 % \end{gather}
 % %
 % Updating $\B{h}$, $\bfbeta$ or $\bfomega$ sequentially thus amounts to solving a (constrained) least squares
-% problem at each iteration. A similar procedure is detailed in~\citep{Degras2014}. However, this approach requires computing the
+% problem at each iteration. A similar procedure is detailed in~\citepp{Degras2014}. However, this approach requires computing the
 % matrices $\B{X}_{\B{B}} (\bfbeta \otimes \B{I})$ and $\B{X}_{\B{B}} (\B{I} \otimes \B{h})$ at each iteration, which are typically dense,
 % resulting in a high computational cost per iteration. Note also that the optimization problem is not jointly convex in variables $\B{h}, \bfbeta, \bfomega$, therefore we cannot apply convergence guarantees from convex analysis.
 
@@ -333,7 +583,7 @@
 % global variable $\B{z}$ as the concatenation of $(\B{h}, \bfbeta, \bfomega)$ into a single vector, $\B{z} = \vecop([\B{h}, \bfbeta, \bfomega])$,
 %  and cast the problem as an optimization with respect to this new variable.
 % Generic solvers for numerical
-% optimization~\citep{nocedal2006numerical} can then be used. The solvers that we will consider take as
+% optimization~\citepp{nocedal2006numerical} can then be used. The solvers that we will consider take as
 % input an objective function and its gradient. In this case, the partial derivatives with respect to variable $\B{z}$ can be written as 
 % $\partial F_{\text{R1}} / \partial \B{z} = \vecop([\partial F_{\text{R1}} / \partial \B{h}, \partial F_{\text{R1}} / \partial{\bfbeta}, \partial F_{\text{R1}} / \partial {\bfomega}])$, whose expression can be
 % easily derived using the aforementioned Kronecker product identities:
@@ -373,8 +623,8 @@
 
 % \begin{marginfigure}
 % \hspace{-10pt}\includegraphics[width=1.1\linewidth]{chapter_3/bench_r1.pdf}
-% \caption{Convergence of different first-order and quasi-newton optimization algorithms for the R1-GLM model on a single voxel. ``TNC'' and ``Newton-CG'' are two different implementations of the truncated Newton~\citep{nash1984newton} method (the first one in C and the second one in Python), ``L-BFGS-B'' is the Limited-memory BFGS algorithm with box constraints as implemented in~\citep{zhu1997algorithm}, ``trust-ncg'' is the Newton conjugate gradient trust-region 
-% algorithm and ``CG'' is the conjugate gradient algorithm, both of them described in~\citep{nocedal2006numerical}. We found that in general the L-BFGS-B gives the best performance among these methods.}
+% \caption{Convergence of different first-order and quasi-newton optimization algorithms for the R1-GLM model on a single voxel. ``TNC'' and ``Newton-CG'' are two different implementations of the truncated Newton~\citepp{nash1984newton} method (the first one in C and the second one in Python), ``L-BFGS-B'' is the Limited-memory BFGS algorithm with box constraints as implemented in~\citepp{zhu1997algorithm}, ``trust-ncg'' is the Newton conjugate gradient trust-region 
+% algorithm and ``CG'' is the conjugate gradient algorithm, both of them described in~\citepp{nocedal2006numerical}. We found that in general the L-BFGS-B gives the best performance among these methods.}
 % \end{marginfigure}
 
 % % \todo[color=blue!60, inline]{Used an eqnarray*, because this was awfully "align*"ed. It still isn't perfect though. Maybe we need to bind the left hand sides to the left? The same theoretically goes for the equations just above}
@@ -397,7 +647,7 @@
 % reduced by 30\% using this transformation.
 
 
-% Some numerical solvers such as L-BFGS-B~\citep{liu1989limited}
+% Some numerical solvers such as L-BFGS-B~\citepp{liu1989limited}
 % require the constraints to be given as box constraints. While our original
 % problem includes an equality constraint we can easily
 % adapt it to use convex box constraints instead.
@@ -411,7 +661,7 @@
 % and $\bfbeta$, this does not bias the problem, but forces $\B{B h}$ to lie as far as possible from the origin (thus saturating the box constraints). Once a descent
 % direction has been found by the \mbox{L-BFGS-B} method we perform a line search
 % procedure to determine the step length. The line-search
-% procedure was implemented to satisfy the strong Wolfe conditions~\citep{nocedal2006numerical}.
+% procedure was implemented to satisfy the strong Wolfe conditions~\citepp{nocedal2006numerical}.
 % Finally, when the optimization algorithm has converged to a stationary point, 
 % we rescale the solution setting to ensure that the equality constraint. This still leaves a sign ambiguity between the estimated HRF and the associated beta-maps. To make these parameters identifiable, the sign of the estimated HRF will be chosen so that these correlate positively with the reference HRF.
 
@@ -463,9 +713,9 @@
 % \section{Dataset 1: encoding of visual information}\label{subsec:encoding_dataset}
 
 % The first dataset we will consider is 
-% described in~\citep{Kay2008,naselaris2009bayesian,kay2011data}. It contains 
+% described in~\citepp{Kay2008,naselaris2009bayesian,kay2011data}. It contains 
 % BOLD fMRI responses in human subjects viewing natural images.
-% As in~\citep{Kay2008}, we performed
+% As in~\citepp{Kay2008}, we performed
 % prediction of BOLD signal following the visual presentation of natural images
 % and compared it against the measured fMRI BOLD signal.
 % As the procedure consists of predicting the fMRI data
@@ -482,12 +732,12 @@
 % 10 times each. The images were recorded from the occipital cortex at a spatial resolution of 2mm$\times$2mm$\times$2.5mm
 % and a temporal resolution of 1 second. Every brain volume for each subject has been aligned to the first volume of the first run of the 
 % first session for that subject. Across-session alignment was performed manually. Additionally, 
-% data were temporally interpolated to account for slice-timing differences. See~\citep{Kay2008} for further preprocessing details. 
+% data were temporally interpolated to account for slice-timing differences. See~\citepp{Kay2008} for further preprocessing details. 
 
 
 
 % We performed local detrending using a Savitzky-Golay
-% filter~\citep{savitzky1964smoothing} with a polynomial of degree 4 and a window
+% filter~\citepp{savitzky1964smoothing} with a polynomial of degree 4 and a window
 % length of 91 TR. The activation coefficients (beta-map) and HRF were extracted from
 % the training set by means of the different methods we would like to compare. The
 % training set consisted of 80\% of the original session (4 out of 5 runs). This
@@ -498,7 +748,7 @@
 
 % We proceed to train the encoding model. The stimuli are handled as local image contrasts,  that are represented by spatially
 % smoothed Gabor pyramid transform modulus with 2 orientations and 4 scales. 
-% Ridge regression (regularization parameter chosen by Generalized Cross-Validation~\citep{golub1979generalized}) was then used to learn a
+% Ridge regression (regularization parameter chosen by Generalized Cross-Validation~\citepp{golub1979generalized}) was then used to learn a
 % predictor of voxel activity on the training set. By using this encoding model
 % and the estimated HRF it is possible to predict the BOLD signal for the 70
 % images in the test set (20 \% of the original session). We emphasize that learning the HRF on the training set instead of on the full
@@ -509,12 +759,12 @@
 % \center\includegraphics[width=\linewidth]{chapter_3/nature_kay.pdf}
 % \caption{
 % \label{fig:kay_encoding}
-% 	The original analysis performed in~\citep{Kay2008} allowed to identify natural images from human brain activity. The analysis consisted of two stages. In the first stage, model estimation, fMRI data were recorded while each subject viewed a large collection of natural images. These data were used to estimate an encoding model for each voxel. In the second stage, image identification, fMRI data were recorded while each subject viewed a collection of novel natural images. For each measurement of brain activity, they attempted to identify which specific image had been seen. This was accomplished by using the estimated encoding models to predict brain activity for a set of potential images and then selecting the image whose predicted activity correlates best with the measured activity. Source: Adapted from~\citep{Kay2008}.
+% 	The original analysis performed in~\citepp{Kay2008} allowed to identify natural images from human brain activity. The analysis consisted of two stages. In the first stage, model estimation, fMRI data were recorded while each subject viewed a large collection of natural images. These data were used to estimate an encoding model for each voxel. In the second stage, image identification, fMRI data were recorded while each subject viewed a collection of novel natural images. For each measurement of brain activity, they attempted to identify which specific image had been seen. This was accomplished by using the estimated encoding models to predict brain activity for a set of potential images and then selecting the image whose predicted activity correlates best with the measured activity. Source: Adapted from~\citepp{Kay2008}.
 % }
 % \end{figure*}
 
 
-% In a first step, we perform the image identification task from~\citep{Kay2008} (Fig.~\ref{fig:kay_encoding}). From the training set we estimate the activation coefficients that will be used to compute the activation maps. We use an encoding model using Gabor filters that predicts the activation coefficient from the training stimuli. From the stimuli in the validation set we predict the activation coefficients that we then use to identify the correct image. The predicted image is the one yielding the highest correlation with the measured activity. This procedure mimics the one presented in~\citep[Supplementary material]{Kay2008}.
+% In a first step, we perform the image identification task from~\citepp{Kay2008} (Fig.~\ref{fig:kay_encoding}). From the training set we estimate the activation coefficients that will be used to compute the activation maps. We use an encoding model using Gabor filters that predicts the activation coefficient from the training stimuli. From the stimuli in the validation set we predict the activation coefficients that we then use to identify the correct image. The predicted image is the one yielding the highest correlation with the measured activity. This procedure mimics the one presented in~\citepp[Supplementary material]{Kay2008}.
 
 
 
@@ -528,7 +778,7 @@
 
 % \section{Dataset 2: decoding of potential gain levels}
 
-% The second dataset described in~\citep{Tom2007} is a gambling task where each
+% The second dataset described in~\citepp{Tom2007} is a gambling task where each
 % of the 17 subjects was asked to accept or reject gambles that offered a 50/50
 % chance of gaining or losing money. The magnitude of the potential gain and
 % loss was independently varied across 16 levels between trials. Each gamble has
@@ -554,15 +804,15 @@
 
 % After training a regression model on 90\% of the data, we predict the gain level on the
 % remaining 10\%. As a performance measure we use Kendall tau rank correlation
-% coefficient~\citep{kendall1938new} between the true gain levels and the
+% coefficient~\citepp{kendall1938new} between the true gain levels and the
 % predicted levels, which is a measure for the orderings of the data.  We argue
 % that this evaluation metric is better suited than a regression loss for this
 % task because of the discrete and ordered nature of the labels. Also, this loss
 % is less sensible to shrinkage of the prediction that might occur when penalizing a
-% regression model~\citep{bekhti:hal-01032909}. The Kendall tau coefficient always lies within the interval
+% regression model~\citepp{bekhti:hal-01032909}. The Kendall tau coefficient always lies within the interval
 % $[-1, 1]$, with $1$ being perfect agreement between the two rankings and $-1$
 % perfect disagreement. Chance level lies at zero. This metric is equivalent to minimizing the number of the pairwise inversions, which was was previously
-% proposed for fMRI decoding with ordered labels in~\citep{pedregosa:hal-00717990}.
+% proposed for fMRI decoding with ordered labels in~\citepp{pedregosa:hal-00717990}.
 
 
 % %\chapter{Results}
@@ -592,7 +842,7 @@
 
 % We first present the scores obtained in the image identification task for different variants of the GLM. This can be seen in Figure~\ref{fig:identification_scores}. The displayed score is the count of correctly identified images over the total number of images (chance level is therefore at 1/120). The identification algorithm here only uses the beta-maps obtained from the train and validation set. This makes the estimation of the HRF an intermediate result in this model. However, we expect that a correct estimation of the HRF directly translates into a better estimation of the activation coefficients in the sense of being able to acheive higher predictive accuracy. Our results are consistent with this hypothesis and in this task the rank-one (R1) and glm-separate (GLMS) models outperform the classical \gls{GLM} model. The benefits range from 0.9\% for R1-GLM in subject 2 to 8.2\% for the same method and subject 1. It is worth noticing that methods with FIR basis obtain a higher score than methods using the 3HRF basis.
 
-% In order to test whether this increase is statistically significant we performed the following statistical test. The success of recovering the correct image can be modeled as a binomial distribution, with $p_A$ being be the probability of recovering the correct image with method A and $p_{{B}}$ being be the probability of recovering the correct image with method B. We define the null hypothesis $H_0$ as the statement that both probabilities are equal, $H_0: p_A = p_{{B}}$, and the alternate hypothesis that both probabilities and not equal, $H_1: p_1 \neq p_2$ (this test is sometimes known as the binomial proportion test~\citep{rohmel1999unconditional}). The score test statistic for the one-tailed test is $T = {(p_A - p_{{B}})} / {\sqrt{p (1 - p)\frac{2}{n}}}$, where $p = (p_A + p_{{B}}) / 2$ and $n$ is the number of repetitions, in this case $n=120$. This statistic is normally distributed for large $n$. The p-value associated with this statistical test when comparing every model (by order of performance) with the model ``GLM with with fixed HRF'' is $(0.10, 0.10, 0.15, 0.19, 0.21, 0.26, 0.5, 0.5, 0.82, 0.81)$ for the first subject and $(0.18, 0.18, 0.25, 0.34, 0.34, 0.44, 0.5, 0.5, 0.86, 0.93)$ for the second.
+% In order to test whether this increase is statistically significant we performed the following statistical test. The success of recovering the correct image can be modeled as a binomial distribution, with $p_A$ being be the probability of recovering the correct image with method A and $p_{{B}}$ being be the probability of recovering the correct image with method B. We define the null hypothesis $H_0$ as the statement that both probabilities are equal, $H_0: p_A = p_{{B}}$, and the alternate hypothesis that both probabilities and not equal, $H_1: p_1 \neq p_2$ (this test is sometimes known as the binomial proportion test~\citepp{rohmel1999unconditional}). The score test statistic for the one-tailed test is $T = {(p_A - p_{{B}})} / {\sqrt{p (1 - p)\frac{2}{n}}}$, where $p = (p_A + p_{{B}}) / 2$ and $n$ is the number of repetitions, in this case $n=120$. This statistic is normally distributed for large $n$. The p-value associated with this statistical test when comparing every model (by order of performance) with the model ``GLM with with fixed HRF'' is $(0.10, 0.10, 0.15, 0.19, 0.21, 0.26, 0.5, 0.5, 0.82, 0.81)$ for the first subject and $(0.18, 0.18, 0.25, 0.34, 0.34, 0.44, 0.5, 0.5, 0.86, 0.93)$ for the second.
 % %
 
 % \begin{figure} \centering
@@ -630,7 +880,7 @@
 %  including FIR basis sets while minimizing the risk of overfitting inherent to the classical GLM.
 
 % We also observed that models using the GLM
-% with separate designs from~\citep{Mumford2012} perform significantly better on
+% with separate designs from~\citepp{Mumford2012} perform significantly better on
 % this dataset than the standard design, which is consistent with the purpose of
 % these models. It improves estimation in highly correlated designs. The best
 % performing model for both subjects in this task is the R1-GLMS with FIR basis, followed by
@@ -666,7 +916,7 @@
 % method. In the upper part of Figure~\ref{fig:r1_vs_can} we show the HRF
 % estimated on the first subject by our best performing method (the Rank-1 with separate designs and
 % FIR basis). For comparison we also present two commonly used
-% reference HRFs: one used in the software SPM and one defined in~\cite[auditory
+% reference HRFs: one used in the software SPM and one defined in~\citep[auditory
 % study]{Glover1999} and used by software such as
 % NiPy\footnote{\href{http://nipy.org}{http://nipy.org}}  and
 % fmristat (\sidenote{\href{http://www.math.mcgill.ca/keith/fmristat/}{http://www.math.mcgill.ca/keith/fmristat/}}). Because the HRF
@@ -798,7 +1048,7 @@
 
 % % An alternative approach, that has proven to increase robustness of the
 % % estimates, consists in performing a parcel-wise estimation of the
-% % HRF~\citep{Badillo2013}. While it would be possible to combine a rank-1
+% % HRF~\citepp{Badillo2013}. While it would be possible to combine a rank-1
 % % constraint across conditions with a parcel model of the HRF, this lies
 % % outside the scope of this paper and is left for future work.
 
@@ -815,10 +1065,10 @@
 % and with and without rank-1 constraint. We have focused on voxel-independent
 % models of the HRF, possibly constrained by a basis set, and have omitted for
 % efficiency reasons other possible models such as Bayesian
-% models~\citep{marrelec2003robust,Ciuciu2003,Makni2005} and regularized
-% methods~\citep{Goutte2000,Casanova2008}.
+% models~\citepp{marrelec2003robust,Ciuciu2003,Makni2005} and regularized
+% methods~\citepp{Goutte2000,Casanova2008}.
 
-% Other models such as spatial models~\citep{vincent2010spatially}, and 
+% Other models such as spatial models~\citepp{vincent2010spatially}, and 
 % \mbox{multi-subject}
 % methods~\citep{Zhang2012,Zhang2013} that adaptively learn the HRF
 % across several subjects are outside the scope of this work.  The latter models

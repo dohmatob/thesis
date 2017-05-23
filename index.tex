@@ -79,6 +79,7 @@
 \newcommand{\red}{\color{red}}
 \newcommand{\blue}{\color{blue}}
 
+\newtheorem{remark}{Remark}
 
 \DeclareMathOperator*{\vecop}{vec}
 \def\RR{{\mathbb R}}
@@ -193,19 +194,50 @@ models in the estimation of spatial decompositions of the brain images}
 % \providecommand{\DIFdelendFL}{} %DIF PREAMBLE
 % %DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
 
+%% fix size of parts relative of chapters (in display of ToC)
+\usepackage{tocstyle}
+\usetocstyle{standard}
+\settocstylefeature[-1]{entryhook}{\LARGE\bfseries}
 
+% \DeclareMathOperator{\argmin}{argmin}
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\soft}{soft}
+\DeclareMathOperator{\prox}{prox}
+\DeclareMathOperator{\Prox}{Prox}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\dom}{dom}
 
-
-
-
-
-
-
-
-
-
+\def\Id{\mathbf{I}}
+\def\1{\mathbf{1}}
+\def\X{\mathbf{X}}
+\def\U{\mathbf{U}}
+\def\V{\mathbf{V}}
+\def\v{\mathbf{v}}
+\def\u{\mathbf{u}}
+\def\Y{\mathbf{Y}}
+\def\y{\mathbf{y}}
+\def\A{\mathbf{A}}
+\def\I{\mathbf{I}}
+% \def\B{\mathbf{B}}
+\def\a{\mathbf{a}}
+\def\s{\mathbf{s}}
+\def\r{\mathbf{r}}
+\def\x{\mathbf{x}}
+\def\K{\mathbf{K}}
+\def\z{\mathbf{z}}
+\def\w{\mathbf{w}}
+\def\p{\mathbf{p}}
+\def\G{\mathbf{G}}
+\def\b{\mathbf{b}}
 
 \makeatletter\@addtoreset{chapter}{part}\makeatother
+
+% \usepackage{hyperref,url}
+
 \begin{document}
 % \dominitoc
 
@@ -502,40 +534,40 @@ models in the estimation of spatial decompositions of the brain images}} \\[0.5c
 
 % \newpage
 
-% {\section*{\Huge \it Notation}}
+{\section*{\Huge \it Notation}}
 
-% \vspace{50pt}
+\vspace{50pt}
 
-% \begin{fullwidth}
-% \def\arraystretch{1.5}
-% \begin{tabular}{p{3cm} p{5cm} p{5cm}}
-% % \toprule
-% % \multicolumn{3}{c}{Different Approaches to Ordinal Regression}\\ 
-% \cmidrule{1-3}
-% Notation & Name / synopsis & Definition\\ 
-%   \midrule
-%   $[k]$ & Integers from $1$ to $k$ (inclusive) & $[k] = \{1,~2, \ldots,~k \}$ \\
-%   $\mathcal{N}(\mu, \sigma^2)$ & Normal distribution with mean $\mu$ and variance $\sigma$ & $p(x) = \frac{1}{\sqrt{2\pi\sigma}}
-%    \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$\\
-%  $\| \B{v} \|_r$ & $\ell_r$ norm for vectors & $\sqrt[r]{\sum_i |v_i|^r}$ \\
-% $\text{tr}(\B{X})$ & Trace of a matrix & $\sum_{i} a_{ii}$ \\  
-% $\langle \B{A}, \B{B}\rangle_{\text{Fro}}$ & Frobenius / Hilbert-Schmidt inner-product of two matrices $\B{A}$ and $\B{B}$  & $\text{tr}(\B{A}\B{B}^T)$\\
-%   $\| \B{X} \|_{\textbf{Fro}}$ & Frobenius norm of a matrix & $\sqrt{\langle \B{X}, \B{X}\rangle_{\text{Fro}}}$ \\
-%   $\|\B{X}\|_2$ & Spectral norm of matrix & $\sup\{\|\B{X}\B{u}\|_2 \text{ s.t } \|\B{u}\|_2 \le 1\}$ \\
-%   $\|\B{X}\|_{r,s}$ & Mixed-norm of matrix $\B{X} \in \mathbb R^{n \times m}$ &  $\left\|\left[\|\B{X}_1\|_r,\|\B{X}_2\|_r,\ldots,\|\B{X}_n\|_r\right]\right\|_s$ \\
-% $\B{I}_n$ & Identity matrix of size $n$ &  $I_{ij} = \delta_{ij}, ~\forall 1 \leq i, j \leq n$\\
-% $\B{1}_n$ & Vector of ones of size $n$ &  $1_{i} = 1, ~\forall 1 \geq i \geq n$ \\
-% $\B{X}^{\dagger}$ & Moore-Penrose pseudoinverse & Generalized inverse matrix\\
-% $\B{A}\otimes\B{B}$ & Kronecker product of matrices $\B{A}$ and $\B{B}$ & \\
-% $\text{vec}(\B{A})$ & Vectorization of a matrix & Concatenation of the columns of a matrix into a single giant column vector\\
-% $\mathbb{E}(X)$ & Expectation of the random variable X & $\int X dP$\\
-%   $\mathcal{R}_{\ell}(h)$ & Risk of the estimator $h$ & $\EE_{X \times Y}(\ell(Y, h(X)))$ \\
-%   $\text{Lap}(\B{v})$ & Laplacian regularization of a 3D image $\B{v}$ & $\frac{1}{2}\sum_{k=1}^p(\nabla_x \B{v})_k^2 + (\nabla_y \B{v})_k^2 + (\nabla_z \B{v})_k^2$ \\ % = \frac{1}{2}{\B{v}}^T\Delta \B{v} \ge 0$
-%   $\|\B{v}\|_{\text{TV}}$ & Total-Variation (isotropic) regularization & $\sum_{k=1}^p\sqrt{(\nabla_x \B{v})_k^2 + (\nabla_y \B{v})_k^2 + (\nabla_z \B{v})_k^2}$\\
-% \bottomrule
-% \end{tabular}
-% \end{fullwidth}
-% \vspace*{\fill}
+\begin{fullwidth}
+\def\arraystretch{1.5}
+\begin{tabular}{p{3cm} p{5cm} p{5cm}}
+% \toprule
+% \multicolumn{3}{c}{Different Approaches to Ordinal Regression}\\ 
+\cmidrule{1-3}
+Notation & Name / synopsis & Definition\\ 
+  \midrule
+  $[k]$ & Integers from $1$ to $k$ (inclusive) & $[k] = \{1,~2, \ldots,~k \}$ \\
+  $\mathcal{N}(\mu, \sigma^2)$ & Normal distribution with mean $\mu$ and variance $\sigma$ & $p(x) = \frac{1}{\sqrt{2\pi\sigma}}
+   \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$\\
+ $\| \B{v} \|_r$ & $\ell_r$ norm for vectors & $\sqrt[r]{\sum_i |v_i|^r}$ \\
+$\text{tr}(\B{X})$ & Trace of a matrix & $\sum_{i} a_{ii}$ \\  
+$\langle \B{A}, \B{B}\rangle_{\text{Fro}}$ & Frobenius / Hilbert-Schmidt inner-product of two matrices $\B{A}$ and $\B{B}$  & $\text{tr}(\B{A}\B{B}^T)$\\
+  $\| \B{X} \|_{\textbf{Fro}}$ & Frobenius norm of a matrix & $\sqrt{\langle \B{X}, \B{X}\rangle_{\text{Fro}}}$ \\
+  $\|\B{X}\|_2$ & Spectral norm of matrix & $\sup\{\|\B{X}\B{u}\|_2 \text{ s.t } \|\B{u}\|_2 \le 1\}$ \\
+  $\|\B{X}\|_{r,s}$ & Mixed-norm of matrix $\B{X} \in \mathbb R^{n \times m}$ &  $\left\|\left[\|\B{X}_1\|_r,\|\B{X}_2\|_r,\ldots,\|\B{X}_n\|_r\right]\right\|_s$ \\
+$\B{I}_n$ & Identity matrix of size $n$ &  $I_{ij} = \delta_{ij}, ~\forall 1 \leq i, j \leq n$\\
+$\B{1}_n$ & Vector of ones of size $n$ &  $1_{i} = 1, ~\forall 1 \geq i \geq n$ \\
+$\B{X}^{\dagger}$ & Moore-Penrose pseudoinverse & Generalized inverse matrix\\
+$\B{A}\otimes\B{B}$ & Kronecker product of matrices $\B{A}$ and $\B{B}$ & \\
+$\text{vec}(\B{A})$ & Vectorization of a matrix & Concatenation of the columns of a matrix into a single giant column vector\\
+$\mathbb{E}(X)$ & Expectation of the random variable X & $\int X dP$\\
+  $\mathcal{R}_{\ell}(h)$ & Risk of the estimator $h$ & $\EE_{X \times Y}(\ell(Y, h(X)))$ \\
+  $\text{Lap}(\B{v})$ & Laplacian regularization of a 3D image $\B{v}$ & $\frac{1}{2}\sum_{k=1}^p(\nabla_x \B{v})_k^2 + (\nabla_y \B{v})_k^2 + (\nabla_z \B{v})_k^2$ \\ % = \frac{1}{2}{\B{v}}^T\Delta \B{v} \ge 0$
+  $\|\B{v}\|_{\text{TV}}$ & Total-Variation (isotropic) regularization & $\sum_{k=1}^p\sqrt{(\nabla_x \B{v})_k^2 + (\nabla_y \B{v})_k^2 + (\nabla_z \B{v})_k^2}$\\
+\bottomrule
+\end{tabular}
+\end{fullwidth}
+\vspace*{\fill}
 
 
 %\newpage
@@ -547,6 +579,8 @@ models in the estimation of spatial decompositions of the brain images}} \\[0.5c
 
 % \listoftables
 
+
+\cite{michel2011tv}
 
 \include{abstract}
 
@@ -566,5 +600,9 @@ models in the estimation of spatial decompositions of the brain images}} \\[0.5c
 
 \printglossaries
 
+% \begin{fullwidth}
+% \bibliographystyle{plainnat}
+% \bibliography{bib.bib}
+% \end{fullwidth}
 
 \end{document}

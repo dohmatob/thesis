@@ -1,16 +1,16 @@
-\ifglsentryexists{decoding}{}%
+\ifglsentryexists{MRI}{}%
 {%
-\gls@defglossaryentry{decoding}%
+\gls@defglossaryentry{MRI}%
 {%
-name={decoding},%
-sort={decoding},%
+name={MRI},%
+sort={MRI},%
 type={main},%
-first={decoding},%
-firstplural={decodings},%
-text={decoding},%
-plural={decodings},%
-description={distinguish patterns of neural activity associated with different stimuli or cognitive states},%
-descriptionplural={distinguish patterns of neural activity associated with different stimuli or cognitive states},%
+first={MRI},%
+firstplural={MRIs},%
+text={MRI},%
+plural={MRIs},%
+description={Magnetic Resonance Imaging},%
+descriptionplural={Magnetic Resonance Imaging},%
 symbol={\relax },%
 symbolplural={\relax },%
 user1={},%
@@ -28,19 +28,19 @@ parent={},%
 %
 }%
 }%
-\ifglsentryexists{encoding}{}%
+\ifglsentryexists{bold}{}%
 {%
-\gls@defglossaryentry{encoding}%
+\gls@defglossaryentry{bold}%
 {%
-name={encoding},%
-sort={encoding},%
+name={BOLD},%
+sort={BOLD},%
 type={main},%
-first={encoding},%
-firstplural={encodings},%
-text={encoding},%
-plural={encodings},%
-description={predicting patterns of brain response to novel stimuli based on their features},%
-descriptionplural={predicting patterns of brain response to novel stimuli based on their features},%
+first={BOLD},%
+firstplural={BOLDs},%
+text={BOLD},%
+plural={BOLDs},%
+description={fMRI contrast that measures oxygen change in blood flow},%
+descriptionplural={fMRI contrast that measures oxygen change in blood flow},%
 symbol={\relax },%
 symbolplural={\relax },%
 user1={},%
@@ -58,19 +58,19 @@ parent={},%
 %
 }%
 }%
-\ifglsentryexists{Heaviside}{}%
+\ifglsentryexists{voxel}{}%
 {%
-\gls@defglossaryentry{Heaviside}%
+\gls@defglossaryentry{voxel}%
 {%
-name={Heaviside},%
-sort={Heaviside},%
+name={voxel},%
+sort={voxel},%
 type={main},%
-first={Heaviside},%
-firstplural={Heavisides},%
-text={Heaviside},%
-plural={Heavisides},%
-description={The real function that is zero for negative values and one otherwise},%
-descriptionplural={The real function that is zero for negative values and one otherwise},%
+first={voxel},%
+firstplural={voxels},%
+text={voxel},%
+plural={voxels},%
+description={unity of measure in a volumetric space},%
+descriptionplural={unity of measure in a volumetric space},%
 symbol={\relax },%
 symbolplural={\relax },%
 user1={},%
@@ -88,19 +88,49 @@ parent={},%
 %
 }%
 }%
-\ifglsentryexists{hinge loss}{}%
+\ifglsentryexists{TR}{}%
 {%
-\gls@defglossaryentry{hinge loss}%
+\gls@defglossaryentry{TR}%
 {%
-name={hinge loss},%
-sort={hinge loss},%
+name={TR},%
+sort={TR},%
 type={main},%
-first={hinge loss},%
-firstplural={hinge losss},%
-text={hinge loss},%
-plural={hinge losss},%
-description={Loss function used by Support Vector Machines},%
-descriptionplural={Loss function used by Support Vector Machines},%
+first={TR},%
+firstplural={TRs},%
+text={TR},%
+plural={TRs},%
+description={repetition time, sampling time in an fMRI scanner},%
+descriptionplural={repetition time, sampling time in an fMRI scanner},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{HRF}{}%
+{%
+\gls@defglossaryentry{HRF}%
+{%
+name={HRF},%
+sort={HRF},%
+type={main},%
+first={HRF},%
+firstplural={HRFs},%
+text={HRF},%
+plural={HRFs},%
+description={Hemodynamic Response Function},%
+descriptionplural={Hemodynamic Response Function},%
 symbol={\relax },%
 symbolplural={\relax },%
 user1={},%

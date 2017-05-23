@@ -1,5 +1,9 @@
 all: clean
 	pdflatex index
+	# bibtex index
+	bibtex chapter_3/chapter_3.aux
+	bibtex chapter_4/chapter_4.aux
+	pdflatex index
 	pdflatex index
 
 clean:
