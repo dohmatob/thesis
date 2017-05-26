@@ -1,4 +1,3 @@
-
 \chapter{Learning patterns of inter-subject functional variability from data}
 
 
@@ -47,7 +46,7 @@ simply their density, are performed on ROIs adapted to the spatial
 impact of the pathology of interest. In functional brain imaging,
 e.g function magnetic resonance imaging (fMRI), ROIs must be
 adapted to the cognitive process under study, and are often defined by
-the very activation elicited by a closely related process  \cite{saxe2006}.
+the very activation elicited by a closely related process  \citep{saxe2006}.
 ROIs can boost statistical power by reducing multiple comparisons that
 plague image-based statistical testing. If they are defined to match
 spatially the differences to detect, they can also improve
@@ -71,7 +70,7 @@ maps across the population to define regions.
 This idea is reminiscent of
 clustering approaches, that have been employed to define spatial units
 for quantitative analysis of information as diverse as brain fiber
-tracking, brain activity, brain structure, or even imaging-genetics. See  \cite{Varol2014,hibar2013genetic} and references therein.
+tracking, brain activity, brain structure, or even imaging-genetics. See  \citep{Varol2014,hibar2013genetic} and references therein.
 %
 The key idea is to group together features --voxels of an image,
 vertices on a mesh, fiber tracts-- based on the quantity of interest, to
@@ -81,9 +80,9 @@ cluster, we use a model closer to the signal, where each observation is a
 linear mixture of several signals. The model is closer to mode finding,
 as in a principal component analysis (PCA), or an independent component
 analysis (ICA), often used in brain imaging to extract functional units
- \cite{beckmann2004}. Yet, an important constraint is that the modes
+ \citep{beckmann2004}. Yet, an important constraint is that the modes
  should be sparse and spatially-localized. For this purpose, the problem can be reformulated as a linear decomposition problem like ICA/PCA, with
- appropriate spatial and sparse penalties  \cite{varoquaux2011,abraham2013}. 
+ appropriate spatial and sparse penalties  \citep{varoquaux2011,abraham2013}. 
 
 We propose a multivariate online dictionary-learning method for obtaining
 decompositions with structured and sparse components (aka atoms).
@@ -95,7 +94,7 @@ compact, thus making up blobs, as opposed to scattered patterns of
 activation. We impose this type of structure via a Laplacian penalty on the
 dictionary atoms. Combining the two penalties, we therefore
 obtain decompositions that are closer to known functional organization of the brain. This non-trivially extends the online dictionary-learning /
-dictionary-learning work  \cite{mairal2010}, with only a factor of 2
+dictionary-learning work  \citep{mairal2010}, with only a factor of 2
 or 3 on the running time.
 %
 By means of experiments on a large public dataset, we show the
@@ -186,7 +185,7 @@ where $\V := [\B{v}^1|\ldots|\B{v}^k] \in \mathbb{R}^{p \times k}$, an unknown d
 Typically, $p \sim 10^{5}$ --
 $10^{6}$ (in full-brain high-resolution fMRI) and $n \sim 10^{2}$ --
 $10^{5}$ (for example, in considering all the 500 subjects and all
-the about 15 --20 functional tasks of the Human Connectome Project dataset  \cite{VanEssen20122222}). Our work handles the extreme
+the about 15 --20 functional tasks of the Human Connectome Project dataset  \citep{VanEssen20122222}). Our work handles the extreme
 case where both $n$ and $p$ are large (massive-data setting). 
 %
 It is reasonable then to only consider under-complete dictionaries: $k
@@ -202,7 +201,7 @@ simultaneously impose smoothness by penalizing their Laplacian.
 Thus, we propose the following penalized dictionary-learning model
 \begin{eqnarray}
 \begin{split}
-  &\min_{\V \in \mathbb R^{p \times k}}\left(\lim_{n \rightarrow \infty}\frac{1}{n}\sum_{i=1}^n\min_{\B{u}_i \in \mathbb R^{k}}\frac{1}{2} \|\B{x}_i-\V\B{u}_i\|_2^2 +  \frac{1}{2}\alpha\|\B{u}_i\|_2^2\right) + \gamma\sum_{j=1}^k\Omega_{\text{Lap}}(\B{v}^j).\\
+  &\min_{\V \in \mathbb R^{p \times k}}\left(\lim_{n \rightarrow \infty}\frac{1}{n}\sum_{i=1}^n\min_{\B{u}_i \in \mathbb R^{k}}\frac{1}{2} \|\B{x}_i-\V\B{u}_i\|_2^2 +  \frac{1}{2}\alpha\|\B{u}_i\|_2^2\right) + \gamma\sum_{j=1}^k{\text{Lap}}(\B{v}^j).\\
   &\text{subject to }\B{v}^1,\ldots,\B{v}^k \in \mathcal C
 \end{split}
 % XXX: I am discovery the l1 penalty on U. Do we really need this ?
@@ -219,7 +218,7 @@ spread across the different samples. In the context of a specific
 neuro-imaging problem, if there are good grounds to assume that each
 sample / subject should be sparsely encoded across only a few atoms of
 the dictionary, then we can use the $\ell_1$ penalty $\phi(\B{u}_i) :=
-\alpha\|\B{u}_i\|_1$ as in  \cite{mairal2010}. We note that in contrast to
+\alpha\|\B{u}_i\|_1$ as in  \citep{mairal2010}. We note that in contrast to
 the $\ell_1$ penalty, the Ridge leads to stable codes. The parameter $\alpha > 0$ controls the amount of penalization on the codes. %, which can be updated in closed-form via SVD. %% (w.r.t small pertubations in the input data $\X$) due to strong-convexity of the resulting coding problem \eqref{eq:coding}.
 
   %% It is essential to constrain the magnitude of the codes $\B{u}_i$ to
@@ -227,7 +226,7 @@ the $\ell_1$ penalty, the Ridge leads to stable codes. The parameter $\alpha > 0
   %% pathological all-zero values in the dictionary atoms, and vice versa.
 
   %% The proposed Laplacian penalty terms
-  %% $\Omega_{\text{Lap}}(\B{v}^j)$ defined in \eqref{eq:sob} imposes spatial smoothness
+  %% ${\text{Lap}}(\B{v}^j)$ defined in \eqref{eq:sob} imposes spatial smoothness
   %% on the dictionary atoms $\B{v}^j$, see e.g. Fig. \ref{fig:roi}.
 %% \textbf{XXX I don't see what you mean here}.
 \item The constraint set $\mathcal C$ is a sparsity-inducing compact
@@ -239,35 +238,22 @@ $\mathcal S_p(\tau) := \mathbb B_{p,\ell_1}(\tau) \cap \mathbb R_+^p.$
 Other choices (e.g ElasticNet ball) are of course possible. The radius parameter $\tau > 0$ controls the
 amount of sparsity: smaller values lead to sparser atoms.
 %% \item More general sparsity-inducing  constraint sets like elastic-net balls and probability simplexes can be be considered: we only require the existence of an efficient oracle for projection onto the constraint set $\mathcal C$.  
-\item  Finally, $\Omega_{\text{Lap}}$ is the 3D Laplacian regularization functional
-defined by
-\begin{eqnarray}
-\label{eq:sob}
-\Omega_{\text{Lap}}(\v) := \frac{1}{2}\sum_{k=1}^p(\nabla_x \v)_k^2 + (\nabla_y
-\v)_k^2 + (\nabla_z \v)_k^2 =  \frac{1}{2}{\v}^T\Delta \v \ge 0,\;
-\forall \v \in \mathbb R^p,
-\end{eqnarray}
-$\nabla_x$ being the discrete spatial gradient operator
-along the $x$-axis (a $p$-by-$p$ matrix), $\nabla_y$ along the $y$-axis,
-etc., and $\Delta :=
-\nabla^T\nabla$ is the $p$-by-$p$ matrix representing the discrete
-Laplacian operator. This penalty is meant to impose blobs.
-The regularization parameter $\gamma \ge 0$ controls
-how much regularization we impose on the atoms, compared to the
+The Laplacian regularization $\text{Lap}$ (see table of notations) is meant to impose blobs.
+$\gamma \ge 0$ controls how much regularization we impose on the atoms, compared to the
 reconstruction error.
 
 \end{itemize}
 The above formulation, which we dub \textit{Smooth Sparse Online Dictionary-Learning} (Smooth-SODL) is inspired by, and generalizes the standard
-dictionary-learning framework of  \cite{mairal2010} --henceforth referred to as \textit{Sparse Online Dictionary-Learning} (SODL); setting $\gamma = 0$, we recover SODL  \cite{mairal2010}.
+dictionary-learning framework of  \citep{mairal2010} --henceforth referred to as \textit{Sparse Online Dictionary-Learning} (SODL); setting $\gamma = 0$, we recover SODL  \citep{mairal2010}.
 
-\begin{remark}
-Of course, we can accommodate a brain mask by using the masking / un-masking tricks outlined in  \cite{michel2011tv}.  
-Also, our framework extends effortlessly to arbitrary space
-dimensions, by simply considering a $D$-dimensional discrete
-finite-difference difference spatial gradient operator $\nabla =
-[\nabla_x, \nabla_y, \nabla_z,\ldots]$, in place of the 3-dimensional ($D=3$) case considered in this manuscript. Thus our methods
-can be readily applied to multiple-valued imaging modalities, such as Diffusion Tensor Imaging (DTI) data.
-\end{remark}
+% \begin{remark}
+% Of course, we can accommodate a brain mask by using the masking / un-masking tricks outlined in  \citep{michel2011tv}.  
+% Also, our framework extends effortlessly to arbitrary space
+% dimensions, by simply considering a $D$-dimensional discrete
+% finite-difference difference spatial gradient operator $\nabla =
+% [\nabla_x, \nabla_y, \nabla_z,\ldots]$, in place of the 3-dimensional ($D=3$) case considered in this manuscript. Thus our methods
+% can be readily applied to multiple-valued imaging modalities, such as Diffusion Tensor Imaging (DTI) data.
+% \end{remark}
 
 \section{Estimating the model}
 \subsection{Algorithms}
@@ -276,15 +262,15 @@ The objective function in problem
 \eqref{eq:ss} is separately convex and block-separable
 w.r.t each of $\U$ and $\V$ but is not jointly convex in $(\U,\V)$. Also,
 it is continuously differentiable on the constraint set, which is
-compact and convex. Thus by classical results (e.g Bertsekas  \cite{bertsekas1999nonlinear}), the problem can be solved via
+compact and convex. Thus by classical results (e.g Bertsekas  \citep{bertsekas1999nonlinear}), the problem can be solved via
 Block-Coordinate Descent
-(BCD)  \cite{mairal2010}.
- Reasoning along the lines of  \cite{jenatton2010structured}, we derive
+(BCD)  \citep{mairal2010}.
+ Reasoning along the lines of  \citep{jenatton2010structured}, we derive
  that the BCD iterates are as given in Alg. \ref{Tab:algo}.
 A crucial advantage of using a BCD scheme is that it is parameter
 free: there is not step size to tune.
 %e
-The resulting algorithm Alg. \ref{Tab:algo}, is adapted from  \cite{mairal2010}.
+The resulting algorithm Alg. \ref{Tab:algo}, is adapted from  \citep{mairal2010}.
 It relies on Alg. \ref{Tab:algo_sobdict} for performing the structured dictionary updates, the details of which are discussed below.
 
 \begin{algorithm}
@@ -327,7 +313,7 @@ For $\alpha \approx 0$, $\B{u}_t$
 reduces to the orthogonal projection of $\B{x}_t$ onto the image of the current
 dictionary $\V$.
 % Once this SVD is computed, the codes corresponding to a batch of inputs $\B{x}_t$ can be computed in closed-form.
-As in  \cite{mairal2010}, we speed up the overall algorithm by sampling mini-batches of $\eta$ samples $\B{x}_t,\ldots,X_\eta$ and compute the corresponding codes $\B{u}_1$, $\B{u}_2$, ..., $\B{u}_\eta$ at once. We typically use we use mini-batches of size $\eta \sim 20$.
+As in  \citep{mairal2010}, we speed up the overall algorithm by sampling mini-batches of $\eta$ samples $\B{x}_t,\ldots,\B{x}_\eta$ and compute the corresponding codes $\B{u}_1$, $\B{u}_2$, ..., $\B{u}_\eta$ at once. We typically use we use mini-batches of size $\eta \sim 20$ images.
 
 \paragraph*{BCD dictionary update for the dictionary atoms.}
 %% \paragraph{Updating the codes.}
@@ -338,7 +324,7 @@ As in  \cite{mairal2010}, we speed up the overall algorithm by sampling mini-bat
 %% \B{u}_t = \argmin_{\u \in \mathbb R^k}\frac{1}{2}\|\V \u -
 %% \B{x}_t\|_2^2 + \alpha\phi(\u).
 %% \end{eqnarray}
-%% With the choice $\phi = \|.\|_1$, this is a sparse-coding problem  \cite{mairal2009,mairal2010} and
+%% With the choice $\phi = \|.\|_1$, this is a sparse-coding problem  \citep{mairal2009,mairal2010} and
 %% corresponds to a Lasso regression and can be effectively solved with a
 %% LARS-Lasso solver. With the choice $\phi = \frac{1}{2}\|.\|_2^2$, this
 %% problem corresponds to Ridge regression and admits a closed-form
@@ -350,21 +336,19 @@ kept fixed. The update for the atom $\B{v}^j$ can then be written as
 \begin{eqnarray}
   \label{eq:qp}
 \begin{split}
-  \B{v}^j &= \argmin_{\v \in \mathcal C,
-    \V=[\B{v}^1|\ldots|\v|\ldots|\B{v}^k]}\frac{1}{t}\sum_{i=1}^t\left(\frac{1}{2}\|\B{x}_i
-  -\V\B{u}_i\|_{2}^2\right) + \gamma\Omega_{\text{Lap}}(\v)\\
-  &=\argmin_{\v \in \mathcal C,
-    \V=[\B{v}^1|\ldots|\v|\ldots|\B{v}^k]}\left(\sum_{i=1}^t\frac{1}{2}\|\B{x}_i -\V\B{u}_i\|_{2}^2\right)
-  + \gamma t\Omega_{\text{Lap}}(\v)\\
-  &=\argmin_{\v \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\v, \underbrace{\B{v}^j + \B{a}_{j,j}^{-1}(\B{b}^j - \V\B{a}^j)}_{\text{refer to  \cite{mairal2010} for the details}}),
+  \B{v}^j &= \argmin_{\v^j \in \mathcal C}\frac{1}{t}\sum_{i=1}^t\left(\frac{1}{2}\|\B{x}_i
+  -\V\B{u}_i\|_{2}^2\right) + \gamma{\text{Lap}}(\v^j)\\
+  &=\argmin_{\v^j \in \mathcal C}\left(\sum_{i=1}^t\frac{1}{2}\|\B{x}_i -\V\B{u}_i\|_{2}^2\right)
+  + \gamma t{\text{Lap}}(\v^j)\\
+  &=\argmin_{\v^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\v^j, \underbrace{\B{v}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \V\B{a}^j)}_{\text{refer to  \citep{mairal2010} for the details}}),
 \end{split}
 \end{eqnarray}
 where
-$F_{\tilde{\gamma}}(\v,\a) \equiv \frac{1}{2}\|\v - \a\|_2^2
-  + \tilde{\gamma}\Omega_{\text{Lap}}(\v) = \frac{1}{2}\|\v - \a\|_2^2
-  + \frac{1}{2}\tilde{\gamma}\v^T\Delta\v.
+$F_{\tilde{\gamma}}(\v^j,\a) \equiv \frac{1}{2}\|\v^j - \a\|_2^2
+  + \tilde{\gamma}{\text{Lap}}(\v^j) = \frac{1}{2}\|\v^j - \a\|_2^2
+  + \frac{1}{2}\|\nabla \v^j\|^2.
 $
-
+Problem \eqref{eq:qp} is thus a compactly-constrained minimization of the $1$-strongly-convex quadratic functions $F_{\tilde{\gamma}}(.,\a): \mathbb R^p \rightarrow \mathbb R$ defined above. 
 \begin{algorithm}
 \caption{BCD dictionary update with Laplacian prior}
 \label{Tab:algo_sobdict}
@@ -380,7 +364,7 @@ dictionary $\V$ and then update $\B{v}^j$ as follows
 % by solving the following sub-problem via a fast projected-gradient scheme:
 \begin{eqnarray}
   \begin{split}
-    \B{v}^j &\leftarrow \argmin_{\v \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\v, \B{v}^j + \B{a}_{j,j}^{-1}(\B{b}^j - \V\B{a}^j))
+    \B{v}^j &\leftarrow \argmin_{\v^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\v^j, \B{v}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \V\B{a}^j))
   \end{split}
 \label{eq:v_sob}
 \end{eqnarray}
@@ -391,33 +375,30 @@ dictionary $\V$ and then update $\B{v}^j$ as follows
 \ENDWHILE
 \end{algorithmic}
 \end{algorithm}
-Problem \eqref{eq:qp} is thus a compactly-constrained minimization of the $1$-strongly-convex quadratic functions $F_{\tilde{\gamma}}(.,\a): \mathbb R^p \rightarrow \mathbb R$ defined above. 
-%
 This problem can further be identified with a \text{denoising} instance
 (i.e in which the design matrix or deconvolution operator is the
 identity operator) of the GraphNet model
- \cite{grosenick2013,hebiri2011}.
+ \citep{grosenick2013,hebiri2011}.
 %
-Fast first-order methods like FISTA \cite{beck09fista} with optimal rates $\mathcal{O}(L/\sqrt{\epsilon})$ are available\footnote{For example, see  \cite{dohmatob2014benchmarking,varoquaux2015faasta}, implemented as part of the \textit{Nilearn} open-source library Python library  \cite{nilearn}.} for solving such problems to arbitrary precision $\epsilon > 0$.
+Fast first-order methods like FISTA \citep{beck09fista} with optimal rates $\mathcal{O}(L/\sqrt{\epsilon})$ are available\footnote{For example, see  \citep{dohmatob2014benchmarking,varoquaux2015faasta}, implemented as part of the \textit{Nilearn} open-source library Python library  \citep{nilearn}.} for solving such problems to arbitrary precision $\epsilon > 0$.
 One computes the Lipschitz constant to be
-$L_{F_{\tilde{\gamma}}(.,\a)} \equiv 1 + \tilde{\gamma} L_{\Omega_{\text{Lap}}} = 1 + 4D\tilde{\gamma}$, where as before, $D$ is the number of spatial dimensions with $D=3$ for volumic images. One should also mention that under certain circumstances, it is possible to perform the dictionary updates in the Fourier domain, via FFT. This alternative approach is developed in the Appendix of  \cite{dohmatob2016}.
+$L_{F_{\tilde{\gamma}}(.,\a)} \equiv 1 + \tilde{\gamma} L_{{\text{Lap}}} = 1 + 4D\tilde{\gamma}$, where as before, $D$ is the number of spatial dimensions with $D=3$ for volumic images. One should also mention that under certain circumstances, it is possible to perform the dictionary updates in the Fourier domain, via FFT. This alternative approach is developed in the Appendix of  \citep{dohmatob2016}.
 
-Finally, one notes that, since constraints in problem \eqref{eq:ss} are separable in the dictionary atoms $\B{v}^j$, the BCD dictionary-update algorithm Alg. \ref{Tab:algo_sobdict} is guaranteed to converge to a global optimum, at each iteration  \cite{bertsekas1999nonlinear, mairal2010}.
+Finally, one notes that, since constraints in problem \eqref{eq:ss} are separable in the dictionary atoms $\B{v}^j$, the BCD dictionary-update algorithm Alg. \ref{Tab:algo_sobdict} is guaranteed to converge to a global optimum, at each iteration  \citep{bertsekas1999nonlinear, mairal2010}.
 
 \paragraph*{How difficult is the dictionary update for our proposed model ?}
-A favorable property of the vanilla dictionary-learning  \cite{mairal2010} is that the BCD dictionary updates amount to Euclidean projections onto the constraint set $\mathcal C$, which can be easily computed for a variety of choices (simplexes, closed convex balls, etc.). One may then ask: do we retain a comparable algorithmic simplicity even with the additional Laplacian terms $\Omega_{\text{Lap}}(\B{v}^j)$ ? The short answer is yes:
-empirically, we found that 1 or 2 iterations of FISTA \cite{beck09fista}
+A favorable property of the vanilla dictionary-learning  \citep{mairal2010} is that the BCD dictionary updates amount to Euclidean projections onto the constraint set $\mathcal C$, which can be easily computed for a variety of choices (simplexes, closed convex balls, etc.). One may then ask: do we retain a comparable algorithmic simplicity even with the additional Laplacian terms $y{\text{Lap}}(\B{v}^j)$ ? The short answer is yes:
+empirically, we found that 1 or 2 iterations of FISTA \citep{beck09fista}
 are sufficient reach an accuracy of $10^{-6}$ in problem \eqref{eq:qp}, which is sufficient to obtain a good decomposition in the overall algorithm.
-
-However, choosing $\gamma$ ``too large'' will provably cause the dictionary updates to eventually take forever to run. Indeed, the Lipschitz constant in problem \eqref{eq:qp} is $L_t = 1 + 4D \gamma (\A_t[j,j]/t)^{-1}$, which will blow-up (leading to arbitrarily small step-sizes) unless $\gamma$ is chosen so that
+However, choosing $\gamma$ ``too large'' will provably cause the dictionary updates to eventually take forever to run. Indeed, the Lipschitz constant in problem \eqref{eq:qp} is $L_t = 1 + 4D \gamma (a_{j,j}/t)^{-1}$, which will blow-up (leading to arbitrarily small step-sizes) unless $\gamma$ is chosen so that
 \begin{equation}
-\gamma = \gamma_t = \mathcal O\left(\max_{1 \le j \le k}\A_t[j,j]\right) = \mathcal O\left(\max_{1 \le j \le k}\sum_{i=1}^t\|\U^j\|_2^2/t\right) = \mathcal O(\|A_t\|_{\infty,\infty}/t).
+\gamma = \gamma_t = \mathcal O\left(\max_{1 \le j \le k}a_{j,j}\right) = \mathcal O\left(\max_{1 \le j \le k}\sum_{i=1}^t\|\U^j\|_2^2/t\right) = \mathcal O(\|A_t\|_{\infty,\infty}/t).
 \label{eq:blowup}
 \end{equation}
 
 Finally, the Euclidean projections onto the $\ell_1$ ball $\mathcal C$
 can be computed exactly in linear-time $\mathcal O(p)$ (see for example
- \cite{condat2014fast,duchi2008efficient}).
+ \citep{condat2014fast,duchi2008efficient}).
 The dictionary atoms $j$ are repeatedly cycled and problem \eqref{eq:qp} solved. %% above Laplacian
 %% filtering and elastic-projection steps applied
 All in all, in practice  we observe that a single iteration is sufficient
@@ -435,8 +416,8 @@ implemented a modified version of \textit{scikit-learn} Python library's
   dictionary atoms $\B{v}^j$. The projection onto the $\ell_1$-ball $\mathcal C$ was coded in Cython, a toolkit for writing Python code to run at the speed of the C language.
 
 \paragraph*{Convergence of the overall algorithm.}
-The Convergence of our algorithm (to a local optimum) is guaranteed since all hypotheses of  \cite{mairal2010} are satisfied. For example, assumption \textbf{(A)} is satisfied because fMRI data are naturally compactly supported. Assumption \textbf{(C)} is satisfied since the ridge-regression problem \eqref{eq:coding} has a unique solution. More details are provided in the
-Appendix of  \cite{dohmatob2016}.
+The Convergence of our algorithm (to a local optimum) is guaranteed since all hypotheses of  \citep{mairal2010} are satisfied. For example, assumption \textbf{(A)} is satisfied because fMRI data are naturally compactly supported. Assumption \textbf{(C)} is satisfied since the ridge-regression problem \eqref{eq:coding} has a unique solution. More details are provided in the
+Appendix of  \citep{dohmatob2016}.
 
 \subsection{Practical considerations}
 \paragraph{Hyper-parameter tuning.}
@@ -454,7 +435,7 @@ In the experiments, $\alpha$ was chosen according to \eqref{eq:varyingalpha}. \t
   \label{fig:param}
 \end{marginfigure}
 Parameter-selection in dictionary-learning is known to be a difficult unsolved
-problem  \cite{mairal2010,jenatton2010structured}, and our proposed model \eqref{eq:ss} is not an exception to this rule. We did an extensive study of the quality of estimated dictionary varies with the model hyper-parameters $(\alpha,\gamma,\tau)$. The data experimental setup is described in Section \ref{sec:exp}.
+problem  \citep{mairal2010,jenatton2010structured}, and our proposed model \eqref{eq:ss} is not an exception to this rule. We did an extensive study of the quality of estimated dictionary varies with the model hyper-parameters $(\alpha,\gamma,\tau)$. The data experimental setup is described in Section \ref{sec:exp}.
 The results are presented in Fig. \ref{fig:param}.
 We make the following observations:
 %% For the Ridge penalty $\ell_1$  on the codes, we sufficiently small. This is reasonable, since morally this penalty only has a numerical interest, namely to regularized the estimation of the codes. Taking it too big (say $ ~ 1$ or above) leads to pathological dictionaries in which all the components look alike, thus underfitting.
@@ -463,22 +444,22 @@ Taking the sparsity parameter $\tau$ in \eqref{eq:ss} too large leads to dense a
 \paragraph*{Fidelity-stability tradeoffs.}
 \textbf{Please make readbale statements. I can't help.}
 Very faithful decompositions won't be stable across different splits. Also,
-they will overfit on training data... There is an inherent fidelity-stability tradeoff to be made by the field practitional  \cite{abraham2013}
+they will overfit on training data... There is an inherent fidelity-stability tradeoff to be made by the field practitional  \citep{abraham2013}
 ... See Fig. \ref{fig:param}.
 
-Concerning the $\alpha$ parameter, inspired by  \cite{ying2006online}, we have found the following time-varying data-adaptive choice for the $\alpha$ parameter to work very well in practice:
+Concerning the $\alpha$ parameter, inspired by  \citep{ying2006online}, we have found the following time-varying data-adaptive choice for the $\alpha$ parameter to work very well in practice:
 \begin{equation}
   \alpha = \alpha_t \sim t^{-1/2}.
   \label{eq:varyingalpha}
 \end{equation}
-%% In the case of sparse-coding  \cite{mairal2010}, one can easily derive (see Appendix \ref{sec:alphamax}) a loose upper-bound on $\alpha$ beyond which the codes are always zero, viz:
+%% In the case of sparse-coding  \citep{mairal2010}, one can easily derive (see Appendix \ref{sec:alphamax}) a loose upper-bound on $\alpha$ beyond which the codes are always zero, viz:
 %% \begin{equation}
 %%   \alpha_{\text{max}} = \|\X\|_{\infty,\infty} := \max_{t}\|\B{x}_t\|_{\infty}.
 %% \end{equation}
 %% This can be useful in cross-validation.
 %% In particular notice that $\alpha(t) \rightarrow 0$ as $t \rightarrow +\infty$ (i.e we can turn off regularization once ``sufficient'' data has been pooled) .
 
-Likewise, care must be taken in selecting the Laplacian regularization parameter $\gamma$. Indeed taking it too small amounts to doing vanilla dictionary-learning model  \cite{mairal2010}. Taking it too large can lead to degenerate maps, as the spatial regularization then dominates the reconstruction error (data fidelity) term.
+Likewise, care must be taken in selecting the Laplacian regularization parameter $\gamma$. Indeed taking it too small amounts to doing vanilla dictionary-learning model  \citep{mairal2010}. Taking it too large can lead to degenerate maps, as the spatial regularization then dominates the reconstruction error (data fidelity) term.
 We find that there is a safe range of the parameter pair $(\gamma, \tau)$ in which a good compromise between the sparsity of the dictionary (thus its intepretability) and its explanation power of the data can be reached. See Fig. \ref{fig:param}.
 %% This region can be found via cross-validation.
 $K$-fold cross-validation with explained variance metric
@@ -516,20 +497,20 @@ Problem \eqref{eq:ss} is non-convex jointly in  $(\U, \V)$, and so initializatio
 \section{Related works}
 %% To the best of our knowledge, dictionary-learning techniques for fMRI
 %% space-time decompositions were historically introduced by
-%%  \cite{varoquaux2011}.
+%%  \citep{varoquaux2011}.
 While there exist algorithms for online sparse dictionary-learning
 that are very efficient in large-scale settings (for example
- \cite{mairal2010}, or more recently  \cite{mensch2016dictionary})
+ \citep{mairal2010}, or more recently  \citep{mensch2016dictionary})
 imposing spatial structure introduces
-couplings in the corresponding optimization problem  \cite{dohmatob2014benchmarking}. So far,
+couplings in the corresponding optimization problem  \citep{dohmatob2014benchmarking}. So far,
 spatially-structured decompositions have been solved by very slow
-alternated optimization  \cite{varoquaux2011,abraham2013}. Notably,
-structured priors such as TV-$\ell_1$  \cite{baldassarre2012} minimization,
-were used by  \cite{abraham2013} to extract data-driven
+alternated optimization  \citep{varoquaux2011,abraham2013}. Notably,
+structured priors such as TV-$\ell_1$  \citep{baldassarre2012} minimization,
+were used by  \citep{abraham2013} to extract data-driven
 state-of-the-art atlases of brain function.
 However, alternated minimization is very slow, and large-scale medical
 imaging has shifted to online solvers for
-dictionary-learning like  \cite{mairal2010} and  \cite{mensch2016dictionary}.
+dictionary-learning like  \citep{mairal2010} and  \citep{mensch2016dictionary}.
 %
 These do not readily
 integrate structured penalties. As a result, the use of structured
@@ -538,30 +519,30 @@ cost of the ensuing algorithms.
 %
 Our approach instead uses a Laplacian penalty to impose spatial
 structure at a very minor cost and adapts the online-learning
-dictionary-learning framework  \cite{mairal2010}, resulting in a fast
+dictionary-learning framework  \citep{mairal2010}, resulting in a fast
 and scalable structured decomposition.
 %
-Second, the approach in  \cite{abraham2013} though very novel, is
+Second, the approach in  \citep{abraham2013} though very novel, is
 heuristic, as it does not come with theoretical guarantees. In contrast, our
 method enjoys the same convergence guarantees and comparable numerical
 complexity as the basic unstructured online dictionary-learning
- \cite{mairal2010}.
+ \citep{mairal2010}.
 
-Finally, one should also mention  \cite{varoquaux2013cohort} that introduced an online group-level functional brain mapping strategy for differentiating regions reflecting the variety of brain network configurations observed a
-the population, by learning a sparse-representation of these in the spirit of  \cite{mairal2010}.
-%% Finally, it is worth mentioning an optimized version  \cite{mensch2016dictionary} of  \cite{mairal2010} which has recently appeared, wherein the authors combine \textit{sketching} techniques (precisely, they randomly sub-sample the brain images over both space and time) with online dictionary-learning to obtain an algorithm which can scale to tera-bytes of data, without degrading the quality of the estimated dictionary.
+Finally, one should also mention  \citep{varoquaux2013cohort} that introduced an online group-level functional brain mapping strategy for differentiating regions reflecting the variety of brain network configurations observed a
+the population, by learning a sparse-representation of these in the spirit of  \citep{mairal2010}.
+%% Finally, it is worth mentioning an optimized version  \citep{mensch2016dictionary} of  \citep{mairal2010} which has recently appeared, wherein the authors combine \textit{sketching} techniques (precisely, they randomly sub-sample the brain images over both space and time) with online dictionary-learning to obtain an algorithm which can scale to tera-bytes of data, without degrading the quality of the estimated dictionary.
 
 %% The Laplacian penalty penalty  can imposes smoothnes on the dictionary atoms at a very minor cost.
 %% To the best of our knowledge, dictionary-learning techniques for fMRI
 %% space-time decompositions were historically introduced by
-%%  \cite{varoquaux2011},
+%%  \citep{varoquaux2011},
 %% using alternated minimization and a smoothness penalty.
 %% Indeed, in such an alternate optimization --a block coordinate descent
 %% optimizing separately for both matrices in the factorization-- proximal
 %% operator can be used to impose structured penalties
-%%  \cite{jenatton2010structured}.
+%%  \citep{jenatton2010structured}.
 
-%% One should also mention  \cite{abraham2013}, wherein the TV prior, which is very different from Laplacian prior, was  used to impose spatial structure. The TV prior, though it is known to have some qualitative advantages over Laplacian regularization (e.g the former enforces boundaries in the maps), is neither differentiable nor proximable analytically. Laplacian prior leads to much easier problems. Second, the approach in  \cite{abraham2013} though very novel, is grossly heuristic: it lacks theoretical justification and tight links to technical literature. In contrast, our method enjoys the same convergence guarantees and comparable numerical complexity as the basic unstructured online dictionary-learning  \cite{mairal2010}.
+%% One should also mention  \citep{abraham2013}, wherein the TV prior, which is very different from Laplacian prior, was  used to impose spatial structure. The TV prior, though it is known to have some qualitative advantages over Laplacian regularization (e.g the former enforces boundaries in the maps), is neither differentiable nor proximable analytically. Laplacian prior leads to much easier problems. Second, the approach in  \citep{abraham2013} though very novel, is grossly heuristic: it lacks theoretical justification and tight links to technical literature. In contrast, our method enjoys the same convergence guarantees and comparable numerical complexity as the basic unstructured online dictionary-learning  \citep{mairal2010}.
 %% The Laplacian penalty penalty 
 %% can imposes smoothness on the dictionary atoms at a very minor cost.
 %
@@ -570,7 +551,7 @@ the population, by learning a sparse-representation of these in the spirit of  \
 \label{sec:exp}
 \paragraph*{Setup.} Our experiments were done on task fMRI data from $500$ subjects
 from the HCP --Human Connectome Project-- dataset
- \cite{VanEssen20122222}. These task fMRI data were acquired in an
+ \citep{VanEssen20122222}. These task fMRI data were acquired in an
 attempt to assess major domains that are thought to sample the
 diversity of neural systems of interest in functional connectomics.
 %  including: 1) visual, motion,
@@ -582,7 +563,7 @@ language (story understanding) and mathematics (mental
 computation). This particular task is expected to outline number, attentional and
 language networks, but the variability modes observed in the
 population cover even wider systems. For the experiments,
-mass-univariate  General Linear Models (GLMs)  \cite{friston1995} for
+mass-univariate  General Linear Models (GLMs)  \citep{friston1995} for
 $n=500$ subjects
 were estimated for the \emph{Math vs Story} contrast (language
 protocol), and the corresponding full-brain $Z$-score maps each
@@ -592,10 +573,10 @@ sought a decomposition into a dictionary of $k = 40$ atoms (components).
 The input data $\X$ were shuffled and then split into two groups of the same
 size.
 
-\paragraph*{Models compared and metrics.} We compared our proposed Smooth-SODL model \eqref{eq:ss} against both the Canonical ICA --CanICA  \cite{varoquaux2010group}, a single-batch multi-subject PCA/ICA-based method, and the standard SODL (sparse online dictionary-learning)  \cite{mairal2010}. While the CanICA model accounts for subject-to-subject differences, one of
+\paragraph*{Models compared and metrics.} We compared our proposed Smooth-SODL model \eqref{eq:ss} against both the Canonical ICA --CanICA  \citep{varoquaux2010group}, a single-batch multi-subject PCA/ICA-based method, and the standard SODL (sparse online dictionary-learning)  \citep{mairal2010}. While the CanICA model accounts for subject-to-subject differences, one of
 its major limitations is that it does not model spatial variability across
  subjects. Thus we estimated the CanICA components on smoothed data: isotropic FWHM of 6mm, a necessary preprocessing step for such methods. In contrast, we did no pre-smoothing for the SODL of Smooth-SODL models.
-The different models were compared across a variety of qualitative and quantitative metrics: visual quality of the dictionaries obtained, explained variance, stability of the dictionary atoms, their reproducibility, performance of the dictionaries in predicting behavioral scores (IQ, picture vocabulary, reading proficiency, etc.) shipped with the HCP data  \cite{VanEssen20122222}. For both SODL \cite{mairal2010} and our proposed Smooth-SODL model, the constraint set for the dictionary atoms was taken to be a simplex $\mathcal C := \mathcal S_p(\tau)$ (see section \ref{sec:contrib} for definition). The results of these experiments are presented in Fig. \ref{fig:maps}
+The different models were compared across a variety of qualitative and quantitative metrics: visual quality of the dictionaries obtained, explained variance, stability of the dictionary atoms, their reproducibility, performance of the dictionaries in predicting behavioral scores (IQ, picture vocabulary, reading proficiency, etc.) shipped with the HCP data  \citep{VanEssen20122222}. For both SODL \citep{mairal2010} and our proposed Smooth-SODL model, the constraint set for the dictionary atoms was taken to be a simplex $\mathcal C := \mathcal S_p(\tau)$ (see section \ref{sec:contrib} for definition). The results of these experiments are presented in Fig. \ref{fig:maps}
 and \ref{fig:ev}.
 
 \section{Results}
@@ -608,7 +589,7 @@ contain the well-known executive control and attention networks, at least
 in part. Vanilla dictionary-learning leverages the denoising properties
 of the $\ell_1$ sparsity constraint, but the voxel clusters are not very structured. For, example most blobs are surrounded with a thick ring of very small nonzero values.  In contrast, our proposed regularization model leverages both sparse and structured dictionary atoms, that are more spatially structured and less noisy.
 
-In contrast to both SODL and Smooth-SODL, CanICA  \cite{varoquaux2010group} is an ICA-based method which enforces no notion of sparsity whatsoever. The result are therefore dense and noisy dictionary atoms that explain the data very well (Fig. \ref{fig:maps}\textit{(b)} but which are completely unintepretable. In a futile attempt to remedy the situation, in practice such PCA/ICA-based methods (including FSL's MELODIC tool  \cite{smith2004advances}) are hard-thresholded in order to see information. For CanICA, the hard-thresholded version has been named tCanICA in Fig. \ref{fig:maps}.
+In contrast to both SODL and Smooth-SODL, CanICA  \citep{varoquaux2010group} is an ICA-based method which enforces no notion of sparsity whatsoever. The result are therefore dense and noisy dictionary atoms that explain the data very well (Fig. \ref{fig:maps}\textit{(b)} but which are completely unintepretable. In a futile attempt to remedy the situation, in practice such PCA/ICA-based methods (including FSL's MELODIC tool  \citep{smith2004advances}) are hard-thresholded in order to see information. For CanICA, the hard-thresholded version has been named tCanICA in Fig. \ref{fig:maps}.
 That notwithstanding, notice how the major structures (parietal lobes, sulci, etc.) in each atom are reproducible across the different models.
 
   
@@ -658,7 +639,7 @@ That notwithstanding, notice how the major structures (parietal lobes, sulci, et
 \caption{\textbf{Qualitative comparison of the estimated dictionaries.} Each column represents an atom of the estimated dictionary, where atoms from
   the different models (the rows of the plots) have been matched via a Hungarian algorithm. Here, we only show a limited number of the most ``intepretable'' atoms. Notice how the major structures in each atom are reproducible across the different models. %% We see that our proposed approach produces more structured dictionaries: the atoms are well-segmented piece-wise smooth and compact, making up blobs, as opposed to scattered patterns of activation.
   Maps corresponding to hard-thresholded CanICA
-   \cite{varoquaux2010group} components have also been included, and have been called tCanICA. In contrast, the maps from the SODL  \cite{mairal2010} and our proposed Smooth-SODL \eqref{eq:ss} were not been thresholded.
+   \citep{varoquaux2010group} components have also been included, and have been called tCanICA. In contrast, the maps from the SODL  \citep{mairal2010} and our proposed Smooth-SODL \eqref{eq:ss} were not been thresholded.
  }
    
 % \end{subfigure}
@@ -671,18 +652,18 @@ That notwithstanding, notice how the major structures (parietal lobes, sulci, et
 %   \end{minipage}
 % \end{subfigure}
 
-% \caption{\textbf{Main results.} Benchmarking our proposed Smooth-SODL \eqref{eq:ss} model against competing state-of-the-art methods like SODL (sparse online dictionary-learning)  \cite{mairal2010} and CanICA  \cite{varoquaux2010group}.}
+% \caption{\textbf{Main results.} Benchmarking our proposed Smooth-SODL \eqref{eq:ss} model against competing state-of-the-art methods like SODL (sparse online dictionary-learning)  \citep{mairal2010} and CanICA  \citep{varoquaux2010group}.}
 \label{fig:maps}
 \end{figure}
 
 
 \paragraph{Stability-fidelity trade-offs.}
-PCA/ICA-based methods like CanICA  \cite{varoquaux2010group} and MELODIC  \cite{smith2004advances} are the optimal linear decomposition method to maximize
-explained variance on a dataset. On the training set,  CanICA  \cite{varoquaux2010group} out-performs all
-others algorithms with about 66\% (resp. 50\% for SODL \cite{mairal2010} and 58\% for Smooth-SODL) of explained variance on the training set, and 60\% (resp. 49\% for SODL and \textbf{55\%} for Smooth-SODL) on left-out (test) data. See Fig. \ref{fig:maps}\textit{(b)}. However, as noted in the above paragraph, such methods lead to dictionaries that are hardly intepretable and thus the user must
+PCA/ICA-based methods like CanICA  \citep{varoquaux2010group} and MELODIC  \citep{smith2004advances} are the optimal linear decomposition method to maximize
+explained variance on a dataset. On the training set,  CanICA  \citep{varoquaux2010group} out-performs all
+others algorithms with about 66\% (resp. 50\% for SODL \citep{mairal2010} and 58\% for Smooth-SODL) of explained variance on the training set, and 60\% (resp. 49\% for SODL and \textbf{55\%} for Smooth-SODL) on left-out (test) data. See Fig. \ref{fig:maps}\textit{(b)}. However, as noted in the above paragraph, such methods lead to dictionaries that are hardly intepretable and thus the user must
 % invariably
 recourse to some kind of post-processing hard-thresholding step, which destroys the estimated model. More so,
-assessing the stability of the dictionaries, measured by mean correlation between corresponding atoms, across different splits of the data, CanICA  \cite{varoquaux2010group} scores a meager 0.1, whilst the hard-thresholded version tCanICA obtains 0.2, compared to \textbf{0.4} for Smooth-SODL and 0.1 for SODL.   As is to be expected, notice how the RAW model over-fits.
+assessing the stability of the dictionaries, measured by mean correlation between corresponding atoms, across different splits of the data, CanICA  \citep{varoquaux2010group} scores a meager 0.1, whilst the hard-thresholded version tCanICA obtains 0.2, compared to \textbf{0.4} for Smooth-SODL and 0.1 for SODL.   As is to be expected, notice how the RAW model over-fits.
 The voxel space of worth $p=261596$ voxels is reduced to $k=40$ components, and then each subject $Z$-map $\B{x}_t$ of worth $p=261596$ voxels is reduced to $k=40$ coefficients via a simple ridge regression \eqref{eq:coding}.
 
  \begin{figure}[!htpb]
@@ -691,25 +672,25 @@ The voxel space of worth $p=261596$ voxels is reduced to $k=40$ components, and 
 
    \caption{\textbf{Left:} Mean explained variance of the different models on both training data and test (left-out) data. \textbf{N.B.:} Bold bars represent performance on \textbf{test} set while faint bars in the 
   background represent performance on \textbf{train} set. 
-  \textbf{Right:} Predicting  behavioral  variables of the HCP \cite{VanEssen20122222} dataset using subject-level $Z$-maps.
+  \textbf{Right:} Predicting  behavioral  variables of the HCP \citep{VanEssen20122222} dataset using subject-level $Z$-maps.
   }
   \end{figure}
 
 
 \paragraph{Prediction of behavioral variables.}
-If Smooth-SODL captures the patterns of inter-subject variability, then it should be possible to predict cognitive scores $\y$ like picture vocabulary, reading proficiency, math aptitude, etc. (the behavioral variables are explained in the HCP wiki  \cite{hcpwiki}) by projecting new subjects' data into this learned low-dimensional space (via solving the ridge problem \eqref{eq:coding} for each sample $\B{x}_t$), without loss of performance compared with using the raw $Z$-values values $\X$. Let RAW refer to the direct prediction of targets $\y$ from $\X$, using the top 2000 most voxels most correlated with the target variable. Results of for the comparison are shown in Fig. \ref{fig:maps}\textit{(c)}.  Only variables predicted with a a positive mean (across the different methods and across subjects) $R$-score are reported.
+If Smooth-SODL captures the patterns of inter-subject variability, then it should be possible to predict cognitive scores $\y$ like picture vocabulary, reading proficiency, math aptitude, etc. (the behavioral variables are explained in the HCP wiki  \citep{hcpwiki}) by projecting new subjects' data into this learned low-dimensional space (via solving the ridge problem \eqref{eq:coding} for each sample $\B{x}_t$), without loss of performance compared with using the raw $Z$-values values $\X$. Let RAW refer to the direct prediction of targets $\y$ from $\X$, using the top 2000 most voxels most correlated with the target variable. Results of for the comparison are shown in Fig. \ref{fig:maps}\textit{(c)}.  Only variables predicted with a a positive mean (across the different methods and across subjects) $R$-score are reported.
 %% Indeed, prediction results (Fig. \ref{fig:results}) show that the enhanced dictionaries obtained by our proposed method ($\gamma > 0$) is not at the expense of a decreased predictive power.
-We see that the RAW model, as expected over-fits drastically, scoring an $R^2$ of 0.3 on training data and only 0.14 on test data. Overall, for this metric CanICA performs best than all the other models in predicting the different behavioral variables on test data. However, our proposed Smooth-SODL model outperforms both SODL  \cite{mairal2010} and tCanICA, the thresholded version of CanICA.
+We see that the RAW model, as expected over-fits drastically, scoring an $R^2$ of 0.3 on training data and only 0.14 on test data. Overall, for this metric CanICA performs best than all the other models in predicting the different behavioral variables on test data. However, our proposed Smooth-SODL model outperforms both SODL  \citep{mairal2010} and tCanICA, the thresholded version of CanICA.
 
   
 \paragraph{Running time.} On the computational
 side, the vanilla dictionary-learning
-SODL algorithm  \cite{mairal2010} with a batch size of
+SODL algorithm  \citep{mairal2010} with a batch size of
 $\eta = 20$ took about $110$s ($\approx 1.7$ minutes) to
 run, whilst with the same batch size, our proposed
 Smooth-SODL model \eqref{eq:ss} implemented in Alg. \ref{Tab:algo} took
 $340$s ($\approx 5.6$ minutes), which is slightly less than \textbf{3 times}
-slower than SODL.  Finally, CanICA  \cite{varoquaux2010group} for this experiment
+slower than SODL.  Finally, CanICA  \citep{varoquaux2010group} for this experiment
 took $530$s ($\approx 8.8$ minutes) to run, which is about \textbf{5 times} slower
 than the SODL model and \textbf{1.6 times} slower than our proposed Smooth-SODL
 \eqref{eq:ss} model.
@@ -717,8 +698,8 @@ All experiments were run on a single CPU of a modern laptop.
 
         
 \paragraph{Is spatial regularization really needed ?}
-Ideally, one does not need spatial regularization if data are abundant (like in the HCP). So we computed learning curves of mean explained variance (EV) on test data, as a function of the amount training data seen by both Smooth-SODL and SODL  \cite{mairal2010} (Fig. \ref{fig:ev}).
-In the beginning of the curve, our proposed spatially regularized Smooth-SODL model starts off with more than 31\% explained variance (computed on 241 subjects), after having pooled only 17 subjects. In contrast, the vanilla SODL model  \cite{mairal2010} scores a meager 2\% explained variance; this corresponds  to a 14-fold gain of Smooth-SODL over SODL. As more and more that are pooled, both models explain more variance, and the gap between Smooth-SODL and SODL reduces, and both models perform comparably asymptotically. % (i.e the gain factor tends to $1$).
+Ideally, one does not need spatial regularization if data are abundant (like in the HCP). So we computed learning curves of mean explained variance (EV) on test data, as a function of the amount training data seen by both Smooth-SODL and SODL  \citep{mairal2010} (Fig. \ref{fig:ev}).
+In the beginning of the curve, our proposed spatially regularized Smooth-SODL model starts off with more than 31\% explained variance (computed on 241 subjects), after having pooled only 17 subjects. In contrast, the vanilla SODL model  \citep{mairal2010} scores a meager 2\% explained variance; this corresponds  to a 14-fold gain of Smooth-SODL over SODL. As more and more that are pooled, both models explain more variance, and the gap between Smooth-SODL and SODL reduces, and both models perform comparably asymptotically. % (i.e the gain factor tends to $1$).
 
 \begin{figure}[!htp]
  \begin{tabular}{|c|c|c|c|c}\hline%\hline
@@ -745,8 +726,8 @@ In the beginning of the curve, our proposed spatially regularized Smooth-SODL mo
 To extract structured functionally discriminating patterns
 from massive brain data (i.e data-driven atlases), we have extended
 the online dictionary-learning framework first developed in
- \cite{mairal2010}, to learn structured regions
-representative of brain organization. To this end, we have successfully augmented  \cite{mairal2010} with a Laplacian prior on the component maps,
+ \citep{mairal2010}, to learn structured regions
+representative of brain organization. To this end, we have successfully augmented  \citep{mairal2010} with a Laplacian prior on the component maps,
 while conserving the low numerical complexity of the latter.
 Through experiments, we have shown that the resultant model --Smooth-SODL model \eqref{eq:ss}-- extracts structured and denoised dictionaries that are more intepretable and better capture inter-subject variability in small medium, and large-scale regimes alike, compared to state-of-the-art models.
 We believe such online multivariate online methods shall become the de facto
@@ -754,7 +735,7 @@ way do dimensionality reduction and ROI extraction in future.
 
 \paragraph{Implementation.} The authors' implementation of the proposed
 SS0MF \eqref{eq:ss} model will soon be made available as part of the
-\textit{Nilearn} package  \cite{nilearn}.
+\textit{Nilearn} package  \citep{nilearn}.
 
 
 
@@ -820,141 +801,6 @@ SS0MF \eqref{eq:ss} model will soon be made available as part of the
 
 % % The dynamics, location, and magnitude of the signal are highly influenced by the vasculature as it is sampled in each voxel. If a voxel happen to capture large vessel effects, the magnitude of the signal may be larger, the timing a bit more delayed than average (up to 4 s delayed from capillary effects)~\citep{bandettini2009functional}
 
-
-
-
-
-
-
-
-
-\chapter{Predicting task activation maps from resting-state data}\label{chapter1_activation_maps}
-
-\section{Functional connectivity modulates brain activation}
-\section{predicting task activation maps from resting-state data: classical methods}
-Tavor et al., Cole et al.,
-\section{Proposed techniques}
-Dohmatob et al. 2017
-
-% In this section we present a model that allows to extract time-independent \gls{activation coefficient}s relative to a given task given the BOLD time course and an experimental design. This model is known as the \emph{general linear model}~\citep{Friston1995}. We start by describing the \emph{hemodynamic response function} (Section~\ref{subsec:hrf}) and then describe an assumption behind the general linear model, the linear-time-invariant property (Section~\ref{subsec:lti}) between the BOLD signal and the neural response. The general linear model is then presented in Section~\ref{chapter_1_GLM}.
-
-
-% % fMRI acquisitions consist of successive brain scans, given in intervals ranging from 1 to 4 seconds. However, the methods that we consider in this thesis take as input time-independent \gls{activation coefficient}s relative to a given task. In this section we describe a method that allows to estimate time-independent \gls{activation coefficient} given the BOLD time course
-
-% % . 
-
-
-% The concepts presented in this section will form the basis of the contribution presented in Chapter~\ref{chap:hrf_estimation}, where we present an extension of the general linear model that performs the joint estimation of HRF and activation coefficients. 
-
-% Because it will not be referenced in later chapters we do not mention several \emph{preprocessing} steps that can be applied to the BOLD signal in order to remove artifacts that might have occurred during acquisition or to enhance the signal to noise ratio. These include slice-timing correction, motion correction, spatial normalization and spatial smoothing.
-
-
-% \section{Hemodynamic response function (HRF)}\label{subsec:hrf}
-% \newglossaryentry{HRF}{name=HRF,description=Hemodynamic Response Function}
-
-% One of the difficulties associated with fMRI studies is that BOLD signal does not increase instantaneously after the stimulus presentation nor does it return to baseline immediately after the stimulus ends. Instead, the BOLD signal peaks approximately 5 seconds after stimulation, and is followed by an undershoot that lasts as long as 30 seconds.
-
-% The \emph{Hemodynamic Response Function} (\gls{HRF}) represents an ideal, noiseless response to an infinitesimally brief stimulus. Most software packages represent the HRF as a sum of two gamma probability density functions, where the first gamma probability density function models the shape of the initial stimulus response and the second gamma probability density functions models the undershoot. Its analytical form is
-% \begin{equation}
-% h(t) = \frac{t^{\alpha_1 - 1} \beta_1^{\alpha_1} e^{-\beta_1 t}}{\Gamma(\alpha_1)} - 
-% c \frac{t^{\alpha_2 - 1} \beta_2^{\alpha_2} e^{-\beta_2 t}}{\Gamma(\alpha_2)}
-% \end{equation}
-% where $\Gamma$ is the gamma function and $\alpha_1, \alpha_2, \beta_1, \beta_2$ control the shape and scale, respectively, and $c$ determines the ratio of the response to undershoot.
-
-% \begin{figure}
-% \includegraphics[width=1.\linewidth]{figures/chapter_1/canonical_hrf.pdf}
-% \hspace{-20pt}\caption{Hemodynamic Response Function (HRF) as implemented in different software packages. AFNI provides an HRF with no undershoot, i.e. modeled as a single gamma probability density function and where the peak is situated at 4.6 seconds. The software SPM provides an HRF that peaks at 5 seconds. \citet{Glover1999} proposes two models of the HRF, one based on a motor task and another based on an auditory task. Here we show the HRF corresponding to the auditory task since this is the one that is used in the software NiPy.}\label{fig:hrf_models}
-% \end{figure}
-
-% \newglossaryentry{reference HRF}{name=reference HRF,description=A particular HRF used in a software package.}
-
-
-
-% All the packages that we have considered model the HRF as the different of two gamma probability density functions but other models are equally possible. For instance, ~\citep{lindquist2009modeling} proposes the use of a model based on the superposition of three inverse logit functions.
-
-
-% \citet*{Glover1999} proposed two different sets of parameters based on the shape of the HRF on two different experiments. The parameters that are commonly used in statistical software such as \href{http://www.math.mcgill.ca/keith/fmristat/}{FMRISTAT}\footnote{\href{http://www.math.mcgill.ca/keith/fmristat/}{http://www.math.mcgill.ca/keith/fmristat/}} and \href{http://nipy.org}{NIPY}\footnote{\href{http://nipy.org}{http://nipy.org}} correspond to the HRF estimated in the auditory task. Its first gamma function peaks at 5.2 seconds, while the second gamma function (the undershoot) peaks at 12.2 seconds and has an amplitude of 35\% of the first gamma function. 
-
-% % This model has widely been shown to be successful at detecting fMRI activations and has been used extensively {\blue CITATION NEEDED}.
-
-
-% In the SPM\footnote{\href{http://www.fil.ion.ucl.ac.uk/spm/}{http://www.fil.ion.ucl.ac.uk/spm/}} software, the reference HRF has its peak at 6 seconds and the delay of undershoot has its minima at 16 seconds. AFNI\footnote{\href{http://afni.nimh.nih.gov/afni/}{http://afni.nimh.nih.gov/afni/} } on the other hands uses $c = 0$, that is, uses a model with a single gamma  distribution. A comparison of these different HRF models can be seen in Figure~\ref{fig:hrf_models}. Because of its widespread use, we will use the HRF present in SPM 8 unless otherwise specified.
-
-
-
-
-% \newglossaryentry{activation coefficient}{name={activation coefficient},description={amplitude for a single voxel associated with a stimuli in an fMRI study}}
-
-
-% \section{The linear-time-invariant assumption}\label{subsec:lti}
-
-% \newglossaryentry{LTI}{name=LTI,description=Linear Time Invariant assumption}
-
-% In this section we present the main assumption behind the general linear model, the \emph{linear time invariance} assumption.
-
-% A number of studies
-% have reported that in certain regimes the relationship between the neural response and the BOLD signal exhibits~\emph{linear time invariant} (\gls{LTI}) properties~\citep{Boynton1996,Cohen1997,Dale1997}. These property can be summarized as
-% \begin{itemize}
-% \item {\bf Multiplicative scaling}. If a neural response is scaled by a factor of $\alpha$, then the BOLD response is also scaled by a factor of $\alpha$.
-% \item {\bf Additivity}. If the response to two separate events is known, the signal for those events if they were to occur close in time is the sum of the independent signals.
-% \item {\bf Time invariant}. If the stimulus is shifted by $t$ seconds, the BOLD response will also be shifted by this same amount.
-% \end{itemize}
-
-% While the LTI assumption is commonplace in practice, there is evidence for non-linearity in the amplitude of the BOLD response. For example, it is known that there is a saturation effect for stimuli that occur less than 2 seconds apart~\citep{Wager2005206}. It has also been reported that very brief stimuli exhibit a larger BOLD response than would be expected based on longer stimuli~\citep{Yesilyurt2008853}. However, while these nonlinearities are important, there is a general consensus that for the range in which most cognitive fMRI studies occur, they will have relatively small impact.
-
-% \begin{figure}
-% \centering \includegraphics[width=.8\linewidth]{figures/chapter_1/linear_hrf.pdf}
-% \caption{The linear time invariant (LTI) assumption implies that if the response to two separate events is known, the signal for those events if they were to occur close in time is the sum of the independent signals. In green, the response to the first stimulus that is located at 1 second. In orange, the response to the second stimulus that appears at 6 seconds. In blue, the predicted BOLD response.}\label{fig:lti_hrf} 
-% \end{figure}
-
-
-
-% \newglossaryentry{conditions}{name={conditions},description={different stimuli in an fMRI study}}
-% \newglossaryentry{GLM}{name={GLM},description={General Linear Model}}
-
-
-
-% Let $x(t)$ represent the predicted BOLD arising from neuronal activity as a function of time $t$ and $h(\tau)$ be some reference HRF. The LTI assumption allows to easily construct the predicted BOLD response for a given stimulus function $u(t)$ which encodes the presence or absence of a stimulus (defined as one whenever the stimulus is present and zero otherwise). Then we can express the predicted BOLD (up to a constant factor) as the convolution of the stimulus function $u(t)$ with the HRF:
-% \begin{equation}
-% x(t) = \int_{0}^T\!u(t - \tau) h(\tau) \mathrm{d}\tau
-% \label{eq:chap1_predicted_bold}
-% \end{equation}
-
-% \section{The general linear model (GLM)}\label{chapter_1_GLM}
-
-
-% The General Linear Model (\gls{GLM}) makes use of the knowledge of the hemodynamic response function and linear-time-invariant assumption to model the observed BOLD signal. This model states that the BOLD signal can be expressed in terms of a linear combination of the predicted fMRI responses for different stimuli (also denoted \gls{conditions}) plus a noise term. Let $\{x_1(t), x_2(t), \ldots, x_k(t)\}$ be the predicted response for $k$ different stimulus functions computed from Equation~\eqref{eq:chap1_predicted_bold}. We define the design matrix $\B{X}$ as the columnwise stacking of different regressors, each one defined as the discretization of $x_i(t)$ to match the acquisition time of a given BOLD signal. The GLM in its basic form can be expressed as:
-% \begin{equation}
-% \begin{aligned}
-% \B{y} = \B{X}\bfbeta + \bvarepsilon \\
-% \bvarepsilon \sim \mathcal{N}(0, \sigma^2 \B{I})
-% \end{aligned}
-% \label{eq:chapter_1_glm}
-% \end{equation}
-% where $\B{y} \in \RR^n$ is the observed time course at a single voxel, $\bfbeta \in \RR^k$ is the activation coefficients that represent the amplitude of the response for a given condition and $\bfvarepsilon$ is a noise term that we assume Gaussian for now (we will see in Section~\ref{subsec:prewhite} how to take into account temporal autocorrelation). 
-% \begin{figure*}[t]
-% \center \includegraphics[width=.8\linewidth]{figures/chapter_1/glm_plain.pdf}
-% \caption{The GLM expresses the observed BOLD signal as a linear combination of regressors plus an error term. Each regressor of the design matrix is the convolution of a reference HRF and the stimulus function, a function that is 1 when the stimulus is present and zero otherwise. Each element of the (unknown) activation coefficients represent the relative amplitude of a given condition.}\label{fig:glm1}
-% \end{figure*}
-
-
-% Assuming Gaussian i.i.d noise, the maximum likelihood estimation of the activation coefficients is then given by $\hat{\bfbeta} = \argmin_{\bfbeta}\|\B{y} - \B{X}\bfbeta \|^2 = \B{X}^{\dagger} \B{y}$. To estimate the activation coefficients in a full brain volume this procedure is repeated independently for each voxel. Since the design matrix is the same across voxels, a matrix decomposition of $\B{X}$ such as SVD or QR can be computed once and then used to compute the least squares solution at every voxel.
-
-
-% In this setting we have considered the HRF to be known and fixed across the different conditions. We can easily generalize this setting to accommodate the case in which the HRF is generated by a given basis set. We will call this method \emph{basis-constrained GLM}.
-
-
-% \section{High-pass filtering and prewhitening}\label{subsec:prewhite}
-
-% The BOLD signal contains low frequency trends that are usually removed before or during the estimation of activation coefficients. One popular approach of high-pass filtering is to add a discrete cosine transform (DCT) basis set to the design matrix. When using this basis set, the highest frequency that is desired to be removed from the data has to be chosen to avoid removing the frequency of the experimental task that is also being modeled. Another approach that is becoming increasingly popular, is to fit a local regression model to the time series and remove the estimated trend from the data. The software FSL uses LOWESS (locally weighted scatterplot smoothing)~\citep{cleveland1979robust} while recent studies have successfully used a Savizky-Golay filter
-% \sidenote{Savitzky-Golay filter are available in Matlab under the name \texttt{\small sgolayfilt} and in Python's Scipy module under the name \texttt{\small scipy.signal.savgol\_filter}}
-% \citep{barry2014enhanced,ccukur2013attention}. In the studies presented in Chapter 3 we will use this last filter.  In \citep{ccukur2013attention}, the authors used a Savizky-Golay filter to estimate the low-frequency drifts with window length of 240 seconds and polynomial of degree 3. We have found that parameters close to these work well in practice. 
-% \newglossaryentry{AR(1)}{name={AR(1)},description={autorregressive with variance 1}}
-
-
-% The GLM specified in~\eqref{eq:chapter_1_glm} assumes the noise $\bvarepsilon$ follows a Gaussian random variable with covariance $\sigma^2 \B{I}$. However, it is known that the BOLD signal is temporally autocorrelated. Several authors~\citep{bullmore1996statistical,kruggel2000nonlinear} consider the BOLD noise as an autoregressive model \emph{AR(1)}. This assumes each time point is correlated with the previous time point. The distribution of the error in this case is given by $\varepsilon \sim \mathcal{N}(0, \sigma^2 \B{V})$, where $\B{V}$ is the symmetric correlation matrix and $\sigma^2$ is the variance. The correlation matrix and variance are commonly estimated from the residuals after fitting the GLM. 
-
-% The most common solution to take this special structure into account is to \emph{prewhiten} the data, that is, to remove the temporal correlation. Since the correlation matrix $\B{V}$ is symmetric and positive definite, the Cholesky decomposition can be used to find a matrix $\B{K}$ such that $\B{V}^{-1} = \B{K}^T \B{K}$. To prewhiten the data, $\B{K}$ is premultiplied on both sides of the GLM (Eq.~\eqref{eq:chapter_1_glm}) to give $\B{K}\B{y} = \B{K}\B{X} \bfbeta + \B{K}\bfvarepsilon$. This makes the errors be independent, i.e., $\B{K}\bfvarepsilon \sim \mathcal{N}(0, \sigma^2 \B{I})$.
 
 \begin{fullwidth}
 \bibliographystyle{plainnat}

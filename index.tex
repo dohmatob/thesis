@@ -300,7 +300,7 @@ models in the estimation of spatial decompositions of the brain images}} \\[0.5c
 
 
 
-{\LARGE A dissertation submitted in partial fulfillement \\ \vspace{10pt} of the requirements for the degree of Doctor of Philosophy, \\ \vspace{10pt} specialized in Computer Science.} \\
+{\LARGE A dissertation submitted in partial fulfillment \\ \vspace{10pt} of the requirements for the degree of Doctor of Philosophy, \\ \vspace{10pt} specialized in Computer Science.} \\
 \vspace{1pc}
 
 {\LARGE Supervised par {Bertrand Thirion} and {Gael Varoquaux}.}
@@ -534,9 +534,10 @@ models in the estimation of spatial decompositions of the brain images}} \\[0.5c
 
 % \newpage
 
+
 {\section*{\Huge \it Notation}}
 
-\vspace{50pt}
+% \vspace{50pt}
 
 \begin{fullwidth}
 \def\arraystretch{1.5}
@@ -550,7 +551,7 @@ Notation & Name / synopsis & Definition\\
   $\mathcal{N}(\mu, \sigma^2)$ & Normal distribution with mean $\mu$ and variance $\sigma$ & $p(x) = \frac{1}{\sqrt{2\pi\sigma}}
    \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$\\
  $\| \B{v} \|_r$ & $\ell_r$ norm for vectors & $\sqrt[r]{\sum_i |v_i|^r}$ \\
-$\text{tr}(\B{X})$ & Trace of a matrix & $\sum_{i} a_{ii}$ \\  
+$\text{tr}(\B{A})$ & Trace of a matrix & $\sum_{i} a_{ii}$ \\  
 $\langle \B{A}, \B{B}\rangle_{\text{Fro}}$ & Frobenius / Hilbert-Schmidt inner-product of two matrices $\B{A}$ and $\B{B}$  & $\text{tr}(\B{A}\B{B}^T)$\\
   $\| \B{X} \|_{\textbf{Fro}}$ & Frobenius norm of a matrix & $\sqrt{\langle \B{X}, \B{X}\rangle_{\text{Fro}}}$ \\
   $\|\B{X}\|_2$ & Spectral norm of matrix & $\sup\{\|\B{X}\B{u}\|_2 \text{ s.t } \|\B{u}\|_2 \le 1\}$ \\
@@ -560,37 +561,40 @@ $\B{1}_n$ & Vector of ones of size $n$ &  $1_{i} = 1, ~\forall 1 \geq i \geq n$ 
 $\B{X}^{\dagger}$ & Moore-Penrose pseudoinverse & Generalized inverse matrix\\
 $\B{A}\otimes\B{B}$ & Kronecker product of matrices $\B{A}$ and $\B{B}$ & \\
 $\text{vec}(\B{A})$ & Vectorization of a matrix & Concatenation of the columns of a matrix into a single giant column vector\\
-$\mathbb{E}(X)$ & Expectation of the random variable X & $\int X dP$\\
-  $\mathcal{R}_{\ell}(h)$ & Risk of the estimator $h$ & $\EE_{X \times Y}(\ell(Y, h(X)))$ \\
-  $\text{Lap}(\B{v})$ & Laplacian regularization of a 3D image $\B{v}$ & $\frac{1}{2}\sum_{k=1}^p(\nabla_x \B{v})_k^2 + (\nabla_y \B{v})_k^2 + (\nabla_z \B{v})_k^2$ \\ % = \frac{1}{2}{\B{v}}^T\Delta \B{v} \ge 0$
-  $\|\B{v}\|_{\text{TV}}$ & Total-Variation (isotropic) regularization & $\sum_{k=1}^p\sqrt{(\nabla_x \B{v})_k^2 + (\nabla_y \B{v})_k^2 + (\nabla_z \B{v})_k^2}$\\
+
+%  $\mathbb{E}(X)$ & Expectation of the random variable X & $\int X dP$\\
+
+  $\nabla$ & Discrete spatial gradient operator. This defines a linear operator from $\mathbb R^p$ to $\mathbb R^{3p}$, where $p$ is the number of voxels in the image & At a voxel $j$, the spatial gradient of an image $\B{w}$ is a vector ${\nabla} {\w}(j) := [\nabla_{x} {\w}(j), \nabla_{y} {\w}(j), \nabla_{z} {\w}(j)]$ \\
+  
+  $\Delta$ & Discrete spatial image Laplacian operator & $-\nabla^T\nabla \in \mathbb R^{p \times p}$\\
+  $\nabla_\tau$ & The identity-augmented version of the discrete spatial gradient operator & ${\nabla_\tau} {\w}(j) := [(1-\tau)\nabla_{x} {\w}(j), (1-\tau)\nabla_{y} {\w}(j), (1-\tau)\nabla_{z} {\w}(j), \tau \w_j]$ \\
+  $\Delta_\tau$ & Laplacian operator corresponding to the identity-augmented spatial gradient operator $\nabla_\tau$ .This defines a linear operator from $\mathbb R^p$ to $\mathbb R^{4p}$ & $\tau^2\I + (1-\tau)^2\nabla \in \mathbb R^{p \times p}$ \\
+  
+  $\text{Lap}(\B{w})$ & Laplacian regularization of a 3D image $\B{w}$ & $\frac{1}{2}\sum_{j=1}^p(\nabla_x \B{w})_j^2 + (\nabla_y \B{w})_j^2 + (\nabla_z \B{w})_j^2$ \\ % = \frac{1}{2}{\B{v}}^T\Delta \B{v} \ge 0$
+  $\|\B{w}\|_{\text{TV}}$ & Total-Variation (isotropic) regularization & $\sum_{j=1}^p\sqrt{(\nabla_x \B{w})_j^2 + (\nabla_y \B{w})_j^2 + (\nabla_z \B{w})_j^2}$\\
 \bottomrule
 \end{tabular}
 \end{fullwidth}
 \vspace*{\fill}
-
 
 %\newpage
 \begin{fullwidth}
 \tableofcontents
 \end{fullwidth}
 
-% \listoffigures
+\listoffigures
 
-% \listoftables
-
-
-\cite{michel2011tv}
+\listoftables
 
 \include{abstract}
 
 \include{chapter_1/chapter_1}
 
-\include{chapter_2/chapter_2}
+\include{chapter_3/chapter_3}
 
 \include{chapter_4/chapter_4}
 
-\include{chapter_3/chapter_3}
+\include{chapter_2/chapter_2}
 
 % \include{chapter_5/chapter_5}
 

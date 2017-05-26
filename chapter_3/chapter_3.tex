@@ -19,6 +19,14 @@ and GraphNet  \cite{grosenick2013}
 to regularize regression and classification
 problems in brain imaging.
 %
+
+\begin{marginfigure}[4cm]
+  \centering
+  \includegraphics[width=1\linewidth]{figures/ball.jpg}
+  \caption{$\ell_p$ ball with $0 < p \ll 1$.}
+  \label{fig:roi}
+\end{marginfigure}
+
 We denote by ${\y} \in \mathbb{R}^{n}$ the targets to
 be predicted (age, sex, IQ, etc.); the \textit{design matrix}
 ${\X}\in\mathbb{R}^{n \times p}$ are the
@@ -28,11 +36,12 @@ maps from anatomy, etc.). The integer $p$ is the number of voxels,
 and $n$ the number of samples (images). In brain imaging, $n \ll p$;
 typically, $p \sim 10^3-10^6$ (in full-brain analysis),
 while $n \sim 10-10^3$ ($n$ being limited by the cost of acquisition,
-etc.).
+etc.). $\nabla_x$ will denote the discrete spatial gradient operator
+along the $x$-axis, $\nabla_y$ along the $y$-axis, etc.
 
 \begin{marginfigure}[4cm]
   \centering
-  \includegraphics[width=.7\linewidth]{cartoon.pdf}
+  \includegraphics[width=.7\linewidth]{figures/cartoon.pdf}
   \caption{A cartoon showing a sparse and blobby brain map,
   as would be sought for by SpaceNet models \eqref{eq:ss}.}
   \label{fig:roi}
@@ -118,7 +127,7 @@ extraction of functional brain atlases  \citep{abraham2013}.
 \section{Efficient optimization of sparsity and smoothness regularized models}
 Though the SpaceNet model presented above leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet,
 the penalty term $\Omega \circ \nabla_\tau$ is neither smooth nor proximable.
-% \footnote{ A function $f$ is said to be \textit{proximable} is the operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for Lp-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}
+\footnote{ A function $f$ is said to be \textit{proximable} is the operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for $\ell_p$-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}
 For the penalty to fully exercise its
 \begin{figure}[!htb]
     \includegraphics[width=.331\linewidth]{face_vs_house_tol_0_1.pdf}%
@@ -211,17 +220,74 @@ further refined and implemented in  \citep{varoquaux2015faasta}.
 %%   discrimination task. See  \citep{dohmatob2014benchmarking} for more details.}
 %% \end{figure*}
 
-  \section{More speed via univariate feature-screening and early-stopping}
+\section{Choice of solver}
+Learning predictive models from brain imaging
+data, as in decoding cognitive states from fMRI (functional Mag-
+netic Resonance Imaging), is typically an ill-posed problem as it
+entails estimating many more parameters than available sample
+points.
+ \begin{figure}[!htbp]
+   \includegraphics[width=1\linewidth]{figures/solvers_1.png}
+   \includegraphics[width=1\linewidth]{figures/solvers_2.png}
+   \caption{\textbf{Benchmarking } solvers for TV-$\ell_1$ penalized models. \textbf{Top:} TV-$\ell_1$ penalized Logistic Regression on the visual recognition face-house discrimination task. \textbf{Top Left:} excess energy $E(\B{w}_t ) - E(\B{w}^*)$ as a function of time. \textbf{Top Right:} convergence time of the various solvers for different choice of regularization parameters. Broken lines correspond to a tolerance of
+$10^0$ , whilst full-lines correspond to $10^{-2}$ . The thick vertical line indicates the best model selected by cross-validation. \textbf{Bottom:} TV-$\ell_1$ penalized Least-Squares Regression. \textbf{Bottom Left:} on the visual recognition face-house discrimination task; \textbf{Bottom Right:} on the Mixed gambles dataset. The thick vertical line indicates the best model selected by cross-validation.}
+\end{figure}
+This estimation problem thus requires regularization.
+Total variation regularization, combined with sparse models, has
+been shown to yield good predictive performance, as well as stable
+and interpretable maps. However, the corresponding optimization
+problem is very challenging: it is non-smooth, non-separable
+and heavily ill-conditioned. For the penalty to fully exercise its
+structuring effect on the maps, this optimization problem must be
+solved to a good tolerance resulting in a computational challenge.
+Here we explore a wide variety of solvers and exhibit their
+convergence properties on fMRI data.
+We introduce a variant
+of smooth solvers and show that it is a promising approach in
+these settings. Our findings show that care must be taken in
+solving TV-$\ell_1$ estimation in brain imaging and highlight the
+successful strategies.
+
+\paragraph{Results of empirical benchmarks.}
+Our results outline best strategies: monotonous FISTA with
+a adaptive control of the tolerance of the TV proximal op-
+erator, in the case of squared loss; smoothed quasi-newton
+based on surrogate upper-bounds of the non-smooth norms for
+logistic loss. While these algorithms are variants of existing
+approaches, we present here novel additions useful for the
+TV or TV-$\ell_1$ settings. The fact that the smooth approaches
+emerge as fast solvers on these non-smooth problems is not
+unexpected as i) the amount of regularization is small ii) the
+prevailing term is smooth and very ill conditioned, thus calling
+for second-order methods such as Newton or quasi-Newton.
+For neuroimaging applications, our study has highlighted
+the need to converge to a good tolerance and the correspond-
+ing difficulties. Lack of good solver and explicit control of
+tolerance can lead to brain maps and conclusions that reflect
+properties of the solver more than of the TV-$\ell_1$ solution.
+
+\section{More speed via univariate feature-screening and early-stopping}
+In our PRNI 2015 conference paper  \citep{dohmatob2015speeding}, we presented some heuristics for speeding up the overall optimization process: (a) Early-stopping, whereby one  halts
+the optimization process when the test score (performance on left-out
+data) for the internal cross-validation for model-selection stops
+improving, and (b) univariate feature-screening, whereby irrelevant
+(non-predictive) voxels are detected and eliminated before the
+optimization problem is entered, thus reducing the size of the
+problem.
+
+Empirical results with GraphNet on real MRI (Magnetic
+Resonance Imaging)
+datasets indicate that these heuristics are a win-win strategy, as
+they add speed without sacrificing the quality of the predictions
+/ classifications.
+
  \begin{figure}[!htb]
-  \includegraphics[width=.24\linewidth]{figures/poldrack_demo_sp10.png}
-  \hspace{-1em}
-  \includegraphics[width=.24\linewidth]{figures/poldrack_demo_sp20.png}
-  \hspace{-1em}
-  \includegraphics[width=.24\linewidth]{figures/poldrack_demo_sp50.png}
-  \hspace{-1em}
-  \includegraphics[width=.31\linewidth]{figures/poldrack_demo_sp100.png}
-\caption{Univariate feature-screening for Face vs House
-  classification on the visual recognition dataset  \citep{jimura2012}.
+   \includegraphics[width=1\linewidth]{figures/screening.png}
+\caption{Univariate feature-screening for the
+  GraphNet
+  % \citep{hebiri2011,grosenick2013}
+  problem \eqref{eq:opt_pb} on
+  different datasets.
   % $(X,y)$.
   This figure shows spatial maps of
   $X^T_jy$, thresholded so that only voxels $j$ with (from left to
@@ -230,24 +296,227 @@ further refined and implemented in  \citep{varoquaux2015faasta}.
   \ge p_{100\%}(|X^Ty|)$ (full-brain) respectively, survive. The
   green contours enclose the elite voxels which are selected by the
   screening procedure at the respective threshold
-  levels.}
-\label{Fig:potato}
-\end{figure}
-In our PRNI 2015 conference paper  \citep{dohmatob2015speeding}, we presented some heuristics for speeding up the overall optimization process: (a) Early-stopping, whereby one  halts
-the optimization process when the test score (performance on left-out
-data) for the internal cross-validation for model-selection stops
-improving, and (b) univariate feature-screening, whereby irrelevant
-(non-predictive) voxels are detected and eliminated before the
-optimization problem is entered, thus reducing the size of the
-problem. Empirical results with GraphNet on real MRI (Magnetic
-Resonance Imaging)
-datasets indicate that these heuristics are a win-win strategy, as
-they add speed without sacrificing the quality of the predictions
-/ classifications. Some experimental results from this work are presented in
-Fig. \ref{Fig:potato}.  These heuristics can lead to up to 10-fold speedups.
-We expect the proposed heuristics to work on other variants of SpaceNet models \eqref{eq:opt_pb} like TV-$\ell_1$,
-etc.
+  levels. \textit{(a)}: Mixed Gambles dataset
+  \citep{jimura2012}.%  Remarkably, the geometry of the regions obtained
+  % here for the 10th and 20th screening-percentiles match pretty well
+  % the results obtained in \citep{gramfort2013} with their TV-L1
+  % penalty. \textit{(b)}: Face vs House contrast of the visual recognition
+  % dataset \citep{haxby2001}. 
+  Weights maps obtained for the GraphNet
+  model \eqref{eq:opt_pb} with these different
+  screening-percentiles are shown in Figure
+  \ref{fig:haxby}. \textit{(c)}: OASIS dataset \citep{marcus2007open}
+  with VBM. See Figure \ref{fig:oasis} for weights maps and
+  age predictions obtained using these different
+  screening-percentiles. % on the GraphNet model \eqref{eq:opt_pb}.
+}
 
+\label{fig:screening}
+\end{figure}
+
+\subsection{Methods}
+%% We will now detail the heuristic techiques for speeding up
+%% numerical optimization of GraphNet \citep{hebiri2011,grosenick2013}
+%% model for brain data.
+
+
+\paragraph{A note on implementation of the solver.}
+One notes that in the penalty term $J(w)$ of problem
+\eqref{eq:opt_pb}, the $\|\nabla
+w\|^2_2$ sub-term is smooth (i.e differentiable) with
+\textit{Lipschitz} gradient, whilst the $\ell_{1}$ term though
+nonsmooth, is \textit{proximable}\footnote{That is, there is a
+  closed-form analytic expression for its proximal operator.} by means
+of the \textit{soft-thesholding} operator \citep{daubechies2004}.  Thus
+problem \eqref{eq:opt_pb} is amenable to the FISTA (Fast Iterative
+Shrinkage-Thresholding Algorithm) \citep{beck09fista}, with a provable
+$\mathcal{O}(1/\sqrt{\epsilon})$ convergence rate. Our implementation
+of FISTA uses technical recommendations
+(line-searching, parametrization, etc.) which were provided in
+\citep{dohmatob2014benchmarking}, in the context of TV-L1
+\citep{baldassarre2012,gramfort2013}. The model parameters $\alpha$ and
+$\rho$ in \eqref{eq:opt_pb} are set by \textit{internal}
+cross-validation.
+
+%% \paragraph*{(b) Warm-start}
+%% The $(\alpha, \rho)$ parameter grid is walked $\rho$-first. For each $\rho$ value encountered, the alphas are walked from largest to smallest value. The largest value is contructed to be the largest value of $\alpha$ for which the optimal solution to problem \eqref{eq:opt_pb} is necessarily zero.
+
+%% We now provide details on the speedup heuristics for speeding up
+%% the overall implementation, including model-selection part of it.
+
+
+\paragraph{Univariate feature-screening.}
+%% \textbf{XXX: In a paragraph briefly give a comprehensive overview of
+%%   screening algorithms and heuristics from El Ghaoui, upto the more
+%%   recent Liu et al!!!}
+In machine-learning, feature-screening aims at detecting and
+eliminating irrelevant (non-predictive)
+features thus reducing the size of the underlying
+optimization problem (here problem \eqref{eq:opt_pb}). The general idea
+is to compute for each value of the regularization parameter, a
+\textit{relevance measure} for each feature, which is then compared with a
+threshold (produced by the screening procedure itself). Features which fall short
+of this threshold are detected as irrelevant and eliminated. For the
+Lasso and similar models (including Group Lasso),
+\textit{exact}\footnote{i.e, techniques
+  which don't mistakenly discard active predictive features.}
+screening techniques include those developed in
+\citep{elghaoui2010,lee2014exact,liu2014safe,wang2015lasso}. Inexact
+screening techniques (e.g \citep{tibshirani2010strong}) have also been
+proposed in the literature.
+Our proposed heuristic screening technique is inspired by the
+\textit{Marginal screening} technique developed in Algorithm 1 of
+\citep{lee2014exact}, and operates as
+follows. The data $(X,y)$ are standardized so that $y$ has unit
+variance and zero mean, likewise each row of the design matrix $X$. To
+ensure obtention of a smooth mask, a Gaussian-smoothed version
+of $X$ is used in the screening procedure (but not in the actual model
+fit).
+For each voxel $j$ (voxels are the features here) the
+absolute dot-product $|X^T_jy|$ of $y$ with the $j$th column of
+$X$ is computed.
+% This is used as the relevance measure.
+For a given screening-percentile
+$sp \in [0, 100]$ , the $sp$th percentile value of the
+vector $|X^Ty| := (|X^T_1y|, ..., |X^T_py|)$, denoted $p_{sp}(|X^Ty|)$,
+is computed. The case $sp=100$ corresponds to full-brain analysis. 25
+means we keep the quarter of the brain made of voxels with the highest
+$|X^T_jy|$ values, and so on.
+% ; this is the threshold.
+A brain-mask is then formed containing only those voxels $j$
+for which $|X^T_jy| \ge p_{sp}(|X^Ty|)$. Next, this brain-mask is
+morphologically eroded
+% (to remove isolated small patches)
+and then
+dilated, to obtain a more structured mask.  Figure
+\ref{fig:screening} shows results of applying this screening heuristic
+to various datasets, prior to model fitting.
+
+\subsection{Experiments}
+We experimented our early-stopping and (separately)
+feature-screening heuristics on different MRI datasets.
+All experiments were run using a single core of
+  a laptop.
+
+\paragraph{Regression.} The OASIS dataset
+    \citep{marcus2007open} consists of a
+    cross-sectional collection of 416 subjects aged 18 to 96. For each
+    subject, 3 or 4 individual T1-weighted MRI scans obtained in
+    single scan sessions are included.   A natural regression problem
+    for this dataset is to predict the age of a subject from their
+    anatomical data. To this end, we segmented the gray-matter from
+    the anatomy of each subject (obtained from the T1 images), and
+    used the gray-matter maps
+    as features for predicting age. We split the 416 subjects into two
+    equally-sized and age-balanced groups: a train set and a validation
+    set. The GraphNet model \citep{hebiri2011,grosenick2013} was fitted
+    on the train set, with parameters
+    ($\alpha$ and $\rho$ in \eqref{eq:opt_pb}) set internally via 8-fold
+    cross-validation. The results for this experiment are shown in
+    Figure \ref{fig:oasis}.
+
+\paragraph{Classification.} The visual
+    recognition dataset \citep{haxby2001} is a popular block-design
+    fMRI dataset from a
+    study on face and object representation in human ventral temporal
+    cortex.
+It consists of 6 subjects with 12 runs per subject. In each run, the
+subjects
+passively viewed images of eight object categories, grouped
+in 24-second blocks separated by intermittent rest periods. This
+experiment is a classification task: predicting the object category
+$y$. We use a \textit{One-versus-Rest (OvR)} strategy. The design
+matrix ${X}$ is made of
+time-series from the full-brain mask of $p = 23\,707$ voxels over $n =
+216$ TRs, of a single subject (subj1). We divided the 12 runs into 6
+runs for training and 6 other runs for
+validation. \textit{Leave-one-label-out} cross-validation was used for
+selecting the model parameters $(\alpha, \rho)$. The results are
+depicted in Figure \ref{fig:haxby}.
+
+ \begin{figure}[!htb]
+   \includegraphics[width=1\linewidth]{figures/screening_weights.png}
+  \caption{Predicting age from gray-matter concentration maps from the
+    OASIS dataset \citep{marcus2007open}. \textbf{Top}:
+    Weights maps (solutions to problem \eqref{eq:opt_pb}).
+% \textbf{N.B}: The long spiky undershoots in the prediction curves
+% are indicative of outliers: subjects for which spatial preprocessing
+% (tissue segmentation, normalization, etc.) failed.
+\textbf{Bottom-left}: Mean Square Error (MSE) in age prediction, for
+different subjects of the validation set, for  varying levels of the
+early-stopping tolerance (``es tol'' for short), with the
+screening-percentile (sp) held constant at 100
+(full-brain). \textbf{Bottom-right}: MSE in age prediction, for
+varying levels of the screening-percentile (sp).%  \textbf{Running
+%   times}: Increasing \textit{est tol} (from $-10^{-4}$ to $10$): \textbf{100.2m, 171.4m, 188.8m, 289.6m}. For
+% increasing $sp$ ($10$ to $100$): \textbf{44.2m, 81.3m, 186.5m, 341.3m}
+}   
+\label{fig:oasis}
+\end{figure}
+
+\subsection{Results.}
+We now summarize and comment the results of the experiments (refer to
+section \ref{sec:experiments}).
+Figure \ref{fig:oasis} shows the effects of early-stopping heuristic
+and feature-screening heuristic on age prediction scores on the OASIS
+dataset \citep{marcus2007open} (416 subjects). We see that in the
+internal cross-validation, stopping  the optimization procedure for
+fixed $(\alpha, \rho)$ pair of regularization parameters, when test
+score increases by $-10^{-2}$ or more is a good heuristic, and does just
+as good as running the optimization until numerical convergence. 
+Also (and independently), one gets similar prediction scores using as
+little as a fifth of the brain volume ($sp=20$),
+compared to using the full-brain ($sp=100$).
+Figure \ref{fig:haxby} reports similar results for classification on
+the visual recognition dataset \citep{haxby2001}. Overall, we see from
+Figures \ref{fig:haxby} and \ref{fig:oasis} that we can achieve upto
+$10$-fold speedup with the proposed heuristics, with very little loss
+in accuracy. Also, we see that contiguous groups of bars are roughly flat at the top, with a
+    sligh increase from lower to high screening-percentile values. The
+    case ``chair vs scramped'' is an exception, where a slightly reverse tendency
+    if observed. A possible explanation is that $20$th percentile
+    feature-screening already selects the right voxels (quasi-exact
+    support recovery), and so including more voxels in the model can only hurt its
+    performance...    
+
+ \begin{figure}[!htb]
+   \includegraphics[width=1\linewidth]{figures/screening_weights_haxby.png}
+  \caption{Predicting age from gray-matter concentration maps from the
+    OASIS dataset \citep{marcus2007open}. \textbf{Top}:
+    Weights maps (solutions to problem \eqref{eq:opt_pb}).
+% \textbf{N.B}: The long spiky undershoots in the prediction curves
+% are indicative of outliers: subjects for which spatial preprocessing
+% (tissue segmentation, normalization, etc.) failed.
+\textbf{Bottom-left}: Mean Square Error (MSE) in age prediction, for
+different subjects of the validation set, for  varying levels of the
+early-stopping tolerance (``es tol'' for short), with the
+screening-percentile (sp) held constant at 100
+(full-brain). \textbf{Bottom-right}: MSE in age prediction, for
+varying levels of the screening-percentile (sp). \textbf{Running
+  times}: Increasing \textit{est tol} (from $-10^{-4}$ to $10$): \textbf{100.2m, 171.4m, 188.8m, 289.6m}. For
+increasing $sp$ ($10$ to $100$): \textbf{44.2m, 81.3m, 186.5m, 341.3m}}   
+  \caption{Visual recognition dataset
+    \citep{haxby2001}. \textbf{\textit{(a)}}: Weights maps
+    % (maps of
+    % regression coefficients $\hat{w}$)
+    for the Face vs House contrast,
+    for different early-stopping and univariate feature-screening
+    thresholds. One can see that the supports of these maps for
+    different values of the thresholds are quite similar to cases
+    involving  no heuristic at all (the case where est $= 10$ and the
+    where case sp $=100\%$).
+    \textbf{\textit{(b)}, top-left}: Prediction scores as a function of
+    the early-stopping tolerance (est), for different task contrasts.
+    \textbf{\textit{(b)}, top-right}: Prediction scores as a function of
+    the screening-percentile (sp), for different task contrasts.
+    \textbf{\textit{(b)}, bottom-row}: Running times in minutes for the
+    different thresholds of the heuristics.
+    % As was to be expected, full-brain
+    % (sp=100\%) is the most expensive scenario.
+  }
+  \label{fig:haxby}
+\end{figure}
+    
  In  \citep{dohmatob2015speeding}, we empirically showed on various
 datasets that such screening leads to linear speed-up in the computation
 time, while sacrificing prediction / classification power as long as the
@@ -383,16 +652,197 @@ The result of these numerous ramblings on optimizing the SpaceNet model \eqref{e
 % % {\blue With respect to the work published in ~\citepp{Pedregosa2015209}, we have included in this chapter the results on a new datasets and examined the gain obtained by this model across different regions of the brain}.
 
 \section{A small result on the rate of convergence of the ADMM algorithm}
-\newthought{In our ICASSP 2016 paper} \citep{dohmatob2015local}, ...
 
-% In this section we describe different methods for extracting the HRF and
-% activation coefficients from BOLD signals. We will refer to each different
-% stimulus as {\it condition} and we will call {\it trial} a unique presentation
-% of a given stimulus. We will denote by $k$ the total number of stimuli, $\B{y} \in \RR^n$
-% the BOLD signal at a single voxel and $n$ the total number of images acquired.
+\newthought{In our ICASSP 2016 paper} \citep{dohmatob2015local}, we studied the convergence of
+the ADMM (Alternating Direction Method of
+Multipliers) algorithm on a broad range of penalized regression
+problems including the Lasso, Group-Lasso and Graph-Lasso,(isotropic)
+TV-L1, Sparse Variation, and others, that can be written in the form
 
-\section{Generalized online dictionary learning: richer penalties on the components}
-\newthought{In our NIPS 2017 paper} \citep{dohmatob2016},
+\begin{equation}
+  \underset{(\w,\z) \in \mathbb{R}^p \times
+    \mathbb{R}^q}{\text{minimize}}\text{ }\frac{1}{2}\|\X\w-\y\|^2 +
+  \lambda\Omega(\z) \text{ subject to }\K\w
+    - \z = 0,
+  \label{eq:main_pb}
+\end{equation}
+where $\X \in \mathbb{R}^{n \times  p}$ is the design matrix; $\y \in
+\mathbb{R}^n$ is a vector of measurements or classification targets; 
+$\K\in\mathbb{R}^{q \times p}$ is linear operator;  $\lambda > 0$ is the
+regularization parameter;
+and $\Omega: \mathbb{R}^p \rightarrow (-\infty, +\infty]$ is
+    the penalty, which is assumed to be a \textit{closed proper
+      convex} function.
+    In signal processing literature, such a problem is referred to as synthesis problem: the penalty $\Omega$ is imposed not directly on the image, but on a the output of a dictionary, $\z = \K\w$. $\K$ is referred to the analysis operator. The case $\K = \Id$ corresponds to the \textit{synthesis} setting.
+
+\begin{marginfigure}[4cm]
+  \label{fig:rates}  
+  \includegraphics[width=1\linewidth]{figures/lasso_rates.pdf}%
+\caption{Rate of convergence $r(\Lambda'_\rho(\x^*))$ as a function of $\rho$
+  for a Lasso problem with column-rank deficient design
+  matrix $\X$. Taking $\rho$ too small leads
+  to badly conditioned problem (as  $\Id + (1/\rho)\X^T\X$ is then almost
+  singular), and thus a slow rate of convergence (near 1). On the
+  other hand, the figure suggests that taking $\rho$ ``too large''
+  is also detrimental. Most remarkable, one notices that the basin of
+  ``good'' $\rho$ values is rather tight, and so care must be taken in
+  choosing the $\rho$ parameter.
+}
+\end{marginfigure} %-----------------------------------------------------------
+    
+First, we established a
+fixed-point iteration for a nonlinear operator $\Lambda$ %\eqref{eq:factorize}
+    
+  \begin{eqnarray}
+    \begin{aligned}
+      %% Q := \X^T\X \in \mathbb{R}^{p \times p},\hspace{.5em}\Delta :=
+      %% \K^T\K \in \mathbb{R}^{p \times p},\hspace{.5em}
+      &\G_{\rho} :=
+      \K(\K^T\K + \rho^{-1}\X^T\X)^{-1}\K^T,\hspace{.5em}
+      \A_{\rho}:=[\G_{\rho}\hspace{.5em}\Id-\G_{\rho}],\\
+      &\b_{\rho} := \rho^{-1}\K(\K^T\K +
+      \rho^{-1}\X^T\X)^{-1}\X^T\y,\hspace{.2em}\tilde{\A}_{\rho} :=
+      \A_{\rho}(.) +  \b_{\rho},\\
+      &\Lambda_{\rho} :=
+        \left(\prox_{(\lambda/\rho)\Omega}\circ\tilde{\A}_{\rho},
+        (\Id-\prox_{(\lambda/\rho)\Omega})\circ\tilde{\A}_{\rho}\right)\\
+        &(\z^{(n+1)}, \u^{(n+1)}) \leftarrow
+        \Lambda_{\rho}(\z^{(n)}, \u^{(n)}),
+    \end{aligned}
+    \label{eq:factorize}
+  \end{eqnarray}
+which is equivalent to the ADMM iterates
+\begin{eqnarray}
+    \begin{split}
+      \w^{(n+1)} &\leftarrow
+      \underset{\w \in \mathbb R^p}{\argmin}\text{ }\mathcal{L}_{\rho}(\w, \z^{(n)},
+      \u^{(n)}) \\
+      &= (\rho \K^T\K + \X^T\X)^{-1}(\rho\K^T(\z^{(n)} -
+      \u^{(n)}) + \X^T\y)\\
+      \z^{(n+1)} &\leftarrow \underset{z \in \mathbb R^q}{\argmin}\text{ }\mathcal{L}_{\rho}(\w^{(n+1)},\z, \u^{(n)}) =
+      \prox_{(\lambda/\rho)\Omega}(\K\w^{(n+1)} + \u^{(n)})\\
+      \u^{(n+1)} &\leftarrow \u^{(n)} + \K\w^{(n+1)} -\z^{(n+1)}.
+    \end{split}
+\label{eq:admm}
+\end{eqnarray}
+We then showed that this nonlinear operator is
+Fr\'echet-differentiable almost everywhere and that around each fixed
+point, Q-linear convergence is guaranteed, provided the spectral
+radius of the Jacobian of the operator at the fixed point is less than
+1 (a classical result on stability). Moreover, this spectral radius is
+then a rate of convergence for the ADMM algorithm. Also, we showed that
+the support of the split variable can be identified after finitely
+many iterations. In the anisotropic cases, we show that for
+sufficiently large values of the tuning parameter, we recover the
+optimal rates in terms of Friedrichs angles, that have appeared
+recently in the literature.
+
+\paragraph{Main theorem.} Our main results are summarized in Theorem 1 of the aforementioned paper, which we now state.
+\begin{theorem} Consider the ADMM algorithm \eqref{eq:admm} on problem
+  \eqref{eq:main_pb}, where $\Omega$ is an $\ell_{2,1}$ mixed-norm on
+  $d \ge 1$ blocks each of size $c \ge 1$, for a total of $q = d
+  \times c$ features. Let the operators $\B{A}$, $\tilde{\B{A}}$, and $\Lambda$ be
+  defined as defined above, with the $\rho$ subscript
+  dropped for ease of notation. Let For $\B{x} = (\B{z}, \B{u}) \in\mathbb{R}^{q+q}$, let $\Lambda_1(\B{x}) \in \mathbb R^q$ denote the first $q$ coordinates of $\Lambda(\B{x})$, i.e its $z$-part. Define
+  \begin{itemize}
+    \item $\supp(\B{z}) := \{j\in[d]\text{ }|\text{ }z_{j:j+c-1} \ne
+      0\}$;
+      \item $\mathcal{A}_1(\B{z}) := \{\B{z}' \in \mathbb{R}^{q} |
+    \supp(\B{z}') = \supp(\B{z})\}$, and $\mathcal A(\B{x}) := \mathcal A_1(\B{z}) \oplus \mathbb R^q$;
+   \item $\tilde{\B{x}} := (\tilde{\B{x}}_j)_{j \in [d]} := \tilde{\A}\B{x}$, $\kappa :=
+    \lambda / \rho$, $\epsilon(\B{x}) :=
+      \underset{j \in [d]}{\min}\text{}|\|\tilde{\B{x}}_j\|-\kappa| \ge 0$.
+    \end{itemize}
+Then the following hold:
+\begin{itemize}
+\item[\textit{(a)}] \textbf{Attractivity of supports.} For all $\B{x} \in
+  \mathbb{R}^{q+q}$, we have
+  \[\Lambda(\bar{\mathbb{B}}_{2q}(\B{x},\epsilon(\B{x})/\|\A\|)) \subseteq
+  \bar{\mathbb{B}}_{2q}(\Lambda(\B{x}),\epsilon(\B{x})) \cap
+  \mathcal{A}(\Lambda(\B{x})).\] In
+  particular, if $\B{x}^*$ is a fixed-point of $\Gamma$, then
+  \[
+  \Lambda(\bar{\mathbb{B}}_{2q}(\B{x}^*,\epsilon(\B{x}^*)/\|\A\|))
+  \subseteq
+  \bar{\mathbb{B}}_{2q}(\B{x}^*,\epsilon(\B{x}^*)) \cap \mathcal{A}(\B{x}^*).
+  \]
+\item[\textit{(b)}] \textbf{Fr\'echet-differentiability.} If $\B{x} \in
+  \mathbb{R}^{q+q}$ with
+  $\epsilon(\B{x}) > 0$, then $\Lambda$ is Fr\'echet-differentiable at $\B{x}$ with
+  derivative
+\begin{eqnarray}
+  \Lambda'(\B{x}) = \B{F}_{\B{x}}\A \in \mathbb{R}^{2q \times 2q},
+\label{eq:linear}
+\end{eqnarray}
+where $\B{F}_{\B{x}} := [\B{D}_{\B{x}} \hspace{.6em} \Id - \B{D}_{\B{x}}]^T$ and  $\B{D}_{\B{x}} \in
+\mathbb{R}^{q \times q}$ is a block-diagonal matrix
+with block $\B{D}_{\B{x},j} \in \mathbb{R}^{c \times c}$
+given by
+\begin{eqnarray}
+\B{D}_{\B{x},j} = \begin{cases}\Id -
+  \frac{\kappa}{\|\tilde{\B{x}}_j\|}P_{\langle
+        \tilde{\B{x}}_j \rangle^\perp}, &\mbox{ if } j \in
+  \supp(\Lambda_1(\B{x})),\\ 0, &\mbox{ otherwise.}\end{cases}
+\label{eq:d}
+\end{eqnarray}
+In particular,  when $c=1$,  each $\B{D}_{\B{x}^,j}$ reduces to a
+bit $\in \{0,1\}$ which indicates whether the $j$th feature is
+active, and $\B{D}_{\B{x}}$ reduces to a diagonal projector matrix with only
+0s and 1s.
+
+\item[\textit{(c)}] Let $\B{x}^* = (\B{z}^*, \B{u}^*)\in \mathbb{R}^{q+q}$ be any fixed-point of $\Gamma$.
+\begin{itemize}
+\item[\textit{(1)}] \textbf{Finite-time identification of
+    active set.} If the closed ball $\bar{\mathbb{B}}_{2q}(\B{x}^*, \epsilon(\B{x}^*)/\|\A\|)$
+    contains any point of the sequence of iterates $x^{(n)}$, then the
+    active set $\mathcal{A}(\B{x}^*)$ is
+    identified after finitely many iterations, i.e
+    \begin{eqnarray}
+      \label{eq:id}
+      \exists N_{\B{x}^*} \ge 0 \text{ s.t }\B{x}^{(n)} \in \mathcal{A}(\B{x}^*)
+      \forall n \ge N_{\B{x}^*}.
+    \end{eqnarray}
+      In particular, \eqref{eq:id} holds if $\B{x}^{(n)}$ converges to $\B{x}^*$.
+
+\item[\textit{(2)}] \textbf{Local Q-linear convergence.}
+If $\epsilon(\B{x}^*) > 0$ and $r(\Lambda'(\B{x}^*)) < 1$, then the iterates
+$x^{(n)}$ converge locally Q-linearly to $\B{x}^*$
+at the rate $r(\Lambda'(\B{x}^*))$.
+
+\label{thm:frechet}
+\item[\textit{(3)}] \textbf{Optimal rates in the anisotropic case.}
+If $c=1$ (as in anisotropic TV deconvolution) and $\rho$ is large, then the optimal rate of convergence
+rate is the cosine of the Friedrichs angle between
+$\mathrm{Im}\;\K$ and $\mathrm{Im}\;\B{D}_{\B{x}^*} \simeq \mathcal A_1(\B{z}^*)$. If in addition
+$K = \Id$ (as in synthesis inverse problems like the Lasso, sparse  Spike-deconvolution, etc.), then
+the whole algorithm converges in finite time.
+\end{itemize}
+\end{itemize}
+\end{theorem}
+
+\paragraph{Experimental results.}
+\begin{figure*}[!htbp]
+  \includegraphics[width=1\linewidth]{figures/admm.png}
+  \caption{{Experimental results from ICASSP paper}  \citep{dohmatob2015local}\textbf{.} showing local Q-linear convergence for ADMM
+    on problem \eqref{eq:main_pb}. %% Results for
+  %% all the other values of $\rho$ are provided in the supplementary matrials.
+  The ``theoretical'' line is the exponential
+  curve $t \mapsto \|\x^{(0)} - \x^*\|r(\Lambda'(\x^*))^t$. The red broken
+  vertical line marks the instant the support the support of the fixed-point $\x^*$
+  % = (\z^*,\u^*)$
+  is identified.
+}  
+\end{figure*}
+ For notation, refer to Theorem 1 of the paper.
+  We can see from figure that the upper bound for the local convergence
+  rate is satisfied. Each shown thumbnail
+  is for the value of $\rho$ for
+  which the spectral radius $r(\Lambda_\rho'(\B{x}^*))$ was smallest.
+  
+
+
+% \section{Generalized online dictionary learning: richer penalties on the components}
+% \newthought{In our NIPS 2017 paper} \citep{dohmatob2016},
 
 
 
@@ -720,7 +1170,7 @@ The result of these numerous ramblings on optimizing the SpaceNet model \eqref{e
 % and compared it against the measured fMRI BOLD signal.
 % As the procedure consists of predicting the fMRI data
 % from stimuli descriptors, it is an {\it encoding} model.
-% This dataset is publicly available from \url{http://crcns.org}
+% This dataset is publicly available from \B{u}rl{http://crcns.org}
 
 % Two subjects viewed 1750 training images, each presented twice,
 % and 120 validation images, each presented 10 times, while fixating a
@@ -785,13 +1235,13 @@ The result of these numerous ramblings on optimizing the SpaceNet model \eqref{e
 % an amount of potential gains and potential losses that can be used as class label. In
 % this experiment, we only considered gain levels. This leads to the challenge of
 % predicting or \emph{decoding} the gain level from brain images. The dataset
-% is publicly available from \mbox{\url{http://openfmri.org}} under the name 
+% is publicly available from \mbox{\B{u}rl{http://openfmri.org}} under the name 
 % \emph {mixed-gambles task} dataset.
 
 % The data preprocessing included slice timing, motion correction, coregistration to the
 % anatomical images, tissue segmentation, normalization to MNI space and was
 % performed using the SPM 8 software through the
-% Pypreprocess\footnote{\url{https://github.com/neurospin/pypreprocess}}
+% Pypreprocess\footnote{\B{u}rl{https://github.com/neurospin/pypreprocess}}
 % interface.
 
 % For all subjects three runs were recorded, each consisting of 240 images with
@@ -1143,6 +1593,7 @@ The result of these numerous ramblings on optimizing the SpaceNet model \eqref{e
 % % ammount of basis functions to use for a given dataset. Indeed, we have observed
 % % that smaller basis sets obtain a better score 
 
+\clearpage
 \begin{fullwidth}
 \bibliographystyle{plainnat}
 \bibliography{chapter_3/biblio3}
