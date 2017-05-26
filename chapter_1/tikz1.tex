@@ -1,0 +1,22 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{spy}
+
+\begin{document}
+   \begin{tikzpicture}[spy using outlines={red, rectangle,
+         magnification=2, size=200, connect spies}]
+     \node {\includegraphics[width=2\linewidth]{figures/Scout_orig_DEADBEEF0000_yz_annotated.png}};
+     \spy on (-5.6,-2.5) in node at (.06,3.5);
+   \end{tikzpicture}
+   \begin{tikzpicture}[spy using outlines={red, rectangle,
+         magnification=2, size=200, connect spies}]
+     \node {\includegraphics[width=2\linewidth]{figures/Scout_gdc_undistorted_DEADBEEF0000_yz_annotated.png}}; 
+     \spy on (-5.6,-2.5) in node at (.06,3.5);
+   \end{tikzpicture}
+   \begin{tikzpicture}[spy using outlines={red, rectangle,
+         magnification=2, size=200, connect spies}]
+     \node {\includegraphics[width=2\linewidth]{figures/T1w_acpc_dc_restore_brain_flirt_DEADBEEF0000_yz_annotated.png}
+     }; 
+     \spy on (-5.6,-2.5) in node at (.06,3.5);
+   \end{tikzpicture}
+\end{document}
