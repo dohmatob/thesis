@@ -4,37 +4,6 @@
 
 % \section{Brains are different in function}
 \section{Introduction to brain decomposition and matrix factorization / dictionary-learning}
-
-\chapter{Structured online dictionary-learning}
-\chapter{Online structured unsupervised dictionary-learning}
-\label{sec:online}
-%% \begin{abstract}
-%% We propose a multivariate online dictionary-learning
-%%   method for obtaining decompositions of brain
-%% images with structured and sparse components (aka atoms). Sparsity is
-%% to be understood in the usual sense: the dictionary atoms are
-%% constrained to contain mostly zeros. This is imposed via an $\ell_1$-norm
-%% constraint. By "structured", we mean that the atoms are piece-wise
-%% smooth and compact, thus making up blobs, as opposed to scattered
-%% patterns of activation. We propose to use a Sobolev (Laplacian)
-%% penalty to impose this type of structure.
-%% %
-%% Combining the two penalties, we obtain decompositions that properly
-%% delineate brain structures from functional images.
-%% %
-%% This non-trivially extends the
-%% online dictionary-learning  work of Mairal et
-%% al. (2010), at the price of only a factor of 2 or 3 on the overall
-%% running time. Just like the Mairal et al. (2010) reference method, the
-%% online nature of our proposed algorithm allows it to scale to
-%% arbitrarily sized datasets. Experiments on brain data show that our proposed method extracts structured and denoised dictionaries that are more intepretable and better capture inter-subject variability in small medium, and large-scale regimes alike, compared to state-of-the-art models.
-%% %% We focus on difficult parameter selection issues by introducing relevant criteria (reproducibility, explained variance, use in prediction tasks) and describe the optimality regime.
-  
-%% %% \textit{\textbf{Keywords:}} Inter-subject variability; MRI; multivariate methods; online dictionary-learning; large-scale learning; sparsity; spatial regularization
-
-%% \end{abstract}
-%\tableofcontents
-\section{Introduction} % : dictionary-learning to define regions}
 \label{sec:intro}
 In neuro-imaging, inter-subject variability is often handled as a statistical residual and discarded. Yet there is evidence that it displays structure and contains important information. Univariate models are ineffective both computationally and statistically due to the large number of voxels compared to the number of subjects. Likewise,
 statistical analysis of weak effects on medical images often relies on
@@ -62,6 +31,36 @@ typically yields meaningful units, but is limited by the noise
 inherent to these maps.
 Relying on a different imaging modality
 hits cross-modality correspondence problems.
+
+
+
+% \chapter{Online structured unsupervised dictionary-learning}
+%% \begin{abstract}
+%% We propose a multivariate online dictionary-learning
+%%   method for obtaining decompositions of brain
+%% images with structured and sparse components (aka atoms). Sparsity is
+%% to be understood in the usual sense: the dictionary atoms are
+%% constrained to contain mostly zeros. This is imposed via an $\ell_1$-norm
+%% constraint. By "structured", we mean that the atoms are piece-wise
+%% smooth and compact, thus making up blobs, as opposed to scattered
+%% patterns of activation. We propose to use a Sobolev (Laplacian)
+%% penalty to impose this type of structure.
+%% %
+%% Combining the two penalties, we obtain decompositions that properly
+%% delineate brain structures from functional images.
+%% %
+%% This non-trivially extends the
+%% online dictionary-learning  work of Mairal et
+%% al. (2010), at the price of only a factor of 2 or 3 on the overall
+%% running time. Just like the Mairal et al. (2010) reference method, the
+%% online nature of our proposed algorithm allows it to scale to
+%% arbitrarily sized datasets. Experiments on brain data show that our proposed method extracts structured and denoised dictionaries that are more intepretable and better capture inter-subject variability in small medium, and large-scale regimes alike, compared to state-of-the-art models.
+%% %% We focus on difficult parameter selection issues by introducing relevant criteria (reproducibility, explained variance, use in prediction tasks) and describe the optimality regime.
+  
+%% %% \textit{\textbf{Keywords:}} Inter-subject variability; MRI; multivariate methods; online dictionary-learning; large-scale learning; sparsity; spatial regularization
+
+%% \end{abstract}
+%\tableofcontents
 
 \paragraph*{Sketch of our contributions.}
 In this manuscript, we propose to use the \textit{variability} of the statistical
@@ -421,7 +420,13 @@ Appendix of  \citep{dohmatob2016}.
 
 \subsection{Practical considerations}
 \paragraph{Hyper-parameter tuning.}
-\begin{marginfigure}[4cm]
+Parameter-selection in dictionary-learning is known to be a difficult unsolved
+problem  \citep{mairal2010,jenatton2010structured}, and our proposed model \eqref{eq:ss} is not an exception to this rule. We did an extensive study of the quality of estimated dictionary varies with the model hyper-parameters $(\alpha,\gamma,\tau)$. The data experimental setup is described in Section \ref{sec:exp}.
+The results are presented in Fig. \ref{fig:param}.
+We make the following observations:
+%% For the Ridge penalty $\ell_1$  on the codes, we sufficiently small. This is reasonable, since morally this penalty only has a numerical interest, namely to regularized the estimation of the codes. Taking it too big (say $ ~ 1$ or above) leads to pathological dictionaries in which all the components look alike, thus underfitting.
+Taking the sparsity parameter $\tau$ in \eqref{eq:ss} too large leads to dense atoms that perfectly explain the data but are not very intepretable. Taking it too small leads to overly sparse maps that barely explain the data. This normalized sparsity metric (small is better, \textit{ceteris paribus}) is defined as the mean ratio $\|\B{v}^j\|_1 / \|\B{v}^j\|_2$ over the dictionary atoms. % %% As expected this metric increases with increasing values of $\gamma$ (everything else held fixed) as sparsity is being compromised for more structure.
+\begin{figure}[!htbp]
   \includegraphics[width=.45\linewidth]{figures/heat_LANGUAGE_1.pdf}
 %   \hspace{-.25cm}
   \includegraphics[width=.45\linewidth]{figures/sparsity.pdf}
@@ -433,13 +438,7 @@ In the experiments, $\alpha$ was chosen according to \eqref{eq:varyingalpha}. \t
   }
   % \vspace{-10pt}
   \label{fig:param}
-\end{marginfigure}
-Parameter-selection in dictionary-learning is known to be a difficult unsolved
-problem  \citep{mairal2010,jenatton2010structured}, and our proposed model \eqref{eq:ss} is not an exception to this rule. We did an extensive study of the quality of estimated dictionary varies with the model hyper-parameters $(\alpha,\gamma,\tau)$. The data experimental setup is described in Section \ref{sec:exp}.
-The results are presented in Fig. \ref{fig:param}.
-We make the following observations:
-%% For the Ridge penalty $\ell_1$  on the codes, we sufficiently small. This is reasonable, since morally this penalty only has a numerical interest, namely to regularized the estimation of the codes. Taking it too big (say $ ~ 1$ or above) leads to pathological dictionaries in which all the components look alike, thus underfitting.
-Taking the sparsity parameter $\tau$ in \eqref{eq:ss} too large leads to dense atoms that perfectly explain the data but are not very intepretable. Taking it too small leads to overly sparse maps that barely explain the data. This normalized sparsity metric (small is better, \textit{ceteris paribus}) is defined as the mean ratio $\|\B{v}^j\|_1 / \|\B{v}^j\|_2$ over the dictionary atoms. % %% As expected this metric increases with increasing values of $\gamma$ (everything else held fixed) as sparsity is being compromised for more structure.
+\end{figure}
 
 \paragraph*{Fidelity-stability tradeoffs.}
 \textbf{Please make readbale statements. I can't help.}
@@ -458,7 +457,6 @@ Concerning the $\alpha$ parameter, inspired by  \citep{ying2006online}, we have 
 %% \end{equation}
 %% This can be useful in cross-validation.
 %% In particular notice that $\alpha(t) \rightarrow 0$ as $t \rightarrow +\infty$ (i.e we can turn off regularization once ``sufficient'' data has been pooled) .
-
 Likewise, care must be taken in selecting the Laplacian regularization parameter $\gamma$. Indeed taking it too small amounts to doing vanilla dictionary-learning model  \citep{mairal2010}. Taking it too large can lead to degenerate maps, as the spatial regularization then dominates the reconstruction error (data fidelity) term.
 We find that there is a safe range of the parameter pair $(\gamma, \tau)$ in which a good compromise between the sparsity of the dictionary (thus its intepretability) and its explanation power of the data can be reached. See Fig. \ref{fig:param}.
 %% This region can be found via cross-validation.
@@ -738,7 +736,8 @@ SS0MF \eqref{eq:ss} model will soon be made available as part of the
 \textit{Nilearn} package  \citep{nilearn}.
 
 
-
+\chapter{Prediction of cognitive activation maps from task-free resting-state data}
+...
 
 
 % \newglossaryentry{MRI}{name=MRI,description={{Magnetic Resonance Imaging}}}
