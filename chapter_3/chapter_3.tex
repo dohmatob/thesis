@@ -7,7 +7,6 @@
 Sparsity- and structure-inducing priors are used to
 perform jointly the prediction of a target variable and region
 segmentation in multivariate analysis settings.
-%
 Specifically, it has been shown that one can employ priors like Total
 Variation (TV)  \cite{michel2011tv}, TV-$\ell_1$
  \cite{baldassarre2012,gramfort2013}, TV-ElasticNet
@@ -18,13 +17,21 @@ and GraphNet  \cite{grosenick2013}
 %interchangeably.}
 to regularize regression and classification
 problems in brain imaging.
-%
+
+\begin{figure}[!htbp]
+  \includegraphics[width=1\linewidth]{figures/balls.png}
+  \caption{$\ell_p$ unit ball for various values of $p$. The kinks
+    in the cases $p \in \{1/2,1,\infty\}$ impose sparsity. Though the
+  case $p = 1/2$ (and in fact any $p \in (0, 1)$) imposes sparsity,
+it is non-convex...}
+\end{figure}
+
 
 \begin{marginfigure}[4cm]
   \centering
   \includegraphics[width=1\linewidth]{figures/ball.jpg}
   \caption{$\ell_p$ ball with $0 < p \ll 1$.}
-  \label{fig:roi}
+  \label{fig:flower}
 \end{marginfigure}
 
 We denote by ${\y} \in \mathbb{R}^{n}$ the targets to
@@ -39,16 +46,6 @@ while $n \sim 10-10^3$ ($n$ being limited by the cost of acquisition,
 etc.). $\nabla_x$ will denote the discrete spatial gradient operator
 along the $x$-axis, $\nabla_y$ along the $y$-axis, etc.
 
-\begin{marginfigure}[4cm]
-  \centering
-  \includegraphics[width=.7\linewidth]{figures/cartoon.pdf}
-  \caption{A cartoon showing a sparse and blobby brain map,
-  as would be sought for by SpaceNet models \eqref{eq:ss}.}
-  \label{fig:roi}
-\end{marginfigure}
-%\begin{marginfigure}[4cm]
-
-
 %% Let $\Omega \subset \mathbb{R}^3$ be
 %% the 3D image domain representing the region occupied by the brain --or
 %% ROI (region of interest) thereof-- under  study, discretized regularly
@@ -57,13 +54,13 @@ along the $x$-axis, $\nabla_y$ along the $y$-axis, etc.
 Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)
    \citep{michel2011tv}, TV-$\ell_1$  \citep{baldassarre2012,gramfort2013}, GraphNet  \citep{grosenick2013,hebiri2011},
   TV-ElasticNet  \citep{dubois2014predictive}, Sparse Variation  \citep{eickenberg2015total}, and social-sparsity  \citep{kowalski2013social}. These can all be written in a general framework as follows
-
+  
 \begin{equation}
   \underset{\w \in \mathbb R^p}{\text{minimize }}E(\w) := \ell(\y,\X\w) + \alpha \Omega(\nabla_\tau\w).
     \label{eq:opt_pb}
 \end{equation}
 The coefficients ${\w}$ define a spatial map in over the brain (one value per voxel).
-$\Omega \circ \nabla_\tau$ is the penalty term ($\nabla_\tau$ is the extended discrete gradient operator defined in equation \eqref{eq:extau} of section{sec:notation}), which simultaneously imposes both sparsity and structure (blobs). The different spatial regularization
+$\Omega \circ \nabla_\tau$ is the penalty term ($\nabla_\tau$ is the extended discrete gradient operator defined in section{sec:notation}, which simultaneously imposes both sparsity and structure (blobs). The different spatial regularization
 methods that have appeared in neuro-imaging literature can be cast into this
 correspond to different choices of the convex penalty $\Omega$ acting on the extended gradient of the coefficients $\w$. Viz,
 \[
@@ -90,20 +87,14 @@ The term {$\ell(\y,\X\w)$} is the
     &\mbox{ \text{ for least-squares (e.g in regression settings)}}\\
     \sum_{i=1}^n \log(1+\exp(-\y_i\X_i^T\w)),
     &\mbox{ \text{ for logistic regression (e.g in classification)}},\\\ldots\end{cases}$$
+\begin{marginfigure}[4cm]
+  \centering
+  \includegraphics[width=.7\linewidth]{figures/cartoon.pdf}
+  \caption{A cartoon showing a sparse and blobby brain map,
+  as would be sought for by SpaceNet models \eqref{eq:ss}.}
+  \label{fig:roi}
+\end{marginfigure}
 
- \begin{figure}[!htb] 
-  \includegraphics[width=.325\linewidth]{figures/svm.png}
-  \includegraphics[width=.325\linewidth]{figures/graphnet.png}
-  \includegraphics[width=.325\linewidth]{figures/tvl1.png}  
-  \caption{The figure shows results of comparing the SpaceNet  models TV-$\ell_1$ and
-    Graph-Net against an SVM (Support Vector Machine) classifier on
-    the visual-recognition dataset  \citep{haxby2001}
-    As can be seen from the figure, SpaceNet priors (TV-$\ell_1$, GraphNet, etc.)
-    yield stable and more intepretable maps. Figure taken from OHBM
-    presentation  \citep{spacenetohbm}.}
-  \label{fig:spacenet_maps}
-%  \end{marginfigure}
-\end{figure}
   The result of such regularized models, dubbed \emph{SpaceNet}
  \citep{spacenetohbm}, are brain maps which are both
 sparse (i.e regression coefficients $\w$ are zero everywhere, except at
@@ -121,7 +112,60 @@ differences in the values of the brain map). For example, see Fig.
 \ref{fig:spacenet_maps}.
 Also, such priors produce state-of-the-art methods for automatic
 extraction of functional brain atlases  \citep{abraham2013}.
-  
+
+blablablablablablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+
+  \begin{figure}[!htb] 
+  \includegraphics[width=.325\linewidth]{figures/svm.png}
+  \includegraphics[width=.325\linewidth]{figures/graphnet.png}
+  \includegraphics[width=.325\linewidth]{figures/tvl1.png}  
+  \caption{The figure shows results of comparing the SpaceNet  models TV-$\ell_1$ and
+    Graph-Net against an SVM (Support Vector Machine) classifier on
+    the visual-recognition dataset  \citep{haxby2001}
+    As can be seen from the figure, SpaceNet priors (TV-$\ell_1$, GraphNet, etc.)
+    yield stable and more intepretable maps. Figure taken from OHBM
+    presentation  \citep{spacenetohbm}.}
+  \label{fig:spacenet_maps}
+%  \end{marginfigure}
+\end{figure}
+
 %%  \citep{dohmatob2015spacenet}, \citep{abraham2013}, \citep{abrahamregion},
 %%  \citep{eickenberg2015total},
 \section{Efficient optimization of sparsity and smoothness regularized models}
@@ -129,6 +173,14 @@ Though the SpaceNet model presented above leads to superior estimators compared 
 the penalty term $\Omega \circ \nabla_\tau$ is neither smooth nor proximable.
 \footnote{ A function $f$ is said to be \textit{proximable} is the operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for $\ell_p$-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}
 For the penalty to fully exercise its
+structuring effect on the maps, this optimization problem must be
+solved to a good tolerance resulting in a computational challenge. Lack of good solver and explicit control of
+tolerance can lead to brain maps and conclusions that reflect
+properties of the solver more than of model coefficients, as illustrated in Fig. \ref{Fig:benchmarks_prni}.
+In our prize-winning PRNI paper  \citep{dohmatob2014benchmarking}, we did an extensive study of all solvers applicable to the problem in TV-$\ell_1$ special case (which happens to be the most difficult scenario).
+Our results outlined the best strategy: a double FISTA loop, where the
+inner loop computes the proximal operator of the penalty term, with approximate precision on the duality-gap. This was
+further refined and implemented in  \citep{varoquaux2015faasta}.
 \begin{figure}[!htb]
     \includegraphics[width=.331\linewidth]{face_vs_house_tol_0_1.pdf}%
 \llap{\color{white}\raisebox{.17\linewidth}{\rlap{\sffamily Stopping:
@@ -151,15 +203,6 @@ For the penalty to fully exercise its
  \citep{dohmatob2014benchmarking}}
   \label{Fig:benchmarks_prni}
 \end{figure}
-
-structuring effect on the maps, this optimization problem must be
-solved to a good tolerance resulting in a computational challenge. Lack of good solver and explicit control of
-tolerance can lead to brain maps and conclusions that reflect
-properties of the solver more than of model coefficients, as illustrated in Fig. \ref{Fig:benchmarks_prni}.
-In our prize-winning PRNI paper  \citep{dohmatob2014benchmarking}, we did an extensive study of all solvers applicable to the problem in TV-$\ell_1$ special case (which happens to be the most difficult scenario).
-Our results outlined the best strategy: a double FISTA loop, where the
-inner loop computes the proximal operator of the penalty term, with approximate precision on the duality-gap. This was
-further refined and implemented in  \citep{varoquaux2015faasta}.
 
   %% \begin{itemize}
   %% \item{proximal methods}

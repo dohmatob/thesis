@@ -783,25 +783,6 @@ patterns. The absence of a difference between these maps can be explained by the
 resting state networks are less focal than task-based activation-patterns, and
 so the former are less sensitive to the quality of the underlying registration procedure.
 
-\begin{marginfigure}
-%   \includegraphics[width=.24\linewidth]{figures/DC+T1_AnteriormedialPFC.png}
-% \includegraphics[width=.24\linewidth]{figures/DC+SBRef_AnteriormedialPFC.png}
-% \includegraphics[width=.24\linewidth]{figures/DC+T1_Ventro-medialPFC.png}
-% \includegraphics[width=.24\linewidth]{figures/DC+SBRef_Ventro-medialPFC.png}
-% \includegraphics[width=.24\linewidth]{figures/DC+T1_Rightparahippocampalgyrus.png}
-% \includegraphics[width=.24\linewidth]{figures/DC+SBRef_Rightparahippocampalgyrus.png}
-% \includegraphics[width=.24\linewidth]{figures/DC+T1_PCC.png}
-% \includegraphics[width=.24\linewidth]{figures/DC+SBRef_PCC.png}
-\includegraphics[width=1\linewidth]{figures/DC+T1_Leftlateralparietal.png}
-\includegraphics[width=1\linewidth]{figures/DC+SBRef_Leftlateralparietal.png}
-\includegraphics[width=1\linewidth]{figures/DC+T1_Rightlateralparietal.png}
-\includegraphics[width=1\linewidth]{figures/DC+SBRef_Rightlateralparietal.png}
-% \includegraphics[width=.24\linewidth]{figures/DC+T1_Posteriorcingulate.png}
-% \includegraphics[width=.24\linewidth]{figures/DC+SBRef_Posteriorcingulate.png}
-\caption{Comparing functional brain networks from subject fMRI images registered with both pipelines, namely the classical indirect T1-based method, and our proposed direct EPI-based method). Shown here are group-level unthresholded sub-component maps of the Default Mode Network (DMN) \citep{raichle2001}, using MNI coordinates reported in Table 1 of \citep{Watanabe2013}.}
-  \label{fig:dmn}
-\end{marginfigure}
-
 \section{Discussion and concluding remarks}
 \label{sec:discussion}
 Classical inter-subject registration pipelines use the T1 scan of a
@@ -827,6 +808,25 @@ T1-based strategy.
 Results on the HCP dataset \citep{VanEssen20122222} show that the proposed pipeline outperforms the classical T1-based indirect registration strategy, according to a variety of different quality metrics: Normalized Mutual Information --NMI (Figure \ref{fig:nmi}), residual inter-subject
 variance (Figure \ref{fig:cv}), and quality of estimated group template (Figure \ref{fig:template}), without compromising the quality of post-registration statistical analyses results (GLM, ICA, etc.).
 These results optimistic findings of \citep{grabner2014} on a larger dataset (110 subjects, compared to 10 in the reference paper) and in a 3T setting.
+
+\begin{marginfigure}
+%   \includegraphics[width=.24\linewidth]{figures/DC+T1_AnteriormedialPFC.png}
+% \includegraphics[width=.24\linewidth]{figures/DC+SBRef_AnteriormedialPFC.png}
+% \includegraphics[width=.24\linewidth]{figures/DC+T1_Ventro-medialPFC.png}
+% \includegraphics[width=.24\linewidth]{figures/DC+SBRef_Ventro-medialPFC.png}
+% \includegraphics[width=.24\linewidth]{figures/DC+T1_Rightparahippocampalgyrus.png}
+% \includegraphics[width=.24\linewidth]{figures/DC+SBRef_Rightparahippocampalgyrus.png}
+% \includegraphics[width=.24\linewidth]{figures/DC+T1_PCC.png}
+% \includegraphics[width=.24\linewidth]{figures/DC+SBRef_PCC.png}
+\includegraphics[width=1\linewidth]{figures/DC+T1_Leftlateralparietal.png}
+\includegraphics[width=1\linewidth]{figures/DC+SBRef_Leftlateralparietal.png}
+\includegraphics[width=1\linewidth]{figures/DC+T1_Rightlateralparietal.png}
+\includegraphics[width=1\linewidth]{figures/DC+SBRef_Rightlateralparietal.png}
+% \includegraphics[width=.24\linewidth]{figures/DC+T1_Posteriorcingulate.png}
+% \includegraphics[width=.24\linewidth]{figures/DC+SBRef_Posteriorcingulate.png}
+\caption{Comparing functional brain networks from subject fMRI images registered with both pipelines, namely the classical indirect T1-based method, and our proposed direct EPI-based method). Shown here are group-level unthresholded sub-component maps of the Default Mode Network (DMN) \citep{raichle2001}, using MNI coordinates reported in Table 1 of \citep{Watanabe2013}.}
+  \label{fig:dmn}
+\end{marginfigure}
 
 Remarkably, we observed that according to low-level QA metrics
 like NMI (Figure \ref{fig:nmi}), residual inter-subject spatial
@@ -979,7 +979,6 @@ subject-specific physiology.
 % \end{figure}
 
 % Certain imaging techniques are more adapted than other to answer certain neuroscientific questions. Due to its good spatial resolution and whole brain coverage, fMRI is particularly well adapted to \emph{localize} the effect of a certain experimental condition. This task is not reduced to the construction of brain maps, but also involves the understanding of the underlying brain connectivity~\citep{johansen2005functional,behrens2006consistent} and the effects regions exert on each other in a certain experimental context~\citep{pessiglione2007brain, behrens2007learning}. One of the main hopes in functional imagining is that it might be used as an objective diagnosis tool for several diseases. In particular, the aim is to find some \emph{biomarkers} for psychiatric diseases by comparing different population of patients: this is the case for autism, schizophrenia or Alzheimer's disease. 
-
 
 \begin{fullwidth}
 \bibliographystyle{plainnat}
