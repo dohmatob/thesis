@@ -174,13 +174,13 @@ patterns like statistical parametric maps of brain activation, raw
 pre-registered (into a common coordinate space) fMRI time-series, PET
 images, etc. We would like to decompose these images as a product of
 $k \le \min(n, p)$ component maps (aka latent factors or dictionary atoms)
- $\B{v}^1,
-\ldots, \B{v}^k \in \mathbb{R}^{p \times 1}$ and modulation coefficients
-$\B{u}_1, \ldots, \B{u}_n \in \mathbb R^{k \times 1}$ called \textit{codes} (one $k$-dimensional code per sample point), i.e
+ $\B{d}^1,
+\ldots, \B{d}^k \in \mathbb{R}^{p \times 1}$ and modulation coefficients
+$\B{c}_1, \ldots, \B{c}_n \in \mathbb R^{k \times 1}$ called \textit{codes} (one $k$-dimensional code per sample point), i.e
 \begin{eqnarray}
-\B{x}_i \approx \V \B{u}_i, \text{ for } i=1,2,\ldots,n
+\B{x}_i \approx \B{D} \B{c}_i, \text{ for } i=1,2,\ldots,n
 \end{eqnarray}
-where $\V := [\B{v}^1|\ldots|\B{v}^k] \in \mathbb{R}^{p \times k}$, an unknown dictionary to be estimated.
+where $\B{D} := [\B{d}^1|\ldots|\B{d}^k] \in \mathbb{R}^{p \times k}$, an unknown dictionary to be estimated.
 Typically, $p \sim 10^{5}$ --
 $10^{6}$ (in full-brain high-resolution fMRI) and $n \sim 10^{2}$ --
 $10^{5}$ (for example, in considering all the 500 subjects and all
@@ -195,43 +195,43 @@ case where $n / p$ is big; it is relevant whenever $n$ is large,
 leading to prohibitive memory issues irrespective of how big or small
 $p$ is.
 
-As explained in section \ref{sec:intro}, we want the component maps (aka dictionary atoms) $\B{v}^j$ to be sparse and spatially smooth. A principled way to achieve such a goal is to impose a boundedness constraint on $\ell_1$-like norms of these maps to achieve sparsity and
+As explained in section \ref{sec:intro}, we want the component maps (aka dictionary atoms) $\B{d}^j$ to be sparse and spatially smooth. A principled way to achieve such a goal is to impose a boundedness constraint on $\ell_1$-like norms of these maps to achieve sparsity and
 simultaneously impose smoothness by penalizing their Laplacian.
 Thus, we propose the following penalized dictionary-learning model
 \begin{eqnarray}
 \begin{split}
-  &\min_{\V \in \mathbb R^{p \times k}}\left(\lim_{n \rightarrow \infty}\frac{1}{n}\sum_{i=1}^n\min_{\B{u}_i \in \mathbb R^{k}}\frac{1}{2} \|\B{x}_i-\V\B{u}_i\|_2^2 +  \frac{1}{2}\alpha\|\B{u}_i\|_2^2\right) + \gamma\sum_{j=1}^k{\text{Lap}}(\B{v}^j).\\
-  &\text{subject to }\B{v}^1,\ldots,\B{v}^k \in \mathcal C
+  &\min_{\B{D} \in \mathbb R^{p \times k}}\left(\lim_{n \rightarrow \infty}\frac{1}{n}\sum_{i=1}^n\min_{\B{c}_i \in \mathbb R^{k}}\frac{1}{2} \|\B{x}_i-\B{D}\B{c}_i\|_2^2 +  \frac{1}{2}\alpha\|\B{c}_i\|_2^2\right) + \gamma\sum_{j=1}^k{\text{Lap}}(\B{d}^j).\\
+  &\text{subject to }\B{d}^1,\ldots,\B{d}^k \in \mathcal C
 \end{split}
 % XXX: I am discovery the l1 penalty on U. Do we really need this ?
 \label{eq:ss}
 \end{eqnarray}
 The ingredients in the model can be broken down as follows:
 \begin{itemize}
-\item Each of the terms $\max_{\B{u}_i \in \mathbb R^k}\dfrac{1}{2}\|\B{x}_i-\V\B{u}_i\|_2^2$ measures how well the current dictionary $\V$ explains data $\B{x}_i$ from subject $i$.
-  %% \dfrac{1}{2n}\|\X -\U\B{v}^T\|_{\text{Fro}}^2
-  %% $ is the mean reconstruction error on $n$ subjects and measures how well the codes $\B{u}_1,\B{u}_2,\ldots,\B{u}_n$ approximate the data $\X$ using the current dictionary $\V$, the vector $\B{x}_i-\V\B{u}_i$ being the reconstruction error for subject $i$. Both the $\U$ and $\V$ matrices are parameters to be estimated.
-The Ridge penalty term $\phi(\B{u}_i) \equiv \frac{1}{2}\alpha\|\B{u}_i\|_2^2$
+\item Each of the terms $\max_{\B{c}_i \in \mathbb R^k}\dfrac{1}{2}\|\B{x}_i-\B{D}\B{c}_i\|_2^2$ measures how well the current dictionary $\B{D}$ explains data $\B{x}_i$ from subject $i$.
+  %% \dfrac{1}{2n}\|\X -\B{C}\B{d}^T\|_{\text{Fro}}^2
+  %% $ is the mean reconstruction error on $n$ subjects and measures how well the codes $\B{c}_1,\B{c}_2,\ldots,\B{c}_n$ approximate the data $\X$ using the current dictionary $\B{D}$, the vector $\B{x}_i-\B{D}\B{c}_i$ being the reconstruction error for subject $i$. Both the $\B{C}$ and $\B{D}$ matrices are parameters to be estimated.
+The Ridge penalty term $\phi(\B{c}_i) \equiv \frac{1}{2}\alpha\|\B{c}_i\|_2^2$
 on the codes amounts to assuming that the energy of the decomposition is
 spread across the different samples. In the context of a specific
 neuro-imaging problem, if there are good grounds to assume that each
 sample / subject should be sparsely encoded across only a few atoms of
-the dictionary, then we can use the $\ell_1$ penalty $\phi(\B{u}_i) :=
-\alpha\|\B{u}_i\|_1$ as in  \citep{mairal2010}. We note that in contrast to
+the dictionary, then we can use the $\ell_1$ penalty $\phi(\B{c}_i) :=
+\alpha\|\B{c}_i\|_1$ as in  \citep{mairal2010}. We note that in contrast to
 the $\ell_1$ penalty, the Ridge leads to stable codes. The parameter $\alpha > 0$ controls the amount of penalization on the codes. %, which can be updated in closed-form via SVD. %% (w.r.t small pertubations in the input data $\X$) due to strong-convexity of the resulting coding problem \eqref{eq:coding}.
 
-  %% It is essential to constrain the magnitude of the codes $\B{u}_i$ to
+  %% It is essential to constrain the magnitude of the codes $\B{c}_i$ to
   %% prevent them from becoming arbitrarily large, which would lead to a
   %% pathological all-zero values in the dictionary atoms, and vice versa.
 
   %% The proposed Laplacian penalty terms
-  %% ${\text{Lap}}(\B{v}^j)$ defined in \eqref{eq:sob} imposes spatial smoothness
-  %% on the dictionary atoms $\B{v}^j$, see e.g. Fig. \ref{fig:roi}.
+  %% ${\text{Lap}}(\B{d}^j)$ defined in \eqref{eq:sob} imposes spatial smoothness
+  %% on the dictionary atoms $\B{d}^j$, see e.g. Fig. \ref{fig:roi}.
 %% \textbf{XXX I don't see what you mean here}.
 \item The constraint set $\mathcal C$ is a sparsity-inducing compact
 simple\footnote{Mainly in the sense that the Euclidean projection onto
 $\mathcal C$ should be easy to compute.} convex subset of $\mathbb R^p$
-like an $\ell_1$-ball $\mathbb B_{p,\ell_1}(\tau)$ or a simplex $\mathcal S_p(\tau)$, defined respectively as $$\mathbb B_{p,\ell_1}(\tau) := \left\{\v \in \mathbb R^p\text{ s.t }|\v_1| + |\v_2| + \ldots + |\v_p| \le \tau\right\},$$
+like an $\ell_1$-ball $\mathbb B_{p,\ell_1}(\tau)$ or a simplex $\mathcal S_p(\tau)$, defined respectively as $$\mathbb B_{p,\ell_1}(\tau) := \left\{\B{d} \in \mathbb R^p\text{ s.t }|\B{d}_1| + |\B{d}_2| + \ldots + |\B{d}_p| \le \tau\right\},$$
 and
 $\mathcal S_p(\tau) := \mathbb B_{p,\ell_1}(\tau) \cap \mathbb R_+^p.$
 Other choices (e.g ElasticNet ball) are of course possible. The radius parameter $\tau > 0$ controls the
@@ -259,7 +259,7 @@ dictionary-learning framework of  \citep{mairal2010} --henceforth referred to as
 % \paragraph*{Optimizing the proposed model: a simple algorithm}
 The objective function in problem
 \eqref{eq:ss} is separately convex and block-separable
-w.r.t each of $\U$ and $\V$ but is not jointly convex in $(\U,\V)$. Also,
+w.r.t each of $\B{C}$ and $\B{D}$ but is not jointly convex in $(\B{C},\B{D})$. Also,
 it is continuously differentiable on the constraint set, which is
 compact and convex. Thus by classical results (e.g Bertsekas  \citep{bertsekas1999nonlinear}), the problem can be solved via
 Block-Coordinate Descent
@@ -277,101 +277,101 @@ It relies on Alg. \ref{Tab:algo_sobdict} for performing the structured dictionar
   \eqref{eq:ss}}
 \label{Tab:algo}
 \begin{algorithmic}[1]
-\REQUIRE %% Random data $x \in \mathbb R^m$ with unknown distribution
+\Require %% Random data $x \in \mathbb R^m$ with unknown distribution
 %% $p(x)$, but with an effective way of empirically sampling from this
 %% distribution; 
 Regularization parameters $\alpha, \gamma > 0$;
-initial dictionary $\V \in \mathbb R^{p \times k}$,
+initial dictionary $\B{D} \in \mathbb R^{p \times k}$,
 number of passes / iterations $T$ on the data.
-\STATE $\A_0 \leftarrow 0 \in \mathbb R^{k \times k}$, $\B{B}_0
+\State $\A_0 \leftarrow 0 \in \mathbb R^{k \times k}$, $\B{B}_0
 \leftarrow 0 \in \mathbb R^{p \times k}$ \text (historical ``sufficient statistics'')
-\FOR{$t = 1$ to $T$}
-\STATE Empirically draw a sample point $\B{x}_t$ at random.
-\STATE Code update: Ridge-regression (via SVD of current dictionary $\V$)
+\For{$t = 1$ to $T$}
+\State Empirically draw a sample point $\B{x}_t$ at random.
+\State Code update: Ridge-regression (via SVD of current dictionary $\B{D}$)
 \begin{equation}
-\B{u}_t \leftarrow \argmin_{\u \in \mathbb R^k}\frac{1}{2}\|\B{x}_t -
-\V \u\|_2^2 + \frac{1}{2}\alpha\|\u\|_2^2.
+\B{c}_t \leftarrow \argmin_{\B{c} \in \mathbb R^k}\frac{1}{2}\|\B{x}_t -
+\B{D} \B{c}\|_2^2 + \frac{1}{2}\alpha\|\B{c}\|_2^2.
 \label{eq:coding}
 \end{equation}
-\STATE Rank-1 updates:
-$\A_t \leftarrow \A_{t-1} + \B{u}_t\B{u}_t^T,\; \B{B}_t \leftarrow \B{B}_{t-1} + \B{x}_t\B{u}_t^T$
-\STATE BCD dictionary update: Compute update for dictionary $\V$ using
+\State Rank-1 updates:
+$\A_t \leftarrow \A_{t-1} + \B{c}_t\B{c}_t^T,\; \B{B}_t \leftarrow \B{B}_{t-1} + \B{x}_t\B{c}_t^T$
+\State BCD dictionary update: Compute update for dictionary $\B{D}$ using
 Alg. \ref{Tab:algo_sobdict}.
-\ENDFOR
+\EndFor
 \end{algorithmic}
 \end{algorithm}
 
 \paragraph*{Update of the codes: Ridge-coding.}
 The Ridge sub-problem for updating the codes%, namely
 \begin{equation}
-  \B{u}_t = (\B{V}^T\V + \alpha \I)^{-1}\B{V}^T\B{x}_t
+  \B{c}_t = (\B{D}^T\B{D} + \alpha \I)^{-1}\B{D}^T\B{x}_t
   \label{eq:code}
 \end{equation}
-is computed via an SVD of the current dictionary $\V$.
-For $\alpha \approx 0$, $\B{u}_t$
+is computed via an SVD of the current dictionary $\B{D}$.
+For $\alpha \approx 0$, $\B{c}_t$
 reduces to the orthogonal projection of $\B{x}_t$ onto the image of the current
-dictionary $\V$.
+dictionary $\B{D}$.
 % Once this SVD is computed, the codes corresponding to a batch of inputs $\B{x}_t$ can be computed in closed-form.
-As in  \citep{mairal2010}, we speed up the overall algorithm by sampling mini-batches of $\eta$ samples $\B{x}_t,\ldots,\B{x}_\eta$ and compute the corresponding codes $\B{u}_1$, $\B{u}_2$, ..., $\B{u}_\eta$ at once. We typically use we use mini-batches of size $\eta \sim 20$ images.
+As in  \citep{mairal2010}, we speed up the overall algorithm by sampling mini-batches of $\eta$ samples $\B{x}_t,\ldots,\B{x}_\eta$ and compute the corresponding codes $\B{c}_1$, $\B{c}_2$, ..., $\B{c}_\eta$ at once. We typically use we use mini-batches of size $\eta \sim 20$ images.
 
 \paragraph*{BCD dictionary update for the dictionary atoms.}
 %% \paragraph{Updating the codes.}
-%% For a fixed dictionary $\V$, and an incoming sample point $\B{x}_t$ at time
-%% $t$, the optimization of the energy $E(\U, \V)$ in
+%% For a fixed dictionary $\B{D}$, and an incoming sample point $\B{x}_t$ at time
+%% $t$, the optimization of the energy $E(\B{C}, \B{D})$ in
 %% \eqref{eq:ss}, for the code can be written as
 %% \begin{eqnarray}
-%% \B{u}_t = \argmin_{\u \in \mathbb R^k}\frac{1}{2}\|\V \u -
-%% \B{x}_t\|_2^2 + \alpha\phi(\u).
+%% \B{c}_t = \argmin_{\B{c} \in \mathbb R^k}\frac{1}{2}\|\B{D} \B{c} -
+%% \B{x}_t\|_2^2 + \alpha\phi(\B{c}).
 %% \end{eqnarray}
 %% With the choice $\phi = \|.\|_1$, this is a sparse-coding problem  \citep{mairal2009,mairal2010} and
 %% corresponds to a Lasso regression and can be effectively solved with a
 %% LARS-Lasso solver. With the choice $\phi = \frac{1}{2}\|.\|_2^2$, this
 %% problem corresponds to Ridge regression and admits a closed-form
 %% solution in terms of the SVD --singular-value decomposition-- of the
-%% current dictionary $\V$.
+%% current dictionary $\B{D}$.
 
-Let us define time-varying matrices $\A_t := \sum_{i=1}^t\B{u}_i\B{u}_i^T \in \mathbb R^{k \times k}$ and $\B{B}_t := \sum_{i=1}^t\B{x}_i\B{u}_i^T \in \mathbb R^{p \times k}$, where $t=1,2,\ldots$ denotes time. We fix the matrix of codes $\U$, and for each $j$, consider the update of the $j$th dictionary atom, with all the other atoms $\B{v}^{k\ne j}$
-kept fixed. The update for the atom $\B{v}^j$ can then be written as
+Let us define time-varying matrices $\A_t := \sum_{i=1}^t\B{c}_i\B{c}_i^T \in \mathbb R^{k \times k}$ and $\B{B}_t := \sum_{i=1}^t\B{x}_i\B{c}_i^T \in \mathbb R^{p \times k}$, where $t=1,2,\ldots$ denotes time. We fix the matrix of codes $\B{C}$, and for each $j$, consider the update of the $j$th dictionary atom, with all the other atoms $\B{d}^{k\ne j}$
+kept fixed. The update for the atom $\B{d}^j$ can then be written as
 \begin{eqnarray}
   \label{eq:qp}
 \begin{split}
-  \B{v}^j &= \argmin_{\v^j \in \mathcal C}\frac{1}{t}\sum_{i=1}^t\left(\frac{1}{2}\|\B{x}_i
-  -\V\B{u}_i\|_{2}^2\right) + \gamma{\text{Lap}}(\v^j)\\
-  &=\argmin_{\v^j \in \mathcal C}\left(\sum_{i=1}^t\frac{1}{2}\|\B{x}_i -\V\B{u}_i\|_{2}^2\right)
-  + \gamma t{\text{Lap}}(\v^j)\\
-  &=\argmin_{\v^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\v^j, \underbrace{\B{v}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \V\B{a}^j)}_{\text{refer to  \citep{mairal2010} for the details}}),
+  \B{d}^j &= \argmin_{\B{d}^j \in \mathcal C}\frac{1}{t}\sum_{i=1}^t\left(\frac{1}{2}\|\B{x}_i
+  -\B{D}\B{c}_i\|_{2}^2\right) + \gamma{\text{Lap}}(\B{d}^j)\\
+  &=\argmin_{\B{d}^j \in \mathcal C}\left(\sum_{i=1}^t\frac{1}{2}\|\B{x}_i -\B{D}\B{c}_i\|_{2}^2\right)
+  + \gamma t{\text{Lap}}(\B{d}^j)\\
+  &=\argmin_{\B{d}^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\B{d}^j, \underbrace{\B{d}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \B{D}\B{a}^j)}_{\text{refer to  \citep{mairal2010} for the details}}),
 \end{split}
 \end{eqnarray}
 where
-$F_{\tilde{\gamma}}(\v^j,\a) \equiv \frac{1}{2}\|\v^j - \a\|_2^2
-  + \tilde{\gamma}{\text{Lap}}(\v^j) = \frac{1}{2}\|\v^j - \a\|_2^2
-  + \frac{1}{2}\|\nabla \v^j\|^2.
+$F_{\tilde{\gamma}}(\B{d}^j,\a) \equiv \frac{1}{2}\|\B{d}^j - \a\|_2^2
+  + \tilde{\gamma}{\text{Lap}}(\B{d}^j) = \frac{1}{2}\|\B{d}^j - \a\|_2^2
+  + \frac{1}{2}\|\nabla \B{d}^j\|^2.
 $
 Problem \eqref{eq:qp} is thus a compactly-constrained minimization of the $1$-strongly-convex quadratic functions $F_{\tilde{\gamma}}(.,\a): \mathbb R^p \rightarrow \mathbb R$ defined above. 
 \begin{algorithm}
 \caption{BCD dictionary update with Laplacian prior}
 \label{Tab:algo_sobdict}
 \begin{algorithmic}[1]
-\REQUIRE $\V = [\B{v}^1|\ldots|\B{v}^k] \in \mathbb{R}^{p \times k}$ (input
+\Require $\B{D} = [\B{d}^1|\ldots|\B{d}^k] \in \mathbb{R}^{p \times k}$ (input
 dictionary),\\
 $\A_t = [\B{a}^1|\ldots|\B{a}^k] \in \mathbb R^{k \times k}$, $\B{B}_t =
 [\B{b}^1|\ldots|\B{b}^k] \in \mathbb R^{p \times k}$ (history)
-\WHILE{stopping criteria not met,}
-\FOR{$j = 1$ to $r$}
-\STATE Fix the code $\U$ and all atoms $k \ne j$ of the
-dictionary $\V$ and then update $\B{v}^j$ as follows
+\While{stopping criteria not met,}
+\For{$j = 1$ to $r$}
+\State Fix the code $\B{C}$ and all atoms $k \ne j$ of the
+dictionary $\B{D}$ and then update $\B{d}^j$ as follows
 % by solving the following sub-problem via a fast projected-gradient scheme:
 \begin{eqnarray}
   \begin{split}
-    \B{v}^j &\leftarrow \argmin_{\v^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\v^j, \B{v}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \V\B{a}^j))
+    \B{d}^j &\leftarrow \argmin_{\B{d}^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\B{d}^j, \B{d}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \B{D}\B{a}^j))
   \end{split}
 \label{eq:v_sob}
 \end{eqnarray}
 \hspace{1.6cm}(See below for details on the derivation and the resolution of this problem)
 %% (For details on the Laplacian filtering step, see equation \eqref{eq:fft}
 %% of paragraph* \ref{sec:sob})
-\ENDFOR
-\ENDWHILE
+\EndFor
+\EndWhile
 \end{algorithmic}
 \end{algorithm}
 This problem can further be identified with a \text{denoising} instance
@@ -383,15 +383,15 @@ Fast first-order methods like FISTA \citep{beck09fista} with optimal rates $\mat
 One computes the Lipschitz constant to be
 $L_{F_{\tilde{\gamma}}(.,\a)} \equiv 1 + \tilde{\gamma} L_{{\text{Lap}}} = 1 + 4D\tilde{\gamma}$, where as before, $D$ is the number of spatial dimensions with $D=3$ for volumic images. One should also mention that under certain circumstances, it is possible to perform the dictionary updates in the Fourier domain, via FFT. This alternative approach is developed in the Appendix of  \citep{dohmatob2016}.
 
-Finally, one notes that, since constraints in problem \eqref{eq:ss} are separable in the dictionary atoms $\B{v}^j$, the BCD dictionary-update algorithm Alg. \ref{Tab:algo_sobdict} is guaranteed to converge to a global optimum, at each iteration  \citep{bertsekas1999nonlinear, mairal2010}.
+Finally, one notes that, since constraints in problem \eqref{eq:ss} are separable in the dictionary atoms $\B{d}^j$, the BCD dictionary-update algorithm Alg. \ref{Tab:algo_sobdict} is guaranteed to converge to a global optimum, at each iteration  \citep{bertsekas1999nonlinear, mairal2010}.
 
 \paragraph*{How difficult is the dictionary update for our proposed model ?}
-A favorable property of the vanilla dictionary-learning  \citep{mairal2010} is that the BCD dictionary updates amount to Euclidean projections onto the constraint set $\mathcal C$, which can be easily computed for a variety of choices (simplexes, closed convex balls, etc.). One may then ask: do we retain a comparable algorithmic simplicity even with the additional Laplacian terms $y{\text{Lap}}(\B{v}^j)$ ? The short answer is yes:
+A favorable property of the vanilla dictionary-learning  \citep{mairal2010} is that the BCD dictionary updates amount to Euclidean projections onto the constraint set $\mathcal C$, which can be easily computed for a variety of choices (simplexes, closed convex balls, etc.). One may then ask: do we retain a comparable algorithmic simplicity even with the additional Laplacian terms $y{\text{Lap}}(\B{d}^j)$ ? The short answer is yes:
 empirically, we found that 1 or 2 iterations of FISTA \citep{beck09fista}
 are sufficient reach an accuracy of $10^{-6}$ in problem \eqref{eq:qp}, which is sufficient to obtain a good decomposition in the overall algorithm.
 However, choosing $\gamma$ ``too large'' will provably cause the dictionary updates to eventually take forever to run. Indeed, the Lipschitz constant in problem \eqref{eq:qp} is $L_t = 1 + 4D \gamma (a_{j,j}/t)^{-1}$, which will blow-up (leading to arbitrarily small step-sizes) unless $\gamma$ is chosen so that
 \begin{equation}
-\gamma = \gamma_t = \mathcal O\left(\max_{1 \le j \le k}a_{j,j}\right) = \mathcal O\left(\max_{1 \le j \le k}\sum_{i=1}^t\|\U^j\|_2^2/t\right) = \mathcal O(\|A_t\|_{\infty,\infty}/t).
+\gamma = \gamma_t = \mathcal O\left(\max_{1 \le j \le k}a_{j,j}\right) = \mathcal O\left(\max_{1 \le j \le k}\sum_{i=1}^t\|\B{C}^j\|_2^2/t\right) = \mathcal O(\|A_t\|_{\infty,\infty}/t).
 \label{eq:blowup}
 \end{equation}
 
@@ -411,8 +411,8 @@ implemented in the Python programming language.
 For the implementation of the propose Alg. \ref{Tab:algo}, we
 implemented a modified version of \textit{scikit-learn} Python library's
   \textit{dict\_learning} module, to handle more general constraint sets
-  and more general penalties both for the codes $\B{u}_i$ and for the
-  dictionary atoms $\B{v}^j$. The projection onto the $\ell_1$-ball $\mathcal C$ was coded in Cython, a toolkit for writing Python code to run at the speed of the C language.
+  and more general penalties both for the codes $\B{c}_i$ and for the
+  dictionary atoms $\B{d}^j$. The projection onto the $\ell_1$-ball $\mathcal C$ was coded in Cython, a toolkit for writing Python code to run at the speed of the C language.
 
 \paragraph*{Convergence of the overall algorithm.}
 The Convergence of our algorithm (to a local optimum) is guaranteed since all hypotheses of  \citep{mairal2010} are satisfied. For example, assumption \textbf{(A)} is satisfied because fMRI data are naturally compactly supported. Assumption \textbf{(C)} is satisfied since the ridge-regression problem \eqref{eq:coding} has a unique solution. More details are provided in the
@@ -425,7 +425,7 @@ problem  \citep{mairal2010,jenatton2010structured}, and our proposed model \eqre
 The results are presented in Fig. \ref{fig:param}.
 We make the following observations:
 %% For the Ridge penalty $\ell_1$  on the codes, we sufficiently small. This is reasonable, since morally this penalty only has a numerical interest, namely to regularized the estimation of the codes. Taking it too big (say $ ~ 1$ or above) leads to pathological dictionaries in which all the components look alike, thus underfitting.
-Taking the sparsity parameter $\tau$ in \eqref{eq:ss} too large leads to dense atoms that perfectly explain the data but are not very intepretable. Taking it too small leads to overly sparse maps that barely explain the data. This normalized sparsity metric (small is better, \textit{ceteris paribus}) is defined as the mean ratio $\|\B{v}^j\|_1 / \|\B{v}^j\|_2$ over the dictionary atoms. % %% As expected this metric increases with increasing values of $\gamma$ (everything else held fixed) as sparsity is being compromised for more structure.
+Taking the sparsity parameter $\tau$ in \eqref{eq:ss} too large leads to dense atoms that perfectly explain the data but are not very intepretable. Taking it too small leads to overly sparse maps that barely explain the data. This normalized sparsity metric (small is better, \textit{ceteris paribus}) is defined as the mean ratio $\|\B{d}^j\|_1 / \|\B{d}^j\|_2$ over the dictionary atoms. % %% As expected this metric increases with increasing values of $\gamma$ (everything else held fixed) as sparsity is being compromised for more structure.
 \begin{figure}[!htbp]
   \includegraphics[width=.45\linewidth]{figures/heat_LANGUAGE_1.pdf}
 %   \hspace{-.25cm}
@@ -436,7 +436,7 @@ In the experiments, $\alpha$ was chosen according to \eqref{eq:varyingalpha}. \t
     %% \textbf{\textit{(c)}:} The average number of connected components (aka blobs) in an atom of the dictionary.
     Average normalized sparsity of the dictionary atoms. % as a function of model parameters.
   }
-  % \vspace{-10pt}
+  % \B{d}space{-10pt}
   \label{fig:param}
 \end{figure}
 
@@ -469,7 +469,7 @@ was retained as a good strategy for setting the Laplacian regularization $\gamma
 %% As a side note, if we impose and $\ell_1$ penalty on the codes instead of a Ridge, then it turns out that one can obtain a reasonable analytic upper bound for the regularization parameter $\alpha$. In did, in this case it turns out that
 
 %% \begin{equation}
-%% \text{if }  \alpha \ge \alpha_{\text{max}} := \|\X\|_{\infty,\infty} := \sup_{t \ge 0}\|\B{x}_t\|_\infty := \sup_{t \ge 0}\max_{1 \le j \le p}|\X^j_t|, \text{ then } \u_t = 0,\; \forall t \ge 0.
+%% \text{if }  \alpha \ge \alpha_{\text{max}} := \|\X\|_{\infty,\infty} := \sup_{t \ge 0}\|\B{x}_t\|_\infty := \sup_{t \ge 0}\max_{1 \le j \le p}|\X^j_t|, \text{ then } \B{c}_t = 0,\; \forall t \ge 0.
 %% \end{equation}
 %% The derivation of this bound is provided in the Appendix \ref{sec:alphamax}.
 %% Thus, we may only consider values of the regularization parameter in the range $0 \le \alpha \le \alpha_{\text{max}}$.
@@ -477,9 +477,9 @@ was retained as a good strategy for setting the Laplacian regularization $\gamma
 %% In 1975, Hoerl and Kennard (the original inventors of the Ridge estimator)
 %% proposed to use
 %% \begin{equation}
-%%   \alpha_{\text{HK}} = \hat{\sigma}^2 / \max_{i}\hat{\u}_i^2,
+%%   \alpha_{\text{HK}} = \hat{\sigma}^2 / \max_{i}\hat{\B{c}}_i^2,
 %% \end{equation}
-%% where $\hat{\sigma}^2 = \|\B{x}_i - \V\hat{u}_i\|_2^2 / (p - k - 1)$ is an unbiased estimate for the variance of the Ridge residuals $\r_i = \B{x}_i - \V\hat{u}_i$. A simple computation shows that
+%% where $\hat{\sigma}^2 = \|\B{x}_i - \B{D}\hat{u}_i\|_2^2 / (p - k - 1)$ is an unbiased estimate for the variance of the Ridge residuals $\r_i = \B{x}_i - \B{D}\hat{u}_i$. A simple computation shows that
 %% \begin{equation}
 %%   \alpha_{\text{HK}} = \mathcal O(1/p).
 %% \end{equation}
@@ -488,7 +488,7 @@ was retained as a good strategy for setting the Laplacian regularization $\gamma
 %% ...
 
 \paragraph{Initialization of the dictionary.}
-Problem \eqref{eq:ss} is non-convex jointly in  $(\U, \V)$, and so initialization might be a might be a crucial issue. However, in our experiments, we have observed that even randomly initialized dictionaries eventually produce sensible results that do not jitter much across different runs of the same experiment. %%  In our experiments on activation $Z$-maps from task fMRI contrasts (see section \ref{sec:exp}), we found that extracting blobs from the thresholded across-subject mean activation map (a relatively easy segmentation problem) and keeping the connected components which a reasonably big --say $1500\text{mm}^3$--, and then using the so-obtained regions-of-interest (ROIs) maps as initialization for the dictionary in Alg. 1 also works well in practice.
+Problem \eqref{eq:ss} is non-convex jointly in  $(\B{C}, \B{D})$, and so initialization might be a might be a crucial issue. However, in our experiments, we have observed that even randomly initialized dictionaries eventually produce sensible results that do not jitter much across different runs of the same experiment. %%  In our experiments on activation $Z$-maps from task fMRI contrasts (see section \ref{sec:exp}), we found that extracting blobs from the thresholded across-subject mean activation map (a relatively easy segmentation problem) and keeping the connected components which a reasonably big --say $1500\text{mm}^3$--, and then using the so-obtained regions-of-interest (ROIs) maps as initialization for the dictionary in Alg. 1 also works well in practice.
 %% However we recommend the former approach, as it is more robust and needs less intervention.
 %% Moreover, counting the number of these connected components yields a heuristic way to set the number of atoms $k$ in the dictionary.
 
@@ -734,10 +734,6 @@ way do dimensionality reduction and ROI extraction in future.
 \paragraph{Implementation.} The authors' implementation of the proposed
 SS0MF \eqref{eq:ss} model will soon be made available as part of the
 \textit{Nilearn} package  \citep{nilearn}.
-
-
-\chapter{Prediction of cognitive activation maps from task-free resting-state data}
-...
 
 
 % \newglossaryentry{MRI}{name=MRI,description={{Magnetic Resonance Imaging}}}

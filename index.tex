@@ -1,5 +1,7 @@
 \documentclass[nobib, a4paper, notoc, twoside, justified]{tufte-book}
 
+\usepackage{algorithm,algorithmicx,algpseudocode}
+
 \usepackage{amsmath,amssymb,amsfonts,amsbsy,amsthm}
 
 \usepackage{wrapfig}
@@ -10,8 +12,6 @@
 \usepackage[sectionbib]{natbib}
 \usepackage[sectionbib]{chapterbib}
 \usepackage[toc, xindy]{glossaries}
-\usepackage{algorithm}
-\usepackage{algorithmic}
 \usepackage{minitoc}
 \usepackage{booktabs}
 \usepackage{color}
@@ -27,8 +27,8 @@
 \renewcommand{\cftsecfont}{\it \sffamily \Large}
 \renewcommand{\cftsubsecfont}{\sffamily \large}
 
-% \usepackage{mdframed}
-% \usepackage{titletoc}
+\usepackage{mdframed}
+\usepackage{titletoc}
 
 % \definecolor{secnum}{RGB}{13,151,225}
 % \definecolor{ptcbackground}{RGB}{212,237,252}
@@ -599,7 +599,7 @@ $\text{vec}(\B{A})$ & Vectorization of a matrix & Concatenation of the columns o
 
 \include{chapter_2/chapter_2}
 
-% \include{chapter_5/chapter_5}
+\include{chapter_5/chapter_5}
 
 \include{chapter_6/chapter_6}
 
