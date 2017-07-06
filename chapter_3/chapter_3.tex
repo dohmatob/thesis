@@ -4,19 +4,18 @@
 \markright{{~{\rm \ref{chap:hrf_estimation}}. Data-driven HRF estimation}\hfill}{}
 
 \section{SpaceNet: spatial priors for brain analysis}
-Sparsity- and structure-inducing priors are used to
-perform jointly the prediction of a target variable and region
-segmentation in multivariate analysis settings.
-Specifically, it has been shown that one can employ priors like Total
-Variation (TV)  \cite{michel2011tv}, TV-$\ell_1$
- \cite{baldassarre2012,gramfort2013}, TV-ElasticNet
- \cite{dubois2014predictive},
-and GraphNet  \cite{grosenick2013}
-(aka Smooth-Lasso  \cite{hebiri2011})
-%\footnote{Henceforth, we will use GraphNet and S-Lasso
-%interchangeably.}
-to regularize regression and classification
-problems in brain imaging.
+Functional MRI (fMRI) data, that provide an indirect measure of taskrelated
+or spontaneous neuronal activity, are classically analyzed
+in a mass-univariate procedure yielding statistical parametric
+maps. This analysis framework disregards some important principles
+of brain organization: population coding, distributed and
+overlapping representations. Multivariate pattern analysis, i.e.,
+the prediction of behavioural variables from brain activation
+patterns better captures this structure. To cope with the high
+dimensionality of the data, the learning method has to be
+regularized. However, the spatial structure of the image is not
+taken into account in standard regularization methods, so that the
+extracted features are often hard to interpret.
 
 \begin{figure}[!htbp]
   \includegraphics[width=1\linewidth]{figures/balls.png}
@@ -34,9 +33,24 @@ it is non-convex...}
   \label{fig:flower}
 \end{marginfigure}
 
+Sparsity- and structure-inducing priors are used to
+perform jointly the prediction of a target variable and region
+segmentation in multivariate analysis settings.
+Specifically, it has been shown that one can employ priors like Total
+Variation (TV)  \cite{michel2011tv}, TV-$\ell_1$
+ \cite{baldassarre2012,gramfort2013}, TV-ElasticNet
+ \cite{dubois2014predictive},
+and GraphNet  \cite{grosenick2013}
+(aka Smooth-Lasso  \cite{hebiri2011})
+%\footnote{Henceforth, we will use GraphNet and S-Lasso
+%interchangeably.}
+to regularize regression and classification
+problems in brain imaging.
+
+
 We denote by ${\y} \in \mathbb{R}^{n}$ the targets to
 be predicted (age, sex, IQ, etc.); the \textit{design matrix}
-${\X}\in\mathbb{R}^{n \times p}$ are the
+${\X}\in\mathbb{R}^{n \times p}$ are the masked (see Fig. \ref{fig:masking})
 brain images related to the presentation of different
 stimuli, or other brain acquisition (e.g gray-matter concentration
 maps from anatomy, etc.). The integer $p$ is the number of voxels,
@@ -50,6 +64,13 @@ along the $x$-axis, $\nabla_y$ along the $y$-axis, etc.
 %% the 3D image domain representing the region occupied by the brain --or
 %% ROI (region of interest) thereof-- under  study, discretized regularly
 %% on a finite grid.
+
+  \begin{figure}[!htb] 
+  \includegraphics[width=1\linewidth]{figures/masking.jpg}
+  \caption{\textbf{Masking} of volumic brain data (4D = 3D space + 1 time or samples)
+    to produce a design matrix required in standard machine learning (clustering, classification, regression, etc.). For each 3D volume is a sample point. The values of the voxels in this volume which lie in the mask are collected into a feature vector. All these vectors are vertically stacked to produce an $n$-by-$p$ design matrix $\X$, where $p$ is the number of voxels in the mask. The mask can be just the region of the 3D cube occupied by the brain, or a subset of such. In the latter case, this typically corresponds to Region-of-Interests (ROIs) deemed to be interesting for an experiment. The former case is referred to as ``full brain'', and the mask typically contains $p = $ millions of voxels. See \citep{abraham2014machine} for more details.}
+  \label{fig:masking}
+\end{figure}
 
 Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)
    \citep{michel2011tv}, TV-$\ell_1$  \citep{baldassarre2012,gramfort2013}, GraphNet  \citep{grosenick2013,hebiri2011},
@@ -87,15 +108,21 @@ The term {$\ell(\y,\X\w)$} is the
     &\mbox{ \text{ for least-squares (e.g in regression settings)}}\\
     \sum_{i=1}^n \log(1+\exp(-\y_i\X_i^T\w)),
     &\mbox{ \text{ for logistic regression (e.g in classification)}},\\\ldots\end{cases}$$
+  
+\begin{mdframed}
+  \paragraph{Submodular interpretation of TV.} We note anisotropic TV penalty on
+  an arbitrary (undirected) graph $G = (V,E)$ is the \textit{Lovasz extension} of the \textit{cut-function}
+  $F : 2^V \rightarrow \mathbb N$, $S \mapsto "\text{number of edges between } S \text{ and }V\setminus S"$,
+defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v \ge \lambda\})]$, for all $x \in [0,1]^{\#V}$.
+\end{mdframed}
 \begin{marginfigure}[4cm]
-  \centering
-  \includegraphics[width=.7\linewidth]{figures/cartoon.pdf}
-  \caption{A cartoon showing a sparse and blobby brain map,
-  as would be sought for by SpaceNet models \eqref{eq:ss}.}
+  \includegraphics[width=1\linewidth]{figures/tv_cartoon_horizontal.png}
+  \caption{A cartoon showing a sparse and blobby (step-wise constant / cartoon-like) brain map,
+  as would be sought for by Total-Variation regularization \eqref{eq:ss}...}
   \label{fig:roi}
 \end{marginfigure}
 
-  The result of such regularized models, dubbed \emph{SpaceNet}
+The result of such regularized models, dubbed \emph{SpaceNet}
  \citep{spacenetohbm}, are brain maps which are both
 sparse (i.e regression coefficients $\w$ are zero everywhere, except at
 predictive voxels) and structured (blobby). The superiority of such
@@ -112,45 +139,6 @@ differences in the values of the brain map). For example, see Fig.
 \ref{fig:spacenet_maps}.
 Also, such priors produce state-of-the-art methods for automatic
 extraction of functional brain atlases  \citep{abraham2013}.
-
-blablablablablablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
 
   \begin{figure}[!htb] 
   \includegraphics[width=.325\linewidth]{figures/svm.png}
@@ -265,16 +253,9 @@ further refined and implemented in  \citep{varoquaux2015faasta}.
 
 \section{Choice of solver}
 Learning predictive models from brain imaging
-data, as in decoding cognitive states from fMRI (functional Mag-
-netic Resonance Imaging), is typically an ill-posed problem as it
+data, as in decoding cognitive states from fMRI (functional Magnetic Resonance Imaging), is typically an ill-posed problem as it
 entails estimating many more parameters than available sample
 points.
- \begin{figure}[!htbp]
-   \includegraphics[width=1\linewidth]{figures/solvers_1.png}
-   \includegraphics[width=1\linewidth]{figures/solvers_2.png}
-   \caption{\textbf{Benchmarking } solvers for TV-$\ell_1$ penalized models. \textbf{Top:} TV-$\ell_1$ penalized Logistic Regression on the visual recognition face-house discrimination task. \textbf{Top Left:} excess energy $E(\B{w}_t ) - E(\B{w}^*)$ as a function of time. \textbf{Top Right:} convergence time of the various solvers for different choice of regularization parameters. Broken lines correspond to a tolerance of
-$10^0$ , whilst full-lines correspond to $10^{-2}$ . The thick vertical line indicates the best model selected by cross-validation. \textbf{Bottom:} TV-$\ell_1$ penalized Least-Squares Regression. \textbf{Bottom Left:} on the visual recognition face-house discrimination task; \textbf{Bottom Right:} on the Mixed gambles dataset. The thick vertical line indicates the best model selected by cross-validation.}
-\end{figure}
 This estimation problem thus requires regularization.
 Total variation regularization, combined with sparse models, has
 been shown to yield good predictive performance, as well as stable
@@ -290,6 +271,13 @@ of smooth solvers and show that it is a promising approach in
 these settings. Our findings show that care must be taken in
 solving TV-$\ell_1$ estimation in brain imaging and highlight the
 successful strategies.
+
+ \begin{figure}[!htbp]
+   \includegraphics[width=1\linewidth]{figures/solvers_1.png}
+   \includegraphics[width=1\linewidth]{figures/solvers_2.png}
+   \caption{\textbf{Benchmarking } solvers for TV-$\ell_1$ penalized models. \textbf{Top:} TV-$\ell_1$ penalized Logistic Regression on the visual recognition face-house discrimination task. \textbf{Top Left:} excess energy $E(\B{w}_t ) - E(\B{w}^*)$ as a function of time. \textbf{Top Right:} convergence time of the various solvers for different choice of regularization parameters. Broken lines correspond to a tolerance of
+$10^0$ , whilst full-lines correspond to $10^{-2}$ . The thick vertical line indicates the best model selected by cross-validation. \textbf{Bottom:} TV-$\ell_1$ penalized Least-Squares Regression. \textbf{Bottom Left:} on the visual recognition face-house discrimination task; \textbf{Bottom Right:} on the Mixed gambles dataset. The thick vertical line indicates the best model selected by cross-validation.}
+\end{figure}
 
 \paragraph{Results of empirical benchmarks.}
 Our results outline best strategies: monotonous FISTA with
@@ -498,30 +486,6 @@ varying levels of the screening-percentile (sp).%  \textbf{Running
 \end{figure}
 
 \subsection{Results.}
-We now summarize and comment the results of the experiments (refer to
-section \ref{sec:experiments}).
-Figure \ref{fig:oasis} shows the effects of early-stopping heuristic
-and feature-screening heuristic on age prediction scores on the OASIS
-dataset \citep{marcus2007open} (416 subjects). We see that in the
-internal cross-validation, stopping  the optimization procedure for
-fixed $(\alpha, \rho)$ pair of regularization parameters, when test
-score increases by $-10^{-2}$ or more is a good heuristic, and does just
-as good as running the optimization until numerical convergence. 
-Also (and independently), one gets similar prediction scores using as
-little as a fifth of the brain volume ($sp=20$),
-compared to using the full-brain ($sp=100$).
-Figure \ref{fig:haxby} reports similar results for classification on
-the visual recognition dataset \citep{haxby2001}. Overall, we see from
-Figures \ref{fig:haxby} and \ref{fig:oasis} that we can achieve upto
-$10$-fold speedup with the proposed heuristics, with very little loss
-in accuracy. Also, we see that contiguous groups of bars are roughly flat at the top, with a
-    sligh increase from lower to high screening-percentile values. The
-    case ``chair vs scramped'' is an exception, where a slightly reverse tendency
-    if observed. A possible explanation is that $20$th percentile
-    feature-screening already selects the right voxels (quasi-exact
-    support recovery), and so including more voxels in the model can only hurt its
-    performance...    
-
  \begin{figure}[!htb]
    \includegraphics[width=1\linewidth]{figures/screening_weights_haxby.png}
   \caption{Predicting age from gray-matter concentration maps from the
@@ -560,6 +524,31 @@ increasing $sp$ ($10$ to $100$): \textbf{44.2m, 81.3m, 186.5m, 341.3m}}
   \label{fig:haxby}
 \end{figure}
     
+
+We now summarize and comment the results of the experiments (refer to
+section \ref{sec:experiments}).
+Figure \ref{fig:oasis} shows the effects of early-stopping heuristic
+and feature-screening heuristic on age prediction scores on the OASIS
+dataset \citep{marcus2007open} (416 subjects). We see that in the
+internal cross-validation, stopping  the optimization procedure for
+fixed $(\alpha, \rho)$ pair of regularization parameters, when test
+score increases by $-10^{-2}$ or more is a good heuristic, and does just
+as good as running the optimization until numerical convergence. 
+Also (and independently), one gets similar prediction scores using as
+little as a fifth of the brain volume ($sp=20$),
+compared to using the full-brain ($sp=100$).
+Figure \ref{fig:haxby} reports similar results for classification on
+the visual recognition dataset \citep{haxby2001}. Overall, we see from
+Figures \ref{fig:haxby} and \ref{fig:oasis} that we can achieve upto
+$10$-fold speedup with the proposed heuristics, with very little loss
+in accuracy. Also, we see that contiguous groups of bars are roughly flat at the top, with a
+    sligh increase from lower to high screening-percentile values. The
+    case ``chair vs scramped'' is an exception, where a slightly reverse tendency
+    if observed. A possible explanation is that $20$th percentile
+    feature-screening already selects the right voxels (quasi-exact
+    support recovery), and so including more voxels in the model can only hurt its
+    performance...    
+
  In  \citep{dohmatob2015speeding}, we empirically showed on various
 datasets that such screening leads to linear speed-up in the computation
 time, while sacrificing prediction / classification power as long as the
