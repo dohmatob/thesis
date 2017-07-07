@@ -349,30 +349,30 @@ $F_{\tilde{\gamma}}(\B{d}^j,\a) \equiv \frac{1}{2}\|\B{d}^j - \a\|_2^2
 $
 Problem \eqref{eq:qp} is thus a compactly-constrained minimization of the $1$-strongly-convex quadratic functions $F_{\tilde{\gamma}}(.,\a): \mathbb R^p \rightarrow \mathbb R$ defined above. 
 \begin{algorithm}
-\caption{BCD dictionary update with Laplacian prior}
-\label{Tab:algo_sobdict}
-\begin{algorithmic}[1]
-\Require $\B{D} = [\B{d}^1|\ldots|\B{d}^k] \in \mathbb{R}^{p \times k}$ (input
-dictionary),\\
-$\A_t = [\B{a}^1|\ldots|\B{a}^k] \in \mathbb R^{k \times k}$, $\B{B}_t =
-[\B{b}^1|\ldots|\B{b}^k] \in \mathbb R^{p \times k}$ (history)
-\While{stopping criteria not met,}
-\For{$j = 1$ to $r$}
-\State Fix the code $\B{C}$ and all atoms $k \ne j$ of the
-dictionary $\B{D}$ and then update $\B{d}^j$ as follows
-% by solving the following sub-problem via a fast projected-gradient scheme:
-\begin{eqnarray}
-  \begin{split}
-    \B{d}^j &\leftarrow \argmin_{\B{d}^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\B{d}^j, \B{d}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \B{D}\B{a}^j))
-  \end{split}
-\label{eq:v_sob}
-\end{eqnarray}
-\hspace{1.6cm}(See below for details on the derivation and the resolution of this problem)
-%% (For details on the Laplacian filtering step, see equation \eqref{eq:fft}
-%% of paragraph* \ref{sec:sob})
-\EndFor
-\EndWhile
-\end{algorithmic}
+  \caption{BCD dictionary update with Laplacian prior}
+  \label{Tab:algo_sobdict}
+  \begin{algorithmic}[1]
+    \Require $\B{D} = [\B{d}^1|\ldots|\B{d}^k] \in \mathbb{R}^{p \times k}$ (input
+    dictionary),\\
+    $\A_t = [\B{a}^1|\ldots|\B{a}^k] \in \mathbb R^{k \times k}$, $\B{B}_t =
+    [\B{b}^1|\ldots|\B{b}^k] \in \mathbb R^{p \times k}$ (history)
+    \While{stopping criteria not met,}
+    \For{$j = 1$ to $r$}
+    \State Fix the code $\B{C}$ and all atoms $k \ne j$ of the
+    dictionary $\B{D}$ and then update $\B{d}^j$ as follows
+    % by solving the following sub-problem via a fast projected-gradient scheme:
+    \begin{eqnarray}
+      \begin{split}
+        \B{d}^j &\leftarrow \argmin_{\B{d}^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\B{d}^j, \B{d}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \B{D}\B{a}^j))
+      \end{split}
+                  \label{eq:v_sob}
+    \end{eqnarray}
+    \hspace{1.6cm}(See below for details on the derivation and the resolution of this problem)
+    %% (For details on the Laplacian filtering step, see equation \eqref{eq:fft}
+    %% of paragraph* \ref{sec:sob})
+    \EndFor
+    \EndWhile
+  \end{algorithmic}
 \end{algorithm}
 This problem can further be identified with a \text{denoising} instance
 (i.e in which the design matrix or deconvolution operator is the
