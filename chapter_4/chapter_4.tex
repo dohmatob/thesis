@@ -2,11 +2,10 @@
 \markright{{~{\rm \ref{chap:func_var}}. Learning inter-subject functional variability from data}\hfill}{}
 
 
-
 % \section{Brains are different in function}
-\section{Introduction to brain decomposition and matrix factorization / dictionary-learning}
-\label{sec:intro}
-In neuro-imaging, inter-subject variability is often handled as a statistical residual and discarded. Yet there is evidence that it displays structure and contains important information. Univariate models are ineffective both computationally and statistically due to the large number of voxels compared to the number of subjects. Likewise,
+% \section{Introduction to brain decomposition and matrix factorization / dictionary-learning}
+% \label{sec:intro}
+\newthought{In neuro-imaging}, inter-subject variability is often handled as a statistical residual and discarded. Yet there is evidence that it displays structure and contains important information. Univariate models are ineffective both computationally and statistically due to the large number of voxels compared to the number of subjects. Likewise,
 statistical analysis of weak effects on medical images often relies on
 defining regions of interests (ROIs). For instance, pharmacology
 with Positron Emission Tomography (PET) often studies metabolic
@@ -63,7 +62,7 @@ hits cross-modality correspondence problems.
 %% \end{abstract}
 %\tableofcontents
 
-\paragraph*{Sketch of our contributions.}
+\section{Introduction and sketch of our contributions}
 In this manuscript, we propose to use the \textit{variability} of the statistical
 maps across the population to define regions.
 %
@@ -109,14 +108,11 @@ variability, explanatory power in prediction problems).
 Applied to
 functional brain imaging, it separates successfully activation maps into
 localized units of brain activity.
-
-Our
-contribution is to frame spatial penalties as a particular case of
+Our contribution is to frame spatial penalties as a particular case of
 more general Laplacian regularization and introduce an efficient online
 algorithm for dictionary-learning in these settings. Applied to
 functional brain imaging, it separates successfully activation maps into
 localized units of brain activity.
-
 Here we do things that are closer to probabilistic segmentations
 
 %% \paragraph*{Notation and terminology.} Let $\X$
@@ -804,7 +800,7 @@ SS0MF \eqref{eq:ss} model will soon be made available as part of the
 \markright{{~{\rm \ref{chap:proxdict}}. Proximal updates for online dictionary-learning}\hfill}{}
 
 \section{The power of the prox}
-Recall that after $n$ passes over the data, the objective function whose minimization gives the dictionary updates is $E(\B{D}) := \frac{1}{2n}\|\B{X} - \B{D}\B{C}^T\|_{\text{F}}^2$, where $\B{C} \in \mathbb R^{n \times k}$ is the fixed matrix of codes computed up to this point, and $\B{D} \in \mathbb R^{p \times k}$ is the dictionary variable. Adding a \textbf{block-separable} penalty term $\gamma\sum_{j=1}^kg_j(\B{d}^j)$ the energy becomes
+\newthought{Recall that after} $n$ passes over the data, the objective function whose minimization gives the dictionary updates is $E(\B{D}) := \frac{1}{2n}\|\B{X} - \B{D}\B{C}^T\|_{\text{F}}^2$, where $\B{C} \in \mathbb R^{n \times k}$ is the fixed matrix of codes computed up to this point, and $\B{D} \in \mathbb R^{p \times k}$ is the dictionary variable. Adding a \textbf{block-separable} penalty term $\gamma\sum_{j=1}^kg_j(\B{d}^j)$ the energy becomes
 \begin{equation}
   E(\B{D}) = \frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2 + \gamma \sum_{j} g_j(\B{d}^j).
   \label{eq:model}
@@ -934,31 +930,31 @@ Akin to ICA-type methods, one can take $C_j =$ the orthogonal complement of the 
   
 
  \subsection{``Social'' sparsity:  simultaneous sparsity and smoothness via windowed group-Lasso.}
-  The first non-trivial results of our ramblings this far is obtained by considering the \textit{social sparsity}  \citep{kowalski2013social,kowalski2009structured} prior. In this model, a weakly activated voxel $\mu$ in the middle of strongly activated voxels will be saved (as if rescued by the clan), whilst a strongly activated voxel in the middle of weakly activated voxels will be eliminated (as if killed by isolation). ``Strongness'' and ``weakness'' are measured with respect to a specified threshold $\alpha > 0$.
+  The first non-trivial results of our ramblings this far is obtained by considering the \textit{social sparsity}  \citep{kowalski2013social,kowalski2009structured} prior. In this model, a weakly activated voxel $v$ in the middle of strongly activated voxels will be saved (as if rescued by the clan), whilst a strongly activated voxel in the middle of weakly activated voxels will be eliminated (as if killed by isolation). ``Strongness'' and ``weakness'' are measured with respect to a specified threshold $\alpha > 0$.
 Formally, social sparsity corresponds to a penalty  $g_{\text{social}} : \mathbb R^p \rightarrow \mathbb R$ defined implicitly via its proximal operator
 
  \begin{equation}
    \begin{split}
-     (\prox_{\alpha g_{\text{social}}}(\B{z}))_\mu &:=
-     z_\mu\begin{cases}1 - \frac{\alpha}{\|\B{w}_\mu \bullet \B{z}\|_2}, &\mbox{ if }\|\B{w}_\mu \bullet \B{z}\|_2 > \alpha
-       % \text{ (i.e the average energy of neighbors of }\mu\text{ is high)}
+     (\prox_{\alpha g_{\text{social}}}(\B{z}))_v &:=
+     z_v\begin{cases}1 - \frac{\alpha}{\|\B{w}_v \bullet \B{z}\|_2}, &\mbox{ if }\|\B{w}_v \bullet \B{z}\|_2 > \alpha
+       % \text{ (i.e the average energy of neighbors of }v\text{ is high)}
        ,\\0, &\mbox{ otherwise}\end{cases}\\
      &=
-     % z_\mu\left(1 - \frac{\alpha}{\|(\B{w}_\mu)^{1/2} \bullet \B{z}\|_2}\right)_+
-     z_\mu\left(1 - \frac{\alpha}{\left(\sum_{\nu \in \mathcal N(\mu)}(w^{\nu}_{\mu})^2z_{\nu}^2\right)^{1/2}}\right)_+, 
+     % z_v\left(1 - \frac{\alpha}{\|(\B{w}_v)^{1/2} \bullet \B{z}\|_2}\right)_+
+     z_v\left(1 - \frac{\alpha}{\left(\sum_{s \in \mathcal N(v)}(w^{s}_{v})^2z_{s}^2\right)^{1/2}}\right)_+, 
      \end{split}
   \label{eq:social}
 \end{equation}
-where $\B{w}_\mu \bullet \B{z} := (w^1_\mu z_1,w^2_\mu z_2,\ldots,w^p_\mu z_p) \in \mathbb R^p$ for weights
-$(w^\mu_\nu)_{\mu,\nu \in [\![p]\!]}$ satisfying $\sum_\mu (w^\nu_\mu)^2 = 1$ for all $\nu$, and $\mathcal N (\mu) := \{\nu \in [\![p]\!] | w^\nu_\mu \ne 0\}$ is the \textit{neighborhood} of the $\mu$th voxel, assumed to be non-empty. Thus each $\B{w}_\mu$ can be thought of as
-(normalized) mean-filter supported on a patch $\mathcal N(\mu)$ around the voxel $\mu$.
+where $\B{w}_v \bullet \B{z} := (w^1_v z_1,w^2_v z_2,\ldots,w^p_v z_p) \in \mathbb R^p$ for weights
+$(w^s_v)_{v,s \in [\![p]\!]}$ satisfying $\sum_v (w^s_v)^2 = 1$ for all $s$, and $\mathcal N (v) := \{s \in [\![p]\!] | w^s_v \ne 0\}$ is the \textit{neighborhood} of the $v$th voxel, assumed to be non-empty. Thus each $\B{w}_v$ can be thought of as
+(normalized) mean-filter supported on a patch $\mathcal N(v)$ around the voxel $v$.
 Examples include rectangular filters, truncated Gaussians, etc.
-%  Social sparsity applies a soft-thresholding using the norm of a local neighborhood, but modifies only the coordinate $\B{z}_\mu$ at the center voxel $\mu$ of this neighborhood.
-  % It is a generalization of the overlapping group-lasso shrinkage operator\citep{ogrouplasso}; the latter is recovered by taking if the $w^\mu_\nu$ are chosen so that $w^\mu_\nu$ is independent of $\nu$ for all $\nu \in \mathcal N(\mu)$, i.e $w^\mu_\nu = \frac{1}{\#\mathcal N(\mu)}$ for all $\mu$ and $\nu \in \mathcal N(\mu)$.
+%  Social sparsity applies a soft-thresholding using the norm of a local neighborhood, but modifies only the coordinate $\B{z}_v$ at the center voxel $v$ of this neighborhood.
+  % It is a generalization of the overlapping group-lasso shrinkage operator\citep{ogrouplasso}; the latter is recovered by taking if the $w^v_s$ are chosen so that $w^v_s$ is independent of $s$ for all $s \in \mathcal N(v)$, i.e $w^v_s = \frac{1}{\#\mathcal N(v)}$ for all $v$ and $s \in \mathcal N(v)$.
 One notes the following facts
 \begin{itemize}
-\item $\|\B{E}\B{z}\|^2_2 \equiv \|\B{z}\|^2_2$, where $\B{E}\B{z} := (\B{w}_\mu \bullet \B{z})_{\mu \in [\![p]\!]} \in \mathbb R^{p^2}$
-  is the \textit{expansion operator} associated with the weights $w^\nu_\mu$. In other words, $\B{E}$ is a \textit{linear isometry}.
+\item $\|\B{E}\B{z}\|^2_2 \equiv \|\B{z}\|^2_2$, where $\B{E}\B{z} := (\B{w}_v \bullet \B{z})_{v \in [\![p]\!]} \in \mathbb R^{p^2}$
+  is the \textit{expansion operator} associated with the weights $w^s_v$. In other words, $\B{E}$ is a \textit{linear isometry}.
 \item social sparsity is related to GLasso by the formula
   \begin{equation}
     \text{prox}_{\alpha g_{\text{social}}} = \B{F} \circ \text{prox}_{\alpha \text{GL}} \circ \B{E},

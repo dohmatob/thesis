@@ -102,7 +102,7 @@ correspond to different choices of the convex penalty $\Omega$ acting on the ext
 The term {$\ell(\y,\X\w)$} is the
   {loss / data-fit term}. Popular choices include:
   $$
-  \ell(\y,\X\w) = \frac{1}{n}\begin{cases}\frac{1}{2}\|\X\w - \y\|_2^2 = \frac{1}{2}\sum_{i=1}^n(\X^T_i\w - \y_i)^2,
+  \ell(\y,\X\w) = \frac{1}{n}\begin{cases}\frac{1}{2}\|\X\w - \y\|_2^2 = \frac{1}{2}\sum_{i=1}^n(\\B{X}^T_i\w - \y_i)^2,
     &\mbox{ \text{ for least-squares (e.g in regression settings)}}\\
     \sum_{i=1}^n \log(1+\exp(-\y_i\X_i^T\w)),
     &\mbox{ \text{ for logistic regression (e.g in classification)}},\\\ldots\end{cases}$$
@@ -157,7 +157,7 @@ extraction of functional brain atlases   \citep{abraham2013}.
 \chapter{Efficient optimization of sparsity and smoothness regularized models}\label{chap:efficient_opt}
 \markright{{~{\rm \ref{chap:efficient_opt}}. Algorithms for structured priors}\hfill}{}
 
-Though the SpaceNet model presented above leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet,
+\newthought{Though the SpaceNet model} presented above leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet,
 the penalty term $\Omega \circ \nabla_\rho$ is neither smooth nor proximable.
 \footnote{ A function $f$ is said to be \textit{proximable} is the operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for $\ell_p$-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}
 For the penalty to fully exercise its
@@ -527,10 +527,10 @@ they add speed without sacrificing the quality of the predictions
   different datasets.
   % $(X,y)$.
   This figure shows spatial maps of
-  $X^T_jy$, thresholded so that only voxels $j$ with (from left to
-  rightmost column)  $|X^T_jy| \ge p_{10\%}(|X^Ty|)$, $|X^T_jy| \ge
-  p_{20\%}(|X^Ty|)$, $|X^T_jy| \ge p_{50\%}(|X^Ty|)$, and $|X^T_jy|
-  \ge p_{100\%}(|X^Ty|)$ (full-brain) respectively, survive. The
+  $\B{X}^T_jy$, thresholded so that only voxels $j$ with (from left to
+  rightmost column)  $|\B{X}^T_j\y| \ge p_{10\%}(|\B{X}^T\y|)$, $|\B{X}^T_j\y| \ge
+  p_{20\%}(|\B{X}^T\y|)$, $|\B{X}^T_j\y| \ge p_{50\%}(|\B{X}^T\y|)$, and $|\B{X}^T_j\y|
+  \ge p_{100\%}(|\B{X}^T\y|)$ (full-brain) respectively, survive. The
   green contours enclose the elite voxels which are selected by the
   screening procedure at the respective threshold
   levels. \textit{(a)}: Mixed Gambles dataset
@@ -558,9 +558,9 @@ they add speed without sacrificing the quality of the predictions
 
 
 \paragraph{A note on implementation of the solver.}
-One notes that in the penalty term $J(w)$ of problem
+One notes that in the penalty term $J(\w)$ of problem
 \eqref{eq:opt_pb}, the $\|\nabla
-w\|^2_2$ sub-term is smooth (i.e differentiable) with
+\w\|^2_2$ sub-term is smooth (i.e differentiable) with
 \textit{Lipschitz} gradient, whilst the $\ell_{1}$ term though
 nonsmooth, is \textit{proximable}\footnote{That is, there is a
   closed-form analytic expression for its proximal operator.} by means
@@ -604,24 +604,24 @@ proposed in the literature.
 Our proposed heuristic screening technique is inspired by the
 \textit{Marginal screening} technique developed in Algorithm 1 of
  \citep{lee2014exact}, and operates as
-follows. The data $(X,y)$ are standardized so that $y$ has unit
-variance and zero mean, likewise each row of the design matrix $X$. To
+follows. The data $(\X,\y)$ are standardized so that $\y$ has unit
+variance and zero mean, likewise each row of the design matrix $\X$. To
 ensure obtention of a smooth mask, a Gaussian-smoothed version
-of $X$ is used in the screening procedure (but not in the actual model
+of $\X$ is used in the screening procedure (but not in the actual model
 fit).
 For each voxel $j$ (voxels are the features here) the
-absolute dot-product $|X^T_jy|$ of $y$ with the $j$th column of
-$X$ is computed.
+absolute dot-product $|\B{X}^T_j\y|$ of $\y$ with the $j$th column of
+$\X$ is computed.
 % This is used as the relevance measure.
 For a given screening-percentile
 $sp \in [0, 100]$ , the $sp$th percentile value of the
-vector $|X^Ty| := (|X^T_1y|, ..., |X^T_py|)$, denoted $p_{sp}(|X^Ty|)$,
+vector $|\B{X}^T\y| := (|\B{X}^T_1\y|, ..., |\B{X}^T_p\y|)$, denoted $p_{sp}(|\B{X}^T\y|)$,
 is computed. The case $sp=100$ corresponds to full-brain analysis. 25
 means we keep the quarter of the brain made of voxels with the highest
-$|X^T_jy|$ values, and so on.
+$|\B{X}^T_j\y|$ values, and so on.
 % ; this is the threshold.
 A brain-mask is then formed containing only those voxels $j$
-for which $|X^T_jy| \ge p_{sp}(|X^Ty|)$. Next, this brain-mask is
+for which $|\B{X}^T_j\y| \ge p_{sp}(|\B{X}^T\y|)$. Next, this brain-mask is
 morphologically eroded
 % (to remove isolated small patches)
 and then
@@ -662,8 +662,8 @@ subjects
 passively viewed images of eight object categories, grouped
 in 24-second blocks separated by intermittent rest periods. This
 experiment is a classification task: predicting the object category
-$y$. We use a \textit{One-versus-Rest (OvR)} strategy. The design
-matrix ${X}$ is made of
+$\y$. We use a \textit{One-versus-Rest (OvR)} strategy. The design
+matrix $\B{X}$ is made of
 time-series from the full-brain mask of $p = 23\,707$ voxels over $n =
 216$ TRs, of a single subject (subj1). We divided the 12 runs into 6
 runs for training and 6 other runs for
@@ -1029,7 +1029,23 @@ legends. We monitor the evolution of the model as a function of the number of iG
 \label{chap:admm}
 \markright{{~{\rm \ref{chap:admm}.A result on the convergence rate of ADMM}}\hfill}{}
 
-\newthought{In our ICASSP 2016 paper}  \citep{dohmatob2015local}, we studied the convergence of
+\newthought{The ADMM algorithm} \citep{glowinski1975approximation,gabay1976dual,eckstein1992douglas} is
+an operator-splitting optimization method which is easy to implement and 
+well-adapted for large-scale optimization problems
+\citep{boyd2011distributed}. For penalized regression problems with
+complicated composite penalties, such as for example analysis sparse
+problems \citep{vaiter2013robust},  ADMM can provide a distinctive advantage
+over proximal gradient methods such as FISTA \citep{beck09fista} 
+when there is no closed-form expression for the 
+proximal operator. Indeed, ADMM can
+avoid this difficulty by introducing a ``split'' variable, for which the
+proximal operator results in updates computable in closed-form.
+This is typically the case in \emph{analysis sparsity} regularization,
+that impose sparsity on a transformation of the optimization variable. 
+However, the theory of the convergence rate of ADMM is
+not complete \citep{boyd2011distributed}.
+
+In our ICASSP 2016 paper  \citep{dohmatob2015local}, we studied the convergence of
 the ADMM (Alternating Direction Method of Multipliers) algorithm on a broad range of penalized
 regression problems including the Lasso, Group-Lasso and Graph-Lasso,(isotropic)
 TV-L1, Sparse Variation, and others, that can be written in the form
@@ -1050,23 +1066,6 @@ and $\Omega: \mathbb{R}^p \rightarrow (-\infty, +\infty]$ is
       convex} function.
     In signal processing literature, such a problem is referred to as synthesis problem: the penalty $\Omega$ is imposed not directly on the image, but on a the output of a dictionary, $\z = \K\w$. $\K$ is referred to the analysis operator. The case $\K = \Id$ corresponds to the \textit{synthesis} setting.
 
-    ADMM
-    \citep{glowinski1975approximation,gabay1976dual,eckstein1992douglas} is
-an operator-splitting optimization method which is easy to implement and 
-well-adapted for large-scale optimization problems
-\citep{boyd2011distributed}. For penalized regression problems with
-complicated composite penalties, such as for example analysis sparse
-problems \citep{vaiter2013robust},  ADMM can provide a distinctive advantage
-over proximal gradient methods such as FISTA \citep{beck09fista} 
-when there is no closed-form expression for the 
-proximal operator. Indeed, ADMM can
-avoid this difficulty by introducing a ``split'' variable, for which the
-proximal operator results in updates computable in closed-form.
-This is typically the case in \emph{analysis sparsity} regularization,
-that impose sparsity on a transformation of the optimization variable. 
-However, the theory of the convergence rate of ADMM is
-not complete \citep{boyd2011distributed}.
-
 % First, we established a
 % fixed-point iteration for a nonlinear operator $\Lambda$ %\eqref{eq:factorize}
 
@@ -1082,13 +1081,13 @@ process in terms of the $(z, u)$ pair of variables.%%  This follows from
   Define the following objects:
   \begin{eqnarray*}
     \begin{aligned}
-      %% Q := \X^T\X \in \mathbb{R}^{p \times p},\hspace{.5em}\Delta :=
+      %% Q := \\B{X}^T\X \in \mathbb{R}^{p \times p},\hspace{.5em}\Delta :=
       %% \K^T\K \in \mathbb{R}^{p \times p},\hspace{.5em}
       &\G_{\rho} :=
-      \K(\K^T\K + \rho^{-1}\X^T\X)^{-1}\K^T,\hspace{.5em}
+      \K(\K^T\K + \rho^{-1}\\B{X}^T\X)^{-1}\K^T,\hspace{.5em}
       \A_{\rho}:=[\G_{\rho}\hspace{.5em}\Id-\G_{\rho}],\\
       &\b_{\rho} := \rho^{-1}\K(\K^T\K +
-      \rho^{-1}\X^T\X)^{-1}\X^T\y,\hspace{.2em}\tilde{\A}_{\rho} :=
+      \rho^{-1}\\B{X}^T\X)^{-1}\\B{X}^T\y,\hspace{.2em}\tilde{\A}_{\rho} :=
       \A_{\rho}(.) +  \b_{\rho},\\
       &\Lambda_{\rho} :=
         \left(\prox_{(\lambda/\rho)\varphi}\circ\tilde{\A}_{\rho},
@@ -1158,13 +1157,13 @@ least locally ? These questions are answered in the sequel.
 
   \begin{eqnarray}
     \begin{aligned}
-      %% Q := \X^T\X \in \mathbb{R}^{p \times p},\hspace{.5em}\Delta :=
+      %% Q := \\B{X}^T\X \in \mathbb{R}^{p \times p},\hspace{.5em}\Delta :=
       %% \K^T\K \in \mathbb{R}^{p \times p},\hspace{.5em}
       &\G_{\rho} :=
-      \K(\K^T\K + \rho^{-1}\X^T\X)^{-1}\K^T,\hspace{.5em}
+      \K(\K^T\K + \rho^{-1}\\B{X}^T\X)^{-1}\K^T,\hspace{.5em}
       \A_{\rho}:=[\G_{\rho}\hspace{.5em}\Id-\G_{\rho}],\\
       &\b_{\rho} := \rho^{-1}\K(\K^T\K +
-      \rho^{-1}\X^T\X)^{-1}\X^T\y,\hspace{.2em}\tilde{\A}_{\rho} :=
+      \rho^{-1}\\B{X}^T\X)^{-1}\\B{X}^T\y,\hspace{.2em}\tilde{\A}_{\rho} :=
       \A_{\rho}(.) +  \b_{\rho},\\
       &\Lambda_{\rho} :=
         \left(\prox_{(\lambda/\rho)\Omega}\circ\tilde{\A}_{\rho},
@@ -1180,8 +1179,8 @@ which is equivalent to the ADMM iterates
       \w^{(n+1)} &\leftarrow
       \underset{\w \in \mathbb R^p}{\argmin}\text{ }\ell_{\rho}(\w, \z^{(n)},
       \u^{(n)}) \\
-      &= (\rho \K^T\K + \X^T\X)^{-1}(\rho\K^T(\z^{(n)} -
-      \u^{(n)}) + \X^T\y)\\
+      &= (\rho \K^T\K + \\B{X}^T\X)^{-1}(\rho\K^T(\z^{(n)} -
+      \u^{(n)}) + \\B{X}^T\y)\\
       \z^{(n+1)} &\leftarrow \underset{z \in \mathbb R^q}{\argmin}\text{ }\ell_{\rho}(\w^{(n+1)},\z, \u^{(n)}) =
       \prox_{(\lambda/\rho)\Omega}(\K\w^{(n+1)} + \u^{(n)})\\
       \u^{(n+1)} &\leftarrow \u^{(n)} + \K\w^{(n+1)} -\z^{(n+1)}.
@@ -1207,7 +1206,7 @@ recently in the literature.
 \caption{Rate of convergence $r(\Lambda'_\rho(\x^*))$ as a function of $\rho$
   for a Lasso problem with column-rank deficient design
   matrix $\X$. Taking $\rho$ too small leads
-  to badly conditioned problem (as  $\Id + (1/\rho)\X^T\X$ is then almost
+  to badly conditioned problem (as  $\Id + (1/\rho)\\B{X}^T\X$ is then almost
   singular), and thus a slow rate of convergence (near 1). On the
   other hand, the figure suggests that taking $\rho$ ``too large''
   is also detrimental. Most remarkable, one notices that the basin of
