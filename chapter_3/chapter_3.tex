@@ -1,5 +1,5 @@
 \begin{fullwidth}
-\chapter{Structured priors for analyzing brain data: the models and algorithms}\label{chap:hrf_estimation}
+\chapter{Structured priors for analyzing brain data: models and algorithms}\label{chap:hrf_estimation}
 \end{fullwidth}
 \markright{{~{\rm \ref{chap:hrf_estimation}}. Data-driven HRF estimation}\hfill}{}
 
@@ -671,6 +671,16 @@ validation. \textit{Leave-one-label-out} cross-validation was used for
 selecting the model parameters $(\alpha, \rho)$. The results are
 depicted in Figure \ref{fig:haxby}.
 
+\subsection{Results.}
+We now summarize and comment the results of the experiments (refer to
+section \ref{sec:experiments}).
+Figure \ref{fig:oasis} shows the effects of early-stopping heuristic
+and feature-screening heuristic on age prediction scores on the OASIS
+dataset  \citep{marcus2007open} (416 subjects). We see that in the
+internal cross-validation, stopping  the optimization procedure for
+fixed $(\alpha, \rho)$ pair of regularization parameters, when test
+score increases by $-10^{-2}$ or more is a good heuristic, and does just
+as good as running the optimization until numerical convergence. 
  \begin{figure}[!htb]
    \includegraphics[width=1\linewidth]{figures/screening_weights.png}
   \caption{Predicting age from gray-matter concentration maps from the
@@ -690,8 +700,21 @@ varying levels of the screening-percentile (sp).%  \textbf{Running
 }   
 \label{fig:oasis}
 \end{figure}
+Also (and independently), one gets similar prediction scores using as
+little as a fifth of the brain volume ($sp=20$),
+compared to using the full-brain ($sp=100$).
+Figure \ref{fig:haxby} reports similar results for classification on
+the visual recognition dataset  \citep{haxby2001}. Overall, we see from
+Figures \ref{fig:haxby} and \ref{fig:oasis} that we can achieve upto
+$10$-fold speedup with the proposed heuristics, with very little loss
+in accuracy. Also, we see that contiguous groups of bars are roughly flat at the top, with a
+    sligh increase from lower to high screening-percentile values. The
+    case ``chair vs scramped'' is an exception, where a slightly reverse tendency
+    if observed. A possible explanation is that $20$th percentile
+    feature-screening already selects the right voxels (quasi-exact
+    support recovery), and so including more voxels in the model can only hurt its
+    performance...    
 
-\subsection{Results.}
  \begin{figure}[!htb]
    \includegraphics[width=1\linewidth]{figures/screening_weights_haxby.png}
   \caption{Predicting age from gray-matter concentration maps from the
@@ -730,31 +753,6 @@ increasing $sp$ ($10$ to $100$): \textbf{44.2m, 81.3m, 186.5m, 341.3m}}
   \label{fig:haxby}
 \end{figure}
     
-
-We now summarize and comment the results of the experiments (refer to
-section \ref{sec:experiments}).
-Figure \ref{fig:oasis} shows the effects of early-stopping heuristic
-and feature-screening heuristic on age prediction scores on the OASIS
-dataset  \citep{marcus2007open} (416 subjects). We see that in the
-internal cross-validation, stopping  the optimization procedure for
-fixed $(\alpha, \rho)$ pair of regularization parameters, when test
-score increases by $-10^{-2}$ or more is a good heuristic, and does just
-as good as running the optimization until numerical convergence. 
-Also (and independently), one gets similar prediction scores using as
-little as a fifth of the brain volume ($sp=20$),
-compared to using the full-brain ($sp=100$).
-Figure \ref{fig:haxby} reports similar results for classification on
-the visual recognition dataset  \citep{haxby2001}. Overall, we see from
-Figures \ref{fig:haxby} and \ref{fig:oasis} that we can achieve upto
-$10$-fold speedup with the proposed heuristics, with very little loss
-in accuracy. Also, we see that contiguous groups of bars are roughly flat at the top, with a
-    sligh increase from lower to high screening-percentile values. The
-    case ``chair vs scramped'' is an exception, where a slightly reverse tendency
-    if observed. A possible explanation is that $20$th percentile
-    feature-screening already selects the right voxels (quasi-exact
-    support recovery), and so including more voxels in the model can only hurt its
-    performance...    
-
  In   \citep{dohmatob2015speeding}, we empirically showed on various
 datasets that such screening leads to linear speed-up in the computation
 time, while sacrificing prediction / classification power as long as the
@@ -889,8 +887,11 @@ The result of these numerous ramblings on optimizing the SpaceNet model \eqref{e
 
 % % {\blue With respect to the work published in ~ \citepp{Pedregosa2015209}, we have included in this chapter the results on a new datasets and examined the gain obtained by this model across different regions of the brain}.
 
-\section{On the equivalence of TV-L1 and an iteratively-reweighted
-  GraphNet model}
+\section{On the equivalence of TV-L1 and iteratively-reweighted
+  GraphNet}
+We present a result which shows that TV-L1 regularized regression problems are nothing but an iteratively reweighted GraphNet problem. Among other things, this provides a long-awaited statistical interpretation of the TV-L1 penalty....
+
+\subsection{Derivation}
 Invoking the following
 well-known elementary result\footnote{To prove it, simply use the fact
   that $w^2u^2 + 1 - 2wu = (wu - 1)^2 \ge 0$, with equality iff $wu =
@@ -904,55 +905,91 @@ we can rewrite the TV semi-norm as follows,
 \begin{eqnarray}
 \begin{split}
  \|\B{w}\|_{\text{TV}} := \sum_{j=1}^p\|(\nabla
- \B{w})_j\|_2  &\le \frac{1}{2}
-\sum_{j=1}^p w_j\|(\nabla \B{w})_j\|_2^2 + w_j^{-1},
+ \B{w})_j\|_2  \le \frac{1}{2}
+\sum_{j=1}^p \gamma_j\|(\nabla \B{w})_j\|_2^2 + \gamma_j^{-1},
 %% &= \frac{1}{2}\sum_{j \in \Omega}\|(\text{diag}(r)\nabla
-%% \B{w})_j\|_2^2 + w_j^{-1},
-\\
-&\forall w \in \mathbb R_{++}^p,
+%% \B{w})_j\|_2^2 + \gamma_j^{-1},
+\forall w \in \mathbb R_{++}^p,
 \end{split}
 \end{eqnarray}
 with equality  iff
 \begin{eqnarray}
-w_j = (\|(\nabla \B{w})_j\|_2^2 + \mu^2)^{-\frac{1}{2}},\;\forall j,
+\gamma_j = (\|(\nabla \B{w})_j\|_2^2 + \mu^2)^{-\frac{1}{2}},\;\forall j,
 \label{eq:weights}
 \end{eqnarray}
 where $\mu \rightarrow 0^+$ is a small ``smoothing'' parameter to
 prevent division by $0$. Thus,
 \begin{eqnarray}
-\|\B{w}\|_{\text{TV}} = \frac{1}{2}\min_{w \in
+\|\B{w}\|_{\text{TV}} = \frac{1}{2}\min_{\boldsymbol{\gamma} \in
   \mathbb R_{++}^p}
-\sum_{j=1}^p w_j\|(\nabla \B{w})_j\|_2^2 + w_j^{-1}
+\sum_{j=1}^p \gamma_j\|(\nabla \B{w})_j\|_2^2 + \gamma_j^{-1}
 %% \sum_{j \in \Omega}\|(\text{diag}(r)\nabla
-%% \B{w})_j\|_2^2 + w_j^{-1}
+%% \B{w})_j\|_2^2 + \gamma_j^{-1}
 ,
 \end{eqnarray}
 with the optimal weighting vector $w \in \mathbb R_{++}^p$ given by
 \eqref{eq:weights}. Whence, the minimizers of the TV-L1 energy
-$E_{\text{TV-L1}}(\B{w}) := \ell(\B{w}) +
-\alpha \Omega_{\text{TV-L1}}(\B{w})$ coincide with the minimizers of
+$E_{\text{TV-L1}}(\B{w}) := \ell(\B{w}) + \alpha \Omega_{\text{TV-L1}}(\B{w})$ coincide with the minimizers of
 the iGraphNet energy
 \begin{equation}
 \begin{split}
-E_{\text{GraphNet}}^{w}(\B{w}) &= \ell(\B{w}) +
-\alpha \|\B{w}\|_1+\\
-&\quad\quad\frac{1}{2}\alpha (1 - \rho)
-\sum_{j=1}^p w_j\|(\nabla \B{w})_j\|_2^2
-+ w_j^{-1},
+E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\B{w}) = \ell(\B{w}) +
+\alpha \|\B{w}\|_1+ \frac{1}{2}\alpha (1 - \rho)
+\sum_{j=1}^p \gamma_j\|(\nabla \B{w})_j\|_2^2
++ \gamma_j^{-1},
 \end{split}
 \label{eq:rgn}
 \end{equation}
 As a function of the regressor coefficients $\B{w}$, the energy in
 \eqref{eq:rgn} corresponds to a modified
-GraphNet model in which per-voxel weights $\alpha(1 - \rho)w_j$ given
+GraphNet model in which per-voxel weights $\alpha(1 - \rho)\gamma_j$ given
 by \eqref{eq:weights} replace the constant $\alpha(1 - \rho)$ weight
-in the pure GraphNet model \eqref{eq:graphnet}, \eqref{eq:opt_pb}, or
+in the pure GraphNet model \eqref{eq:opt_pb}, or
 equivalently the $\nabla$ is pre-\textit{whitened} by the diagonal
-matrix $W := \mathrm{diag}(\sqrt{w_1},\ldots,\sqrt{w_p})$. This energy
+matrix $\boldsymbol{\Gamma} := \mathrm{diag}(\sqrt{\gamma_1},\ldots,\sqrt{\gamma_p})$. This energy
 is optimized by an alternating scheme cyclically switching between
 optimizing w.r.t the regressor coefficients $\B{w}$ and then w.r.t
 then weights $w$ (via formula \eqref{eq:weights}). The algorithm
 so-obtained will be detailed in subsection \ref{sec:algo}.
+
+\subsection{The algorithm: iGraphNet}
+\label{sec:algo}
+We now present iGraphNet, an iteratively-reweighted scheme for
+solving the TV-L1 model, based on modified GraphNet
+sub-problems corresponding to the minimization of the energy
+$E_{\text{GraphNet}}^{w}(\B{w})$ defined in
+\eqref{eq:rgn}. These sub-problems  are very well-conditioned and are
+quadratically easier to solve than TV-L1 itself, and can be solved by
+a fast first-order method like FISTA or LARS. Viz, the iGraphNet
+scheme is presented below.
+
+\begin{algorithm}
+\caption{iGraphNet: iteratively-reweighted GraphNet solver for the
+  TV-L1 model}
+\label{Tab:algo}
+\begin{algorithmic}[1]
+\Require Values for the model-tuning parameters
+  $\lambda > 0$, and $0 \le \rho \le 1$; initial brain-map $\B{w}^{(0)}
+  \in \mathbb R^p$ (e.g, the zero vector); tolerance threshold
+  $\epsilon > 0$ (say $10^{-5}$); maximum number of outer iterations
+  $K$.
+\Ensure An optimal vector $\hat{\B{w}}_{TV}$ of regressor coefficients (an approximation of)
+for the TV-L1 model.
+\State  \textbf{Initialize:} $k \leftarrow 0$; $\mu^{(0)} \leftarrow 10^{-1}$
+\While{$\|\B{w}^{(k + 1)} - \B{w}^{(k)}\|_\infty \ge \epsilon$}
+\State \textbf{Recompute weights:} $\gamma_j^{(k)} \leftarrow (\|(\nabla
+\B{w}^{(k)})_j\|_2^2 + {\mu^{(k)}}^2)^{-\frac{1}{2}}$, for every voxel $j$
+\State  \textbf{Recompute coefficients:} $\B{w}^{(k + 1)}
+  \leftarrow \argmin_{\B{w} \in \mathbb R^p}
+  E_{\text{GraphNet}}^{\boldsymbol{\gamma}^{(k)}}(\B{w})$, with energy
+  tolerance $\sim \mu^{(k)}$. The solver for this sub-problem
+  is warm-started with $\B{w} = \B{w}^{(k)}$.
+\State \textbf{Decrease smoothing parameter:} $\mu^{(k + 1)}
+\leftarrow \max(\epsilon, 10^{-1}\mu^{(k)})$
+\State \textbf{Goto next iteration:} $k \leftarrow k + 1$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
 
 \paragraph*{Generalization to other complex non-smooth models.}
 Similarly, one can show that Sparse-Variation
@@ -965,6 +1002,29 @@ complex rich non-smooth $\ell_p$-norm-based models are just
 iteratively-reweighted versions of much simpler counterparts like
 Ordinary Least Squares, Lasso, ElasticNet, GraphNet, etc....
 
+\subsection{Experimental results}
+See Figure \ref{fig:igraphnet}. Pending figures comparing (maps, scores, and
+runtime) GraphNet, iGraphNet, and the baseline TV-L1 implementation via FAASTA...
+
+\begin{figure}[!tb]
+    \includegraphics[width=.5\linewidth]{figures/haxby_igraphnet_w_0_yz.png}
+    \includegraphics[width=.5\linewidth]{figures/haxby_igraphnet_w_2_yz.png}
+    \includegraphics[width=.5\linewidth]{figures/haxby_igraphnet_w_4_yz.png}
+    \includegraphics[width=.5\linewidth]{figures/haxby_igraphnet_w_6_yz.png}
+    \includegraphics[width=.5\linewidth]{figures/haxby_igraphnet_w_8_yz.png}
+    \includegraphics[width=.5\linewidth]{figures/haxby_igraphnet_w_10_yz.png}
+    \includegraphics[width=.5\linewidth]{figures/haxby_igraphnet_w_12_yz.png}
+    \includegraphics[width=.5\linewidth]{figures/haxby_igraphnet_w_14_yz.png}
+    \includegraphics[width=.5\linewidth]{figures/haxby_igraphnet_w_16_yz.png}
+    \includegraphics[width=.5\linewidth]{figures/haxby_igraphnet_w_18_yz.png}
+\caption{Estimated coefficients $\hat{\B{w}}$ on the Face vs House condition
+      of the visual recognition dataset \citep{haxby2001}.
+Classification accuracies on held-out data are shown in the
+legends. We monitor the evolution of the model as a function of the number of iGraphNet iterations $k = 0, 1, 2,\ldots$. The limit $k \rightarrow \infty$ would correspond to TV-L1 regularization...
+}
+\label{fig:igraphnet}
+\end{figure}
+
 \section{On the rate of convergence of the ADMM algorithm}
 
 \newthought{In our ICASSP 2016 paper}  \citep{dohmatob2015local}, we studied the convergence of
@@ -972,21 +1032,6 @@ the ADMM (Alternating Direction Method of
 Multipliers) algorithm on a broad range of penalized regression
 problems including the Lasso, Group-Lasso and Graph-Lasso,(isotropic)
 TV-L1, Sparse Variation, and others, that can be written in the form
-
-\begin{marginfigure}[4cm]
-  \label{fig:rates}  
-  \includegraphics[width=1\linewidth]{figures/lasso_rates.pdf}%
-\caption{Rate of convergence $r(\Lambda'_\rho(\x^*))$ as a function of $\rho$
-  for a Lasso problem with column-rank deficient design
-  matrix $\X$. Taking $\rho$ too small leads
-  to badly conditioned problem (as  $\Id + (1/\rho)\X^T\X$ is then almost
-  singular), and thus a slow rate of convergence (near 1). On the
-  other hand, the figure suggests that taking $\rho$ ``too large''
-  is also detrimental. Most remarkable, one notices that the basin of
-  ``good'' $\rho$ values is rather tight, and so care must be taken in
-  choosing the $\rho$ parameter.
-}
-\end{marginfigure} %-----------------------------------------------------------
 
 \begin{equation}
   \underset{(\w,\z) \in \mathbb{R}^p \times
@@ -1006,6 +1051,22 @@ and $\Omega: \mathbb{R}^p \rightarrow (-\infty, +\infty]$ is
     
 First, we established a
 fixed-point iteration for a nonlinear operator $\Lambda$ %\eqref{eq:factorize}
+
+\begin{marginfigure}[4cm]
+  \label{fig:rates}  
+  \includegraphics[width=1\linewidth]{figures/lasso_rates.pdf}%
+\caption{Rate of convergence $r(\Lambda'_\rho(\x^*))$ as a function of $\rho$
+  for a Lasso problem with column-rank deficient design
+  matrix $\X$. Taking $\rho$ too small leads
+  to badly conditioned problem (as  $\Id + (1/\rho)\X^T\X$ is then almost
+  singular), and thus a slow rate of convergence (near 1). On the
+  other hand, the figure suggests that taking $\rho$ ``too large''
+  is also detrimental. Most remarkable, one notices that the basin of
+  ``good'' $\rho$ values is rather tight, and so care must be taken in
+  choosing the $\rho$ parameter.
+}
+\end{marginfigure} %-----------------------------------------------------------
+
     
   \begin{eqnarray}
     \begin{aligned}
@@ -1059,13 +1120,13 @@ recently in the literature.
   defined as defined above, with the $\rho$ subscript
   dropped for ease of notation. Let For $\B{x} = (\B{z}, \B{u}) \in\mathbb{R}^{q+q}$, let $\Lambda_1(\B{x}) \in \mathbb R^q$ denote the first $q$ coordinates of $\Lambda(\B{x})$, i.e its $z$-part. Define
   \begin{itemize}
-    \item $\supp(\B{z}) := \{j\in[d]\text{ }|\text{ }z_{j:j+c-1} \ne
+    \item $\supp(\B{z}) := \{j\in[\![d]\!]\text{ }|\text{ }z_{j:j+c-1} \ne
       0\}$;
       \item $\mathcal{A}_1(\B{z}) := \{\B{z}' \in \mathbb{R}^{q} |
     \supp(\B{z}') = \supp(\B{z})\}$, and $\mathcal A(\B{x}) := \mathcal A_1(\B{z}) \oplus \mathbb R^q$;
-   \item $\tilde{\B{x}} := (\tilde{\B{x}}_j)_{j \in [d]} := \tilde{\A}\B{x}$, $\kappa :=
+   \item $\tilde{\B{x}} := (\tilde{\B{x}}_j)_{j \in [\![d]\!]} := \tilde{\A}\B{x}$, $\kappa :=
     \lambda / \rho$, $\epsilon(\B{x}) :=
-      \underset{j \in [d]}{\min}\text{}|\|\tilde{\B{x}}_j\|-\kappa| \ge 0$.
+      \underset{j \in [\![d]\!]}{\min}\text{}|\|\tilde{\B{x}}_j\|-\kappa| \ge 0$.
     \end{itemize}
 Then the following hold:
 \begin{itemize}

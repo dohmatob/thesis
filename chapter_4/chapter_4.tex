@@ -339,7 +339,7 @@ kept fixed. The update for the atom $\B{d}^j$ can then be written as
   -\B{D}\B{c}_i\|_{2}^2\right) + \gamma{\text{Lap}}(\B{d}^j)\\
   &=\argmin_{\B{d}^j \in \mathcal C}\left(\sum_{i=1}^t\frac{1}{2}\|\B{x}_i -\B{D}\B{c}_i\|_{2}^2\right)
   + \gamma t{\text{Lap}}(\B{d}^j)\\
-  &=\argmin_{\B{d}^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\B{d}^j, \underbrace{\B{d}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \B{D}\B{a}^j)}_{\text{refer to   \citep{mairal2010} for the details}}),
+  &=\argmin_{\B{d}^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\B{d}^j, \underbrace{\B{d}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \B{D}\B{a}^j)}_{\text{see subsection \ref{sec:proxdict} below}}),
 \end{split}
 \end{eqnarray}
 where
@@ -420,6 +420,7 @@ The Convergence of our algorithm (to a local optimum) is guaranteed since all hy
 Appendix of   \citep{dohmatob2016}.
 
 \subsection{Interlude: Proximal updates for online dictionary-learning}
+\label{sec:proxdict}
 Recall that after $n$ passes over the data, the objective function whose minimization gives the dictionary updates is $E(\B{D}) := \frac{1}{2n}\|\B{X} - \B{D}\B{C}^T\|_{\text{F}}^2$, where $\B{C} \in \mathbb R^{n \times k}$ is the fixed matrix of codes computed up to this point, and $\B{D} \in \mathbb R^{p \times k}$ is the dictionary variable. Adding a \textbf{block-separable} penalty term $\gamma\sum_{j=1}^kg_j(\B{d}^j)$ the energy becomes
 \begin{equation}
   E(\B{D}) = \frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2 + \gamma \sum_{j} g_j(\B{d}^j).
