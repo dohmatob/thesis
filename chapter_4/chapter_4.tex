@@ -1,4 +1,5 @@
-\chapter{Learning patterns of inter-subject functional variability from data}
+\chapter{Learning patterns of inter-subject functional variability from data}\label{chap:func_var}
+\markright{{~{\rm \ref{chap:func_var}}. Learning inter-subject functional variability from data}\hfill}{}
 
 
 
@@ -339,7 +340,7 @@ kept fixed. The update for the atom $\B{d}^j$ can then be written as
   -\B{D}\B{c}_i\|_{2}^2\right) + \gamma{\text{Lap}}(\B{d}^j)\\
   &=\argmin_{\B{d}^j \in \mathcal C}\left(\sum_{i=1}^t\frac{1}{2}\|\B{x}_i -\B{D}\B{c}_i\|_{2}^2\right)
   + \gamma t{\text{Lap}}(\B{d}^j)\\
-  &=\argmin_{\B{d}^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\B{d}^j, \underbrace{\B{d}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \B{D}\B{a}^j)}_{\text{see subsection \ref{sec:proxdict} below}}),
+  &=\argmin_{\B{d}^j \in \mathcal C}F_{\gamma (\B{a}_{j,j}/t)^{-1}}(\B{d}^j, \underbrace{\B{d}^j_{\text{old}} + \B{a}_{j,j}^{-1}(\B{b}^j - \B{D}\B{a}^j)}_{\text{see chapter \ref{chap:proxdict} below}}),
 \end{split}
 \end{eqnarray}
 where
@@ -419,170 +420,6 @@ implemented a modified version of \textit{scikit-learn} Python library's
 The Convergence of our algorithm (to a local optimum) is guaranteed since all hypotheses of   \citep{mairal2010} are satisfied. For example, assumption \textbf{(A)} is satisfied because fMRI data are naturally compactly supported. Assumption \textbf{(C)} is satisfied since the ridge-regression problem \eqref{eq:coding} has a unique solution. More details are provided in the
 Appendix of   \citep{dohmatob2016}.
 
-\subsection{Interlude: Proximal updates for online dictionary-learning}
-\label{sec:proxdict}
-Recall that after $n$ passes over the data, the objective function whose minimization gives the dictionary updates is $E(\B{D}) := \frac{1}{2n}\|\B{X} - \B{D}\B{C}^T\|_{\text{F}}^2$, where $\B{C} \in \mathbb R^{n \times k}$ is the fixed matrix of codes computed up to this point, and $\B{D} \in \mathbb R^{p \times k}$ is the dictionary variable. Adding a \textbf{block-separable} penalty term $\gamma\sum_{j=1}^kg_j(\B{d}^j)$ the energy becomes
-\begin{equation}
-  E(\B{D}) = \frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2 + \gamma \sum_{j} g_j(\B{d}^j).
-  \label{eq:model}
-\end{equation}
-One easily computes
-$$\nabla_{\B{D}}\left(\frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2\right) = \frac{1}{n}(\B{DC} - \B{X})\B{C}^T = \B{DA} - \B{B},$$
-where $ \B{A} := \frac{1}{n}\B{C}\B{C}^T = \frac{1}{n}\sum_{i=1}^n\B{c}_i\B{c}_i^T \in \mathbb R^{k \times k}$ and $\B{B} := \frac{1}{n}\B{X}\B{C}^T = \frac{1}{n}\sum_{i=1}^n\B{x}_i\B{c}_i^T \in \mathbb R^{p \times k}$. 
-Now in BCD, the $j$th atom is updated whilst all the others are held constant. 
-Selecting the $j$th column of \eqref{eq:model}, we get
-$\nabla_{\B{d}^j}\left(\frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2\right) = \B{D}\B{a}^j - \B{b}^j$. Putting things together, we get
-\begin{eqnarray*}
-  \begin{split}
-    &\B{p} = \argmin_{\B{d}^j \in \mathbb R^p,\;\B{d}^l\text{ fixed }\forall l \ne j}E(\B{D}) \iff
-    \B{0} \in \partial_{\B{d}^j}E(\B{D}) = \B{D}\B{a}^j-\B{b}^j\big|_{\B{d}^j = \B{p}} + \gamma \partial g_j(\B{p})\\
-    &\iff a_{j,j}\B{p} - \left(\B{b}^j-\sum_{l \ne j}a_{j,l}\B{d}^l\right) \in \gamma \partial (g_j)(\B{p})
-    \overset{\text{Lemma} \ref{thm:implicit_grad}}{\iff} \B{p} = \prox_{\gamma a_{j,j}^{-1}g_j}(\B{z}^{-j})
-\end{split}
-\end{eqnarray*}
-where
-\[
-  \B{z}^{-j} := a_{j,j}^{-1}\left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right),
-\]
-and the last equivalence results from the following elementary lemma which reveals that the prox of a function at a point can be seen as an \textit{implicit} gradient step. Viz
-\begin{lemma}
-  For a function $f: \mathcal H \rightarrow (-\infty,+\infty]$ (convex or not), recall the definition of its \textit{subdiffferential} at a point $\B{p} \in \mathcal H$, namely  $\partial f(\B{p}) := \{\B{v} \in \mathcal H | f(\B{z}) \ge f(\B{p}) + \B{v}^T(\B{z} - \B{p})\; \forall \B{z} \in \mathcal H\}$. We have the following characterization of the prox
-  \begin{equation}
-    \B{p} \in \prox_{f}(\B{d}) \iff \B{d}-\B{p} \in \partial f(\B{p}).
-\end{equation}
-
-  \label{thm:implicit_grad}
-\end{lemma}
-\begin{proof}
-  \[
-    \begin{split}
-      \B{p} \in \prox_{f}(\B{d}) &\iff \frac{1}{2}\|\B{p}-\B{d}\|_2^2 + f(\B{p}) \le \frac{1}{2}\|\B{z}-\B{d}\|_2^2 + f(\B{z})\; \forall \B{z}\\
-      &\iff f(\B{p}) + \frac{1}{2}\|\B{p}\|_2^2 -\B{d}^T\B{p} \le f(\B{z}) + \frac{1}{2}\|\B{z}\|_2^2 -\B{d}^T\B{p}\; \forall \B{z}\\
-      &\iff f(\B{p}) + \frac{1}{2}\|\B{p}\|_2^2 + \B{d}^T(\B{z}-\B{p}) \le f(\B{z}) + \frac{1}{2}\|\B{z}\|_2^2\;\forall \B{z}\\
-      &\iff \B{d} \in \partial (f + \frac{1}{2}\|.\|_2^2)(\B{p}) = \B{p} + \partial f(\B{p})\\
-      &\iff \B{d} - \B{p} \in \partial f(\B{p}).
-    \end{split}
-  \]
-\end{proof}
-
-% Recall that after $n$ passes over the data, the objective function whose minimization of which gives the dictionary updates is $E(\B{D}) := \frac{1}{2n}\|\B{X} - \B{U}\B{D}^T\|_{\text{F}}^2$, where $\B{U} \in \mathbb R^{n \times k}$ is the fixed matrix of codes computed up to this point, and $\B{D} \in \mathbb R^{p \times k}$ is the dictionary variable.
-% A bit of algebra reveals that
-% \[
-% \begin{split}
-%   E(\B{D}) &= \frac{1}{2n}\|\B{X} - \B{D}\B{U}\|_{\text{F}}^2 = \frac{1}{2n}\tr\left((\B{X} - \B{D}\B{U})^T(\B{X} - \B{D}\B{U})\right)
-%    % + \frac{1}{2}\gamma\sum_{j=1}^k\|\K \B{d}^j\|_2^2
-%    \\
-%    &= \frac{1}{2n}\tr(\B{X}^T\B{X}) - \frac{1}{n}\tr(\B{X}^T\B{D}\B{U}) - \frac{1}{n}\tr(\B{U}^T\B{D}^T\B{X}) + \frac{1}{2n}\tr(\B{U}^T\B{D}^T\B{D}\B{U})\\
-%    &= \frac{1}{2}\tr(\B{D}^T\B{D}\B{A}) - \tr(\B{D}^T\B{B}) + \frac{1}{2n}\tr(\B{X}^T\B{X}),
-% \end{split}
-% \]
-% where $ \B{A} := \frac{1}{n}\B{U}\B{U}^T = \frac{1}{n}\sum_{i=1}^n\B{u}_i\B{u}_i^T \in \mathbb R^{k \times k}$ and $\B{B} := \frac{1}{n}\B{X}\B{U}^T = \frac{1}{n}\sum_{i=1}^n\B{x}_i\B{u}_i^T \in \mathbb R^{p \times k}$. Now, discarding the constant term $\frac{1}{2n}\tr(\B{X}^T\B{X})$ and simplifying, we get
-% \[
-%   \begin{split}
-%  E(\B{D}) &= \frac{1}{2}\tr(\B{D}^T\B{D}\B{A}) - \tr(\B{D}^T\B{B}) = \sum_{j=1}^k\frac{1}{2}(\B{D}^T\B{D}\B{A})_{j,j} - (\B{D}^T\B{B})_{j,j}\\
-%  &= \sum_{j=1}^k\frac{1}{2}\sum_{l=1}^ka_{j,l}\langle \B{d}^l,\B{d}^j\rangle - \langle \B{b}^j,\B{d}^j\rangle
-%  = \sum_{j=1}^k\frac{1}{2}a_{j,j}\langle \B{d}^j,\B{d}^j\rangle - \left\langle \B{b}^j-\sum_{l \ne j}a_{j,l}\B{d}^l,\B{d}^j\right\rangle \\
-%  &= \sum_{j=1}^k\tilde{E}_j(\B{d}^j) + \text{ stuff that don't depend on }\B{d}^j
-%   \end{split}
-% \]
-% where $\tilde{E}_j(\B{z}) := \frac{1}{2}a_{j,j}\left\|\B{z} - a_{j,j}^{-1}\left(\B{b}^j-\sum_{l \ne j}a_{j,l}\B{d}^l\right)\right\|_2^2$, an expression which doesn't depend on any $\B{d}^l$ with $l \ne j$.
-
-  
-% \paragraph{Here comes the prox.}
-% Now, if we consider a penalized version of the objective, namely $E(\B{D}) + \alpha R(\B{D})$, obtained by adding a \textbf{block-separable} penalty term $R(\B{D}) = \sum_{j=1}^kg_j(\B{d}^j)$, then each contribution $\tilde{E}_j(\B{d}^j)$ gets replaced by its penalized version $\tilde{E}_j(\B{d}^j) + \alpha g_j(\B{d}^j)$ and
-% the BCD update for the $j$th atom is
-
-% \begin{eqnarray}
-%   \begin{split}
-%     \B{d}^j \leftarrow \argmin_{\B{z} \in \mathbb R^p}\tilde{E}_j(\B{z}) + \alpha g_j(\B{z})
-%     &= \argmin_{\B{z}  \in \mathbb R^p}\frac{1}{2}a_{j,j}\|\B{z} - a_{j,j}^{-1}\left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right)\|_2^2 + \alpha g_j(\B{z})\\
-%     &=:  \prox_{\alpha a_{j,j}^{-1}g_j}(\B{z}^{-j}),
-%   \end{split}
-% \end{eqnarray}
-% where
-% \[
-%   \B{z}^{-j} := a_{j,j}^{-1}\left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right).
-% \]
-% % \B{d}^j_{\text{old}} + a_{j,j}^{-1}(\B{b}^j-\B{D}\B{a}^j).$
-Putting everything together, we have the close-form BCD update formula for regularized online dictionary learning\footnote{We assumed W.L.O.G that $a_{j,j} \ne 0$ (i.e $a_{j,j} > 0$), meaning that the $j$th atom is active in the representation of at least one sample. Otherwise, we can update the $j$th atom with a random vector, or even skip it altogether.}
-\begin{mdframed}
-  \paragraph{BCD updates DL with general separable penalties.}
-  The BCD updates for a penalized DL model \eqref{eq:model} is
-\begin{equation}
-  \B{d}^j \leftarrow \prox_{\gamma a_{j,j}^{-1}g_j}(\B{z}^{-j}),
-\end{equation}
-where $\B{z}^{-j} := a_{j,j}^{-1}\B{r}^j$ and $\B{R} := \left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right) = \B{DA} - \B{B} + \B{d}^j \circ \B{a}^j $.
-\end{mdframed}
-
-\subsubsection{Special cases}
-Now that we have the hammer, where are the nails...
-\paragraph{Constraint sets.}
-If we take $g_j := i_{C_j}$, the indicator function of a closed convex subset of $\mathbb R^p$, so that each atom $\B{d}^j$ is constrained to satisfy a set of constraints prescribed by $C_j$, then the above updates reduce to projecting $\B{z}^{-j}$ onto $C_j$, namely
-\begin{equation}
-\B{d}^j \leftarrow  \text{proj}_{C_j}(\B{z}^{-j}).
-\end{equation}
-This is interesting as long as the $C_j$'s are sufficiently ``simple'' to allow us compute the above projection easily (preferably in closed form).
-% \paragraph{Classical choice.}
-
-Taking $C_j$ to be $\mathbb B_2$, the unit ball for the euclidean norm on  $\mathbb R^p$, we recover the updates proposed in \citep{mairal2009,mairal2010}, namely
-\begin{equation}
-\B{d}^j \leftarrow  \frac{\B{z}^{-j}}{\max(1,\|\B{z}^{-j}\|_2)}.
-\end{equation}
-One notes that these constraint has no structural properties beyond preventing the dictionary atoms from becoming arbitrarily large.
-
-% \paragraph{Gram-Schmidt / step-wise orthonormality constraints.}
-Akin to ICA-type methods, one can take $C_j =$ the orthogonal complement of the linear span of the first $j-1$st atoms, namely
-  \begin{equation}
-    C_{j} = \text{span}\{\B{d}^l | l < j\}^\perp \cap \mathbb B_{2}.
-  \end{equation}
-  The dictionary updates are then simply the Gram-Schmidt orthonormalization of the ordered sequence of vectors $\B{z}^{-1},\ldots,\B{z}^{-j}$, namely\footnote{The version of the Gram-Schmidt process presented here is not to be implemented as stated, as is it known to suffer from numerical instability errors in finite-precision arithmetic. There exists equivalent versions (e.g Golub \& Van Loan 1996] which alleviate these instabilities.}
-
-  \begin{eqnarray}
-    \tilde{\B{d}}^j \leftarrow \B{z}^{-j} -\sum_{l < j}\proj_{\B{d}^l}(\B{z}^{-j}),\;\B{d}^j \leftarrow \frac{\tilde{\B{d}}^j}{\|\tilde{\B{d}}^j\|_2},
-  \end{eqnarray}
-  where
-  $$
-  \proj_{\B{d}^l}(\B{z}^{-j}) := \begin{cases}\textbf{0},&\mbox{ if }\B{d}^l = \textbf{0},\\
-    \frac{\langle \B{z}^{-j},\B{d}^l\rangle}{\langle \B{d}^l,\B{d}^l\rangle}\B{d}^l,&\mbox{ otherwise}
-  \end{cases}
-  $$
-  is the orthogonal projection of $\B{z}^{-j}$ onto the line generated by the atom  $\B{d}^l$.
-  
-
- \paragraph{``Social'' sparsity:  simultaneous sparsity and smoothness via windowed group-Lasso.}
-  The first non-trivial results of our ramblings this far is obtained by considering the \textit{social sparsity}  \citep{kowalski2013social,kowalski2009structured} prior. In this model, a weakly activated voxel $\mu$ in the middle of strongly activated voxels will be saved (as if rescued by the clan), whilst a strongly activated voxel in the middle of weakly activated voxels will be eliminated (as if killed by isolation). ``Strongness'' and ``weakness'' are measured with respect to a specified threshold $\alpha > 0$.
-Formally, social sparsity corresponds to a penalty  $g_{\text{social}} : \mathbb R^p \rightarrow \mathbb R$ defined implicitly via its proximal operator
-
- \begin{equation}
-   \begin{split}
-     (\prox_{\alpha g_{\text{social}}}(\B{z}))_\mu &:=
-     z_\mu\begin{cases}1 - \frac{\alpha}{\|\B{w}_\mu \bullet \B{z}\|_2}, &\mbox{ if }\|\B{w}_\mu \bullet \B{z}\|_2 > \alpha
-       % \text{ (i.e the average energy of neighbors of }\mu\text{ is high)}
-       ,\\0, &\mbox{ otherwise}\end{cases}\\
-     &=
-     % z_\mu\left(1 - \frac{\alpha}{\|(\B{w}_\mu)^{1/2} \bullet \B{z}\|_2}\right)_+
-     z_\mu\left(1 - \frac{\alpha}{\left(\sum_{\nu \in \mathcal N(\mu)}(w^{\nu}_{\mu})^2z_{\nu}^2\right)^{1/2}}\right)_+, 
-     \end{split}
-  \label{eq:social}
-\end{equation}
-where $\B{w}_\mu \bullet \B{z} := (w^1_\mu z_1,w^2_\mu z_2,\ldots,w^p_\mu z_p) \in \mathbb R^p$ for weights
-$(w^\mu_\nu)_{\mu,\nu \in [\![p]\!]}$ satisfying $\sum_\mu (w^\nu_\mu)^2 = 1$ for all $\nu$, and $\mathcal N (\mu) := \{\nu \in [\![p]\!] | w^\nu_\mu \ne 0\}$ is the \textit{neighborhood} of the $\mu$th voxel, assumed to be non-empty. Thus each $\B{w}_\mu$ can be thought of as
-(normalized) mean-filter supported on a patch $\mathcal N(\mu)$ around the voxel $\mu$.
-Examples include rectangular filters, truncated Gaussians, etc.
-%  Social sparsity applies a soft-thresholding using the norm of a local neighborhood, but modifies only the coordinate $\B{z}_\mu$ at the center voxel $\mu$ of this neighborhood.
-  % It is a generalization of the overlapping group-lasso shrinkage operator\citep{ogrouplasso}; the latter is recovered by taking if the $w^\mu_\nu$ are chosen so that $w^\mu_\nu$ is independent of $\nu$ for all $\nu \in \mathcal N(\mu)$, i.e $w^\mu_\nu = \frac{1}{\#\mathcal N(\mu)}$ for all $\mu$ and $\nu \in \mathcal N(\mu)$.
-One notes the following facts
-\begin{itemize}
-\item $\|\B{E}\B{z}\|^2_2 \equiv \|\B{z}\|^2_2$, where $\B{E}\B{z} := (\B{w}_\mu \bullet \B{z})_{\mu \in [\![p]\!]} \in \mathbb R^{p^2}$
-  is the \textit{expansion operator} associated with the weights $w^\nu_\mu$. In other words, $\B{E}$ is a \textit{linear isometry}.
-\item social sparsity is related to GLasso by the formula
-  \begin{equation}
-    \text{prox}_{\alpha g_{\text{social}}} = \B{F} \circ \text{prox}_{\alpha \text{GL}} \circ \B{E},
-  \end{equation}
-  where $\B{F}$ is the right pseudo-inverse of $\B{E}$.
-\end{itemize}
-
-
 \subsection{Practical considerations}
 \paragraph{Hyper-parameter tuning.}
 Parameter-selection in dictionary-learning is known to be a difficult unsolved
@@ -656,6 +493,7 @@ was retained as a good strategy for setting the Laplacian regularization $\gamma
 Problem \eqref{eq:ss} is non-convex jointly in  $(\B{C}, \B{D})$, and so initialization might be a might be a crucial issue. However, in our experiments, we have observed that even randomly initialized dictionaries eventually produce sensible results that do not jitter much across different runs of the same experiment. %%  In our experiments on activation $Z$-maps from task fMRI contrasts (see section \ref{sec:exp}), we found that extracting blobs from the thresholded across-subject mean activation map (a relatively easy segmentation problem) and keeping the connected components which a reasonably big --say $1500\text{mm}^3$--, and then using the so-obtained regions-of-interest (ROIs) maps as initialization for the dictionary in Alg. 1 also works well in practice.
 %% However we recommend the former approach, as it is more robust and needs less intervention.
 %% Moreover, counting the number of these connected components yields a heuristic way to set the number of atoms $k$ in the dictionary.
+
 
 \section{Related works}
 %% To the best of our knowledge, dictionary-learning techniques for fMRI
@@ -867,10 +705,10 @@ In the beginning of the curve, our proposed spatially regularized Smooth-SODL mo
 \begin{figure}[!htp]
  \begin{tabular}{|c|c|c|c|c}\hline%\hline
     {Nb. subjects pooled} & {vanilla SODL} & {proposed model} & {gain factor} \\ \hline
-17 & {2\%} & \bf{31\%} & {13.8}\\\hline
-92 & 37\% & \bf{50\%} & 1.35\\\hline
-167 & 47\% & \bf{54\%} & 1.15\\\hline
-241 & 49\% & \bf{55\%} & 1.11\\
+17 & {2\%} & \bf{31\%} & {x13.8}\\\hline
+92 & 37\% & \bf{50\%} & x1.35\\\hline
+167 & 47\% & \bf{54\%} & x1.15\\\hline
+241 & 49\% & \bf{55\%} & x1.11\\
   \end{tabular}
  \caption{\textbf{Learning-curve} for boost in explained variance of our proposed Smooth-SODL model over the reference SODL model.
    Note the reduction in the gain in EV as more data are pooled.}
@@ -961,8 +799,176 @@ SS0MF \eqref{eq:ss} model will soon be made available as part of the
 
 % % The dynamics, location, and magnitude of the signal are highly influenced by the vasculature as it is sampled in each voxel. If a voxel happen to capture large vessel effects, the magnitude of the signal may be larger, the timing a bit more delayed than average (up to 4 s delayed from capillary effects)~ \citep{bandettini2009functional}
 
+\chapter{Interlude: Proximal updates for online dictionary-learning}
+\label{chap:proxdict}
+\markright{{~{\rm \ref{chap:proxdict}}. Proximal updates for online dictionary-learning}\hfill}{}
 
-\begin{fullwidth}
+\section{The power of the prox}
+Recall that after $n$ passes over the data, the objective function whose minimization gives the dictionary updates is $E(\B{D}) := \frac{1}{2n}\|\B{X} - \B{D}\B{C}^T\|_{\text{F}}^2$, where $\B{C} \in \mathbb R^{n \times k}$ is the fixed matrix of codes computed up to this point, and $\B{D} \in \mathbb R^{p \times k}$ is the dictionary variable. Adding a \textbf{block-separable} penalty term $\gamma\sum_{j=1}^kg_j(\B{d}^j)$ the energy becomes
+\begin{equation}
+  E(\B{D}) = \frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2 + \gamma \sum_{j} g_j(\B{d}^j).
+  \label{eq:model}
+\end{equation}
+One easily computes
+$$\nabla_{\B{D}}\left(\frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2\right) = \frac{1}{n}(\B{DC} - \B{X})\B{C}^T = \B{DA} - \B{B},$$
+where $ \B{A} := \frac{1}{n}\B{C}\B{C}^T = \frac{1}{n}\sum_{i=1}^n\B{c}_i\B{c}_i^T \in \mathbb R^{k \times k}$ and $\B{B} := \frac{1}{n}\B{X}\B{C}^T = \frac{1}{n}\sum_{i=1}^n\B{x}_i\B{c}_i^T \in \mathbb R^{p \times k}$. 
+Now in BCD, the $j$th atom is updated whilst all the others are held constant. 
+Selecting the $j$th column of \eqref{eq:model}, we get
+$\nabla_{\B{d}^j}\left(\frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2\right) = \B{D}\B{a}^j - \B{b}^j$. Putting things together, we get
+\begin{eqnarray*}
+  \begin{split}
+    &\B{p} = \argmin_{\B{d}^j \in \mathbb R^p,\;\B{d}^l\text{ fixed }\forall l \ne j}E(\B{D}) \iff
+    \B{0} \in \partial_{\B{d}^j}E(\B{D}) = \B{D}\B{a}^j-\B{b}^j\big|_{\B{d}^j = \B{p}} + \gamma \partial g_j(\B{p})\\
+    &\iff a_{j,j}\B{p} - \left(\B{b}^j-\sum_{l \ne j}a_{j,l}\B{d}^l\right) \in \gamma \partial (g_j)(\B{p})
+    \overset{\text{Lemma} \ref{thm:implicit_grad}}{\iff} \B{p} = \prox_{\gamma a_{j,j}^{-1}g_j}(\B{z}^{-j})
+\end{split}
+\end{eqnarray*}
+where
+\[
+  \B{z}^{-j} := a_{j,j}^{-1}\left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right),
+\]
+and the last equivalence results from the following elementary lemma which reveals that the prox of a function at a point can be seen as an \textit{implicit} gradient step. Viz
+\begin{lemma}
+  For a function $f: \mathcal H \rightarrow (-\infty,+\infty]$ (convex or not), recall the definition of its \textit{subdiffferential} at a point $\B{p} \in \mathcal H$, namely  $\partial f(\B{p}) := \{\B{v} \in \mathcal H | f(\B{z}) \ge f(\B{p}) + \B{v}^T(\B{z} - \B{p})\; \forall \B{z} \in \mathcal H\}$. We have the following characterization of the prox
+  \begin{equation}
+    \B{p} \in \prox_{f}(\B{d}) \iff \B{d}-\B{p} \in \partial f(\B{p}).
+\end{equation}
+
+  \label{thm:implicit_grad}
+\end{lemma}
+\begin{proof}
+  \[
+    \begin{split}
+      \B{p} \in \prox_{f}(\B{d}) &\iff \frac{1}{2}\|\B{p}-\B{d}\|_2^2 + f(\B{p}) \le \frac{1}{2}\|\B{z}-\B{d}\|_2^2 + f(\B{z})\; \forall \B{z}\\
+      &\iff f(\B{p}) + \frac{1}{2}\|\B{p}\|_2^2 -\B{d}^T\B{p} \le f(\B{z}) + \frac{1}{2}\|\B{z}\|_2^2 -\B{d}^T\B{p}\; \forall \B{z}\\
+      &\iff f(\B{p}) + \frac{1}{2}\|\B{p}\|_2^2 + \B{d}^T(\B{z}-\B{p}) \le f(\B{z}) + \frac{1}{2}\|\B{z}\|_2^2\;\forall \B{z}\\
+      &\iff \B{d} \in \partial (f + \frac{1}{2}\|.\|_2^2)(\B{p}) = \B{p} + \partial f(\B{p})\\
+      &\iff \B{d} - \B{p} \in \partial f(\B{p}).
+    \end{split}
+  \]
+\end{proof}
+
+% Recall that after $n$ passes over the data, the objective function whose minimization of which gives the dictionary updates is $E(\B{D}) := \frac{1}{2n}\|\B{X} - \B{U}\B{D}^T\|_{\text{F}}^2$, where $\B{U} \in \mathbb R^{n \times k}$ is the fixed matrix of codes computed up to this point, and $\B{D} \in \mathbb R^{p \times k}$ is the dictionary variable.
+% A bit of algebra reveals that
+% \[
+% \begin{split}
+%   E(\B{D}) &= \frac{1}{2n}\|\B{X} - \B{D}\B{U}\|_{\text{F}}^2 = \frac{1}{2n}\tr\left((\B{X} - \B{D}\B{U})^T(\B{X} - \B{D}\B{U})\right)
+%    % + \frac{1}{2}\gamma\sum_{j=1}^k\|\K \B{d}^j\|_2^2
+%    \\
+%    &= \frac{1}{2n}\tr(\B{X}^T\B{X}) - \frac{1}{n}\tr(\B{X}^T\B{D}\B{U}) - \frac{1}{n}\tr(\B{U}^T\B{D}^T\B{X}) + \frac{1}{2n}\tr(\B{U}^T\B{D}^T\B{D}\B{U})\\
+%    &= \frac{1}{2}\tr(\B{D}^T\B{D}\B{A}) - \tr(\B{D}^T\B{B}) + \frac{1}{2n}\tr(\B{X}^T\B{X}),
+% \end{split}
+% \]
+% where $ \B{A} := \frac{1}{n}\B{U}\B{U}^T = \frac{1}{n}\sum_{i=1}^n\B{u}_i\B{u}_i^T \in \mathbb R^{k \times k}$ and $\B{B} := \frac{1}{n}\B{X}\B{U}^T = \frac{1}{n}\sum_{i=1}^n\B{x}_i\B{u}_i^T \in \mathbb R^{p \times k}$. Now, discarding the constant term $\frac{1}{2n}\tr(\B{X}^T\B{X})$ and simplifying, we get
+% \[
+%   \begin{split}
+%  E(\B{D}) &= \frac{1}{2}\tr(\B{D}^T\B{D}\B{A}) - \tr(\B{D}^T\B{B}) = \sum_{j=1}^k\frac{1}{2}(\B{D}^T\B{D}\B{A})_{j,j} - (\B{D}^T\B{B})_{j,j}\\
+%  &= \sum_{j=1}^k\frac{1}{2}\sum_{l=1}^ka_{j,l}\langle \B{d}^l,\B{d}^j\rangle - \langle \B{b}^j,\B{d}^j\rangle
+%  = \sum_{j=1}^k\frac{1}{2}a_{j,j}\langle \B{d}^j,\B{d}^j\rangle - \left\langle \B{b}^j-\sum_{l \ne j}a_{j,l}\B{d}^l,\B{d}^j\right\rangle \\
+%  &= \sum_{j=1}^k\tilde{E}_j(\B{d}^j) + \text{ stuff that don't depend on }\B{d}^j
+%   \end{split}
+% \]
+% where $\tilde{E}_j(\B{z}) := \frac{1}{2}a_{j,j}\left\|\B{z} - a_{j,j}^{-1}\left(\B{b}^j-\sum_{l \ne j}a_{j,l}\B{d}^l\right)\right\|_2^2$, an expression which doesn't depend on any $\B{d}^l$ with $l \ne j$.
+
+  
+% \paragraph{Here comes the prox.}
+% Now, if we consider a penalized version of the objective, namely $E(\B{D}) + \alpha R(\B{D})$, obtained by adding a \textbf{block-separable} penalty term $R(\B{D}) = \sum_{j=1}^kg_j(\B{d}^j)$, then each contribution $\tilde{E}_j(\B{d}^j)$ gets replaced by its penalized version $\tilde{E}_j(\B{d}^j) + \alpha g_j(\B{d}^j)$ and
+% the BCD update for the $j$th atom is
+
+% \begin{eqnarray}
+%   \begin{split}
+%     \B{d}^j \leftarrow \argmin_{\B{z} \in \mathbb R^p}\tilde{E}_j(\B{z}) + \alpha g_j(\B{z})
+%     &= \argmin_{\B{z}  \in \mathbb R^p}\frac{1}{2}a_{j,j}\|\B{z} - a_{j,j}^{-1}\left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right)\|_2^2 + \alpha g_j(\B{z})\\
+%     &=:  \prox_{\alpha a_{j,j}^{-1}g_j}(\B{z}^{-j}),
+%   \end{split}
+% \end{eqnarray}
+% where
+% \[
+%   \B{z}^{-j} := a_{j,j}^{-1}\left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right).
+% \]
+% % \B{d}^j_{\text{old}} + a_{j,j}^{-1}(\B{b}^j-\B{D}\B{a}^j).$
+Putting everything together, we have the close-form BCD update formula for regularized online dictionary learning\footnote{We assumed W.L.O.G that $a_{j,j} \ne 0$ (i.e $a_{j,j} > 0$), meaning that the $j$th atom is active in the representation of at least one sample. Otherwise, we can update the $j$th atom with a random vector, or even skip it altogether.}
+\begin{mdframed}
+  \paragraph{BCD updates DL with general separable penalties.}
+  The BCD updates for a penalized DL model \eqref{eq:model} is
+\begin{equation}
+  \B{d}^j \leftarrow \prox_{\gamma a_{j,j}^{-1}g_j}(\B{z}^{-j}),
+\end{equation}
+where $\B{z}^{-j} := a_{j,j}^{-1}\B{r}^j$ and $\B{R} := \left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right) = \B{DA} - \B{B} + \B{d}^j \circ \B{a}^j $.
+\end{mdframed}
+
+\section{Applications}
+\subsection{Special cases}
+Now that we have the hammer, where are the nails...
+\subsubsection{Constraint sets}
+If we take $g_j := i_{C_j}$, the indicator function of a closed convex subset of $\mathbb R^p$, so that each atom $\B{d}^j$ is constrained to satisfy a set of constraints prescribed by $C_j$, then the above updates reduce to projecting $\B{z}^{-j}$ onto $C_j$, namely
+\begin{equation}
+\B{d}^j \leftarrow  \text{proj}_{C_j}(\B{z}^{-j}).
+\end{equation}
+This is interesting as long as the $C_j$'s are sufficiently ``simple'' to allow us compute the above projection easily (preferably in closed form).
+\paragraph{Classical choice.}
+
+Taking $C_j$ to be $\mathbb B_2$, the unit ball for the euclidean norm on  $\mathbb R^p$, we recover the updates proposed in \citep{mairal2009,mairal2010}, namely
+\begin{equation}
+\B{d}^j \leftarrow  \frac{\B{z}^{-j}}{\max(1,\|\B{z}^{-j}\|_2)}.
+\end{equation}
+One notes that these constraint has no structural properties beyond preventing the dictionary atoms from becoming arbitrarily large.
+
+\paragraph{Gram-Schmidt / step-wise orthonormality constraints.}
+Akin to ICA-type methods, one can take $C_j =$ the orthogonal complement of the linear span of the first $j-1$st atoms, namely
+  \begin{equation}
+    C_{j} = \text{span}\{\B{d}^l | l < j\}^\perp \cap \mathbb B_{2}.
+  \end{equation}
+  The dictionary updates are then simply the Gram-Schmidt orthonormalization of the ordered sequence of vectors $\B{z}^{-1},\ldots,\B{z}^{-j}$, namely\footnote{The version of the Gram-Schmidt process presented here is not to be implemented as stated, as is it known to suffer from numerical instability errors in finite-precision arithmetic. There exists equivalent versions (e.g Golub \& Van Loan 1996] which alleviate these instabilities.}
+
+  \begin{eqnarray}
+    \tilde{\B{d}}^j \leftarrow \B{z}^{-j} -\sum_{l < j}\proj_{\B{d}^l}(\B{z}^{-j}),\;\B{d}^j \leftarrow \frac{\tilde{\B{d}}^j}{\|\tilde{\B{d}}^j\|_2},
+  \end{eqnarray}
+  where
+  $$
+  \proj_{\B{d}^l}(\B{z}^{-j}) := \begin{cases}\textbf{0},&\mbox{ if }\B{d}^l = \textbf{0},\\
+    \frac{\langle \B{z}^{-j},\B{d}^l\rangle}{\langle \B{d}^l,\B{d}^l\rangle}\B{d}^l,&\mbox{ otherwise}
+  \end{cases}
+  $$
+  is the orthogonal projection of $\B{z}^{-j}$ onto the line generated by the atom  $\B{d}^l$.
+  
+
+ \subsection{``Social'' sparsity:  simultaneous sparsity and smoothness via windowed group-Lasso.}
+  The first non-trivial results of our ramblings this far is obtained by considering the \textit{social sparsity}  \citep{kowalski2013social,kowalski2009structured} prior. In this model, a weakly activated voxel $\mu$ in the middle of strongly activated voxels will be saved (as if rescued by the clan), whilst a strongly activated voxel in the middle of weakly activated voxels will be eliminated (as if killed by isolation). ``Strongness'' and ``weakness'' are measured with respect to a specified threshold $\alpha > 0$.
+Formally, social sparsity corresponds to a penalty  $g_{\text{social}} : \mathbb R^p \rightarrow \mathbb R$ defined implicitly via its proximal operator
+
+ \begin{equation}
+   \begin{split}
+     (\prox_{\alpha g_{\text{social}}}(\B{z}))_\mu &:=
+     z_\mu\begin{cases}1 - \frac{\alpha}{\|\B{w}_\mu \bullet \B{z}\|_2}, &\mbox{ if }\|\B{w}_\mu \bullet \B{z}\|_2 > \alpha
+       % \text{ (i.e the average energy of neighbors of }\mu\text{ is high)}
+       ,\\0, &\mbox{ otherwise}\end{cases}\\
+     &=
+     % z_\mu\left(1 - \frac{\alpha}{\|(\B{w}_\mu)^{1/2} \bullet \B{z}\|_2}\right)_+
+     z_\mu\left(1 - \frac{\alpha}{\left(\sum_{\nu \in \mathcal N(\mu)}(w^{\nu}_{\mu})^2z_{\nu}^2\right)^{1/2}}\right)_+, 
+     \end{split}
+  \label{eq:social}
+\end{equation}
+where $\B{w}_\mu \bullet \B{z} := (w^1_\mu z_1,w^2_\mu z_2,\ldots,w^p_\mu z_p) \in \mathbb R^p$ for weights
+$(w^\mu_\nu)_{\mu,\nu \in [\![p]\!]}$ satisfying $\sum_\mu (w^\nu_\mu)^2 = 1$ for all $\nu$, and $\mathcal N (\mu) := \{\nu \in [\![p]\!] | w^\nu_\mu \ne 0\}$ is the \textit{neighborhood} of the $\mu$th voxel, assumed to be non-empty. Thus each $\B{w}_\mu$ can be thought of as
+(normalized) mean-filter supported on a patch $\mathcal N(\mu)$ around the voxel $\mu$.
+Examples include rectangular filters, truncated Gaussians, etc.
+%  Social sparsity applies a soft-thresholding using the norm of a local neighborhood, but modifies only the coordinate $\B{z}_\mu$ at the center voxel $\mu$ of this neighborhood.
+  % It is a generalization of the overlapping group-lasso shrinkage operator\citep{ogrouplasso}; the latter is recovered by taking if the $w^\mu_\nu$ are chosen so that $w^\mu_\nu$ is independent of $\nu$ for all $\nu \in \mathcal N(\mu)$, i.e $w^\mu_\nu = \frac{1}{\#\mathcal N(\mu)}$ for all $\mu$ and $\nu \in \mathcal N(\mu)$.
+One notes the following facts
+\begin{itemize}
+\item $\|\B{E}\B{z}\|^2_2 \equiv \|\B{z}\|^2_2$, where $\B{E}\B{z} := (\B{w}_\mu \bullet \B{z})_{\mu \in [\![p]\!]} \in \mathbb R^{p^2}$
+  is the \textit{expansion operator} associated with the weights $w^\nu_\mu$. In other words, $\B{E}$ is a \textit{linear isometry}.
+\item social sparsity is related to GLasso by the formula
+  \begin{equation}
+    \text{prox}_{\alpha g_{\text{social}}} = \B{F} \circ \text{prox}_{\alpha \text{GL}} \circ \B{E},
+  \end{equation}
+  where $\B{F}$ is the right pseudo-inverse of $\B{E}$.
+\end{itemize}
+
+
+\clearpage
+% \begin{fullwidth}
 \bibliographystyle{plainnat}
 \bibliography{chapter_4/biblio4}
-\end{fullwidth}
+% \end{fullwidth}
