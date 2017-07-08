@@ -399,17 +399,11 @@ metrics.
 %% * what your evaluation metrics are}.
 
 \subsubsection{Normalized mutual information evaluation (NMI)}
-NMI is a
+NMI (see section \ref{sec:notations} for definition) is a
 popular similarity metric used to assess the quality of
 registration between two images, i.e how well aligned the images are to one another
 (for example \citep{maes1997multimodality}). It is also the loss function minimized by many
-optimization algorithms in image registration.  Formally, the NMI between two images $X_1 \sim p_{X_1}$
-and $X_2 \sim p_{X_2}$ is defined by
-\begin{equation}
-  NMI(X_1,X_2) = \frac{I(X_1,X_2)}{\sqrt{H(X_1)H(X_2)}},
-\end{equation}
-where $H(X_i) := H(p_{X_i}) := \sum_{x}p_{X_i}(x)\log(p_{X_i}(x))$  are the marginal entropies and
-$I(X_1,X_2) := H(X_1) - H(X_2|X_1)$.
+optimization algorithms in image registration.
 A detailed overview of
 the use of the NMI metric in medical image registration can be found
 in \citep{pluim2003}.
