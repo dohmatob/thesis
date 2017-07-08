@@ -1,4 +1,4 @@
-all: clean dot tikz
+all: clean dot tikz svg
 	pdflatex index
 	bibtex chapter_1/chapter_1.aux
 	bibtex chapter_3/chapter_3.aux
@@ -10,6 +10,10 @@ all: clean dot tikz
 tikz:
 	pdflatex chapter_1/tikz1.tex
 	pdflatex chapter_1/tikz2.tex
+
+svg:
+	inkscape -D -z --file=figures/dlsvg.svg --export-pdf=figures/dlsvg.pdf --export-latex
+
 
 dot:
 	dot flowchart.dot -Tpdf > flowchart.pdf

@@ -157,12 +157,16 @@ Here we do things that are closer to probabilistic segmentations
 
 \section{Smooth Sparse Online Dictionary-Learning (Smooth-SODL)}
 \label{sec:contrib}
-%% \begin{wrapfigure}{R}{.26\textwidth}
-%%   \centering
-%%   \includegraphics[width=.7\linewidth]{cartoon.pdf}
-%%   \caption{A structured and sparse dictionary atom}
-%%   \label{fig:roi}
-%% \end{wrapfigure}
+\begin{figure}
+    \centering
+    \def\svgwidth{\columnwidth}
+    \input{figures/dlsvg.pdf_tex}
+    \caption{...}
+  \end{figure}
+  
+% \begin{figure}[!htp]
+% \includesvg[width=1.\linewidth]{figures/dlsvg.svg}
+% \end{figure}
 Consider a stack $\X
 \in \mathbb R^{n \times p}$ of $n$ subject-level brain images
 $\B{x}_1,\B{x}_2,\ldots,\B{x}_n$ each of shape $n_1 \times n_2 \times n_3$, seen as
@@ -893,9 +897,13 @@ Putting everything together, we have the close-form BCD update formula for regul
 where $\B{z}^{-j} := a_{j,j}^{-1}\B{r}^j$ and $\B{R} := \left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right) = \B{DA} - \B{B} + \B{d}^j \circ \B{a}^j $.
 \end{mdframed}
 
+\paragraph{Convergence of the algorithm.}
+Direct application of \cite{fercoq2015}, since the general DL algorithm constructs unbiased
+estimates of $\nabla_j f(\B{D}_t)$, where $f(\B{D}) := \mathbb E_{\B{x}}\min_{\B{c} \in \mathbb R^k}\ell (\B{D}\B{c}, \B{x})$ ...
+
 \section{Applications}
-\subsection{Special cases}
 Now that we have the hammer, where are the nails...
+\subsection{Special cases}
 \subsubsection{Constraint sets}
 If we take $g_j := i_{C_j}$, the indicator function of a closed convex subset of $\mathbb R^p$, so that each atom $\B{d}^j$ is constrained to satisfy a set of constraints prescribed by $C_j$, then the above updates reduce to projecting $\B{z}^{-j}$ onto $C_j$, namely
 \begin{equation}
