@@ -910,7 +910,7 @@ we can rewrite the TV semi-norm as follows,
 \sum_{j=1}^p \gamma_j\|(\nabla \B{w})_j\|_2^2 + \gamma_j^{-1},
 %% &= \frac{1}{2}\sum_{j \in \Omega}\|(\text{diag}(r)\nabla
 %% \B{w})_j\|_2^2 + \gamma_j^{-1},
-\forall w \in \mathbb R_{++}^p,
+\forall \boldsymbol{\gamma} \in \mathbb R_{++}^p,
 \end{split}
 \end{eqnarray}
 with equality  iff
@@ -930,11 +930,11 @@ prevent division by $0$. Thus,
 \end{eqnarray}
 with the optimal weighting vector $w \in \mathbb R_{++}^p$ given by
 \eqref{eq:weights}. Whence, the minimizers of the TV-L1 energy
-$E_{\text{TV-L1}}(\B{w}) := \ell(\B{w}) + \alpha \Omega_{\text{TV-L1}}(\B{w})$ coincide with the minimizers of
+$E_{\text{TV-L1}}(\B{w}) := \ell(\y,\X\w) + \alpha \Omega_{\text{TV-L1}}(\B{w})$ coincide with the minimizers of
 the iGraphNet energy
 \begin{equation}
 \begin{split}
-E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\B{w}) = \ell(\B{w}) +
+E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\B{w}) = \ell(\y,\X\w) +
 \alpha \|\B{w}\|_1+ \frac{1}{2}\alpha (1 - \rho)
 \sum_{j=1}^p \gamma_j\|(\nabla \B{w})_j\|_2^2
 + \gamma_j^{-1},
@@ -952,13 +952,14 @@ is optimized by an alternating scheme cyclically switching between
 optimizing w.r.t the regressor coefficients $\B{w}$ and then w.r.t
 then weights $w$ (via formula \eqref{eq:weights}). The algorithm
 so-obtained will be detailed in subsection \ref{sec:algo}.
-
+\textbf{XXX: Elvis to Elvis: cite some recent work by Pesquet \& Chouzenoux
+  on proximal methods with conjugate gradient schemes (or something like that)}
 \subsection{The algorithm: iGraphNet}
 \label{sec:algo}
 We now present iGraphNet, an iteratively-reweighted scheme for
 solving the TV-L1 model, based on modified GraphNet \eqref{eq:opt_pb}
 sub-problems corresponding to the minimization of the energy
-$E_{\text{GraphNet}}^{w}(\B{w})$ defined in
+$E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\B{w})$ defined in
 \eqref{eq:rgn}. These sub-problems  are very well-conditioned and are
 quadratically easier to solve than TV-L1 itself, and can be solved by
 a fast first-order method like FISTA or LARS. Viz, the iGraphNet
