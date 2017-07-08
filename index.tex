@@ -202,6 +202,9 @@ models in the estimation of spatial decompositions of the brain images}
 \DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\cont}{cont}
+\DeclareMathOperator{\inte}{int }
 
 \def\Id{\mathbf{I}}
 \def\1{\mathbf{1}}
@@ -537,6 +540,8 @@ models in the estimation of spatial decompositions of the brain images}} \\[0.5c
 \clearpage
 {\section*{\Huge \it Notation}}
 
+Throughout the manuscript, we shall use the following standard notation
+and terminology without further explanation.
 % \vspace{50pt}
 
 \begin{fullwidth}
@@ -550,7 +555,8 @@ Notation & Name / synopsis & Definition\\
   $\mathcal{N}(\mu, \sigma^2)$ & Normal distribution with mean $\mu$ and variance $\sigma$ & $p(x) = \frac{1}{\sqrt{2\pi\sigma}}
    \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$\\
   $[\![k]\!]$ & Integers from $1$ to $k$ (inclusive) & $\{1,~2, \ldots,~k \}$ \\
- $\| \B{v} \|_r$ & $\ell_r$ norm for vectors & $\sqrt[r]{\sum_i |v_i|^r}$ \\
+  $\| \B{v} \|_r$ & $\ell_r$ norm for vectors & $\sqrt[r]{\sum_i |v_i|^r}$ \\
+  $\mathbb B_{r,n}$ & Unit ball for the $\ell_r$ norm on $\mathbb R^n$ & $\{\B{x} \in \mathbb{R}^n|\|\B{x}\|_r \le 1\}$ \\
 $\text{tr}(\B{A})$ & Trace of a matrix & $\sum_{i} a_{ii}$ \\  
 $\langle \B{A}, \B{B}\rangle_{\text{Fro}}$ & Frobenius / Hilbert-Schmidt inner-product of two matrices $\B{A}$ and $\B{B}$  & $\text{tr}(\B{A}\B{B}^T)$\\
   $\| \B{X} \|_{\textbf{Fro}}$ & Frobenius norm of a matrix & $\sqrt{\langle \B{X}, \B{X}\rangle_{\text{Fro}}}$ \\
@@ -571,6 +577,7 @@ $i_C$ & Indicator function of $C$ & $i_C(\B{x}):= \begin{cases}0,&\mbox{ if }\B{
 $\sigma_C$ & Support function of $C$ & $\sigma_C(\B{x}) := \sup_{\B{z} \in C}\B{x}^T\B{z}$\\
   $\partial f(x)$ & Subdifferential of $f$ at $\B{x}$ & $\partial f(\B{x}) := \{\B{v} \in \mathcal H | f(\B{z}) \ge f(\B{x}) + \B{v}^T(\B{z} - \B{x})\; \forall \B{z} \in \mathcal H\}$\\
 
+  $ \dom(f)$ & Effective domain of $f$ & $\{\B{x} \in \mathbb{R}^n | f(\B{x}) < +\infty\}$ \\
   $\prox_f(x)$ & Proximal operator of $f$ at $\B{x}$ & $\argmin_{\B{p}}\frac{1}{2}\|\B{p}-\B{x}\|_2^2 + f(\B{p})$\\
 
   $\proj_C(x)$ & Orthogonal projection of $\B{x}$ onto $C$ & $\argmin_{\B{p} \in C}\frac{1}{2}\|\B{p}-\B{x}\|_2^2 = \prox_{i_C}(\B{x})$\\
@@ -592,8 +599,159 @@ $\sigma_C$ & Support function of $C$ & $\sigma_C(\B{x}) := \sup_{\B{z} \in C}\B{
 \end{longtable}
 \end{fullwidth}
 
+%  $e_n=(1,1,...,1) \in
+% \mathbb{R}^n$ denotes the vector of $n$ $1$'s, so that $\langle e_n,
+% x\rangle = \sum_{1 \le i \le n}x_i$, the sum of the components of $x$.
+% Given (abtract) sets $X$, $Y$, $Z\subseteq Y$, and a function $f: X
+% \rightarrow Y$, the \textit{preimage} of $Z$ by $f$, denoted
+% $f^{-1}Z$, is defined by $f^{-1}Z := \{x \in X | f(x) \in Z\}$. $\#X
+% := \sum_{x \in X}1$ denotes the \textit{cardinality} of $X$ (i.e the
+% number of elements it contains). The \textit{complement} of $Z$ w.r.t
+% $Y$ is $Y\setminus Z := \{y \in Y|y \not\in Z\}$.
+
+% Let $m$ and $n$ be positive integers. The $n \times n$ identity matrix
+% will be denoted $I_n$ and its $i$th row is $\delta_n(i)$, an
+% $n$-deimensional vector with $0$'s everywhere except at the $i$th
+% coordinate where there is a $1$; for example $\delta_3(2) = (0, 1,
+% 0)$. Given a vector $x \in \mathbb{R}^n$, define  subsets of
+% indices $\mathcal{I}_{++}(x) := \{1 \le i \le n | x_i >
+% 0\}$, $\mathcal{I}_{-}(x) := \{1,2,...,n\}\setminus\mathcal{I}_{++}$,
+% $\mathcal{I}_{- -}(x) := \mathcal{I}_{++}(-x)$, and $\mathcal{I}_{+}
+% := \{1,2,...,n\}\setminus\mathcal{I}_{- -}$.
+% Given a subset of indices $I \subseteq \{1,2,...,n\}$, $x|_I \in
+% \mathbb{R}^{|I|}$ denotes the components of $x$ restricted to these
+% indices. For example
+% $x|_{\mathcal{I}_{++}(x)}$ corresponds to the positive components of
+% $x$. Given $X \subseteq \mathbb{R}^n$, the \textit{convex hull} of
+% $X$, denoted $\conv X$, is defined to be the smallest convex subset
+% of $\mathbb{R}^n$ containing $X$. For example, one has $\Delta_n =
+% \conv\{\delta_n(i)| 1 \le i \le n\}$. The subset $F_n(I)
+% \subseteq \Delta_n$ defined by
+% \[
+% F_n(I) := \conv \{\delta_n(i) | i \in
+% I\}
+% \]
+% is called the \textit{face} of $\Delta_n$
+% spanned by the vertices labelled by $I$. Geometrically, this
+% corresponds to a lower-dimensional simplex with $\#I$ vertices
+% labelled by $I$, and so can be conveniently identified with
+% $\Delta_{\#I}$. $(x)_+:=\text{max}(0, x) \ge 0$ is the point-wise
+% maximum of $x$ with $0$. For example, $((-2, \pi))_+ = (\text{max}(-2,
+% 0), \text{max}(\pi, 0)) = (0, \pi)$. It's not hard to show that
+% \begin{eqnarray}
+% \mathrm{max}(x, y) = x + (y-x)_+ = y + (x-y)_+,
+% \label{eq:maxplus}
+% \end{eqnarray}
+% and in particular,
+% \begin{eqnarray}
+% (x)_+ = x + (-x)_+.
+% \end{eqnarray}
+% Finally, we will adopt the convention: $0\log{0} = 0$, $\text{inf
+% }\emptyset = +\infty$, and $\text{sup }\emptyset = -\infty$.
+
+% \paragraph{Essential convex analysis.}
+% Let us introduce some basic but powerful modern convex-analytical
+% notions which will be essential in the sequel. Let $\|.\|$ be a norm
+% on $\mathbb{R}^n$ with dual norm $\|.\|_*$ The unit
+% ball in $\mathbb{R}^n$ w.r.t the norm $\|.\|$ will be denoted
+% $\mathbb{B}_{n,\|.\|}$, and defined by
+% \begin{eqnarray}
+%   \mathbb{B}_{n,\|.\|} := \{z \in \mathbb{R}^n|\|z\| \le 1\}.
+% \end{eqnarray}
+% If $\|.\|$ is an $\ell_p$-norm, then we will simply write
+% $\mathbb{B}_{n,p}$ for $\mathbb{B}_{n,\|.\|_p}$.
+% Given a subset $C$ of $\mathbb{R}^n$, $i_C$ denotes its
+% \textit{indicator function} defined by
+% \begin{eqnarray}
+%   i_C(x) = 0 \text{ if } x \in C\text{ and }+\infty\text{
+%     otherwise,}
+% \end{eqnarray}
+% and $\sigma_C : s \mapsto \underset{x \in C}{\text{sup }}\langle s,
+% x\rangle$ defines its \textit{support function}. As an example, it is
+% an easy excercise to show that $\sigma_{\mathbb{B}_{\|.\|}} =
+% \|.\|_*$.
+
+% Let $f : \mathbb{R}^n \rightarrow (-\infty, +\infty]$ be an
+%   \textit{extended real-valued} convex function. We say that $f$ is
+%   closed if its \textit{epigraph}
+%   \begin{eqnarray}
+%     epi(f) := \{(x,t) \in \mathbb{R}^{n + 1}|t \ge f(x)\}
+% \end{eqnarray}
+% is closed. The \textit{effective domain} of $f$, denoted
+% $\dom{f}$, is defined as
+% \begin{eqnarray}
+%   \dom{f} := \{x \in \mathbb{R}^n | f(x) < +\infty\}.
+% \end{eqnarray}
+%  If $\dom{f} \ne \emptyset$ then we say $f$ is \textit{proper}.
+% $\cont{f}$ denotes the set of points at which $f$ is continuous.
+% The \textit{subdifferential} of $f$ at a point $x \in \mathbb{R}^n$ is
+% defined by
+% \begin{eqnarray}
+% \partial f(x) := \{s\in \mathbb{R}^n | f(z)  \ge f(x) + \langle s, z -
+% x\rangle, \forall z \in \mathbb{R}^n\}.
+% \end{eqnarray}
+% Each element of $\partial f(x)$ is called a \textit{subgradient} of $f$
+% at $x$. Of course $\partial f(x)$ reduces to the singleton $\{\nabla
+% f(x)\}$ in case $f$ is differentiable at $x$. The \textit{convex
+%   conjugate} (aka \textit{Fenchel-Legendre transform}) of $f$ is the
+% function $f:\mathbb{R}^n \rightarrow (-\infty,+\infty]$ defined by
+% \begin{eqnarray}
+% f^*(s) := \underset{x \in \mathbb{R}^n}{\text{sup }}\langle s,
+% x\rangle - f(x).
+% \end{eqnarray}
+% If $C$ is a closed convex subset of $\mathbb{R}^n$, then it is not
+% hard to see that $i_C^* = \sigma_C$ and $\sigma_C^* = i_C$. For
+% example, For example $\|.\|^* = i_{\mathbb{B}_{n,\|.\|_*}}$. 
+% \begin{eqnarray}
+% i_{\Delta_n}^*(s) = \sigma_{\Delta_n}(s) = \underset{x \in
+%   \Delta_n}{\text{sup }}\langle s,
+% x\rangle = \underset{1 \le i \le n}{\text{max }}s_i.
+% \label{eq:nice_conj}
+% \end{eqnarray}
+% %% One has the \textit{biconjugate} inequality
+% %% \[
+% %% f^{**} \le f.
+% %% \]
+% %% Also, there is the well-known ``biconjugate theorem'' which states
+% %% that $f^{**} = f$ iff $f$ is proper and closed.
+
+% The following theorem is very useful for computing subdifferentials of
+% functions of ``max-type'' (e.g of support functions), and will be
+% instrumental in proving Theorem \ref{thm:l1}. It is a result
+% due to D. P. Bertsekas \cite{bertsekas1971control}, which extends to
+% subdifferentials, a well-known theorem of J.M Danskin, the so-called
+% Danskin's theorem (see
+% \cite{danskin66}, for example).
+
+% \begin{theorem}[Danskin-Bertsekas theorem for subdifferentials]
+% Let $\phi: \mathbb{R}^m \times \mathbb{R}^n \rightarrow (-\infty,
+% +\infty]$ be a function and $X$ be a nonempty compact subset of
+%   $\mathbb{R}^n$. Assume further that for every $x \in X$, the function $\phi(., x) :
+%   \mathbb{R}^m \rightarrow (-\infty, +\infty]$ is a
+%     closed  proper convex function. Consider the function $f:
+%     \mathbb{R}^n \rightarrow (-\infty, +\infty]$ defined by
+% \[
+% f(s) := \underset{x \in X}{\text{sup }}\phi(s, x).
+% \]
+% If $f$ is finite somewhere, then it is a closed proper convex
+% function. Furthermore, if $\inte\dom f \ne \emptyset$ and $\phi$ is
+% continuous on $\inte\dom f \times X$, then for every $s \in \inte\dom
+% f$ the subdifferential of $f$ at $s$ is given by
+% \begin{eqnarray}
+% \partial f(s) = \conv\{\partial \phi(s, \hat{x})|\hat{x} \in \hat{X}(s)\},
+% \end{eqnarray}
+% where $\hat{X}(s) := \{x \in X|\phi(s, x) = f(s)\}$.
+% \label{thm:danskin}
+% \end{theorem}
+% \begin{proof}
+% See \cite[Proposition A.22]{bertsekas1971control}.
+% \end{proof}
+
 \listoffigures
-\listoftables
+% \listoftables
+
+\listofalgorithms
+\addtocontents{loa}{\def\string\figurename{Algorithm}}
 
 \include{abstract}
 

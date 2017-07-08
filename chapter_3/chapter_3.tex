@@ -955,7 +955,7 @@ so-obtained will be detailed in subsection \ref{sec:algo}.
 \subsection{The algorithm: iGraphNet}
 \label{sec:algo}
 We now present iGraphNet, an iteratively-reweighted scheme for
-solving the TV-L1 model, based on modified GraphNet
+solving the TV-L1 model, based on modified GraphNet \eqref{eq:opt_pb}
 sub-problems corresponding to the minimization of the energy
 $E_{\text{GraphNet}}^{w}(\B{w})$ defined in
 \eqref{eq:rgn}. These sub-problems  are very well-conditioned and are
@@ -993,7 +993,7 @@ for the TV-L1 model.
 
 \paragraph*{Generalization to other complex non-smooth models.}
 Similarly, one can show that Sparse-Variation
-\cite{eickenberg2015total} is just an IRLS
+\citep{eickenberg2015total} is just an IRLS
 (iteratively-reweighted Least Squares) scheme, where the weights are
 computed via \eqref{eq:weights}, with the $\nabla$ operator replaced
 with an identity-augmented version. In fact, thanks to the inequality
