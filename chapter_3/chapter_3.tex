@@ -79,7 +79,17 @@ Over time, a number of spatially regularized linear models have been proposed. T
     \label{eq:opt_pb}
 \end{equation}
 The coefficients ${\w}$ define a spatial map in over the brain (one value per voxel).
-$\Omega \circ \nabla_\rho$ is the penalty term ($\nabla_\rho$ is the extended discrete gradient operator defined in section{sec:notation}, which simultaneously imposes both sparsity and structure (blobs). The different spatial regularization
+The term {$\ell(\y,\X\w)$} is the
+  {loss / data-fit term}. Popular choices include:
+  $$
+  \ell(\y,\X\w) = \frac{1}{n}\sum_{i=1}^n\begin{cases}\frac{1}{2}(\B{X}^T_i\w - y_i)^2,
+    &\mbox{ \text{ for least-squares}}\\
+    \log(1+\exp(-y_i\X_i^T\w)),
+    &\mbox{ \text{ for logistic regression}},\\
+    (1 - y_i\X^T_i\w)_+,&\mbox{\text{ for hinge loss (used in SVMs)}}\\
+      \vdots\end{cases}
+    $$
+$\Omega(\nabla_\rho\w)$ is the penalty term ($\nabla_\rho$ is the extended discrete gradient operator defined in section{sec:notation}, which simultaneously imposes both sparsity and structure (blobs). The different spatial regularization
 methods that have appeared in neuro-imaging literature can be cast into this
 correspond to different choices of the convex penalty $\Omega$ acting on the extended gradient of the coefficients $\w$. Viz,
 \[
@@ -88,37 +98,42 @@ correspond to different choices of the convex penalty $\Omega$ acting on the ext
       \|\z_4\|_1 + \frac{1}{2}\|\z_{1:3}\|_{\text{Fro}}^2 := \sum_{j=1}^p|\z_{4,j}| + \frac{1}{2}\sum_{j=1}^{p}\sum_{k=1}^3\z_{k,j}^2, &\mbox{ GraphNet  \citep{grosenick2013,hebiri2011}},\\\\
       \|\z_4\|_1 + \|\z_{1:3}\|_{2,1} := \sum_{j=1}^p|\z_{4,j}| + \sum_{j=1}^{p}\sqrt{\sum_{k=1}^3\z_{k,j}^2}, &\mbox{ for TV-$\ell_1$  \citep{baldassarre2012,gramfort2013}},\\
       \|\z\|_{2,1} = \sum_{j=1}^{p}\sqrt{\sum_{k=1}^4\z_{k,j}^2}, &\mbox{ for Sparse Variation  \citep{eickenberg2015total}},\\
-      ...
+      \vdots
     \end{cases}
   \end{split}
 \]
-{$\alpha > 0$} controls the total amount of regularization, while
-  {$\rho$
-    ($0 < \rho \le 1$)} is a
-  mixing constant between
-  the {sparsity-inducing} $\ell_1$ part and the
-  {cluster-promoting} part of the penalty term.
-  The particular case {$\rho = 1$} corresponds to the usual Lasso. Vanilla TV   \citep{michel2011tv} corresponds to TV-$\ell_1$ with $\rho = 0$.
-The term {$\ell(\y,\X\w)$} is the
-  {loss / data-fit term}. Popular choices include:
-  $$
-  \ell(\y,\X\w) = \frac{1}{n}\begin{cases}\frac{1}{2}\|\X\w - \y\|_2^2 = \frac{1}{2}\sum_{i=1}^n(\\B{X}^T_i\w - \y_i)^2,
-    &\mbox{ \text{ for least-squares (e.g in regression settings)}}\\
-    \sum_{i=1}^n \log(1+\exp(-\y_i\X_i^T\w)),
-    &\mbox{ \text{ for logistic regression (e.g in classification)}},\\\ldots\end{cases}$$
-  
-\begin{mdframed}
-  \paragraph{Submodular interpretation of TV.} We note anisotropic TV penalty on
-  an arbitrary (undirected) graph $G = (V,E)$ is the \textit{Lovasz extension} of the \textit{cut-function}
-  $F : 2^V \rightarrow \mathbb N$, $S \mapsto "\text{number of edges between } S \text{ and }V\setminus S"$,
-defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v \ge \lambda\})]$, for all $x \in [0,1]^{\#V}$.
-\end{mdframed}
 \begin{marginfigure}[4cm]
   \includegraphics[width=1\linewidth]{figures/tv_cartoon_horizontal.png}
   \caption{A cartoon showing a sparse and blobby (step-wise constant / cartoon-like) brain map,
   as would be sought for by Total-Variation regularization \eqref{eq:ss}...}
   \label{fig:roi}
 \end{marginfigure}
+where $\alpha > 0$ is a regularization parameter controls the total amount of regularization, and
+$\rho$ ($0 < \rho \le 1$) is a mixing constant between
+  the {sparsity-inducing} $\ell_1$ part and the
+  {cluster-promoting} part of the penalty term.
+  The particular case {$\rho = 1$} corresponds to the usual Lasso. Vanilla TV   \citep{michel2011tv} corresponds to TV-$\ell_1$ with $\rho = 0$;
+
+\begin{mdframed}
+  \paragraph{Submodular interpretation of TV.} We note anisotropic TV penalty on
+  an arbitrary (undirected) graph $G = (V,E)$ is the \textit{Lovasz extension} of the \textit{cut-function}
+  $F : 2^V \rightarrow \mathbb N$, $S \mapsto "\text{number of edges between } S \text{ and }V\setminus S"$,
+defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v \ge \lambda\})]$, for all $x \in [0,1]^{\#V}$.
+\end{mdframed}
+
+\begin{figure}[!htb] 
+  \includegraphics[width=.325\linewidth]{figures/svm.png}
+  \includegraphics[width=.325\linewidth]{figures/graphnet.png}
+  \includegraphics[width=.325\linewidth]{figures/tvl1.png}  
+  \caption{The figure shows results of comparing the SpaceNet  models TV-$\ell_1$ and
+    Graph-Net against an SVM (Support Vector Machine) classifier on
+    the visual-recognition dataset   \citep{haxby2001}
+    As can be seen from the figure, SpaceNet priors (TV-$\ell_1$, GraphNet, etc.)
+    yield stable and more intepretable maps. Figure taken from OHBM
+    presentation   \citep{spacenetohbm}.}
+  \label{fig:spacenet_maps}
+%  \end{marginfigure}
+\end{figure}
 
 The result of such regularized models, dubbed \emph{SpaceNet}
   \citep{spacenetohbm}, are brain maps which are both
@@ -137,20 +152,6 @@ differences in the values of the brain map). For example, see Fig.
 \ref{fig:spacenet_maps}.
 Also, such priors produce state-of-the-art methods for automatic
 extraction of functional brain atlases   \citep{abraham2013}.
-
-  \begin{figure}[!htb] 
-  \includegraphics[width=.325\linewidth]{figures/svm.png}
-  \includegraphics[width=.325\linewidth]{figures/graphnet.png}
-  \includegraphics[width=.325\linewidth]{figures/tvl1.png}  
-  \caption{The figure shows results of comparing the SpaceNet  models TV-$\ell_1$ and
-    Graph-Net against an SVM (Support Vector Machine) classifier on
-    the visual-recognition dataset   \citep{haxby2001}
-    As can be seen from the figure, SpaceNet priors (TV-$\ell_1$, GraphNet, etc.)
-    yield stable and more intepretable maps. Figure taken from OHBM
-    presentation   \citep{spacenetohbm}.}
-  \label{fig:spacenet_maps}
-%  \end{marginfigure}
-\end{figure}
 
 %%   \citep{dohmatob2015spacenet},  \citep{abraham2013},  \citep{abrahamregion},
 %%   \citep{eickenberg2015total},
