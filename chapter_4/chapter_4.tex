@@ -949,16 +949,16 @@ Formally, social sparsity corresponds to a penalty  $g_{\text{social}} : \mathbb
        ,\\0, &\mbox{ otherwise}\end{cases}\\
      &=
      % z_v\left(1 - \frac{\alpha}{\|(\B{w}_v)^{1/2} \bullet \B{z}\|_2}\right)_+
-     z_v\left(1 - \frac{\alpha}{\left(\sum_{s \in \mathcal N(v)}(w^{s}_{v})^2z_{s}^2\right)^{1/2}}\right)_+, 
+     z_v\left(1 - \frac{\alpha}{\left(\sum_{s \in \text{neigh}(v)}(w^{s}_{v})^2z_{s}^2\right)^{1/2}}\right)_+, 
      \end{split}
   \label{eq:social}
 \end{equation}
 where $\B{w}_v \bullet \B{z} := (w^1_v z_1,w^2_v z_2,\ldots,w^p_v z_p) \in \mathbb R^p$ for weights
-$(w^s_v)_{v,s \in [\![p]\!]}$ satisfying $\sum_v (w^s_v)^2 = 1$ for all $s$, and $\mathcal N (v) := \{s \in [\![p]\!] | w^s_v \ne 0\}$ is the \textit{neighborhood} of the $v$th voxel, assumed to be non-empty. Thus each $\B{w}_v$ can be thought of as
-(normalized) mean-filter supported on a patch $\mathcal N(v)$ around the voxel $v$.
+$(w^s_v)_{v,s \in [\![p]\!]}$ satisfying $\sum_v (w^s_v)^2 = 1$ for all $s$, and $\text{neigh} (v) := \{s \in [\![p]\!] | w^s_v \ne 0\}$ is the \textit{neighborhood} of the $v$th voxel, assumed to be non-empty. Thus each $\B{w}_v$ can be thought of as
+(normalized) mean-filter supported on a patch $\text{neigh}(v)$ around the voxel $v$.
 Examples include rectangular filters, truncated Gaussians, etc.
 %  Social sparsity applies a soft-thresholding using the norm of a local neighborhood, but modifies only the coordinate $\B{z}_v$ at the center voxel $v$ of this neighborhood.
-  % It is a generalization of the overlapping group-lasso shrinkage operator\citep{ogrouplasso}; the latter is recovered by taking if the $w^v_s$ are chosen so that $w^v_s$ is independent of $s$ for all $s \in \mathcal N(v)$, i.e $w^v_s = \frac{1}{\#\mathcal N(v)}$ for all $v$ and $s \in \mathcal N(v)$.
+  % It is a generalization of the overlapping group-lasso shrinkage operator\citep{ogrouplasso}; the latter is recovered by taking if the $w^v_s$ are chosen so that $w^v_s$ is independent of $s$ for all $s \in \text{neigh}(v)$, i.e $w^v_s = \frac{1}{\#\text{neigh}(v)}$ for all $v$ and $s \in \text{neigh}(v)$.
 One notes the following facts
 \begin{itemize}
 \item $\|\B{E}\B{z}\|^2_2 \equiv \|\B{z}\|^2_2$, where $\B{E}\B{z} := (\B{w}_v \bullet \B{z})_{v \in [\![p]\!]} \in \mathbb R^{p^2}$
@@ -970,9 +970,5 @@ One notes the following facts
   where $\B{F}$ is the right pseudo-inverse of $\B{E}$.
 \end{itemize}
 
-
-\clearpage
-% \begin{fullwidth}
 \bibliographystyle{plainnat}
 \bibliography{chapter_4/biblio4}
-% \end{fullwidth}

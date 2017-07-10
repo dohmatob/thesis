@@ -1,9 +1,12 @@
 all: clean dot tikz svg
 	pdflatex index
 	bibtex chapter_1/chapter_1.aux
+	bibtex chapter_2/chapter_2.aux
 	bibtex chapter_3/chapter_3.aux
 	bibtex chapter_4/chapter_4.aux
 	bibtex chapter_5/chapter_5.aux
+	bibtex chapter_7/chapter_7.aux
+	bibtex chapter_8/chapter_8.aux
 	pdflatex index
 	pdflatex index
 
