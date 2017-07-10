@@ -8,7 +8,7 @@ all: clean dot tikz svg
 	bibtex chapter_7/chapter_7.aux
 	bibtex chapter_8/chapter_8.aux
 	pdflatex index
-	pdflatex index
+#	pdflatex index
 
 tikz:
 	pdflatex chapter_1/tikz1.tex
