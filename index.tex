@@ -539,7 +539,7 @@ and terminology without further explanation.
 
 \begin{fullwidth}
 \def\arraystretch{1.5}
-\begin{longtable}{p{3cm} | p{6cm} | p{7.5cm}}
+\begin{longtable}{p{2cm} | p{6cm} | p{9cm}}
 % \toprule
 % \multicolumn{3}{c}{Different Approaches to Ordinal Regression}\\ 
 \cmidrule{1-3}
@@ -591,12 +591,15 @@ $i_C$ & Indicator function of $C$ & $i_C(\B{x}):= \begin{cases}0,&\mbox{ if }\B{
   $\nabla_\rho$ & The identity-augmented version of the discrete spatial gradient operator & ${\nabla_\rho} {\w} := [(1-\rho)\nabla {\w}, \rho \w] \in \mathbb R^{4p}$, $\forall \w \in \mathbb R^p$ \\
   $\Delta_\rho$ & Laplacian operator corresponding to the identity-augmented spatial gradient operator $\nabla_\rho$ . This defines a linear operator from $\mathbb R^p$ to $\mathbb R^{4p}$ & $\rho^2\I + (1-\rho)^2\nabla \in \mathbb R^{p \times p}$ \\
   
-  $\text{Lap}(\B{w})$ & Laplacian regularization of a 3D image $\B{w}$ & $\frac{1}{2}\sum_{j=1}^p(\nabla_x \B{w})_j^2 + (\nabla_y \B{w})_j^2 + (\nabla_z \B{w})_j^2$ \\ % = \frac{1}{2}{\B{v}}^T\Delta \B{v} \ge 0$
-  $\|\B{w}\|_{\text{TV}}$ & Total-Variation (isotropic) regularization & $\sum_{j=1}^p\sqrt{(\nabla_x \B{w})_j^2 + (\nabla_y \B{w})_j^2 + (\nabla_z \B{w})_j^2}$\\
+  $\text{Lap}(\B{w})$ & Laplacian regularization of a 3D image $\B{w}$ & $\frac{1}{2}\|\nabla\w\|_\text{Fro}^2 = \frac{1}{2}\sum_{j=1}^p(\nabla_x \B{w})_j^2 + (\nabla_y \B{w})_j^2 + (\nabla_z \B{w})_j^2$ \\ % = \frac{1}{2}{\B{v}}^T\Delta \B{v} \ge 0$
+  $\|\B{w}\|_{\text{TV}}$ & Isotropic Total-Variation (TV) regularization & $\|\nabla \w\|_{2,1} = \sum_{j}\|(\nabla \w)_j\|_2 =  \sum_{j}\sqrt{(\nabla_x \B{w})_j^2 + (\nabla_y \B{w})_j^2 + (\nabla_z \B{w})_j^2}$\\
+  $\|\B{w}\|_{\text{SV}}$ & Sparse Variation regularization & $\|\nabla_\rho \w\|_{2,1} = \sum_{j}\sqrt{\rho^2 w_j + (1-\rho)^2\|\nabla \w)_j\|_2^2}$\\  
+  $\|\B{w}\|_{\text{AnisoTV}}$ & Anisotropic TV regularization & $\|\nabla \w\|_{1,1} = \sum_{j}\|(\nabla \w)_j\|_1 = \sum_{j}|(\nabla_x \B{w})_j| + |(\nabla_y \B{w})_j| + |(\nabla_z \B{w})_j|$\\
   
 
   
-\bottomrule
+
+ \bottomrule
 \end{longtable}
 \end{fullwidth}
 
