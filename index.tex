@@ -1,8 +1,6 @@
 \documentclass[nobib, a4paper, notoc, twoside, justified, openany]{tufte-book}
 %% XXX the openany option avoids abnoxious blank pages between chapters
 
-\usepackage{algorithm,algorithmicx,algpseudocode}
-
 \usepackage{amsmath,amssymb,amsfonts,amsbsy,amsthm}
 
 \usepackage{wrapfig}
@@ -28,15 +26,8 @@
 \renewcommand{\cftsecfont}{\it \sffamily \Large}
 \renewcommand{\cftsubsecfont}{\sffamily \large}
 
-\usepackage[svgnames]{xcolor} % Specify colors by their 'svgnames', for a full list of all colors available see here: http://www.latextemplates.com/svgnames-colors
-\usepackage{svg}
-
-\usepackage{mdframed}
-\usepackage{titletoc}
-
-\usepackage{longtable}
-
-\usepackage{xr}
+% \usepackage{mdframed}
+% \usepackage{titletoc}
 
 % \definecolor{secnum}{RGB}{13,151,225}
 % \definecolor{ptcbackground}{RGB}{212,237,252}
@@ -87,7 +78,14 @@
 \newcommand{\red}{\color{red}}
 \newcommand{\blue}{\color{blue}}
 
-\newtheorem{remark}{Remark}
+\usepackage{algorithm,algorithmicx,algpseudocode}
+\usepackage[svgnames]{xcolor} % Specify colors by their 'svgnames', for a full list of all colors available see here: http://www.latextemplates.com/svgnames-colors
+\usepackage{svg}
+\usepackage{mdframed}
+\usepackage{titletoc}
+\usepackage{longtable}
+\usepackage{framed}
+\usepackage{xr}
 
 \DeclareMathOperator*{\vecop}{vec}
 \def\RR{{\mathbb R}}
@@ -102,8 +100,7 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\sign}{sign}
-
-\newcommand{\dive}{\textrm{div} }
+\newcommand{\dive}{\textrm{div}}
 
 \def\NN{\mathbb N}
 \def\CC{\mathbb C}
@@ -133,29 +130,30 @@
 \makeatother
 \urlstyle{leo}
 
-% % chapter format
-% \titleformat{\chapter}%
-%   {\Huge \sffamily \itshape\color{msblue}}% format applied to label+text
-%   {\llap{\colorbox{msblue}{\parbox{1.5cm}{\hfill\itshape\Huge\color{white}\thechapter}}}}% label
-%   {2pt}% horizontal separation between label and title body
+% chapter format
+\titleformat{\chapter}%
+  {\Huge \sffamily \itshape\color{msblue}}% format applied to label+text
+  {\llap{\colorbox{msblue}{\parbox{1.5cm}{\hfill\itshape\Huge\color{white}\thechapter}}}}% label
+  {2pt}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+
+% % section format
+% \titleformat{\section}%
+%   {\normalfont\LARGE\itshape\color{msblue}}% format applied to label+text
+%   {\llap{\colorbox{orange}{\parbox{1.5cm}{\hfill\color{white}\thesection}}}}% label
+%   {1em}% horizontal separation between label and title body
 %   {}% before the title body
 %   []% after the title body
 
-% % % section format
-% % \titleformat{\section}%
-% %   {\normalfont\LARGE\itshape\color{msblue}}% format applied to label+text
-% %   {\llap{\colorbox{orange}{\parbox{1.5cm}{\hfill\color{white}\thesection}}}}% label
-% %   {1em}% horizontal separation between label and title body
-% %   {}% before the title body
-% %   []% after the title body
+% % subsection format
+% \titleformat{\subsection}%
+%   {\normalfont\large\itshape\color{blue}}% format applied to label+text
+%   {\llap{\colorbox{blue}{\parbox{1.5cm}{\hfill\color{white}\thesubsection}}}}% label
+%   {1em}% horizontal separation between label and title body
+%   {}% before the title body
+%   []% after the title body
 
-% % % subsection format
-% % \titleformat{\subsection}%
-% %   {\normalfont\large\itshape\color{blue}}% format applied to label+text
-% %   {\llap{\colorbox{blue}{\parbox{1.5cm}{\hfill\color{white}\thesubsection}}}}% label
-% %   {1em}% horizontal separation between label and title body
-% %   {}% before the title body
-% %   []% after the title body
 
 
 \newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
@@ -163,9 +161,8 @@
 \allsectionsfont{\rm \bf \color{msblue} \sffamily}
 
 
-\title{Enhancement of functional brain connectome analysis by the use of deformable
-models in the estimation of spatial decompositions of the brain images}
-\author{Elvis Dohmatob}
+\title{Feature extraction and supervised learning on fMRI: from practice to theory}
+\author{Fabian Pedregosa}
 
 
 \makeglossaries
@@ -174,28 +171,12 @@ models in the estimation of spatial decompositions of the brain images}
 \makeindex
 
 
-% \RequirePackage[normalem]{ulem} %DIF PREAMBLE
-% \RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
-% \providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
-% \providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
-% %DIF SAFE PREAMBLE %DIF PREAMBLE
-% \providecommand{\DIFaddbegin}{} %DIF PREAMBLE
-% \providecommand{\DIFaddend}{} %DIF PREAMBLE
-% \providecommand{\DIFdelbegin}{} %DIF PREAMBLE
-% \providecommand{\DIFdelend}{} %DIF PREAMBLE
-% %DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
-% \providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
-% \providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
-% \providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
-% \providecommand{\DIFaddendFL}{} %DIF PREAMBLE
-% \providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
-% \providecommand{\DIFdelendFL}{} %DIF PREAMBLE
-% %DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
 
-%% fix size of parts relative of chapters (in display of ToC)
-\usepackage{tocstyle}
-\usetocstyle{standard}
-\settocstylefeature[-1]{entryhook}{\LARGE\bfseries}
+
+
+
+
+
 
 % \DeclareMathOperator{\argmin}{argmin}
 \newcommand{\fix}{\marginpar{FIX}}
@@ -234,10 +215,6 @@ models in the estimation of spatial decompositions of the brain images}
 \def\p{\mathbf{p}}
 \def\G{\mathbf{G}}
 \def\b{\mathbf{b}}
-
-\makeatletter\@addtoreset{chapter}{part}\makeatother
-
-% \usepackage{hyperref,url}
 
 \begin{document}
 % \dominitoc
@@ -791,6 +768,7 @@ $i_C$ & Indicator function of $C$ & $i_C(\B{x}):= \begin{cases}0,&\mbox{ if }\B{
 
 % \part{Predicting individual functional differences using resting-state fMRI}
 \include{chapter_4/chapter_4} % Smooth sparse DL
+\include{chapter_9/chapter_9} % proximal dict learning
 \include{chapter_5/chapter_5} % From rsfMRI to tfMRI
 
 \include{chapter_6/chapter_6} % Conclusion

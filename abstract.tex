@@ -1,7 +1,68 @@
 
 \chapter{Introduction}
 \section{Context}
+Mapping brain functional connectivity from functional Magnetic Resonance Imaging (MRI) data has become
+a very active field of research. However, analysis tools are limited and many important tasks, such as the empirical
+definition of brain networks, remain difficult due to the lack of a good framework for the statistical
+modeling of these networks. We propose to develop population models of anatomical and functional connectivity
+data to improve the alignment of subjects brain structures of interest while inferring an average template
+of these structures. Based on this essential contribution, we will design new statistical inference procedures to
+compare the functional connections between conditions or populations and improve the sensitivity of connectivity
+analysis performed on noisy data. Finally, we will test and validate the methods on multiple datasets and
+distribute them to the brain imaging community.
+
+In many scientific fields, the data acquisition devices have benefited from hardware improvement to increase the resolution of the observed phenomena, leading to ever larger datasets (both in sample size $n$ and dimensionality $p$). These are the so-called ``big-data'' regimes in which
+$min(n, p) \rightarrow \infty$  and $n \ll p$ simultaneously.
+%% While the dimensionality has increased,
+%% the number of samples $n$ available is often limited, due to physical or financial limits.
+Things become instantly problematic both computationally and statistically when these
+data are processed with estimators that have a large complexity in the data size, such as
+mass-univariate models.
+In such cases, it is very useful to rely on structured priors, so that the results reflect the state of knowledge on the phenomena of interest, and we avoid sampling from empty regions of the likelihood landscape. The study of human brain activity through high-field MRI belongs to
+this class of problems.
+However, we are missing fast estimators for multivariate models for brain decoding or the study of inter-subject variability,  with structured priors, that furthermore provide statistical control on the solution.
+
+The goal of this PhD thesis is develop new statistical methods for studying inter-subject variability, the prime goal being to improve analysis of functional connectivity in the human brain. This naturally leads to problems related to data-driven extraction of functional atlases, and
+multivariate models for brain decoding, inter-subject registration of MRI images,
+
+\section{Sketch of contributions}
+\label{sec:contrib}
+During my the preparation of the PhD project, I (the PhD
+candidate, Elvis Dohmatob) has authored and co-authored a number of papers in conferences and journals (including NIPS, ICASSP, MICCAI,
+Frontiers in Neuroscience, etc.).
+A complete least of my publications can be found on my Google scholar page \url{https://scholar.google.fr/citations?user=FDWgJY8AAAAJ&hl=fr}. In figures,
+\begin{shaded}
+\begin{itemize}
+\item Total citations $\ge 168$.
+  \item Total papers (including co-authored papers) $\ge 15$.
+  \item h index $\ge 3$.
+  \item 110 index $ \ge 3$.
+  \end{itemize}
+\end{shaded}  
+Below, I  have roughly classified my main contributions under their respective sub-fields of relevance. Viz,
+\begin{shaded}
+\begin{itemize}
+  \item{Sparsity and spatial regularization:}
+     \citep{dohmatob2014benchmarking},  \citep{dohmatob2015speeding},
+     ~\citep{abrahamregion},  ~\citep{eickenberg2015total},
+     ~\citep{pelle2016multivariate}
+  \item{Registration of brain images:}
+    ~\citep{dohmatob2016epi2epi}
+  \item{Optimization:}
+     ~\citep{dohmatob2015local},  ~\citep{varoquaux2015faasta},  ~\citep{dohmatob2015simple}
+  \item{Online structured dictionary-learning with structured penalties:}
+     ~\citep{dohmatob2016}
+  \item{Neuroscience:}
+     ~\citep{rahim2015integrating},  ~\citep{thirion2014fmri}
+  %\item{Others:}  ~\citep{Intheory,Youcrackunderpressure!}
+\end{itemize}
+\end{shaded}
+
 \section{Organization of the manuscript}
+In this report, I shall present a selection of the work I have done during the preparation of my PhD project. This selection will be centered around structured penalties for brain decoding (chapters ...), and online structured decomposition methods for brain data (chapters ...). We shall also discuss some results on a new scheme for inter-subject registration methods for functional brain data (chapter ...).
+My precise contributions w.r.t these topics will be outlined  as we proceed.
+The report will be concluded with a synthesis of the progress made so far, and detailed plans for
+the future.
 
 \section{Brain networks and functional connectivity}
 % \section{Resting-state networks}
@@ -21,8 +82,6 @@
 \section{Inter-subject variability in the human brain}
 \subsection{Structural variability: the human brain varies in structure, size, and shape}
 \subsection{Functional variability: the human brain varies in function}
-
-\section{Sketch of our contributions}
 
   
 % The first two chapters of this thesis introduce and define concepts that will be developed later on. The other chapters can be read independently of each other. Original contributions and their relative published material are referenced at the beginning of each chapter.
@@ -352,9 +411,6 @@
 
 
 
-% \newpage
-
-% \begin{fullwidth}
-% \bibliographystyle{plainnat}
-% \bibliography{abstract}
-% \end{fullwidth}
+% \clearpage
+\bibliographystyle{plainnat}
+\bibliography{bib_all}

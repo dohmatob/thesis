@@ -1,7 +1,7 @@
 \chapter{Efficient optimization of sparsity and smoothness regularized models}\label{chap:efficient_opt}
 \markright{{~{\rm \ref{chap:efficient_opt}}. Algorithms for structured priors}\hfill}{}
-\newthought{Though the SpaceNet model} presented above leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet,
-the penalty term $\mathcal P \circ \nabla_\rho$ is neither smooth nor proximable.
+\newthought{Though the SpaceNet model} presented above leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet~\citep{hebiri2011,grosenick2013} and social-sparsity~\citep{kowalski2013social,varoquaux2016social},
+the penalty term $\mathcal P(\w)$ is neither smooth nor proximable.
 \footnote{ A function $f$ is said to be \textit{proximable} is the operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for $\ell_p$-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}
 For the penalty to fully exercise its
 structuring effect on the maps, this optimization problem must be
@@ -352,8 +352,7 @@ they add speed without sacrificing the quality of the predictions
  \begin{figure}[!htb]
    \includegraphics[width=1\linewidth]{figures/screening.png}
 \caption{Univariate feature-screening for the
-  GraphNet
-  %  \citep{hebiri2011,grosenick2013}
+  GraphNet~\citep{hebiri2011,grosenick2013}
   problem \eqref{eq:opt_pb} on
   different datasets.
   % $(\X,\y)$.
