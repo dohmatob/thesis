@@ -69,17 +69,6 @@ properties of the solver more than of model coefficients, as illustrated in Fig.
 %% \end{figure*}
 
 \section{Solving TV-L1 regularized problems}
-The optimization problem \eqref{eq:opt_pb} is very challenging:
-it is non-smooth (except in the case of Laplacian regularization), non-separable and heavily ill-conditioned. For the penalty to fully exercise its
-structuring effect on the maps, this optimization problem must be
-solved to a good tolerance resulting in a computational challenge.
-In \citep{dohmatob2014benchmarking}, we did an extensive study of all solvers applicable to the problem in TV-$\ell_1$ special case (which happens to be the most difficult scenario).
-Our results outlined the best strategy: a double FISTA loop, where the
-inner loop computes the proximal operator of the penalty term, with approximate precision on the duality-gap. This was further refined and implemented in   \citep{varoquaux2015faasta}.
-
-% In  \citep{dohmatob2014benchmarking}, we explored a wide variety of solvers and exhibited their
-% convergence properties on fMRI data. Below we present a brief overview of the paper.
-
 \begin{figure}[!htb]
     \includegraphics[width=.331\linewidth]{face_vs_house_tol_0_1.pdf}%
 \llap{\color{white}\raisebox{.17\linewidth}{\rlap{\sffamily Stopping:
@@ -102,6 +91,16 @@ inner loop computes the proximal operator of the penalty term, with approximate 
   \citep{dohmatob2014benchmarking}}
   \label{Fig:benchmarks_prni}
 \end{figure}
+The optimization problem \eqref{eq:opt_pb} is very challenging:
+it is non-smooth (except in the case of Laplacian regularization), non-separable and heavily ill-conditioned. For the penalty to fully exercise its
+structuring effect on the maps, this optimization problem must be
+solved to a good tolerance resulting in a computational challenge.
+In \citep{dohmatob2014benchmarking}, we did an extensive study of all solvers applicable to the problem in TV-$\ell_1$ special case (which happens to be the most difficult scenario).
+Our results outlined the best strategy: a double FISTA loop, where the
+inner loop computes the proximal operator of the penalty term, with approximate precision on the duality-gap. This was further refined and implemented in   \citep{varoquaux2015faasta}.
+
+% In  \citep{dohmatob2014benchmarking}, we explored a wide variety of solvers and exhibited their
+% convergence properties on fMRI data. Below we present a brief overview of the paper.
 
 \subsection{The algorithms}
 \paragraph{ISTA/FISTA.}
