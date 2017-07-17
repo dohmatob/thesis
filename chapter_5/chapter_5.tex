@@ -9,9 +9,10 @@
 \algrenewtext{ParFor}[1]{\algorithmicparfor\ #1\ \algorithmicpardo}
 \algrenewtext{EndParFor}{\algorithmicendparfor}
 
-\chapter{Prediction of cognitive activation maps from task-free resting-state data}
-\section{Introduction}
+\chapter{Prediction of task activation maps from task-free resting-state data}\label{chap:rsfmri2tfmri}
+\markright{{~{\rm \ref{chap:rsfmri2tfmri}}. Prediction of task activation maps from task-free resting-state data}\hfill}{}
 
+\section{Introduction}
 Across-subject variability in organization is a hallmark of the human
 brain, that reflects genetic variability and is in turn reflected in
 behavioral differences.
@@ -345,6 +346,8 @@ We note that the form of the solutions provided by the above lemma is particular
 
 \section{Algorithms}
 \subsection{Learning}
+\paragraph{Note on inter-subject covariate shift.}...
+
 \paragraph{Low-rank Ridge regression}
 For the estimation of the predictive model
 linking resting-state features to activation maps, the template model
@@ -681,9 +684,92 @@ We see that our proposed method consistently beats the reference method \citep{t
   \label{fig:zmaps}
 \end{figure}
 
-\begin{figure}[!htbp]
-  \includegraphics[width=1\linewidth]{figures/confusion_STORY-MATH.png}
-  \includegraphics[width=1\linewidth]{figures/diag_models.pdf}
+\begin{pagefigure}
+\subfloat[Shapes vs Faces] { 
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/SHAPES-FACES.png}
+}
+\subfloat[Faces] {
+  \hspace{-.5em}
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/FACES.png}
+  }
+  \hspace{-.5em}
+\subfloat[Shapes] {  
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/SHAPES.png}
+}
+\hspace{-.5em}
+
+\subfloat[Reward vs Punish] { 
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/REWARD-PUNISH.png}
+}
+\subfloat[Reward] {
+  \hspace{-.5em}
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/REWARD.png}
+  }
+  \hspace{-.5em}
+\subfloat[Punish] {  
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/PUNISH.png}
+}
+\hspace{-.5em}
+
+\subfloat[Story vs Math] { 
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/STORY-MATH.png}
+}
+\subfloat[Story] {
+  \hspace{-.5em}
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/STORY.png}
+  }
+  \hspace{-.5em}
+\subfloat[Math] {  
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/MATH.png}
+}
+
+\hspace{-.5em}
+
+\subfloat[Tongue vs Avg] { 
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/T-AVG.png}
+}
+\subfloat[Tongue] {
+  \hspace{-.5em}
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/T.png}
+  }
+  \hspace{-.5em}
+\subfloat[Avg] {  
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/AVG.png}
+}
+\hspace{-.5em}
+
+\subfloat[Rel vs Match] { 
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/REL-MATCH.png}
+}
+\subfloat[Rel] {
+  \hspace{-.5em}
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/REL.png}
+  }
+  \hspace{-.5em}
+\subfloat[Match] {  
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/MATCH.png}
+}
+\hspace{-.5em}
+
+\subfloat[2BK vs 0BK] { 
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/2BK-0BK.png}
+}
+\subfloat[2BK] {
+  \hspace{-.5em}
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/2BK.png}
+  }
+  \hspace{-.5em}
+\subfloat[0BK] {  
+  \includegraphics[width=.33\linewidth]{figures/cmatrices/0BK.png}
+}
+\hspace{-.5em}
+
+\caption{\textbf{Confusion matrices} for the Pearson correlation between true and predicted $Z$-maps, for different task contrasts. \textbf{XXX: these figures should be regenerated with a pair of (vmin,vmax) per contrast!}}
+\end{pagefigure}
+
+\begin{pagefigure}%[!htbp]
+  \includegraphics[width=1\linewidth]{figures/r2_scores.pdf}
+  \includegraphics[width=1\linewidth]{figures/pearsonr_scores.pdf}
   \caption{\textbf{Top:}
     Confusion matrices for predicted versus true activation maps for
     the ``Story vs Math'' task contrast. The left plot corresponds to the reference
@@ -697,7 +783,7 @@ We see that our proposed method consistently beats the reference method \citep{t
       of Fig \ref{fig:conf}. Results for the reference method \citep{tavor2016task} are also shown.      
     }
     \label{fig:conf}
-  \end{figure}
+  \end{pagefigure}
 
 \paragraph{Qualitative metrics} In Fig. \ref{fig:zmaps}, we display level-curves of the population mean (magenta) of
 activation maps for the ``Story-vs-Math'' and ``2BK-vs-0BK'' task contrasts, superimposed on the true activation maps of the

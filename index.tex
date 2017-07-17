@@ -1,7 +1,12 @@
 \documentclass[nobib, a4paper, notoc, twoside, justified, openany]{tufte-book}
 %% XXX the openany option avoids abnoxious blank pages between chapters
 
+\RequirePackage{filecontents}
+
+
 \usepackage{amsmath,amssymb,amsfonts,amsbsy,amsthm}
+
+\usepackage{bibentry}
 
 \usepackage{wrapfig}
 \usepackage{graphicx}
@@ -157,6 +162,45 @@
 
 
 \newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
+
+%%% Hack to allow page-wide figures. Just use \begin{pagefigure}...\end{pagefigure}
+\RequirePackage{etoolbox}
+\makeatletter
+\newif\if@tufte@margtab\@tufte@margtabfalse
+\AtBeginEnvironment{margintable}{\@tufte@margtabtrue}
+\AtEndEnvironment{margintable}{\@tufte@margtabfalse}
+\newcommand{\classiccaptionstyle}{%
+    \long\def\@caption##1[##2]##3{%
+        \par
+        \addcontentsline{\csname ext@##1\endcsname}{##1}%
+        {\protect\numberline{\csname the##1\endcsname}{\ignorespaces ##2}}%
+        \begingroup
+        \@parboxrestore
+        \if@minipage
+        \@setminipage
+        \fi
+        \normalsize
+        \@makecaption{\csname fnum@##1\endcsname}{\ignorespaces ##3}\par
+        \endgroup}
+    \long\def\@makecaption##1##2{%
+        \vskip\abovecaptionskip
+        \sbox\@tempboxa{\@tufte@caption@font##1: ##2}%
+        \ifdim \wd\@tempboxa >\hsize
+        \@tufte@caption@font\if@tufte@margtab\@tufte@caption@justification\fi##1: ##2\par
+        \else
+        \global \@minipagefalse
+        \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+        \fi
+        \vskip\belowcaptionskip}
+    %   \setcaptionfont{\normalfont}
+    \let\caption\@tufte@orig@caption%
+    \let\label\@tufte@orig@label}
+\makeatother
+
+\newenvironment{pagefigure}{%
+    \begin{figure*}[!htbp]
+    \classiccaptionstyle
+  }{\end{figure*}}
 
 \allsectionsfont{\rm \bf \color{msblue} \sffamily}
 
@@ -582,7 +626,7 @@ $i_C$ & Indicator function of $C$ & $i_C(\B{x}):= \begin{cases}0,&\mbox{ if }\B{
 
   $\proj_C(x)$ & Orthogonal projection of $\B{x}$ onto $C$ & $\argmin_{\B{p} \in C}\frac{1}{2}\|\B{p}-\B{x}\|_2^2 = \prox_{i_C}(\B{x})$\\
   $f^*$ & Convex conjugate of $f$ & $f^*(\B{x}) := \sup_{\B{y}}\B{x}^T\B{z} - f(\B{z})$\\
-  $L_F$ & Lipschitz constant of $F: \mathcal H_1 \rightarrow \mathcal H_2$ & $\inf\{C \ge 0 | \|F(\x) - F(\y)\|_{\mathcal H_2} \le C\|\x - \y\|_{\mathcal H_1}\;\forall \x,\y\}$ \\
+  $L_F$ & Lipschitz constant of $F: \mathcal H_1 \rightarrow \mathcal H_2$ & $\inf\{C \ge 0 | \|F(\x) - F(\y)\|_{\mathcal H_2} \le C\|\x - \y\|_{\mathcal H_1}\;\forall \x,\y \in \mathcal H_1\}$ \\
   \midrule
 
   $\nabla$ & Discrete spatial gradient operator. This defines a linear operator from $\mathbb R^p$ to $\mathbb R^{3p}$, where $p$ is the number of voxels in the image & At a voxel $j$, the spatial gradient of an image $\B{w}$ is a vector ${\nabla} {\w}(j) := [\nabla_{x} {\w}(j), \nabla_{y} {\w}(j), \nabla_{z} {\w}(j)]$, $\forall \w \in \mathbb R^p$ \\

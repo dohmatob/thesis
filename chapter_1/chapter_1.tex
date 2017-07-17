@@ -1,5 +1,6 @@
 \chapter{EPI-to-EPI inter-subject nonlinear registration}\label{chap:epi2epi}
 \markright{{~{\rm \ref{chap:epi2epi}}. EPI-to-EPI inter-subject nonlinear registration}\hfill}{}
+In this chapter, we turn our attention to the problem of registration of functional brain data from different subjects, and present a contribution of ours.
 \section{Introduction}
 \begin{figure*}[!htbp]
      \includegraphics[width=1\linewidth]{tikz1.pdf}
@@ -65,7 +66,7 @@ high-quality EPI data acquired using state-of-the-art sequences, yet
 with severe distortions
 \citep{pmid9178246,pmid12270226,zeng2002,anderson2003}.
 %
-% Indeed, as noted in \citep{pmid25405472}, subject motion 
+%de Indeed, as noted in \citep{pmid25405472}, subject motion 
 %and eddy current 
 Indeed, as discussed in the literature (e.g \citep{pmid12071618}), EPI
 distortions and signal loss related to B0 inhomogeneities cannot be
@@ -363,16 +364,14 @@ method (refer to \ref{sec:proposed}) does not use the structural image at all.
 
 
 \section{Experiments}
-\label{sec:exp}
+\label{sec:exp_epi2epi}
 We now describe benchmarks done to compare the pipelines presented in
 this paper (subsection \ref{sec:pipelines}) on the task fMRI data of
 110 subjects from the HCP dataset \citep{VanEssen20122222}. 
 The task fMRI data were acquired in an attempt to assess major domains
 that
 % are thought to
-sample the diversity of neural systems
-% that are interesting in functional connectomics
-, including: 1) visual, motion,
+sample the diversity of neural systems, including: 1) visual, motion,
 somatosensory, and motor systems; 2) language processing (semantic and
 phonological processing); 3) social cognition (Theory of Mind); and 4)
 emotion processing.
@@ -388,7 +387,8 @@ deformations were then applied to warp EPI data (previously
 coregistered to same subject's motor SBRef) acquired on the same
 subject during different task conditions, into template space.
 GLMs (General Linear Models) \citep{friston1994statistical} were run
-using \textit{nipy} \citep{Gorgolewski2011}, open-source Python library for analysis of neuro-imaging data. For the purpose of reporting the results, everything was co-registered to MNI space a posteriori.
+using \textit{nipy} \citep{Gorgolewski2011}, open-source Python library for analysis of neuro-imaging data. For the purpose of reporting the results, the resulting maps were was co-registered to
+MNI space a posteriori.
 
 \subsection{Evaluation metrics}
 The pipelines were evaluated using the following qualitative and quantitative
@@ -411,10 +411,6 @@ in \citep{pluim2003}.
 In our experiments, FSL's \textit{flirt} \footnote{With the
    ``\textit{-schedule}'' option.}
 tool \citep{smith2004} was used to compute NMI. 
-
-\textbf{XXX is there any risk of circularity ? NMI was also used as registration criterion !
-XXX No, were're reporting model-fit, nothing more.}
-
 
 %%  In the
 %% supplementary materials,
@@ -502,11 +498,11 @@ traditional indirect T1-based pipeline ?
 \label{sec:results}
 We now present results of experiments performed on the task fMRI
 protocols of the HCP dataset \citep{VanEssen20122222}. Refer to
-section section \ref{sec:exp} for detailed information about the
+section \ref{sec:exp_epi2epi} for detailed information about the
 experiments we did. The different pipelines discussed in section
 \ref{sec:pipelines} were used to register the data (inter-subject
 registration), and the quality of the registration was benchmarked
-using the different evaluation metrics discussed in Section \ref{sec:exp}. 
+using the different evaluation metrics discussed in Section \ref{sec:exp_epi2epi}. 
 
 \subsubsection{Normalized Mutual Information (NMI)}
 The results comparing across-subject NMI for the pipelines are presented in Figure \ref{fig:nmi}. We see that MNI is in most cases higher through our approach, which implies that 
@@ -691,7 +687,7 @@ We have proposed a computationally cheap EPI-based pipeline for direct inter-sub
 T1-based strategy.
 Results on the HCP dataset \citep{VanEssen20122222} show that the proposed pipeline outperforms the classical T1-based indirect registration strategy, according to a variety of different quality metrics: Normalized Mutual Information --NMI (Figure \ref{fig:nmi}), residual inter-subject
 variance (Figure \ref{fig:cv}), and quality of estimated group template (Figure \ref{fig:template}), without compromising the quality of post-registration statistical analyses results (GLM, ICA, etc.).
-These results optimistic findings of \citep{grabner2014} on a larger dataset (110 subjects, compared to 10 in the reference paper) and in a 3T setting.
+These results replicate the findings of \citep{grabner2014} on a larger dataset (110 subjects, compared to 10 in the reference paper) and in a 3T setting.
 
 \begin{marginfigure}
 %   \includegraphics[width=.24\linewidth]{figures/DC+T1_AnteriormedialPFC.png}
