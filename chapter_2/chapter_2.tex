@@ -20,6 +20,18 @@ taken into account in standard regularization methods, so that the
 extracted features are often hard to interpret.
 \end{shaded}
 
+\section{Sparsity and structure-inducing priors}
+Sparsity and smoothness inducing priors can used to
+perform jointly the prediction of a target variable and region
+segmentation in multivariate analysis settings. Sparsity can be enforced by
+penalizing the (sum of) absolute values of the regression coefficients, leading to the
+so-called Lasso model. Smoothness can achieved in penalizing the spatial gradient of
+the regression coefficients, to enforce smooth regions (``blobs'').
+The Total-variation (TV)~\citep{rudin1992nonlinear} penalty has
+proven to be particularly powerful for realizing such effects. Laplacian regularization
+is an easier means to this end (because in leads to a differentiable problem),
+but has weaker mini-max rates, and the visual effect is less appealing.
+
 \begin{figure}[!htbp]
   \includegraphics[width=1\linewidth]{figures/balls.png}
   \caption{$\ell_p$ unit ball for various values of $p$. The kinks
@@ -33,18 +45,6 @@ extracted features are often hard to interpret.
   \caption{$\ell_p$ ball with $0 < p \ll 1$.}
   \label{fig:flower}
 \end{marginfigure}
-
-\section{Sparsity and structure-inducing priors}
-Sparsity and smoothness inducing priors can used to
-perform jointly the prediction of a target variable and region
-segmentation in multivariate analysis settings. Sparsity can be enforced by
-penalizing the (sum of) absolute values of the regression coefficients, leading to the
-so-called Lasso model. Smoothness can achieved in penalizing the spatial gradient of
-the regression coefficients, to enforce smooth regions (``blobs'').
-The Total-variation (TV)~\citep{rudin1992nonlinear} penalty has
-proven to be particularly powerful for realizing such effects. Laplacian regularization
-is an easier means to this end (because in leads to a differentiable problem),
-but has weaker mini-max rates, and the visual effect is less appealing.
 
 In the context of neuro-imaging, sparsity and smoothness have been compiled to yield
 regression coefficients which are faithful to known neurobiological organization of the brain,
@@ -133,12 +133,6 @@ $\rho$ ($0 < \rho \le 1$) is a mixing constant between
   {cluster-promoting} part of the penalty term.
   The particular case {$\rho = 1$} corresponds to the usual Lasso. Vanilla TV   \citep{michel2011tv} corresponds to TV-$\ell_1$ with $\rho = 0$.
  The matrix $\textbf{Diff }_\rho$ is the extended discrete gradient operator defined in Chapter ~\ref{sec:notations}.  
-\begin{marginfigure}[4cm]
-  \includegraphics[width=1\linewidth]{figures/tv_cartoon_horizontal.png}
-  \caption{A cartoon showing a sparse and blobby (step-wise constant / cartoon-like) brain map,
-  as would be sought for by Total-Variation regularization \eqref{eq:ss}...}
-  \label{fig:roi}
-\end{marginfigure}
 \begin{shaded}
 \paragraph{Bayesian interpretation.} The penalties $\mathcal P(\w)$ in \eqref{eq:opt_pb} admit a Bayesian interpretation as a prior on the distribution of the coefficients $\w$
 \begin{equation}
@@ -150,6 +144,13 @@ For example, the GraphNet~\citep{grosenick2013,hebiri2011}, the penalties $\math
 p_{\alpha,\rho}(\w) \propto    \prod_{j=1}^p\exp(-\alpha\rho |w_j|)\prod_{j=1}^p\exp\left(-\alpha(1-\rho)\sum_{l \sim \text{neigh}(j)}w_j\Delta_{j,l}w_l\right).
 \end{equation}
 \end{shaded}
+
+\begin{marginfigure}
+  \includegraphics[width=1\linewidth]{figures/tv_cartoon_horizontal.png}
+  \caption{A cartoon showing a sparse and blobby (step-wise constant / cartoon-like) brain map,
+  as would be sought for by Total-Variation regularization \eqref{eq:ss}...}
+  \label{fig:roi}
+\end{marginfigure}
 
 The result of such regularized models, dubbed \emph{SpaceNet}
 ~\citep{spacenetohbm}, are brain maps which are both
