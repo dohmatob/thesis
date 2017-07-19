@@ -55,17 +55,17 @@ The augmented Lagrangian is:
 \mathcal{L}_{\nu}(\w, \z, \boldsymbol{\mu}) = \frac{1}{2}\|\X\w-\B{y}\|^2 +
   \lambda\Omega(\B{z}) + \boldsymbol{\mu}^T(\B{Kw} -\B{z}) + \frac{1}{2}\nu\|\B{Kw}-\B{z}\|^2.
 \]
-Further, introducing the scaled dual variable \(\u := \boldsymbol{\mu}/\nu\), which
+Further, introducing the scaled dual variable $\u := \nu^{-1}\boldsymbol{\mu}$, which
 we will use instead of \(\boldsymbol{\mu}\) from here on, the ADMM iterates for
 problem  \eqref{eq:main_pb} are given by the following equations:
 \begin{eqnarray}
     \begin{split}
       \B{w}^{(n+1)} &\leftarrow
-      \underset{w}{\argmin}\text{ }\mathcal{L}_{\nu}(\B{w}, \B{z}^{(n)},
+      \underset{\w}{\argmin}\text{ }\mathcal{L}_{\nu}(\B{w}, \B{z}^{(n)},
       \B{u}^{(n)}) =\\
       &\hspace{.7em}(\nu \B{K}^T\K + \X^T\X)^{-1}(\nu \B{K}^T(\z^{(n)} -
-      \B{u}^{(n)}) + \X^T\y)\\z^{(n+1)} &\leftarrow
-      \underset{z}{\argmin}\text{ }\mathcal{L}_{\nu}(\B{w}^{(n+1)}, \z,
+      \B{u}^{(n)}) + \X^T\y)\\\z^{(n+1)} &\leftarrow
+      \underset{\z}{\argmin}\text{ }\mathcal{L}_{\nu}(\B{w}^{(n+1)}, \z,
       \B{u}^{(n)}) = \\
       &\hspace{1.3em}\prox_{(\alpha/\nu)\Omega}(\B{Kw}^{(n+1)} + \B{u}^{(n)})\\
       \B{u}^{(n+1)} &\leftarrow \B{u}^{(n)} + \B{Kw}^{(n+1)} -\B{z}^{(n+1)}.
