@@ -1,29 +1,17 @@
-\section{On the equivalence of TV-L1 and iteratively-reweighted
+\chapter{On the equivalence of TV-L1 and iteratively-reweighted
   GraphNet}\label{chap:igraphnet}
 \markright{{~{\rm \ref{chap:igraphnet}}. On the equivalence of TV-L1 and iteratively-reweighted
   GraphNet}\hfill}{}
 
-We present a result which shows that TV-L1 regularized regression problems \eqref{eq:opt_pb} are nothing but an iteratively reweighted GraphNet problem. Among other things, this provides a long-awaited statistical interpretation of the TV-L1 penalty. The method dubbed iGraphNet, solves TV-L1 penalized model by considering modified GraphNet sub-problems corresponding to the minimization of the energy
+\minitoc
+
+We present a result that shows that TV-L1 regularized regression problems \eqref{eq:opt_pb} are nothing but an iteratively reweighted GraphNet problem. Among other things, this provides a long-awaited statistical interpretation of the TV-L1 penalty. The method dubbed iGraphNet, solves TV-L1 penalized model by considering modified GraphNet sub-problems corresponding to the minimization of the energy
 $E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\w)$ defined in \eqref{eq:rgn}. These sub-problems  are very well-conditioned and are quadratically easier to solve than TV-L1 itself, and can be solved by
 a fast first-order method like FISTA or LARS. The limit of this sub-problems is solve the exact TV-L1 penalized problem.
 
 This work follows the spirit of \citep{candes2007enhancing} which proposed an enhanced Lasso problem built iteratively from surrogate Ridge regression problems with inhomogeneous feature penalty parameters. However, unlike \citep{candes2007enhancing}, we leave the Lasso part of the TV-L1 penalty untouched and instead derive a surrogate on the TV part, which turns out to be a GraphNet problem with inhomogeneous penalty parameters.
 See Figure \ref{fig:igraphnet}. Pending figures comparing (maps, scores, and
-runtime) GraphNet, iGraphNet, and the baseline TV-L1 implementation via FAASTA...
-\begin{marginfigure}
-\includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_0_yz.png}
-\includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_2_yz.png}
-\includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_6_yz.png}
-% \includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_10_yz.png}
-\includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_18_yz.png}
-\caption{Estimated coefficients $\hat{\B{w}}$ on the Face vs House condition
-      of the visual recognition dataset \citep{haxby2001}.
-Classification accuracies on held-out data are shown in the
-legends. We monitor the evolution of the model as a function of the number of iGraphNet iterations $k = 0, 1, 2,\ldots$. The limit $k \rightarrow \infty$ would correspond to TV-L1 regularization...
-}
-\vspace{.5cm}
-\label{fig:igraphnet}
-\end{marginfigure}
+runtime) GraphNet, iGraphNet, and the baseline TV-L1 implementation via double-FISTA implementations~\citep{dohmatob2014benchmarking,varoquaux2015faasta}.
 
 \subsection{Derivation}
 Invoking the following
@@ -38,26 +26,25 @@ well-known elementary result\footnote{To prove it, one simply uses the fact
 we can rewrite the TV semi-norm as follows,
 \begin{eqnarray}
 \begin{split}
- \|\B{w}\|_{\text{TV}} &:= \sum_{j \in [\![p]\!],\|(\nabla \w)_j\|_2 > 0}\|(\nabla
- \B{w})_j\|_2\\
- &\le \frac{1}{2}
-\sum_{j \in [\![p]\!],\|(\nabla \w)_j\|_2 > 0} \gamma_j\|(\nabla \B{w})_j\|_2^2 + \gamma_j^{-1},
-%% &= \frac{1}{2}\sum_{j \in \mathcal P}\|(\text{diag}(r)\nabla
+ \|\B{w}\|_{\text{TV}} := \sum_{j \in [\![p]\!],\|(\textbf{Diff }\w)_j\|_2 > 0}\|(\textbf{Diff }
+ \B{w})_j\|_2 \le \frac{1}{2}
+\sum_{j \in [\![p]\!],\|(\textbf{Diff }\w)_j\|_2 > 0} \gamma_j\|(\textbf{Diff } \B{w})_j\|_2^2 + \gamma_j^{-1},
+%% &= \frac{1}{2}\sum_{j \in \mathcal P}\|(\text{diag}(r)\textbf{Diff }
 %% \B{w})_j\|_2^2 + \gamma_j^{-1},
 \forall \boldsymbol{\gamma} \in \mathbb R_{++}^p,
 \end{split}
 \end{eqnarray}
 with equality  iff
 \begin{eqnarray}
-\gamma_j = \|(\nabla \B{w})_j\|_2^{-1},\;\forall j \in [\![p]\!]\text{ s.t }\|(\nabla \w)_j\|_2 > 0.
+\gamma_j = \|(\textbf{Diff } \B{w})_j\|_2^{-1},\;\forall j \in [\![p]\!]\text{ s.t }\|(\textbf{Diff }\w)_j\|_2 > 0.
 \label{eq:weights}
 \end{eqnarray}
 Thus,
 \begin{eqnarray}
 \|\B{w}\|_{\text{TV}} = \min_{\boldsymbol{\gamma} \in
   \mathbb R_{++}^p}
-\frac{1}{2}\sum_{j \in [\![p]\!],\|(\nabla \w)_j\|_2 > 0} \gamma_j\|(\nabla \B{w})_j\|_2^2 + \gamma_j^{-1}
-%% \sum_{j \in \mathcal P}\|(\text{diag}(r)\nabla
+\frac{1}{2}\sum_{j \in [\![p]\!],\|(\textbf{Diff }\w)_j\|_2 > 0} \gamma_j\|(\textbf{Diff } \B{w})_j\|_2^2 + \gamma_j^{-1}
+%% \sum_{j \in \mathcal P}\|(\text{diag}(r)\textbf{Diff }
 %% \B{w})_j\|_2^2 + \gamma_j^{-1}
 ,
 \end{eqnarray}
@@ -67,10 +54,10 @@ $E_{\text{TV-L1}}(\B{w}) := \ell(\y,\X\w) + \alpha \mathcal P_{\text{TV-L1}}(\B{
 the iGraphNet energy
 \begin{equation}
 \begin{split}
-E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\B{w}) = &\ell(\y,\X\w) +
-\alpha\rho\|\B{w}\|_1\\
-&+ \frac{1}{2}\alpha(1 - \rho)
-\sum_{j \in [\![p]\!],\|(\nabla w)_j\|_2 > 0} \gamma_j\|(\nabla \B{w})_j\|_2^2
+E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\B{w}) = \ell(\y,\X\w) +
+\alpha\rho\|\B{w}\|_1
++ \frac{1}{2}\alpha(1 - \rho)
+\sum_{j \in [\![p]\!],\|(\textbf{Diff } w)_j\|_2 > 0} \gamma_j\|(\textbf{Diff } \B{w})_j\|_2^2
 + \gamma_j^{-1}.
 \end{split}
 \label{eq:rgn}
@@ -89,7 +76,7 @@ E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\B{w}) = &\ell(\y,\X\w) +
 for the TV-L1 model.
 \State  \textbf{Initialize:} $k \leftarrow 0$; $\mu^{(0)} \leftarrow 10^{-4}$
 \While{$\|\B{w}^{(k + 1)} - \B{w}^{(k)}\|_\infty \ge \epsilon$}
-\State \textbf{Recompute weights:} $\gamma_j^{(k)} \leftarrow (\|(\nabla
+\State \textbf{Recompute weights:} $\gamma_j^{(k)} \leftarrow (\|(\textbf{Diff }
 \B{w}^{(k)})_j\|_2^2 + {\mu}^2)^{-\frac{1}{2}}$, for every voxel $j$
 \State  \textbf{Recompute coefficients:} $\B{w}^{(k + 1)}
   \leftarrow \argmin_{\B{w} \in \mathbb R^p}
@@ -108,7 +95,7 @@ As a function of the regressor coefficients $\B{w}$, the energy in
 GraphNet model in which per-voxel weights $\alpha(1 - \rho)\gamma_j$ given
 by \eqref{eq:weights} replace the constant $\alpha(1 - \rho)$ weight
 in the pure GraphNet model \eqref{eq:opt_pb}, or
-equivalently the $\nabla$ is pre-\textit{whitened} by the diagonal
+equivalently the $\textbf{Diff }$ is pre-\textit{whitened} by the diagonal
 matrix $\boldsymbol{\Gamma} := \mathrm{diag}(\sqrt{\gamma_1},\ldots,\sqrt{\gamma_p})$. This energy
 is optimized by an alternating scheme cyclically switching between
 optimizing w.r.t the regressor coefficients $\B{w}$ and then w.r.t
@@ -137,15 +124,15 @@ runtime is in the order of about $K$ times the time taken by a run of
 a solver for the GraphNet sub-problem
 Practical details (like handling a brain mask, automatic model
 parameter selection via cross-validation and bagging, early-stopping,
-etc.) that go in the implementation optimization algorithms like the
+etc.) that go in the implementation of the optimization algorithms like the
 one just presented can be found in
 \cite{dohmatob2014benchmarking}.
 
 \paragraph*{Generalization to other complex non-smooth models.}
 Similarly, one can show that Sparse-Variation
-\citep{eickenberg2015total} is just an IRLS
+\citep{eickenberg2015total} can be solved via an IRLS
 (iteratively-reweighted Least Squares) scheme, where the weights are
-computed via \eqref{eq:weights}, with the $\nabla$ operator replaced
+computed via \eqref{eq:weights}, with the $\textbf{Diff }$ operator replaced
 with an identity-augmented version. In fact, thanks to the inequality
 \eqref{eq:rabbit}, it turns out that most
 complex rich non-smooth $\ell_p$-norm-based models are just
@@ -153,7 +140,22 @@ iteratively-reweighted versions of much simpler counterparts like
 Ordinary Least Squares, Lasso, ElasticNet, GraphNet, etc....
 
 \subsection{Experimental results}
-...
+Preliminary experimental results are shown in Fig. \ref{fig:igraphnet}.
+
+\begin{marginfigure}
+\includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_0_yz.png}
+\includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_2_yz.png}
+\includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_6_yz.png}
+% \includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_10_yz.png}
+\includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_18_yz.png}
+\caption{Estimated coefficients $\hat{\B{w}}$ on the Face vs House condition
+      of the visual recognition dataset \citep{haxby2001}.
+Classification accuracies on held-out data are shown in the
+legends. We monitor the evolution of the model as a function of the number of iGraphNet iterations $k = 0, 1, 2,\ldots$. The limit $k \rightarrow \infty$ would correspond to TV-L1 regularization...
+}
+\vspace{.5cm}
+\label{fig:igraphnet}
+\end{marginfigure}
 
 \bibliographystyle{plainnat}
 \bibliography{bib_all}

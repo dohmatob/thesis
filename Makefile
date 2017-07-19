@@ -18,6 +18,7 @@ tikz:
 
 svg:
 	inkscape -D -z --file=figures/dlsvg.svg --export-pdf=figures/dlsvg.pdf --export-latex
+	inkscape -D -z --file=figures/neuron.svg --export-pdf=figures/neuron.pdf --export-latex
 
 
 dot:

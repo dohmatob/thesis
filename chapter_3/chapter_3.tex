@@ -1,5 +1,8 @@
 \chapter{Efficient optimization of sparsity and smoothness regularized models}\label{chap:efficient_opt}
 \markright{{~{\rm \ref{chap:efficient_opt}}. Algorithms for structured priors}\hfill}{}
+
+\minitoc
+
 \newthought{Though the SpaceNet model} presented above leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet~\citep{hebiri2011,grosenick2013} and social-sparsity~\citep{kowalski2013social,varoquaux2016social},
 the penalty term $\mathcal P(\w)$ is neither smooth nor proximable.
 \footnote{ A function $f$ is said to be \textit{proximable} if its operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for $\ell_p$-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}
@@ -88,7 +91,7 @@ solved to a good tolerance resulting in a computational challenge.
 
 In \citep{dohmatob2014benchmarking}, we did an extensive study of all solvers applicable to the problem in TV-$\ell_1$ special case (which happens to be the most difficult scenario).
 Our results outlined the best strategy: a double FISTA loop, where the
-inner loop computes the proximal operator of the penalty term, with approximate precision on the duality-gap. This was further refined and implemented in   \citep{varoquaux2015faasta}.
+inner loop computes the proximal operator of the penalty term, with approximate precision on the duality-gap. This was further refined and implemented in  \citep{varoquaux2015faasta}.
 
 % In  \citep{dohmatob2014benchmarking}, we explored a wide variety of solvers and exhibited their
 % convergence properties on fMRI data. Below we present a brief overview of the paper.
@@ -115,7 +118,7 @@ the faster monotonous FISTA variant  \citep{beck2009b}. We control the
 optimality of the TV proximal via its dual gap  \citep{michel2011} and
 use a line-search strategy in the monotonous FISTA to decrease the
 tolerance as the algorithm progresses, ensuring convergence of the
-TV-$\ell_1$ regression with good accuracy.
+TV-$\ell_1$ regression with good accuracy. See~\citep{dohmatob2014benchmarking,varoquaux2015faasta}.
 
 \paragraph{ISTA/FISTA with backtracking.}
 A key ingredient in FISTA's convergence is the Lipschitz
@@ -158,7 +161,7 @@ solving convex-optimization problems by splitting the
 objective function in two convex terms which are functions of linearly-related auxiliary variables
  \citep{boyd2010}.  ADMM is particularly appealing for problems such as TV
 regression: using the variable split $\mathbf{z}
-\leftarrow \nabla \mathbf{w}$, the regularization is a simple $\ell_{1}/\ell_2$
+\leftarrow \textbf{Diff }\mathbf{w}$, the regularization is a simple $\ell_{1}/\ell_2$
 norm on $\mathbf{z}$ for which the proximal is exact and computationally
 cheap. However, in our settings, limitations of ADMM are:
 \begin{itemize}
@@ -167,14 +170,14 @@ cheap. However, in our settings, limitations of ADMM are:
   $\mathbf{X}^T\mathbf{X}$, the laplacian $\Delta$, and the identity
   operator).
 \item The $\rho$ parameter for penalizing the split
-  residual $\mathbf{z} - \nabla \mathbf{w}$ is hard to set (this is still an
+  residual $\mathbf{z} - \textbf{Diff }\mathbf{w}$ is hard to set (this is still an
   open problem), and though under mild conditions ADMM
   converges for any value of $\rho$, the convergence rate depends
   on $\rho$.
 \end{itemize}
 
 \paragraph{Primal-Dual algorithm of Chambolle and Pock  \citep{chambolle2010}.}
-this scheme is another method based on operator splitting.
+This scheme is another method based on operator splitting.
 Used for fMRI TV regression by  \citep{gramfort-etal:2013a},
 it does not require setting a hyperparameter.  % XXX : this is wrong you have the tau / sigma
 However it is a first-order single-step method and is thus more impacted by the
@@ -192,7 +195,7 @@ Here, we used the original authors' implementation.
 
 \paragraph{Uniform approximation by smooth convex surrogates.}
 The $\ell_{1}$ norm (resp. TV semi-norm) is differentiable everywhere with
-gradient $\left(w_j/|w_j|\right)_{j \in [\![p]\!]}$ (resp. $-\dive (((\nabla \mathbf{w})_j/\|(\nabla \mathbf{w})_j\|_2)_{j \in [\![p]\!]}))$), except when some voxels are inactive with
+gradient $\left(w_j/|w_j|\right)_{j \in [\![p]\!]}$ (resp. $-\dive (((\textbf{Diff }\mathbf{w})_j/\|(\textbf{Diff }\mathbf{w})_j\|_2)_{j \in [\![p]\!]}))$), except when some voxels are inactive with
 $w_j = 0$ (resp. $(\textbf{Diff }\w)_j = 0$), corresponding to black spots (resp. edges).  A convenient
 approach (see for example  \citep{NESTA, nesterov2005a, nesterov2005b,
   beck2012}) for dealing with such singularities is to uniformly
@@ -205,7 +208,7 @@ of $\ell_1$ and TV:
     \|\mathbf{w}\|_{1,\mu} := \sum_j
     \sqrt{\mathbf{w}_j^2 + \mu^2},\;
     \|\mathbf{w}\|_{\text{TV}, \mu} :=
-    \sum_{j} \sqrt{\|\nabla \mathbf{w}_j\|_{2}^2 + \mu^2}
+    \sum_{j} \sqrt{\|(\textbf{Diff }\mathbf{w})_j\|_{2}^2 + \mu^2}
 \end{eqnarray}
 These surrogate upper-bounds are convex and everywhere-differentiable
 with gradients that are Lipschitz-continuous with constants $1/\mu$ and
@@ -230,11 +233,11 @@ and restart the solver on problem \eqref{eq:sopt_pb} with this solution; and so 
 \emph{continuation} process~\citep{NESTA} detailed in Alg.
 \ref{Tab:pseudocode_lbfgs}.
 This algorithm is not faster than
-$\mathcal{O}(1/\epsilon)$: indeed a good optimization algorithm
-for the sub-problem \eqref{eq:sopt_pb} is $\mathcal{O}(\sqrt{L_{\mu}/\epsilon})$
-\citep{nesterov1983}, and $L_{\mu} \sim 1 / \mu \sim 1 / \epsilon$. We
+$\mathcal{O}(1/\epsilon)$: indeed a first-order algorithm
+for the sub-problem \eqref{eq:sopt_pb} has optimal worst-case iteration complexity $\mathcal{O}(\sqrt{L_{\mu}/\epsilon})$
+~\citep{nesterov1983}, and $L_{\mu} \sim 1 / \mu \sim 1 / \epsilon$. We
 believe that this bound is tight but a detailed analysis is
-beyond the scope of this paper.
+beyond the scope of this manuscript.
 \begin{algorithm}
   \caption{LBFGS algorithm with continuation}
   \label{Tab:pseudocode_lbfgs}  
@@ -282,8 +285,8 @@ whether they would accept each gamble \citep{mixedgambles2007}.  No outcomes of 
 were presented during scanning, but after the scan three gambles were
 elected at random and played for real money. The prediction task here is
 to predict the magnitude of the gain and thus a regression on a
-continuous variable \citep{jimura2012}. The data is pooled across
-subjects, resulting in 768 samples, each an image of 33\,177 voxels.
+continuous variable \citep{jimura2012}. The data
+The are pulled from 16 subjects with 48 3D scans each, making up for a total of $n=768$ samples with approximately $p=3.3 \times 10^4$ voxels.
 
 % We validate our algorithms on both simulated and real data.
 \smallskip
@@ -303,7 +306,7 @@ accuracy.
 
 \label{sec:results}
 Here, we present benchmark results for our experiments. Figure
-\ref{Fig:HaxbyLR} gives results for the logistic regression run on the
+\ref{Fig:tvl1bench} gives results for the logistic regression run on the
 visual recognition dataset: convergence plots of energy as a function of
 time show that all methods are asymptotically decreasing. The left part of
 Fig. \ref{fig:tvl1bench}
@@ -382,7 +385,7 @@ they add speed without sacrificing the quality of the predictions
 % \paragraph{A note on implementation of the solver.}
 One notes that in the case of GraphNet, the penalty term % $J(\w)$
 of problem
-\eqref{eq:opt_pb}, the $\|\nabla
+\eqref{eq:opt_pb}, the $\|\textbf{Diff }
 \w\|^2_2$ sub-term is smooth (i.e differentiable) with
 \textit{Lipschitz} gradient, whilst the $\ell_{1}$ term though
 nonsmooth, is \textit{proximable}\footnote{That is, there is a
@@ -394,7 +397,7 @@ $\mathcal{O}(1/\sqrt{\epsilon})$ convergence rate. Our implementation
 of FISTA uses technical recommendations
 (line-searching, parametrization, etc.) which were provided in
  \citep{dohmatob2014benchmarking}, in the context of TV-L1
- \citep{baldassarre2012,gramfort2013}. The model parameters $\alpha$ and
+ ~\citep{baldassarre2012,gramfort2013}. The model parameters $\alpha$ and
 $\rho$ in \eqref{eq:opt_pb} are set by \textit{internal}
 cross-validation.
 
@@ -504,7 +507,7 @@ internal cross-validation, stopping  the optimization procedure for
 fixed $(\alpha, \rho)$ pair of regularization parameters, when test
 score increases by $-10^{-2}$ or more is a good heuristic, and does just
 as good as running the optimization until numerical convergence. 
- \begin{figure}[!htb]
+ \begin{pagefigure}
    \includegraphics[width=1\linewidth]{figures/screening_weights.png}
   \caption{Predicting age from gray-matter concentration maps from the
     OASIS dataset  \citep{marcus2007open}. \textbf{Top}:
@@ -522,7 +525,7 @@ varying levels of the screening-percentile (sp).%  \textbf{Running
 % increasing $sp$ ($10$ to $100$): \textbf{44.2m, 81.3m, 186.5m, 341.3m}
 }   
 \label{fig:oasis}
-\end{figure}
+\end{pagefigure}
 Also (and independently), one gets similar prediction scores using as
 little as a fifth of the brain volume ($sp=20$),
 compared to using the full-brain ($sp=100$).
@@ -538,7 +541,7 @@ in accuracy. Also, we see that contiguous groups of bars are roughly flat at the
     support recovery), and so including more voxels in the model can only hurt its
     performance...    
 
- \begin{figure}[!htb]
+ \begin{pagefigure}
    \includegraphics[width=1\linewidth]{figures/screening_weights_haxby.png}
   \caption{Predicting age from gray-matter concentration maps from the
     OASIS dataset  \citep{marcus2007open}. \textbf{Top}:
@@ -574,15 +577,24 @@ increasing $sp$ ($10$ to $100$): \textbf{44.2m, 81.3m, 186.5m, 341.3m}}
     % (sp=100\%) is the most expensive scenario.
   }
   \label{fig:haxby}
-\end{figure}
-    
- In   \citep{dohmatob2015speeding}, we empirically showed on various
-datasets that such screening leads to linear speed-up in the computation
-time, while sacrificing prediction / classification power as long as the
-screening is not very savage. We also showed that early-stopping the
-estimator does not harm the accuracy of the predictions, and can also lead
-to considerable (though less systematic speedups).
-The result of these numerous ramblings on optimizing the SpaceNet model \eqref{eq:opt_pb} have been implemented as part of the \textit{Nilearn} package   \citep{nilearn}.
+\end{pagefigure}
+
+\subsection{Conclusion}
+we have presented heuristics that provide
+speedups for optimizing GraphNet~\citep{hebiri2011,grosenick2013}  in the difficult
+context of brain data. These heuristics are a win-win strat-
+egy as they add speed without sacrificing the quality of
+the predictions / classifications. In practice, we do a 20%
+univariate feature-screening by default, which ensures a 5-
+fold speedup over full-brain analysis, and independently of an
+approximately 2-fold speedup obtained by the early-stopping
+heuristic, leading to an overall 10-fold speedup. Our results
+have been verified empirically on different MRI datasets. Our heuristics should
+be applicable to other hard-to-optimize models like TV-L1~\citep{baldassarre2012,gramfort2013}.
+
+The result of these numerous contributions on optimizing the SpaceNet model
+\eqref{eq:opt_pb} have been implemented as part of the \textit{Nilearn} package
+\citep{nilearn}.
 
 
 % \newthought{We have seen} in Chapter~\ref{chap:stats_fmri} that%  encoding and decoding models take 

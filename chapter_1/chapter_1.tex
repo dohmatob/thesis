@@ -1,28 +1,17 @@
 \chapter{EPI-to-EPI inter-subject nonlinear registration}\label{chap:epi2epi}
-\markright{{~{\rm \ref{chap:epi2epi}}. EPI-to-EPI inter-subject nonlinear registration}\hfill}{}
-In this chapter, we turn our attention to the problem of registration of functional brain data from different subjects, and present a contribution of ours.
+\markright{{~{\rm \ref{chap:epi2epi}}.EPI-to-EPI inter-subject nonlinear registration}\hfill}{}
+
+\minitoc
+
+In this chapter, we turn our attention to another key problem in neuro-imaging: registration of functional brain data from different subjects. After a concise review of the existing literature,
+we present a contribution of ours.
+
 \section{Introduction}
-\begin{figure*}[!htbp]
-     \includegraphics[width=1\linewidth]{tikz1.pdf}
-\caption{Nonlinear mismatch between EPI and T1 image of
-  the same subject before and after distortion-correction.
-% We see the Distortions in high-resolution EPI.
-\textbf{Left:} Single-band high-resolution EPI (SBRef) image of the
-same subject. Notice the large distortions along the Left-Right direction
-(inside the highlighted patches). \textbf{Center:} Distortion-corrected
-single-band EPI image. Here, the distortion-correction managed to undo
-most --but not all-- of the distortions. Even after distortion
-correction, there are minor shape (nonlinear) differences between the
-EPI and the T1 image of the subject (\textbf{Right}). The same native-space
-coordinates where used in all of the 3 plots.}
-\label{fig:pb_fig}
-\end{figure*}
 Registering brain images from different subjects in a common space
 (for example, the MNI space \citep{pmid8126267,pmid9343592}), is an
 essential step in any multi-subject analysis pipeline \citep{FristonBook}. Indeed, a
 voxel-to-voxel correspondence across subjects is needed for
 group-level statistics on brain maps to make sense.
-
 In addition, the use of a standard space opens the possibility to share
 results in a consistent fashion, hence the comparison of experiments
 and meta-analysis \citep{pmid18985131,pmid25914639}.
@@ -49,9 +38,9 @@ template space. %% This can be schematized as follows\footnote{The
 %% \label{eq:classical_pl}
 %% \end{eqnarray}
 
-Such methods assume (explicity or implicitly) that the T1 and EPI images
+Such methods assume (explicitly or implicitly) that the T1 and EPI images
 of the same subject can be properly aligned to one another via a affine transformation.
-Thus one assumes, for example, that distorsion correction is
+Thus one assumes, for example, that distortion correction is
 good enough that the EPI image can be realigned to the T1 with a rigid or affine
 transformation. However, high-resolution EPI sequences deviate from the
 aforementioned underlying assumptions of classical T1-based indirect inter-subject
@@ -59,6 +48,22 @@ registration methods, namely the EPI sequences suffer from distortions
 that push them nonlinearly out-of-match relative to the T1 image of
 the same subject. 
 %
+\begin{figure*}[!htbp]
+     \includegraphics[width=1\linewidth]{tikz1.pdf}
+\caption{Nonlinear mismatch between EPI and T1 image of
+  the same subject before and after distortion-correction.
+% We see the Distortions in high-resolution EPI.
+\textbf{Left:} Single-band high-resolution EPI (SBRef) image of the
+same subject. Notice the large distortions along the Left-Right direction
+(inside the highlighted patches). \textbf{Center:} Distortion-corrected
+single-band EPI image. Here, the distortion-correction managed to undo
+most --but not all-- of the distortions. Even after distortion
+correction, there are minor shape (nonlinear) differences between the
+EPI and the T1 image of the subject (\textbf{Right}). The same native-space
+coordinates where used in all of the 3 plots.}
+\label{fig:pb_fig}
+\end{figure*}
+
 As illustrated in Figure \ref{fig:pb_fig}, this is the case, for
 example, with the HCP (Human Connectome Project)
 \citep{VanEssen20122222} dataset, a reference dataset that contains

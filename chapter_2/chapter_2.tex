@@ -1,6 +1,8 @@
 \chapter{Structured priors for brain decoding and functional segmentation: the models}\label{chap:structured_priors}
 \markright{{~{\rm \ref{chap:structured_priors}}. Structured priors for analyzing brain data}\hfill}{}
 
+\minitoc
+
 \section{Introduction to brain decoding}
 Functional brain imaging provides a distinctive opportunity to study brain functional architecture, while being minimally invasive, and is thus well-suited for the challenging study of the spatial layout of neural coding. Different modalities exist, each one having specific spatial and temporal resolutions; among them Functional Magnetic Resonance Imaging (fMRI)~\citep{agawa1990,ogawa1990b} has emerged as a fundamental modality for brain imaging, striking a good balance between spatial and temporal resolution.  fMRI images are pre-processed, and modeled through a General Linear Model, that takes into account the different experimental conditions and the dynamics of the hemodynamic response in the design matrix. The resulting model parameters, a.k.a. activation maps, represent the influence of the different experimental conditions on local fMRI signals.
 
@@ -83,9 +85,8 @@ This defines a linear operator $\nabla \in \mathbb R^{3p \times p}$ (the discret
 \end{figure}
 
 \section{SpaceNet: sparse structured models for brain data}
-Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)
-    \citep{michel2011tv}, TV-$\ell_1$~\citep{baldassarre2012,gramfort2013}, GraphNet   \citep{grosenick2013,hebiri2011},
-  TV-ElasticNet~\citep{dubois2014predictive}, Sparse Variation   \citep{eickenberg2015total}, and social-sparsity~\citep{kowalski2013social,varoquaux2016social}. These can all be written in a general framework as follows
+Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)~\citep{michel2011tv}, TV-$\ell_1$~\citep{baldassarre2012,gramfort2013}, GraphNet   \citep{grosenick2013,hebiri2011},
+  TV-ElasticNet~\citep{dubois2014predictive}, Sparse Variation~\citep{eickenberg2015total}, and social-sparsity~\citep{kowalski2013social,varoquaux2016social}. These can all be written in a general framework as follows
 
 
 \begin{equation}
@@ -187,7 +188,7 @@ The SpaceNet model leads to difficult non-smooth mathematical optimization probl
 
 \section{Comparing SpaceNet with against basic models}
 \paragraph{Classification.}
-We compared SpaceNet (TV-L1 and Smooth-Lasso priors) with an SVM (Support Vector Machine) on the visual-recognition dataset~\citep{haxby2001}. This dataset consists of 6 subjects with 12 runs per subject. In each run, the subjects passively viewed images of eight object categories, grouped in 24-second blocks separated by intermittent rest periods. This experiment is a classification task: predicting the object category. The design matrix is made of time-series from the full-brain mask of $p=23,707$ voxels over 216 TRs (Repetition Times), of a single subject (subj1). 126 TRs were used for training all the models, whilst testing was done on 90 left-out TRs. The results are depicted in Figures 1 (bar chat) and 2 (brain maps).
+We compared SpaceNet (TV-L1 and GraphNet / Smooth-Lasso priors) with an SVM (Support Vector Machine) on the visual-recognition dataset~\citep{haxby2001}. This dataset consists of 6 subjects with 12 runs per subject. In each run, the subjects passively viewed images of eight object categories, grouped in 24-second blocks separated by intermittent rest periods. This experiment is a classification task: predicting the object category. The design matrix is made of time-series from the full-brain mask of $p=23,707$ voxels over 216 TRs (Repetition Times), of a single subject (subj1). 126 TRs were used for training all the models, whilst testing was done on 90 left-out TRs. The results are depicted in Figures 1 (bar chat) and 2 (brain maps).
 
 \begin{figure}[!htb] 
   \includegraphics[width=.32\linewidth]{figures/svm.png}
@@ -202,17 +203,20 @@ We compared SpaceNet (TV-L1 and Smooth-Lasso priors) with an SVM (Support Vector
 \end{figure}
 
 \paragraph{Regression.}
-In ~\citep{gramfort2013}, the authors compared several models on a dataset in which subjects were presented with mixed (gain/loss) gambles, and decided whether they would accept each gamble~\citep{jimura2012}. No outcomes of these gambles were presented during scanning, but after the scan three gambles were selected at random and played for real money. The prediction task here is to predict the magnitude of the gain and thus a regression on a continuous variable. The data is pooled across subjects, resulting in 768 samples, each an image of $p=33,177$ voxels. The results are shown in Fig. \ref{fig:tvl1_regression}.
+In ~\citep{gramfort2013}, the authors compared several models on a dataset in which subjects were presented with mixed (gain/loss) gambles, and decided whether they would accept each gamble~\citep{jimura2012}. No outcomes of these gambles were presented during scanning, but after the scan three gambles were selected at random and played for real money. The prediction task here is to predict the magnitude of the gain and thus a regression on a continuous variable. The full dataset of 16
+subjects with 48 3D scans each, making up for a total of $n=768$ samples with approximately $p=3.3 \times 10^4$ voxels. The prediction here is inter-subject: the estimator
+learns on some subjects and predicts on left out subjects.
+The results are shown in Fig. \ref{fig:tvl1_regression}.
 
-\begin{figure}[!htb] 
+\begin{figure}[!htbp] 
   \includegraphics[width=1\linewidth]{figures/gramfort_tvl1.png}
-  \caption{Results on fMRI data from [4] (from left to right F-test, ElasticNet and TV-L1). The TV-L1 regularized model segments neuroscientificly
+  \caption{Results on fMRI data from [4] (from left to right F-test, ElasticNet and TV-L1). The TV-L1 regularized model segments neuroscientifically
     meaningful predictive regions in agreement with univariate statistics while the ElasticNet yields sparse although very scattered non-zero weights. Source: adapted from ~\citep{gramfort2013}.}
   \label{fig:tvl1_regression}
 \end{figure}
 
 \section{Conclusion}
-We have presented SpaceNet, a family of priors for brain decoding which enforce both sparsity and structure, leading to better prediction scores and intepretable brain maps. We believe that such priors will become commonplace in future.
+We have presented SpaceNet, a family of priors for brain decoding that enforce both sparsity and structure, leading to better prediction scores and intepretable brain maps. We believe that such priors will become commonplace in future.
 In the next chapter we open the ``black box'' and develop from ground-up, the details of such models, including their practical implementation on a computer.
 
 % \clearpage

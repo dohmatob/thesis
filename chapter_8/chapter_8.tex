@@ -2,6 +2,9 @@
 \label{chap:admm}
 \markright{{~{\rm \ref{chap:admm}.A result on the convergence rate of ADMM}}\hfill}{}
 
+\minitoc
+
+\section{Introduction}
 \newthought{The ADMM algorithm} \citep{glowinski1975approximation,gabay1976dual,eckstein1992douglas} is
 an operator-splitting optimization method which is easy to implement and 
 well-adapted for large-scale optimization problems
@@ -37,16 +40,114 @@ regularization parameter;
 and $\Omega: \mathbb{R}^p \rightarrow (-\infty, +\infty]$ is
     the penalty, which is assumed to be a \textit{closed proper
       convex} function.
-    In signal processing literature, such a problem is referred to as synthesis problem: the penalty $\Omega$ is imposed not directly on the image, but on a the output of a dictionary, $\z = \K\w$. $\K$ is referred to the analysis operator. The case $\K = \Id$ corresponds to the \textit{synthesis} setting.
+    In signal processing literature, such a problem is referred to as synthesis problem: the penalty $\Omega$ is imposed not directly on the image, but on a the output of a dictionary, $\z = \K\w$. $\K$ is referred to the analysis operator. The case $\K = \Id$ corresponds to the \textit{synthesis}
+    setting.
 
-% First, we established a
-% fixed-point iteration for a nonlinear operator $\Lambda$ %\eqref{eq:factorize}
+\subsection{The ADMM algorithms}
+Consider the ADMM algorithm
+~\citep{glowinski1975approximation,gabay1976dual,eckstein1992douglas,boyd2011distributed}
+applied to problem \eqref{eq:main_pb}. Let $\boldsymbol{\mu}\in\mathbb{R}^q$ be
+the dual variable %% \footnote{These are Lagrange multipliers.}
+and $\nu > 0$ be the penalty parameter on the splitting residual.
+%% $\frac{1}{2}\|Kw -\B{z}\|^2$ in the augmented Lagrangian
+The augmented Lagrangian is:
+\[
+\mathcal{L}_{\nu}(\w, \z, \boldsymbol{\mu}) = \frac{1}{2}\|\X\w-\B{y}\|^2 +
+  \lambda\Omega(\B{z}) + \boldsymbol{\mu}^T(\B{Kw} -\B{z}) + \frac{1}{2}\nu\|\B{Kw}-\B{z}\|^2.
+\]
+Further, introducing the scaled dual variable \(\u := \boldsymbol{\mu}/\nu\), which
+we will use instead of \(\boldsymbol{\mu}\) from here on, the ADMM iterates for
+problem  \eqref{eq:main_pb} are given by the following equations:
+\begin{eqnarray}
+    \begin{split}
+      \B{w}^{(n+1)} &\leftarrow
+      \underset{w}{\argmin}\text{ }\mathcal{L}_{\nu}(\B{w}, \B{z}^{(n)},
+      \B{u}^{(n)}) =\\
+      &\hspace{.7em}(\nu \B{K}^T\K + \X^T\X)^{-1}(\nu \B{K}^T(\z^{(n)} -
+      \B{u}^{(n)}) + \X^T\y)\\z^{(n+1)} &\leftarrow
+      \underset{z}{\argmin}\text{ }\mathcal{L}_{\nu}(\B{w}^{(n+1)}, \z,
+      \B{u}^{(n)}) = \\
+      &\hspace{1.3em}\prox_{(\alpha/\nu)\Omega}(\B{Kw}^{(n+1)} + \B{u}^{(n)})\\
+      \B{u}^{(n+1)} &\leftarrow \B{u}^{(n)} + \B{Kw}^{(n+1)} -\B{z}^{(n+1)}.
+    \end{split}
+\label{eq:admm}
+\end{eqnarray}
 
-\section{Preliminaries}
+\paragraph*{\textbf{\textit{Assumptions.}}}
+We will assume that the matrix sum $\nu
+\B{K}^T\K + \X^T\X$ is invertible. This assumption is equivalent to \(\ker
+\K^T\K \cap \ker \X^T\X = \{0\}\) (see e.g \cite[Theorem 1]{piziak1999}),
+which is  reasonable in the context of regularization. Indeed, the
+idea behind this assumption is that, in high-dimensional problems ($n
+\ll p$), $\X$ typically has a large kernel, and so one would naturally
+choose $\K$ to act on it.
+
+\subsection{Examples}
+Problem \eqref{eq:main_pb} covers a broad spectrum of problems
+encountered in pattern recognition and image processing. Here are a few:
+
+\paragraph*{Classical examples.}
+We have $\Omega = \frac{1}{2}\|.\|^2$ for Ridge regression;
+$\Omega = \|.\|_1: z \mapsto \sum_{j \in [p]}|z_j|$
+for Lasso and Fused-Lasso ~\citep{Tibshirani05}. For all but the last of
+these examples, we have $\K = \Id$. For Group-Lasso, we have $\K=\Id$,
+$\Omega = $ the \textit{mixed-norm} $\ell_{2,1}= \|.\|_{2,1}:z
+\mapsto \sum_{j \in [\![d]\!]}\|z_{j:j+c-1}\|$, where there are $d \ge
+1$ blocks $z_{j:j+c-1}:=(z_j, z_{j+1}, ..., z_{j+c-1})$ each of size $c \ge
+1$. %% , giving a total of $d \times c =
+%% q$ coordinates).
+\label{sec:examples}
+
+\paragraph*{Isotropic TV-L1 and Sparse Variation.}
+The different extensions of the TV penalty presented in chapter \ref{chap:structured_priors} can be posed in the form of the problem above.
+For example, Sparse Variation~\citep{eickenberg2015total} corresponds to taking
+$\K = [\rho\Id,\hspace{.5em}(1-\rho)\textbf{Diff }]^T \in
+\mathbb{R}^{4p \times p}$, where $\textbf{Diff }$ is the discrete
+(multi-dimensional) spatial gradient operator
+and $\rho \in [0, 1]$ is a mixing parameter.
+For TV-L1 ~\citep{baldassarre2012,gramfort2013}, the penalty is
+given by $\Omega(\B{z}) = \sum_{j \in [\![p]\!]}|z_{j,1}| + \sum_{j \in
+  [p]}\|z_{j,2:4}\|$ (i.e an $\ell_1$ norm on the first $p$
+coordinates of $z$ and an $\ell_{2,1}$ mixed-norm on the last $3p$
+coordinates). In particular, the case $\rho = 1$
+corresponds to the usual $\ell_1$ norm, while $\rho = 0$ corresponds to
+the isotropic TV semi-norm.
+% \begin{wrapfigure}{L}{.27\textwidth}
+%   \centering
+%   \includegraphics[width=.6\linewidth]{cartoon.pdf}
+%   \caption{Structured and sparse weights $w$}
+%   \label{fig:roi}
+% \end{wrapfigure}
+
+In Sparse Variation ~\citep{eickenberg2015total}, 
+the penalty is modified to simply be an $\ell_{2,1}$
+mixed-norm on $d = p$ blocks of size $c = 4$ each, i.e
+$\Omega(\B{z}) = \sum_{j \in [p]}\|z_{j,1:4}\|$. 
+TV-L1 and Sparse Variation combine sparsity (due to the
+the $\ell_1$-norm) and structure (due to the isotropic TV term) to
+extract local concentrations of spatially correlated features
+from the data.%  Fig. \ref{fig:roi} is a good illustration of the
+% kinds of patterns one can learn using TV-L1 and Sparse Variation
+% models.
+
+% We then showed that this nonlinear operator is
+% Fr\'echet-differentiable almost everywhere and that around each fixed
+% point, Q-linear convergence is guaranteed, provided the spectral
+% radius of the Jacobian of the operator at the fixed point is less than
+% 1 (a classical result on stability). Moreover, this spectral radius is
+% then a rate of convergence for the ADMM algorithm. Also, we showed that
+% the support of the split variable can be identified after finitely
+% many iterations. In the anisotropic cases, we show that for
+% sufficiently large values of the tuning parameter, we recover the
+% optimal rates in terms of Friedrichs angles, that have appeared
+% recently in the literature.
+
+\section{Our contributions}
+\subsection{Preliminaries}
 In the spirit of \citep{ghadimi2013optimal},
 let us start with a simple lemma (proof omitted) which
 rewrites the ADMM iterates \eqref{eq:admm} as a Picard fixed-point
-process in terms of the $(z, u)$ pair of variables.%%  This follows from
+process in terms of the $(\z, \u)$ pair of variables.%%  This follows from
 %% the fixed-point expression of Douglas-Rachford schemes, to which ADMM
 %% belongs.
 
@@ -56,135 +157,91 @@ process in terms of the $(z, u)$ pair of variables.%%  This follows from
     \begin{aligned}
       %% Q := \B{X}^T\X \in \mathbb{R}^{p \times p},\hspace{.5em}\Delta :=
       %% \K^T\K \in \mathbb{R}^{p \times p},\hspace{.5em}
-      &\G_{\rho} :=
-      \K(\K^T\K + \rho^{-1}\B{X}^T\X)^{-1}\K^T,\hspace{.5em}
-      \A_{\rho}:=[\G_{\rho}\hspace{.5em}\Id-\G_{\rho}],\\
-      &\b_{\rho} := \rho^{-1}\K(\K^T\K +
-      \rho^{-1}\B{X}^T\X)^{-1}\B{X}^T\y,\hspace{.2em}\tilde{\A}_{\rho} :=
-      \A_{\rho}(.) +  \b_{\rho},\\
-      &\Lambda_{\rho} :=
-        \left(\prox_{(\lambda/\rho)\varphi}\circ\tilde{\A}_{\rho},
-        (\Id-\prox_{(\lambda/\rho)\varphi})\circ\tilde{\A}_{\rho}\right).
+      &\G_{\nu} :=
+      \K(\K^T\K + \nu^{-1}\B{X}^T\X)^{-1}\K^T,\hspace{.5em}
+      \A_{\nu}:=[\G_{\nu}\hspace{.5em}\Id-\G_{\nu}],\\
+      &\b_{\nu} := \nu^{-1}\K(\K^T\K +
+      \nu^{-1}\B{X}^T\X)^{-1}\B{X}^T\y,\hspace{.2em}\tilde{\A}_{\nu} :=
+      \A_{\nu}(.) +  \b_{\nu},\\
+      &\Lambda_{\nu} :=
+        \left(\prox_{(\alpha/\nu)\varphi}\circ\tilde{\A}_{\nu},
+        (\Id-\prox_{(\alpha/\nu)\varphi})\circ\tilde{\A}_{\nu}\right).
     \end{aligned}
     \label{eq:factorize}
   \end{eqnarray*}
  Then the $z$ and $u$ updates in the ADMM iterates
 \eqref{eq:admm} can be jointly written as a Picard fixed-point
-iteration for the operator $\Lambda_{\rho}$, i.e
+iteration for the operator $\Lambda_{\nu}$, i.e
 \begin{equation}
-  (\z^{(n+1)}, \u^{(n+1)}) \leftarrow
-  \Lambda_{\rho}(\z^{(n)}, \u^{(n)}).
+  (\z^{(n+1)}, \B{u}^{(n+1)}) \leftarrow
+  \Lambda_{\nu}(\z^{(n)}, \u^{(n)}).
       \label{eq:fixed_point}
 \end{equation}
 \label{thm:fixed_point}
 \end{lemma}
  In the special case where
-$\prox_{(\lambda/\rho)\varphi}$ is a linear transformation --as
+$\prox_{(\alpha/\nu)\varphi}$ is a linear transformation --as
 in Ridge regression or the nonnegative
-Lasso, for example-- the operator $\Lambda_{\rho}$ is linear so that the
+Lasso, for example-- the operator $\Lambda_{\nu}$ is linear so that the
 fixed-point iteration
 \eqref{eq:fixed_point} is a linear dynamical system. Moreover,
 in such cases one can derive closed-form formulae for the spectral radius
-$r(\Lambda_{\rho})$ of $\Lambda_{\rho}$ as function of $\rho$, and thus recover
+$r(\Lambda_{\nu})$ of $\Lambda_{\nu}$ as function of $\nu$, and thus recover
 the results of \citep{ghadimi2013optimal} and \citep{boley2013}. In the
 latter simple situations, a strategy for speeding up the ADMM
-algorithm is then to choose the parameter $\rho$ so that the spectral
-radius of the linear part of the then affine transformation $\Lambda_\rho$
+algorithm is then to choose the parameter $\nu$ so that the spectral
+radius of the linear part of the then affine transformation $\Lambda_\nu$
 is minimized. The following Corollary is immediate. Due to lack of
 space, we omit the proof, which is obtainable via the \textit{Spectral
   Mapping Theorem}.
 \begin{corollary}
-  Let $\G_{\rho}$, $\A_{\rho}$, $\tilde{\A}_{\rho}$, and $\Lambda_\rho$ be
+  Let $\G_{\nu}$, $\A_{\nu}$, $\tilde{\A}_{\nu}$, and $\Lambda_\nu$ be
   defined as in Lemma \ref{thm:fixed_point}. 
   Then the following hold:
   \begin{itemize}
-    \item[\textit{(a)}] $\max(\|\G_\rho\|,
-      \|\Id-\G_{\rho}\|) \le 1$,
-      $\sigma_{\min^*}(\A_\rho) \ge 1/\sqrt{2}$, and $\|\A_{\rho}\| \le 1$
-      with equality in the last inequality iff at least one of $\G_\rho$
-      and $\Id-\G_\rho$ is singular.
-\item[\textit{(b)}] $\Lambda_\rho$ is $\|\A_\rho\|$-Lipschitz. That is,
+    \item[\textit{(a)}] $\max(\|\G_\nu\|,
+      \|\Id-\G_{\nu}\|) \le 1$,
+      $\nu_{\min^*}(\A_\nu) \ge 1/\sqrt{2}$, and $\|\A_{\nu}\| \le 1$
+      with equality in the last inequality iff at least one of $\G_\nu$
+      and $\Id-\G_\nu$ is singular.
+\item[\textit{(b)}] $\Lambda_\nu$ is $\|\A_\nu\|$-Lipschitz. That is,
   $\forall (\x_1, \x_2) \in \mathbb{R}^{q+q} \times \mathbb{R}^{q+q}$,
 \begin{eqnarray}
-  \|\Lambda_{\rho}(\x_1) - \Lambda_\rho(\x_2)\| \le
-  \|\A_\rho\|\|\x_1 - \x_2\|.
+  \|\Lambda_{\nu}(\x_1) - \Lambda_\nu(\x_2)\| \le
+  \|\A_\nu\|\|\x_1 - \x_2\|.
   \label{eq:tight}
 \end{eqnarray}
- In particular, if $\|\A_\rho\| < 1$,
-  then $\Lambda_\rho$ is a contraction and the ADMM
+ In particular, if $\|\A_\nu\| < 1$,
+  then $\Lambda_\nu$ is a contraction and the ADMM
   iterates \eqref{eq:admm} converge globally Q-linearly to a
   solution of \eqref{eq:main_pb}. Moreover, this solution is unique.
   \end{itemize}
 \label{thm:fixed_point_corr}
 \end{corollary}
 
-According to Corollary \ref{thm:fixed_point_corr}, $\Lambda_\rho$ is an
-$\|\A_\rho\|$-contraction in case $\|\A_\rho\| < 1$, and so we have
+According to Corollary \ref{thm:fixed_point_corr}, $\Lambda_\nu$ is an
+$\|\A_\nu\|$-contraction in case $\|\A_\nu\| < 1$, and so we have
 global Q-linear convergence of the ADMM iterates \eqref{eq:admm} at the
-rate $\|\A_\rho\|$. This particular case is analogous to the results
+rate $\|\A_\nu\|$. This particular case is analogous to the results
 obtained in \citep{nishihara2015general} when the loss function or the
 penalty is strongly convex.
-But what if $\|\G_\rho\| = \|\Id-\G_\rho\| =
-\|\A_\rho\| = 1$ ? Can we still have Q-linear convergence, --at
+But what if $\|\G_\nu\| = \|\Id-\G_\nu\| =
+\|\A_\nu\| = 1$ ? Can we still have Q-linear convergence, --at
 least locally ? These questions are answered in the sequel.
 
-  \begin{eqnarray}
-    \begin{aligned}
-      %% Q := \B{X}^T\X \in \mathbb{R}^{p \times p},\hspace{.5em}\Delta :=
-      %% \K^T\K \in \mathbb{R}^{p \times p},\hspace{.5em}
-      &\G_{\rho} :=
-      \K(\K^T\K + \rho^{-1}\B{X}^T\X)^{-1}\K^T,\hspace{.5em}
-      \A_{\rho}:=[\G_{\rho}\hspace{.5em}\Id-\G_{\rho}],\\
-      &\b_{\rho} := \rho^{-1}\K(\K^T\K +
-      \rho^{-1}\B{X}^T\X)^{-1}\B{X}^T\y,\hspace{.2em}\tilde{\A}_{\rho} :=
-      \A_{\rho}(.) +  \b_{\rho},\\
-      &\Lambda_{\rho} :=
-        \left(\prox_{(\lambda/\rho)\Omega}\circ\tilde{\A}_{\rho},
-        (\Id-\prox_{(\lambda/\rho)\Omega})\circ\tilde{\A}_{\rho}\right)\\
-        &(\z^{(n+1)}, \u^{(n+1)}) \leftarrow
-        \Lambda_{\rho}(\z^{(n)}, \u^{(n)}),
-    \end{aligned}
-    \label{eq:factorize}
-  \end{eqnarray}
-which is equivalent to the ADMM iterates
-\begin{eqnarray}
-    \begin{split}
-      \w^{(n+1)} &\leftarrow
-      \underset{\w \in \mathbb R^p}{\argmin}\text{ }\ell_{\rho}(\w, \z^{(n)},
-      \u^{(n)})
-      = (\rho \K^T\K + \B{X}^T\X)^{-1}(\rho\K^T(\z^{(n)} -
-      \u^{(n)}) + \B{X}^T\y)\\
-      \z^{(n+1)} &\leftarrow \underset{z \in \mathbb R^q}{\argmin}\text{ }\ell_{\rho}(\w^{(n+1)},\z, \u^{(n)}) =
-      \prox_{(\lambda/\rho)\Omega}(\K\w^{(n+1)} + \u^{(n)})\\
-      \u^{(n+1)} &\leftarrow \u^{(n)} + \K\w^{(n+1)} -\z^{(n+1)}.
-    \end{split}
-\label{eq:admm}
-\end{eqnarray}
-We then showed that this nonlinear operator is
-Fr\'echet-differentiable almost everywhere and that around each fixed
-point, Q-linear convergence is guaranteed, provided the spectral
-radius of the Jacobian of the operator at the fixed point is less than
-1 (a classical result on stability). Moreover, this spectral radius is
-then a rate of convergence for the ADMM algorithm. Also, we showed that
-the support of the split variable can be identified after finitely
-many iterations. In the anisotropic cases, we show that for
-sufficiently large values of the tuning parameter, we recover the
-optimal rates in terms of Friedrichs angles, that have appeared
-recently in the literature.
-
-\section{Behavior of ADMM around fixed-points}
+\subsection{Behavior of ADMM around fixed-points}
 \begin{marginfigure}[4cm]
   \label{fig:rates}  
   \includegraphics[width=1.2\linewidth]{figures/lasso_rates.pdf}%
-\caption{Rate of convergence $r(\Lambda'_\rho(\x^*))$ as a function of $\rho$
+\caption{Rate of convergence $r(\Lambda'_\nu(\x^*))$ as a function of $\nu$
   for a Lasso problem with column-rank deficient design
-  matrix $\X$. Taking $\rho$ too small leads
-  to badly conditioned problem (as  $\Id + (1/\rho)\B{X}^T\X$ is then almost
+  matrix $\X$. Taking $\nu$ too small leads
+  to badly conditioned problem (as  $\Id + (1/\nu)\B{X}^T\X$ is then almost
   singular), and thus a slow rate of convergence (near 1). On the
-  other hand, the figure suggests that taking $\rho$ ``too large''
+  other hand, the figure suggests that taking $\nu$ ``too large''
   is also detrimental. Most remarkable, one notices that the basin of
-  ``good'' $\rho$ values is rather tight, and so care must be taken in
-  choosing the $\rho$ parameter.
+  ``good'' $\nu$ values is rather tight, and so care must be taken in
+  choosing the $\nu$ parameter.
 }
 \end{marginfigure} %-----------------------------------------------------------
 
@@ -196,8 +253,8 @@ to the anisotropic case. The results presented in Theorem
 \eqref{thm:frechet} carry over effortlessly to the case where the
 $\varphi$ is the
   concatenation of $\ell_{2,1}$ norms, for example as in the the TV-L1
-  semi-norm.%%  $\varphi(K\cdot)$, where $Kw \equiv ((1-\beta)
-  %%   \nabla(w),\hspace{.5em}\beta w)$ and $\varphi = (\ell_{2,1},
+  semi-norm.%%  $\varphi(K\cdot)$, where $\B{Kw} \equiv ((1-\rho)
+  %%   \textbf{Diff }(w),\hspace{.5em}\rho w)$ and $\varphi = (\ell_{2,1},
   %% \ell_1)$.
   %% Also, part \textit{(b)} of \ref{thm:frechet} can be
   %% extended to even more general instances of problem
@@ -213,7 +270,7 @@ Our main results are summarized in Theorem 1 of the aforementioned paper, which 
   \eqref{eq:main_pb}, where $\Omega$ is an $\ell_{2,1}$ mixed-norm on
   $d \ge 1$ blocks each of size $c \ge 1$, for a total of $q = d
   \times c$ features. Let the operators $\B{A}$, $\tilde{\B{A}}$, and $\Lambda$ be
-  defined as defined above, with the $\rho$ subscript
+  defined as defined above, with the $\nu$ subscript
   dropped for ease of notation. Let For $\B{x} = (\B{z}, \B{u}) \in\mathbb{R}^{q+q}$, let $\Lambda_1(\B{x}) \in \mathbb R^q$ denote the first $q$ coordinates of $\Lambda(\B{x})$, i.e its $z$-part. Define
   \begin{itemize}
     \item $\supp(\B{z}) := \{j\in[\![d]\!]\text{ }|\text{ }z_{j:j+c-1} \ne
@@ -221,7 +278,7 @@ Our main results are summarized in Theorem 1 of the aforementioned paper, which 
       \item $\mathcal{A}_1(\B{z}) := \{\B{z}' \in \mathbb{R}^{q} |
     \supp(\B{z}') = \supp(\B{z})\}$, and $\mathcal A(\B{x}) := \mathcal A_1(\B{z}) \oplus \mathbb R^q$;
    \item $\tilde{\B{x}} := (\tilde{\B{x}}_j)_{j \in [\![d]\!]} := \tilde{\A}\B{x}$, $\kappa :=
-    \lambda / \rho$, $\epsilon(\B{x}) :=
+    \alpha / \nu$, $\epsilon(\B{x}) :=
       \underset{j \in [\![d]\!]}{\min}\text{}|\|\tilde{\B{x}}_j\|-\kappa| \ge 0$.
     \end{itemize}
 Then the following hold:
@@ -282,14 +339,18 @@ at the rate $r(\Lambda'(\B{x}^*))$.
 
 \label{thm:frechet}
 \item[\textit{(3)}] \textbf{Optimal rates in the anisotropic case.}
-If $c=1$ (as in anisotropic TV deconvolution) and $\rho$ is large, then the optimal rate of convergence
+If $c=1$ (as in anisotropic TV deconvolution) and $\nu$ is large, then the optimal rate of convergence
 rate is the cosine of the Friedrichs angle between
 $\mathrm{Im}\;\K$ and $\mathrm{Im}\;\B{D}_{\B{x}^*} \simeq \mathcal A_1(\B{z}^*)$. If in addition
 $K = \Id$ (as in synthesis inverse problems like the Lasso, sparse  Spike-deconvolution, etc.), then
-the whole algorithm converges in finite time.
+the whole algorithm converges in a finite number of iterations.
 \end{itemize}
 \end{itemize}
 \end{theorem}
+
+\begin{proof}
+  See our ICASSP paper ~\citep{dohmatob2015local}.
+\end{proof}
 
 \section{Relation to prior work}
 \label{sec:lit}
@@ -301,14 +362,14 @@ we outline the corresponding major works.
 Ridge regression, quadratic programming (QP), and
 nonnegative Lasso, \citep{ghadimi2013optimal} demonstrated local linear
 convergence of ADMM under certain rank conditions which
-are equivalent to requiring that the p.s.d matrix $\G_\rho$ (defined in
+are equivalent to requiring that the p.s.d matrix $\G_\nu$ (defined in
 \eqref{eq:fixed_point}) be invertible. The same paper
 prescribed explicit formulae for optimally selecting the tuning
-parameter $\rho$ for ADMM on these problems. %% It shows the
+parameter $\nu$ for ADMM on these problems. %% It shows the
 We note that these results can be recovered from our Lemma
 \ref{thm:fixed_point} and Corollary \ref{thm:fixed_point_corr} as they
 correspond to the case where
-$\prox_{(\lambda/\rho)\varphi}$ is a linear operator. Using
+$\prox_{(\alpha/\nu)\varphi}$ is a linear operator. Using
 similar spectral arguments, \citep{boley2013} demonstrated similar
 local convergence results for quadratic and linear QP problems.
 
@@ -339,7 +400,7 @@ the authors consider a subclass PSS (refer to definition 2.2 of
   (PS) penalties
 % (these include the $\ell_1$,
 % $\ell_{2,1}$, and $\ell_\infty$ norms)
-and general $\mathcal{C}^2$ loss functions with Lipschitz
+and general $\mathcal C^2$ loss functions with Lipschitz
 gradient. Under nonlinear complementarity requirements analogous to
 the non-degeneracy assumption ``$\epsilon(\x^*) > 0$'' of Theorem
 \ref{thm:frechet}\textit{(b)}, and rank constraints analogous to the
@@ -395,7 +456,7 @@ limitations; for example,
 we were unable to generalize it
 beyond the squared-loss setting and we can only handle penalties which
 are a composition of a $\ell_{2,1}$ mixed-norm (or a concatenation of
-such)  and a linear operator. The recent work \citep{vaiter2014degrees} on counting the degrees of freedom of general partly-smooth penalties is worth mentioning and may contain some key ideas to help bridge the ``isotropicity gap `` in the methods developed in \citep{liang2014activity,liang2015activity}, concerning rates of convergence.
+such)  and a linear operator. The recent work ~\citep{vaiter2016degrees} on counting the degrees of freedom of general partly-smooth penalties is worth mentioning and may contain some key ideas to help bridge the ``isotropicity gap `` in the methods developed in \citep{liang2014activity,liang2015activity}, concerning rates of convergence.
 
 Lastly, the convergence rates in
 \citep{liang2014activity,liang2015activity}
@@ -406,7 +467,7 @@ suboptimal in certain cases. An exception are the anisotropic cases,
 where we proved in part \textit{(c3)} of Theorem \ref{thm:frechet} that
 we recover the optimal rates obtained in
 \citep{liang2014activity,liang2015activity} in terms of Friedrichs
-angles. Moreover, for the Lasso, we showed the whole algorithm
+angles. Moreover, for the Lasso, we showed that the whole algorithm
 converges after only finitely many iterations.
 
 \section{Numerical experiments and results}
@@ -417,22 +478,22 @@ appropriate choice of the linear operators $\X$, $\K$,  and the penalty
 function $\varphi$ which can be the $\ell_1$-norm the
 $\ell_{2,1}$ mixed-norm, or a mixture of the two (as in TV-L1).
 
-\paragraph*{Setting.}
-We use a grid of $20$ values of $\rho$, evenly spaced in
+\paragraph{Setting.}
+We use a grid of $20$ values of $\nu$, evenly spaced in
 log-space from $10^{-3}$ to $10^6$. For each problem model (see below),
 the iteration process \eqref{eq:fixed_point} is started with $\x^{(0)} = 0
 \in \mathbb{R}^{q \times q}$, and iterated $N=1500$ times. The final
 point $\x^{(N)}$ is approximately a fixed-point $\x^{(*)}$ of the operator
-$\Lambda_\rho$. Now, the iteration process is run again (starting with the same
+$\Lambda_\nu$. Now, the iteration process is run again (starting with the same
 initial $\x^{(0)}$) and the distance $\|\x^{(k)} - \x^{(N)}\|$ is
-record on each iteration $k$, producing a curve. This procedure is
-run for each value of $\rho$ from the aforementioned grid.
+recorded on each iteration $k$, producing a curve. This procedure is
+run for each value of $\nu$ from the aforementioned grid.
 Except otherwise stated, the $n$ rows of design matrix $X$ where drawn
 from a $p$-dimensional standard Gaussian. The measurements variable
 $\y$ is then computed as $\y = \X\w_0 + \textrm{noise}$, where
 $\w_0$ is the true signal.
 
-\paragraph*{Simple models.}
+\paragraph{Simple models.}
 As discussed in section \ref{sec:lit}, the local Q-linear convergence
 of ADMM on a variety of particular problems has been studied in the
 literature (for example
@@ -440,7 +501,7 @@ literature (for example
 We validated empirically our linear convergence
 results (Theorem \ref{thm:frechet}) by reproducing experiments from
 \citep{liang2014activity,liang2015activity}. For each of these experiments
-the regularization parameter $\lambda$ was set to $1$. Viz,
+the regularization parameter $\alpha$ was set to $1$. Viz,
 
 \begin{itemize}
 \item[\textit{(a)}] Lasso: Here the problem is an instance of
@@ -460,16 +521,32 @@ the regularization parameter $\lambda$ was set to $1$. Viz,
 
 \begin{pagefigure}
   \includegraphics[width=1\linewidth]{figures/admm.png}
-  \caption{{Experimental results from ICASSP paper}   \citep{dohmatob2015local}\textbf{.} showing local Q-linear convergence for ADMM
+  \caption{{Experimental results from ICASSP paper}~\citep{dohmatob2015local}\textbf{.} showing local Q-linear convergence for ADMM
     on problem \eqref{eq:main_pb}. %% Results for
-  %% all the other values of $\rho$ are provided in the supplementary matrials.
+  %% all the other values of $\nu$ are provided in the supplementary matrials.
     The ``theoretical'' line is the exponential
     curve $t \mapsto \|\x^{(0)} - \x^*\|r(\Lambda'(\x^*))^t$. The red broken
-    vertical line marks the instant the support the support of the fixed-point $\x^*$
+    vertical line marks the instant the support of the fixed-point $\x^*$
   % = (\z^*,\u^*)$
     is identified.
   }
 \end{pagefigure}
+
+\section{Concluding remarks}
+We have derived a fixed-point iteration which is equivalent to the
+ADMM iterates for a broad class of penalized regression problems
+\eqref{eq:main_pb}. Exploiting the formulation so obtained, we  have
+established detailed qualitative properties of the algorithm around
+solution points (Theorem \ref{thm:frechet}). Most importantly, under
+mild conditions, local
+Q-linear convergence is guaranteed and we have provided an explicit
+formula for this rate of convergence. %% As can be seen in Fig. \ref{fig:rates},
+Finally, Theorem \ref{thm:frechet} --implicitly--
+opens the possibility of speeding up the ADMM algorithm on problem
+\eqref{eq:main_pb} by selecting the tuning parameter $\nu$ so as to
+minimize the spectral radius (an inverted mexican-hat-shaped curve, as
+$\nu$ varies from $0$ to $+\infty$) of the Jacobian matrix
+$T'_\nu(\x^*)$.
 
 \bibliographystyle{plainnat}
 \bibliography{bib_all}
