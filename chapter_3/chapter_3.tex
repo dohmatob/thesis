@@ -2,7 +2,7 @@
 \markright{{~{\rm \ref{chap:efficient_opt}}. Algorithms for structured priors}\hfill}{}
 \newthought{Though the SpaceNet model} presented above leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet~\citep{hebiri2011,grosenick2013} and social-sparsity~\citep{kowalski2013social,varoquaux2016social},
 the penalty term $\mathcal P(\w)$ is neither smooth nor proximable.
-\footnote{ A function $f$ is said to be \textit{proximable} is the operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for $\ell_p$-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}
+\footnote{ A function $f$ is said to be \textit{proximable} if its operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for $\ell_p$-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}
 For the penalty to fully exercise its
 structuring effect on the maps, this optimization problem must be
 solved to a good tolerance resulting in a computational challenge. Lack of good solver and explicit control of
@@ -69,17 +69,12 @@ properties of the solver more than of model coefficients, as illustrated in Fig.
 %% \end{figure*}
 
 \section{Solving TV-L1 regularized problems}
+The optimization problem \eqref{eq:opt_pb} is very challenging:
+it is non-smooth (except in the case of Laplacian regularization), non-separable and heavily ill-conditioned. For the penalty to fully exercise its
+structuring effect on the maps, this optimization problem must be
+solved to a good tolerance resulting in a computational challenge.
 \begin{figure}[!htb]
-    \includegraphics[width=.331\linewidth]{face_vs_house_tol_0_1.pdf}%
-\llap{\color{white}\raisebox{.17\linewidth}{\rlap{\sffamily Stopping:
-      $\Delta E < 10^{-1}$}}\hspace*{.315\linewidth}}\hfill%
-\includegraphics[width=.331\linewidth]{face_vs_house_tol_0_001.pdf}%
-\llap{\color{white}\raisebox{.17\linewidth}{\rlap{\sffamily Stopping:
-      $\Delta E < 10^{-3}$}}\hspace*{.315\linewidth}}\hfill%
-\includegraphics[width=.331\linewidth]{face_vs_house_tol_1e-05.pdf}%
-\llap{\color{white}\raisebox{.17\linewidth}{\rlap{\sffamily Stopping:
-      $\Delta E < 10^{-5}$}}\hspace*{.315\linewidth}}%
-
+  \includegraphics[width=1.\linewidth]{tvl1_why_optimize.png}%
 \caption{TV-$\ell_1$ maps for the face-house discrimination task on
   the visual recognition dataset.
   Note that
@@ -87,14 +82,10 @@ properties of the solver more than of model coefficients, as illustrated in Fig.
   decrease per one iteration of the algorithm, and thus differs from
   the tolerance displayed in figure \ref{Fig:benchmarks_prni}.  This figure shows
   the importance of convergence for problem \eqref{eq:opt_pb}, and motivates
-  the need for fast solvers for SpaceNet priors, especially the non-smooth ones like TV-$\ell_1$ and Sparse Variation. See the full story in
-  \citep{dohmatob2014benchmarking}}
+  the need for fast solvers for SpaceNet priors, especially the non-smooth ones like TV-$\ell_1$ and Sparse Variation. See~\citep{dohmatob2014benchmarking} for details.}
   \label{Fig:benchmarks_prni}
 \end{figure}
-The optimization problem \eqref{eq:opt_pb} is very challenging:
-it is non-smooth (except in the case of Laplacian regularization), non-separable and heavily ill-conditioned. For the penalty to fully exercise its
-structuring effect on the maps, this optimization problem must be
-solved to a good tolerance resulting in a computational challenge.
+
 In \citep{dohmatob2014benchmarking}, we did an extensive study of all solvers applicable to the problem in TV-$\ell_1$ special case (which happens to be the most difficult scenario).
 Our results outlined the best strategy: a double FISTA loop, where the
 inner loop computes the proximal operator of the penalty term, with approximate precision on the duality-gap. This was further refined and implemented in   \citep{varoquaux2015faasta}.
@@ -202,7 +193,7 @@ Here, we used the original authors' implementation.
 \paragraph{Uniform approximation by smooth convex surrogates.}
 The $\ell_{1}$ norm (resp. TV semi-norm) is differentiable everywhere with
 gradient $\left(w_j/|w_j|\right)_{j \in [\![p]\!]}$ (resp. $-\dive (((\nabla \mathbf{w})_j/\|(\nabla \mathbf{w})_j\|_2)_{j \in [\![p]\!]}))$), except when some voxels are inactive with
-$w_j = 0$ (resp. $(\nabla \w)_j = 0$), corresponding to black spots (resp. edges).  A convenient
+$w_j = 0$ (resp. $(\textbf{Diff }\w)_j = 0$), corresponding to black spots (resp. edges).  A convenient
 approach (see for example  \citep{NESTA, nesterov2005a, nesterov2005b,
   beck2012}) for dealing with such singularities is to uniformly
 approximate the offending function with smooth surrogates that

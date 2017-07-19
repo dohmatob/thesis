@@ -255,8 +255,7 @@ dictionary-learning framework of   \citep{mairal2010} --henceforth referred to a
 % can be readily applied to multiple-valued imaging modalities, such as Diffusion Tensor Imaging (DTI) data.
 % \end{remark}
 
-\section{Estimating the model}
-\subsection{Algorithms}
+\section{Algorithms}
 % \paragraph*{Optimizing the proposed model: a simple algorithm.}
 The objective function in problem
 \eqref{eq:ss} is separately convex and block-separable
@@ -406,8 +405,7 @@ All in all, in practice  we observe that a single iteration is sufficient
 for the dictionary update sub-routine in Alg. \ref{Tab:algo_sobdict}
 to converge to a qualitatively good dictionary.
 
-\subsection{Implementation and practical considerations}
-
+\section{Implementation and practical considerations}
 \paragraph{Software implementation.} All aspects of the code where
 implemented in the Python programming language. 
 For the implementation of the propose Alg. \ref{Tab:algo}, we
@@ -493,6 +491,89 @@ was retained as a good strategy for setting the Laplacian regularization $\gamma
 Problem \eqref{eq:ss} is non-convex jointly in  $(\B{C}, \B{D})$, and so initialization might be a might be a crucial issue. However, in our experiments, we have observed that even randomly initialized dictionaries eventually produce sensible results that do not jitter much across different runs of the same experiment. %%  In our experiments on activation $Z$-maps from task fMRI contrasts (see section \ref{sec:exp}), we found that extracting blobs from the thresholded across-subject mean activation map (a relatively easy segmentation problem) and keeping the connected components which a reasonably big --say $1500\text{mm}^3$--, and then using the so-obtained regions-of-interest (ROIs) maps as initialization for the dictionary in Alg. 1 also works well in practice.
 %% However we recommend the former approach, as it is more robust and needs less intervention.
 %% Moreover, counting the number of these connected components yields a heuristic way to set the number of atoms $k$ in the dictionary.
+
+
+\subsection{Interlude: Working in the Fourier domain (when possible)}
+To close this section, let us point out a few special instances cases of problem (7), for peculiar choices of the constraint set $Q$. First note that the objective in problem (7) can be conveniently rewritten
+as
+\begin{equation}
+  \begin{split}
+    F_{\gamma\B{A}_t[j,j]^{-1}}(\B{v}, \B{V}^j + \B{A}_t[j,j]^{-1}(\B{V}\B{A}^j - \B{B}_t^j)) &=\frac{1}{2}(\B{v}-\tilde{\B{V}}^j)^T(\Id - \gamma\B{A}_t[j,j]^{-1}\Delta)(\B{v}-\tilde{\B{V}}^j)\\
+    &=\frac{1}{2}(\hat{\B{v}}-\hat{\tilde{\B{V}}}^j)^T(\Id - \gamma\B{A}_t[j,j]^{-1}\Delta)(\hat{\B{v}}-\hat{\tilde{\B{V}}}^j),
+  \end{split}
+\end{equation}
+with
+  \begin{equation}
+  \tilde{\B{V}}^j := (\B{A}_t[j,j]\Id -
+  \gamma\Delta)^{-1}\left(\B{V}^j + \B{A}_t[j,j]^{-1}(\B{V}\B{A}^j - \B{B}_t^j)\right).
+  \end{equation}
+
+We note that the matrix-inversion $(\Id - \tilde{\gamma}\Delta)^{-1}$ that appears in the formula above is a Laplacian filter, and can
+be efficiently applied in closed-form (i.e non-iteratively) in the Fourier / frequency domain. Indeed, under periodic
+boundary conditions, the discrete Laplacian $\Delta$ is
+Block-Circulant with Circulant Blocks (BCCB) and so is diagonalizable
+in the Fourier domain. Precisely,
+\begin{equation}
+  \Delta = \mathcal F^*\Lambda \mathcal F
+\end{equation}
+where the complex orthonormal operator $\mathcal F$ represents the fast Discrete Fourier Transform (DFT), and $\Lambda$ is diagonal matrix made $p$ eigenvalues (including multiplicities) of the Laplace operator $\Delta$, given by
+\begin{eqnarray*}
+\begin{split}
+\Lambda(\omega) &:=
+-\sum_{d=1}^3\left(2\sin\left(\frac{\omega_d\pi}{2n_d}\right)\right)^2
+= -2\sum_{d=1}^3\left(1-\cos\left(\frac{\omega_d\pi}{n_d}\right)
+\right) \le 0,
+\\
+&\text{ for }\omega = (\omega_1, \omega_2, \omega_3) \in \mathbb
+[\![0,n_1-1]\!] \times \mathbb [\![0,n_2-1]\!] \times [\![0,n_3-1]\!].
+\end{split}
+\label{eq:eigf}
+\end{eqnarray*}
+We note that the spectral norm of Laplace
+operator in $D$ dimensions (here $D=3$) is
+$\|\Delta\|_2 = \tilde{\gamma}_{\max}(-\Delta) = 2 \times D \times (1 + 1) = 4D$.
+
+Now, one can then harvest the closed-form solution
+\begin{equation}
+(\Id - \tilde{\gamma}\Delta)^{-1}\a = (\mathcal F^{-1}(\Id - \tilde{\gamma} \Lambda)^{-1}\mathcal F)(\a) = \mathcal F^{-1}\left(\s\right),
+\label{eq:fft}
+\end{equation}
+where $\s \in \mathbb R^p$ is defined by
+$\s(\omega) := \dfrac{\hat{\a}(\omega)}{1-\tilde{\gamma}\hat{\Delta}(\omega)}$,
+with $\hat{\a} := \mathcal F(\a)$.
+These DFT computations have complexity $\mathcal O(p\log p)$.
+
+For applying the DFTs above, one can use the FFTW\footnote{FFTW is generally taught to be one of
+  the fastest implementations of the FFT, yielding up to $3 \times$ speedup against
+  competing libraries like LAPACK.} --or \textit{Fastest Fourier Transform in the West}--
+  library for computing the forward and inverse Fourier
+  transforms needed to apply the Laplacian filter.
+
+\paragraph{Pure $\ell_2$ constraint.}
+Here, the constraint set $\mathcal C$ is an L2 ball (with radius $=1$, w.l.o.g) in $\mathbb R^2$. By the Rayleigh energy theorem (aka Parseval's identity for the DFT), one has
+$$\|\hat{\B{v}}\|^2 = p\|\B{v}\|_2^2,\;\forall \B{v} \in \mathbb R^p$$ and so problem (7) can be written as
+\begin{equation}
+  \begin{split}
+    \B{V}^j &\leftarrow \argmin_{\B{v} \in \mathbb R^p,\;\|\B{v}\|_2^2 \le 1}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)\\
+    &= \mathcal F^*\left(\argmin_{\hat{\B{v}} \in \mathbb C^p,\;\|\hat{\B{v}}\|_2^2 \le p}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)\right)\\
+    &= \mathcal F^*\left(P_{\mathcal E}(\hat{\tilde{\B{V}}}^j)\right)
+  \end{split}
+\end{equation}
+where
+\begin{equation}\mathcal E := \left\{(\Id-\gamma\B{A}_t[j,j]^{-1}\Lambda)^{\frac{1}{2}}\hat{\B{v}}\text{ s.t }\hat{\B{v}} \in \mathbb C^p,\;\|\hat{\B{v}}\|_2^2 \le p\right\},
+\end{equation}
+a hyper-ellipsoid in standard position (i.e $\mathbf{0}$-centered and axes-aligned). Using elementary geometric arguments, one can show that the projection $P_{\mathcal E}(\hat{\tilde{\B{V}}}^j)$ can be computed efficiently using a kind of root-finding algorithm \cite{Dai06}, and converges exponentially fast.
+
+\paragraph{Non-negative Lasso.}
+In case the constraint set $\mathcal C$ for the dictionary atoms is a
+simplex $\mathcal S_p(\tau)$, the simplex (see section \ref{sec:contrib}), then the BCD update for the $j$th atom becomes
+\begin{equation}
+  \begin{split}
+    \B{V}^j &\leftarrow \argmin_{\B{v} \in \mathbb R^p,\;\B{v} \ge 0,\;\1^T\B{v} \le 1}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)\\
+    &= \mathcal F^*\left(\argmin_{\hat{\B{v}} \in \mathbb C^p,\;-\mathcal F^*\hat{\B{v}} \le 0,\; \hat{\1}^T\hat{\B{v}} \le 1}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}y} - \hat{\tilde{\B{V}}}^j)\right),
+  \end{split}
+\end{equation}
+which is a diagonal quadratic program with linear constraints, and can be effectively solved via the well-known simplex method, for example.
 
 
 \section{Related works}
@@ -733,6 +814,9 @@ while conserving the low numerical complexity of the latter.
 Through experiments, we have shown that the resultant model --Smooth-SODL model \eqref{eq:ss}-- extracts structured and denoised dictionaries that are more intepretable and better capture inter-subject variability in small medium, and large-scale regimes alike, compared to state-of-the-art models.
 We believe such online multivariate online methods shall become the de facto
 way do dimensionality reduction and ROI extraction in future.
+
+\paragraph{Extensions.} One can envisage to replace the Laplacian regularization with a general structure-inducing penalty for which the proximal operator is easy to compute. Such a framework is developed in chapter \ref{chap:proxdict}, and produces an entire family models, with potentially different properties.
+
 
 \paragraph{Implementation.} The authors' implementation of the proposed
 SS0MF \eqref{eq:ss} model will soon be made available as part of the

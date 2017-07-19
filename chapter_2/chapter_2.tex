@@ -1,26 +1,28 @@
-\chapter{Structured priors for analyzing brain data: the models}\label{chap:structured_priors}
+\chapter{Structured priors for brain decoding and functional segmentation: the models}\label{chap:structured_priors}
 \markright{{~{\rm \ref{chap:structured_priors}}. Structured priors for analyzing brain data}\hfill}{}
 
-\section{Introduction}
-Functional MRI (fMRI) data, that provide an indirect measure of task-related
-or spontaneous neuronal activity, are classically analyzed
-in a mass-univariate procedure yielding statistical parametric
-maps. This analysis framework disregards some important principles
-of brain organization: population coding, distributed and
-overlapping representations. Multivariate pattern analysis, i.e.,
-the prediction of behavioural variables from brain activation
-patterns better captures this structure. To cope with the high
-dimensionality of the data, the learning method has to be
+\section{Introduction to brain decoding}
+Functional brain imaging provides a distinctive opportunity to study brain functional architecture, while being minimally invasive, and is thus well-suited for the challenging study of the spatial layout of neural coding. Different modalities exist, each one having specific spatial and temporal resolutions; among them Functional Magnetic Resonance Imaging (fMRI)~\citep{agawa1990,ogawa1990b} has emerged as a fundamental modality for brain imaging, striking a good balance between spatial and temporal resolution.  fMRI images are pre-processed, and modeled through a General Linear Model, that takes into account the different experimental conditions and the dynamics of the hemodynamic response in the design matrix. The resulting model parameters, a.k.a. activation maps, represent the influence of the different experimental conditions on local fMRI signals.
+
+\paragraph{The standard approach.}
+The standard approach used for analyzing these activation maps is called classical inference, and relies on a mass-univariate statistical tests (one for each voxel), yielding the so-called Statistical Parametric Maps (SPMs)~\citep{friston1994statistical}. Such maps are of particular interest in cognitive neuroscience, as they open the door to localizing the voxels that are significantly active for any combination of experimental conditions, and thus are probably implied in the underlying neural code of the cognitive processes. However, this classical inference suffers from multiple comparisons issues, and does not take into account the multivariate structure of the fMRI data.
+
+\paragraph{Inference inference (or ``brain reading'').}
+An alternative approach called \textit{inverse inference} (or ``brain-reading'')~\citep{dehaene1998,cox2003}, has been proposed in order to cope with the limitations of the afore-mentioned classical inference. Inverse inference relies on a pattern recognition, and aims at decoding the neural code by using machine-learning methods. Based on a set of brain activation maps, inverse inference builds a predictive model that can be used for predicting a behavioral target (age, sex, IQ, etc.) for a new set of images. The prediction accuracy of the model is used as a measure of the quantity of information about the cognitive task shared by the voxels. By construction, this approach is multivariate, and can provide more sensitive analysis than standard statistical parametric mapping procedure [Kamitani 05, Haynes 06]. Several methods have been tested for classification or regression of activation images (Linear Discriminant Analysis -- LDA, Support Vector Machines -- SVM, Lasso, Elastic net regression, and many others), but, in this problem, the major bottleneck remains the localization of predictive regions within the brain volume. Additionally, we have to deal with the curse of dimensionality, as the number of features (voxels, regions) is much larger ($\sim 10^5-10^6$ ) than the numbers of sample (images) ($\sim 10^2 - 10^3$ ), the latter being limited by the cost of acquisition. Thus the prediction method may overfit the training set and thus not generalize well to new samples.
+
+\begin{shaded}
+\paragraph{Towards intepretable multi-variate models.}
+To cope with the high dimensionality of the data, the learning method has to be
 regularized. However, the spatial structure of the image is not
 taken into account in standard regularization methods, so that the
 extracted features are often hard to interpret.
+\end{shaded}
 
 \begin{figure}[!htbp]
   \includegraphics[width=1\linewidth]{figures/balls.png}
   \caption{$\ell_p$ unit ball for various values of $p$. The kinks
-    in the cases $p \in \{1/2,1,\infty\}$ impose sparsity. Though the
-  case $p = 1/2$ (and in fact any $p \in (0, 1)$) imposes sparsity,
-it is non-convex...}
+    in the cases $0 \le p \le 1$ impose sparsity. One notes however that, the
+  cases $0 \le p < 1$ lead to non-convex intractable optimization problems.}
 \end{figure}
 
 \begin{marginfigure}[4cm]
@@ -30,14 +32,14 @@ it is non-convex...}
   \label{fig:flower}
 \end{marginfigure}
 
-\section{Preliminaries}
+\section{Sparsity and structure-inducing priors}
 Sparsity and smoothness inducing priors can used to
 perform jointly the prediction of a target variable and region
 segmentation in multivariate analysis settings. Sparsity can be enforced by
 penalizing the (sum of) absolute values of the regression coefficients, leading to the
 so-called Lasso model. Smoothness can achieved in penalizing the spatial gradient of
 the regression coefficients, to enforce smooth regions (``blobs'').
-The Total-variation (TV)~\citep{rudin1992nonlinear,tibshirani2011solution} penalty has
+The Total-variation (TV)~\citep{rudin1992nonlinear} penalty has
 proven to be particularly powerful for realizing such effects. Laplacian regularization
 is an easier means to this end (because in leads to a differentiable problem),
 but has weaker mini-max rates, and the visual effect is less appealing.
@@ -63,8 +65,10 @@ maps from anatomy, etc.). The integer $p$ is the number of voxels,
 and $n$ the number of samples (images). In brain imaging, $n \ll p$;
 typically, $p \sim 10^3-10^6$ (in full-brain analysis),
 while $n \sim 10-10^3$ ($n$ being limited by the cost of acquisition,
-etc.). $\nabla_x$ will denote the discrete spatial gradient operator
-along the $x$-axis, $\nabla_y$ along the $y$-axis, etc.
+etc.). $\textbf{Diff }_x$ will denote the discrete spatial gradient operator
+along the $x$-axis, $\textbf{Diff }_y$ along the $y$-axis, etc.
+Thus, at a voxel $j$, the spatial gradient of an image $\B{w}$ is a vector ${\nabla} {\w}(j) := [\textbf{Diff }_{x} {\w}(j), \textbf{Diff }_{y} {\w}(j), \textbf{Diff }_{z} {\w}(j)]$, $\forall \w \in \mathbb R^p$.
+This defines a linear operator $\nabla \in \mathbb R^{3p \times p}$ (the discrete 3D spatial gradient operator) from $\mathbb R^p$ to $\mathbb R^{3p}$. For a mixing constant $\rho \in [0, 1]$, $\textbf{Diff }_\rho \in \mathbb R^{4p \times p}$ will denote the identity-augmented version of $\nabla$, defined by ${\textbf{Diff }_\rho} {\w} := [(1-\rho)\textbf{Diff }\w, \rho \w] \in \mathbb R^{4p}$.
 
 %% Let $\mathcal P \subset \mathbb{R}^3$ be
 %% the 3D image domain representing the region occupied by the brain --or
@@ -73,8 +77,8 @@ along the $x$-axis, $\nabla_y$ along the $y$-axis, etc.
 
   \begin{figure}[!htb] 
   \includegraphics[width=1\linewidth]{figures/masking.jpg}
-  \caption{\textbf{Masking} of volumic brain data (4D = 3D space + 1 time or samples)
-    to produce a design matrix required in standard machine learning (clustering, classification, regression, etc.). For each 3D volume is a sample point. The values of the voxels in this volume which lie in the mask are collected into a feature vector. All these vectors are vertically stacked to produce an $n$-by-$p$ design matrix $\X$, where $p$ is the number of voxels in the mask. The mask can be just the region of the 3D cube occupied by the brain, or a subset of such. In the latter case, this typically corresponds to Region-of-Interests (ROIs) deemed to be interesting for an experiment. The former case is referred to as ``full brain'', and the mask typically contains $p = $ millions of voxels. See  \citep{abraham2014machine} for more details.}
+  \caption{\textbf{Masking} of volumic brain data (4D = 3D space + 1 \textbf{time} or \textbf{samples})
+    to produce a design matrix required in standard machine learning (clustering, classification, regression, etc.). Each 3D volume considered is a sample point. The values of the voxels in this volume that lie in the mask are collected into a \textbf{feature vector}. All these vectors are vertically stacked to produce an $n$-by-$p$ design matrix $\X$, where $p$ is the number of voxels in the mask. The mask can be just the region of the 3D cube occupied by the brain, or a subset of such. In the latter case, this typically corresponds to Region-of-Interests (ROIs) deemed to be interesting for an experiment. The former case is referred to as ``full brain'', and the mask typically contains up to $p = $ millions of voxels. See  \citep{abraham2014machine} for more details.}
   \label{fig:masking}
 \end{figure}
 
@@ -93,7 +97,7 @@ The term {$\ell(\y,\X\w)$} is the
   {loss / data-fit term}. Popular choices include:
   $$
   \ell(\y,\X\w) = \frac{1}{n}\sum_{i=1}^n\begin{cases}\frac{1}{2}(\B{X}^T_i\w - y_i)^2,
-    &\mbox{ \text{ for least-squares}}\\
+    &\mbox{ \text{ for least-squares regression}}\\
     \log(1+\exp(-y_i\X_i^T\w)),
     &\mbox{ \text{ for logistic regression}},\\
     (1 - y_i\X^T_i\w)_+,&\mbox{\text{ for hinge loss (used in SVMs)}}\\
@@ -106,15 +110,15 @@ correspond to different choices of the convex penalty $\mathcal P$ acting on the
 \begin{equation}
   \begin{split}
   \mathcal P(\w) = \begin{cases}
-    \rho\|\w\|_1 + \frac{1}{2}(1-\rho)\|\nabla \w\|_{\text{Fro}}^2 = \sum_{j \in [\![p]\!]}\rho|w_j| + \frac{1}{2}(1-\rho)\|(\nabla \w)_j\|_2^2, &\mbox{ for GraphNet
+    \rho\|\w\|_1 + \frac{1}{2}(1-\rho)\|\textbf{Diff }\w\|_{\text{Fro}}^2 = \sum_{j \in [\![p]\!]}\rho|w_j| + \frac{1}{2}(1-\rho)\|(\textbf{Diff }\w)_j\|_2^2, &\mbox{ for GraphNet
       %~\citep{grosenick2013,hebiri2011}
     },\\
-    \|\nabla_\rho \w\|_{1+2,1} = \rho\|\w\|_1 + \|\nabla \w\|_{2,1} = \sum_{j  \in [\![p]\!]}\rho|w_j| + (1-\rho)\|(\nabla \w)_j\|_2, &\mbox{ for isotropic TV-$\ell_1$
+    \|\textbf{Diff }_\rho \w\|_{1+2,1} = \rho\|\w\|_1 + \|\textbf{Diff }\w\|_{2,1} = \sum_{j  \in [\![p]\!]}\rho|w_j| + (1-\rho)\|(\textbf{Diff }\w)_j\|_2, &\mbox{ for isotropic TV-$\ell_1$
       %~\citep{baldassarre2012,gramfort2013}
     },\\
-    \|\nabla_\rho \w\|_{1,1} = \rho\|\w\|_1 + \|\nabla \w\|_{1,1} = \sum_{j  \in [\![p]\!]}\rho|w_j| + (1-\rho)\|(\nabla \w)_j\|_1, &\mbox{ for anisotropic TV-$\ell_1$
+    \|\textbf{Diff }_\rho \w\|_{1,1} = \rho\|\w\|_1 + (1-\rho)\|\textbf{Diff }\w\|_{1,1} = \sum_{j  \in [\![p]\!]}\rho|w_j| + (1-\rho)\|(\textbf{Diff }\w)_j\|_1, &\mbox{ for anisotropic TV-$\ell_1$
     },\\
-    \|\nabla_\rho \w\|_{2,1} = \sum_{j  \in [\![p]\!]}\|(\nabla_\rho \w)_j\|_2, &\mbox{ for Sparse Variation
+    \|\textbf{Diff }_\rho \w\|_{2,1} = \sum_{j  \in [\![p]\!]}\|(\textbf{Diff }_\rho \w)_j\|_2, &\mbox{ for Sparse Variation
       % \citep{eickenberg2015total}
     },\\
       \vdots
@@ -127,7 +131,7 @@ $\rho$ ($0 < \rho \le 1$) is a mixing constant between
   the {sparsity-inducing} $\ell_1$ part and the
   {cluster-promoting} part of the penalty term.
   The particular case {$\rho = 1$} corresponds to the usual Lasso. Vanilla TV   \citep{michel2011tv} corresponds to TV-$\ell_1$ with $\rho = 0$.
- The matrix $\nabla_\rho$ is the extended discrete gradient operator defined in Chapter ~\ref{sec:notations}.  
+ The matrix $\textbf{Diff }_\rho$ is the extended discrete gradient operator defined in Chapter ~\ref{sec:notations}.  
 \begin{marginfigure}[4cm]
   \includegraphics[width=1\linewidth]{figures/tv_cartoon_horizontal.png}
   \caption{A cartoon showing a sparse and blobby (step-wise constant / cartoon-like) brain map,
@@ -135,10 +139,14 @@ $\rho$ ($0 < \rho \le 1$) is a mixing constant between
   \label{fig:roi}
 \end{marginfigure}
 \begin{shaded}
-\paragraph{Bayesian interpretation of GraphNet.} In the case of GraphNet \citep{grosenick2013,hebiri2011}, the penalties $\mathcal P(\w)$ in \eqref{eq:opt_pb} admit a Bayesian interpretation as a prior on the distribution of the coefficients $\w$
+\paragraph{Bayesian interpretation.} The penalties $\mathcal P(\w)$ in \eqref{eq:opt_pb} admit a Bayesian interpretation as a prior on the distribution of the coefficients $\w$
 \begin{equation}
   \label{eq:bayesian}
-p_{\alpha,\rho}(\w) \propto \prod_{j=1}^p\exp(-\alpha\rho |w_j|)\prod_{j=1}^p\exp\left(-\alpha(1-\rho)\sum_{l \sim \text{neigh}(j)}w_j\Delta_{j,l}w_l\right).
+  p_{\alpha,\rho}(\w) \propto \exp(-\mathcal P(\w)).
+\end{equation}
+For example, the GraphNet~\citep{grosenick2013,hebiri2011}, the penalties $\mathcal P(\w)$ penalty corresponds to
+\begin{equation}
+p_{\alpha,\rho}(\w) \propto    \prod_{j=1}^p\exp(-\alpha\rho |w_j|)\prod_{j=1}^p\exp\left(-\alpha(1-\rho)\sum_{l \sim \text{neigh}(j)}w_j\Delta_{j,l}w_l\right).
 \end{equation}
 \end{shaded}
 
@@ -161,7 +169,7 @@ Also, such priors produce state-of-the-art methods for automatic
 extraction of functional brain atlases   \citep{abraham2013}.
 
 \begin{shaded}
-  \paragraph{Submodular interpretation of TV.} We note anisotropic TV penalty on
+  \paragraph{Submodular interpretation of TV.} We note that anisotropic TV penalty \eqref{eq:penalty} on
   an arbitrary (undirected) graph $G = (V,E)$ is the \textit{Lovasz extension} of the \textit{cut-function}
   $F : 2^V \rightarrow \mathbb N$, $S \mapsto "\text{number of edges between } S \text{ and }V\setminus S"$,
 defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v \ge \lambda\})]$, for all $x \in [0,1]^{\#V}$.
