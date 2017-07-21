@@ -79,88 +79,22 @@ There are also a number of preprints currently being prepared for jornal publica
 
 
 \section{Organization of the manuscript}
-In this report, I shall present a selection of the work I have done during the preparation of my PhD project. This selection will be centered around structured penalties for brain decoding (chapters ...), and online structured decomposition methods for brain data (chapters ...). We shall also discuss some results on a new scheme for inter-subject registration methods for functional brain data (chapter ...).
-My precise contributions w.r.t these topics will be outlined  as we proceed.
-The report will be concluded with a synthesis of the progress made so far, and detailed plans for
-the future.
+In this report, I shall present a selection of the work I have done during the preparation of my PhD project. This selection will be centered around
+\begin{itemize}
+\item (A) \textbf{Structured penalties for brain decoding} $\implies$ chapters \ref{chap:structured_priors}, \ref{chap:efficient_opt}, \ref{chap:admm}.
+\item (B) \textbf{Structured generative models for brain data} $\implies$ chapters \ref{chap:func_var}, \ref{chap:proxdict}.
+\item (C) \textbf{New schemes for direct registration} of functional brain data $\implies$ chapter \ref{chap:epi2epi}.
+\item (D) \textbf{Semi-supervised auto-encoding models} for predicting task-based brain activation
+  maps from task-free resting-state data $\implies$ chapter \ref{chap:rsfmri2tfmri}.
+\end{itemize}
+My precise contributions w.r.t these subjects will be outlined  as we proceed.
+% I will conclude the manuscript with a synthesis of the progress made so far, and detailed plans for
+% the future.
 
-\section{Brain networks and functional connectivity}
-\begin{figure}[!htpb]
-  \includegraphics[width=1\linewidth]{figures/brain_function.png}
-  \caption{The main functional regions of the human brain (left hemisphere),
-and the two regions which are studied in this thesis (LOC and IPS). Adapted
-from \url{http://agaudi.files.wordpress.com/}}
-\end{figure}
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
-blablablabla
+\chapter{Big-picture: functional magnetics resonance imaging to study the human brain}\label{chap:bigpic}
+
+\section{Understanding brain function, structure, and variability}
+
 \begin{marginfigure}
     \centering
     \def\svgwidth{\columnwidth}
@@ -219,6 +153,212 @@ blablablabla
 blablablabla
 blablablabla
 blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+blablablabla
+
+\begin{figure}[!htpb]
+  \includegraphics[width=1\linewidth]{figures/brain_function.png}
+  \caption{The main functional regions of the human brain (left hemisphere),
+and the two regions which are studied in this thesis (LOC and IPS). Adapted
+from \url{http://agaudi.files.wordpress.com/}}
+\end{figure}
+
+
+\section{Functional magnetic resonance imaging}
+Human neuroimaging consists in acquiring ex-vivo
+(non-invasively) image data from normal and
+diseased human populations.
+Several types of functional imaging techniques have been developed. Electro-
+encephalography and magneto-encephalography measure the superficial cor-
+tical neural activity of the brain with a high temporal resolution. Functional
+magnetic resonance imaging (fMRI) uses strong magnetic fields to measure
+oxygen flow in the brain that correlates with its activity. This technique leverages
+information on brain structure, variability, and function at high
+spatial resolution. Finally, invasive
+techniques have been developed such as positron emission tomography that
+relies on a radioactive tracer to track glucose consumption.
+
+\subsection{The BOLD signal}
+When a brain area is solicited, the brain fires chemical signals to provide it
+with oxygen and sugar. Nearby blood capillaries dilate to increase the quantity
+of flowing blood and provide these resources. This phenomenon is called the
+haemodynamic response.
+As a result, we expect a higher concentration of oxygenated hemoglobin
+in a given brain area soon after its activation.
+fMRI imaging can be used to measured this effect, called the BOLD (\textit{Blood Oxygen-Level-Dependent}) signal, at a spatial typically resolution of 1.5 to 3mm, and a temporal resolution
+of 1-3s. This yields a spatially resolved image of
+brain functional networks that can be modulated
+either by specic cognitive tasks or appear as
+networks of correlated activity. This method is subject to several physical and physiological
+noises. First,
+some artifacts may be induced by radio transmitters or other equipments. Then,
+spurious activations are naturally introduced by the blood vessels present in
+the brain, heart beats and breathing movements. Finally, the brain can be
+shifted if the subject makes large movements in the scanner.
+
+\subsection{Preprocessing and analysis of fMRI data}
+Raw fMRI images are not interpretable with bare eyes. In particular because
+we are interested in small signal co-variation between voxels and not by the
+values themselves. Human eye, however, is good at perceiving global artifacts
+in the data such as movements, ghost or scanner coils. Quality assessment of
+preprocessed fMRI data is done by eye and by relying on dedicated medical
+imaging software.. In order to prepare the data for further statistical analysis,
+some preprocessing steps are required.
+
+\paragraph{Data acquisition.}
+The resolution of fMRI is usually between 1mm 3 and
+3mm 3 . In a single 3D scan, the brain represents $10^4$ to $10^6$ voxels.
+A run contains usually from 100 to 1000 scans. Functional MRI scans are
+acquired by slices, usually in the axial direction. The time required to acquire
+one slice is called echo time (TE) and is in the order of tens of milliseconds.
+The time required to acquire a whole 3D volume is called repetition time (TR)
+and is in the order of seconds. Typical values for a 3D volume of 60 slices are
+TE=33ms and TR=2s for a 3 Tesla scanner.
+
+\paragraph{Correction of head motion.}
+Head movement has a big impact on fMRI. A movement
+with an amplitude higher than the voxel resolution (i.e. 2 to 3mm) can
+shift the signal of the entire brain. Moreover, the worst impact of motion is
+inflow effects, i.e. artefactual signals. In the scanner, the head of the subject is
+fixed using cushion pads to avoid movements and the subject is asked to stay
+as still as possible. Yet, it is impossible to completely avoid head movement.
+In order to remove the effect of movement, the 3D scans are realigned on a
+reference scan --usually the one in the middle of the sequence-- using rigid
+body transformation (translation and rotation, without change of scale).
+
+\begin{figure}[!htpb]
+  \includegraphics[width=1\linewidth]{figures/coreg.png}  
+  \includegraphics[width=1\linewidth]{figures/mc.png}
+  \caption{\textbf{Motion-correction and coregistration.} The \textbf{top} plot shows an overlay of a subjects anatomy onto their mean functional image (the background). Here the red contours are well aligned with the background image, indicative of a successful co-registration. Typical things that can go wrong include: lesions (missing brain tissue), bad orientation headers in the images, non-brain tissue in the images (e.g skull), etc. The \textbf{bottom} plot show estimated motion parameters for the subjects-head motion. Here all movements are well below 0.5mm, which is generally considered as fine. The preprocessing and plots displayed here were done using Pypreprocess ~\url{https://github.com/neurospin/pypreprocess}, an open-source Python wrapper built on standard toolkits like SPM~\citep{friston1994statistical}.}
+\end{figure}
+
+\paragraph{Slice-timing correction.}
+As stated before, brain slices are not acquired
+at the same time. This introduces a shift in the haemodynamic response
+associated to each of them. This problem can be solved by interpolating the
+signal of each slice so that all of them can be considered as acquired at the
+same time~\citep{henson1999slice}. This step is optional as, in practice, it does not bring significant
+improvement. In a preliminary experiment performed on 50 individuals, we
+did not observe differences in term of prediction score with or without slice
+timing correction.
+
+\paragraph{Registration of brain data into a common reference space.}
+Each brain is of different size
+and shape. In order to compare brain activations across several individuals, we
+need to normalize them by registration to a common template~\citep{fristonbook,ashburner2005,ashburner2007,pmid19195496}. This template
+can be a reference template used in the community (MNI for example). It is
+also possible to compute a template directly from the data. Once a template
+is chosen, for each subject, we perform two successive normalizations. First,
+the anatomical scan acquired in the subject is registered to the MNI template.
+Then, the fMRI data are registered to the anatomical scan. After that, the two
+transformation matrices are combined in order to normalize the fMRI data to
+the template. Estimation of the deformations necessary to warp a subject's brain anatomy onto a template is usually done alongside the classification of individual voxels into different classes: white matter (wm), grey matter (gm), and cerebro-spinal fluid (csf) producing so-called tissue probability maps (TPMs) ~\citep{ashburner2005}.
+
+\begin{figure}
+  \includegraphics[width=1\linewidth]{figures/normalize.png}
+  \caption{\textbf{Tissue segmentation and normalization.} Showing out the mean BOLD image of a subject and of their tissue probability maps (TPMs) after registration to a template. The contours shoud match the background image well. Otherwise, something might have gone wrong.
+    Typically things that can go wrong include:
+    lesions (missing brain tissue), bad orientation headers,
+non-brain tissue in anatomical image (i.e needs brain
+extraction), etc.}
+\end{figure}
+
+\subsection{Analysis.}
+Forward inference made on fMRI data (e.g. prediction of brain
+activation from the stimuli) can be conceptualized as the encoding of percep-
+tual, motor or cognitive parameters into brain signals. The inverse model, that
+predicts behavioral data from brain activation is called decoding. This thesis
+focusses on the decoding of brain signals. Two paradigms allow to study brain
+signals. Either we study them in controlled condition on a particular task,
+this is the task paradigm, or we study the spontaneous activity of the brain in
+order to uncover its organization, this is the resting-state paradigm.
+
+\paragraph{The task paradigm and the general linear model.}
+Using an experimental design, it is possible to relate the BOLD signal with
+specific tasks performed by the subject. For example, a sound can be played in
+the left or the right ear of the subject. By comparing brain activation between
+resting state and when the sound is playing, we can isolate the auditory cortex
+of the brain.
+Statistically, we do that by crafting a design matrix corresponding to the
+experiment: one column of the matrix represents one particular activation~\citep{friston1994statistical}.
+
+Columns corresponding to known artifacts of the BOLD signal, such as heart
+beats or movements, can be added in the design matrix in order to regress out
+the part of the signal related to them. We then use a general linear model (GLM) to
+recover the brain maps corresponding to each of the columns in the design
+matrix $\X \in \mathbb R^{T \times k}$, where $k$ is the number of conditions and $T$ is the number of time points (times of repetition -- TR).  It is then supposed that for each voxel, the measured BOLD signal $\y \in \mathbb R^T$ is a linear combination of the columns of $\X$, i.e of the experimental conditions, that is
+
+\begin{equation}
+  \B{y} = \B{X}\boldsymbol{\beta} + \boldsymbol{\epsilon},
+\end{equation}
+where $\boldsymbol{\beta} \in \mathbb R^k$ are regression coefficients. Stacking these coefficients across all voxels per-brain correspond to $k$ so-called $\boldsymbol{\beta}$-maps~\citep{friston1994statistical}.
+For each voxel, such a problem is posed and least-squares is used to obtain a solution
+(there are usually more time points than experimental conditions, and so problem is full-rank),
+to obtain $\hat{\boldsymbol{\beta}} = \B{X}^\dagger\B{y}$. For a given combination of experimental conditions $c \in \mathbb R^c$ \footnote{For example, one may take $c = (1, -1, 0,\ldots, 0)$, meaning we wish the find the effect of the first condition relative to the second, or $c=(1,-1/(c-1),\ldots,-1/(c-1))$ corresponding to the effect of the first condition w.r.t the average effect.}, one can compute a statistic
+
+\begin{equation}
+t_\B{c} := \frac{\B{c}^T\hat{\boldsymbol{\beta}}}{\sqrt{var(\boldsymbol{\epsilon})\B{c}^T(\X^T\X)^{-1}\B{c}}}.
+\end{equation}
+Under the null hypothesis that the effect were interested in is zero, i.e $H_0: \B{c}^T\boldsymbol{\beta} = 0$,
+the above statistic is student-t distributed with $T-k$ degrees of freedom. Projecting these values unto the brain (one value per voxel) yields a so-called \textit{action map}; such a map is the main output of any forward analysis in task-based fMRI studies.
+
+\begin{figure}
+  \includegraphics[width=1\linewidth]{figures/activation.png}
+  \caption{\textbf{Subject-level Activation maps } for auditory versus visual and visual versus auditory conditions. Here, we show an axial via (z-coordinate) of the Z-values corresponding the size of the effect, in each voxel. Values range from -13 (light blue) to +13 (light red).}
+\end{figure}
+
+\section{Brain networks and functional connectivity}
 
 % \section{Resting-state networks}
 % \section{Clinical implications}

@@ -173,7 +173,10 @@ cheap. However, in our settings, limitations of ADMM are:
   residual $\mathbf{z} - \textbf{Diff }\mathbf{w}$ is hard to set (this is still an
   open problem), and though under mild conditions ADMM
   converges for any value of $\rho$, the convergence rate depends
-  on $\rho$.
+  on $\rho$. In chapter \ref{chap:admm}, we study the rate of convergence of ADMM on the kinds
+  of penalized
+  least squares regression problem considered in this manuscript, and derive some theoretical
+  results.
 \end{itemize}
 
 \paragraph{Primal-Dual algorithm of Chambolle and Pock  \citep{chambolle2010}.}
@@ -306,7 +309,7 @@ accuracy.
 
 \label{sec:results}
 Here, we present benchmark results for our experiments. Figure
-\ref{Fig:tvl1bench} gives results for the logistic regression run on the
+\ref{fig:tvl1bench} gives results for the logistic regression run on the
 visual recognition dataset: convergence plots of energy as a function of
 time show that all methods are asymptotically decreasing. The left part of
 Fig. \ref{fig:tvl1bench}
@@ -322,7 +325,7 @@ tolerance and time budget.
 For logistic loss, the most serious contender is
 algorithm \ref{Tab:pseudocode_lbfgs}, LBFGS applied on a smooth
 surrogate, followed by ADMM, however ADMM performance
-varies markedly depending on the choice of $\rho$. For the squared loss
+varies markedly depending on the choice of $\rho$ (more on this in chapter \ref{chap:admm}). For the squared loss
 FISTA and algorithm \ref{Tab:pseudocode_lbfgs} are the best performers,
 with FISTA achieving a clear lead for the larger mixed-gambles dataset.
 Note that in the case of strong regularization the problem is better

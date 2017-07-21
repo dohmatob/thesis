@@ -1,4 +1,4 @@
-\begin{thebibliography}{12}
+\begin{thebibliography}{17}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -12,6 +12,16 @@ Alexandre Abraham, Elvis Dohmatob, Bertrand Thirion, Dimitris Samaras, and Gael
 \newblock Region segmentation for sparse decompositions: better brain
   parcellations from rest fmri.
 \newblock In \emph{Sparsity Techniques in Medical Imaging}, 2014.
+
+\bibitem[Ashburner(2007)]{ashburner2007}
+J.~Ashburner.
+\newblock A fast diffeomorphic image registration algorithm.
+\newblock \emph{Neuroimage}, 38, 2007.
+
+\bibitem[Ashburner and Friston(2005)]{ashburner2005}
+J.~Ashburner and K.J. Friston.
+\newblock Unified segmentation.
+\newblock \emph{Neuroimage}, 26, 2005.
 
 \bibitem[Dohmatob(2016)]{dohmatob2015simple}
 Elvis Dohmatob.
@@ -63,6 +73,35 @@ Michael Eickenberg, Elvis Dohmatob, Bertrand Thirion, and Ga{\"e}l Varoquaux.
 \newblock Total variation meets sparsity: statistical learning with segmenting
   penalties.
 \newblock In \emph{MICCAI}. 2015.
+
+\bibitem[Friston et~al.(1994)Friston, Holmes, Worsley, Poline, Frith, and
+  Frackowiak]{friston1994statistical}
+Karl~J Friston, Andrew~P Holmes, Keith~J Worsley, J-P Poline, Chris~D Frith,
+  and Richard~SJ Frackowiak.
+\newblock Statistical parametric maps in functional imaging: a general linear
+  approach.
+\newblock \emph{Human brain mapping}, 2\penalty0 (4):\penalty0 189--210, 1994.
+
+\bibitem[Friston et~al.(1995)Friston, Ashburner, Frith, Poline, Heather, and
+  Frackowiak]{fristonbook}
+Karl.~J. Friston, J.~Ashburner, C.~D. Frith, J.-B. Poline, J.~D. Heather, and
+  R.~S.~J. Frackowiak.
+\newblock Spatial registration and normalization of images.
+\newblock \emph{Human Brain Mapping}, 3\penalty0 (3):\penalty0 165--189, 1995.
+\newblock ISSN 1097-0193.
+\newblock \doi{10.1002/hbm.460030303}.
+\newblock URL \url{http://dx.doi.org/10.1002/hbm.460030303}.
+
+\bibitem[Klein et~al.(2009)Klein, Andersson, Ardekani, Ashburner, Avants,
+  Chiang, Christensen, Collins, Gee, Hellier, Song, Jenkinson, Lepage,
+  Rueckert, Thompson, Vercauteren, Woods, Mann, and Parsey]{pmid19195496}
+A.~Klein, J.~Andersson, B.~A. Ardekani, J.~Ashburner, B.~Avants, M.~C. Chiang,
+  G.~E. Christensen, D.~L. Collins, J.~Gee, P.~Hellier, J.~H. Song,
+  M.~Jenkinson, C.~Lepage, D.~Rueckert, P.~Thompson, T.~Vercauteren, R.~P.
+  Woods, J.~J. Mann, and R.~V. Parsey.
+\newblock {{E}valuation of 14 nonlinear deformation algorithms applied to human
+  brain {M}{R}{I} registration}.
+\newblock \emph{Neuroimage}, 46\penalty0 (3):\penalty0 786--802, Jul 2009.
 
 \bibitem[Pell{\'e} et~al.(2016)Pell{\'e}, Ciuciu, Rahim, Dohmatob, Abry, and
   Van~Wassenhove]{pelle2016multivariate}

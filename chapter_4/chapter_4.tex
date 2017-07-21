@@ -64,6 +64,7 @@ hits cross-modality correspondence problems.
 %\tableofcontents
 
 \section{Introduction and sketch of our contributions}
+\label{sec:intro}
 In this manuscript, we propose to use the \textit{variability} of the statistical
 maps across the population to define regions.
 %
@@ -214,12 +215,11 @@ The ingredients in the model can be broken down as follows:
   %% \dfrac{1}{2n}\|\X -\B{C}\B{d}^T\|_{\text{Fro}}^2
   %% $ is the mean reconstruction error on $n$ subjects and measures how well the codes $\B{c}_1,\B{c}_2,\ldots,\B{c}_n$ approximate the data $\X$ using the current dictionary $\B{D}$, the vector $\B{x}_i-\B{D}\B{c}_i$ being the reconstruction error for subject $i$. Both the $\B{C}$ and $\B{D}$ matrices are parameters to be estimated.
 The Ridge penalty term $\phi(\B{c}_i) \equiv \frac{1}{2}\alpha\|\B{c}_i\|_2^2$
-on the codes amounts to assuming that the energy of the decomposition is
-spread across the different samples. In the context of a specific
+amounts to placing an isotropic Gaussian prior on the codes, namely $p(\B{c}_i) \propto \exp(-\frac{1}{2}\alpha\|\B{c}_i\|_2^2)$. In the context of a specific
 neuro-imaging problem, if there are good grounds to assume that each
 sample / subject should be sparsely encoded across only a few atoms of
 the dictionary, then we can use the $\ell_1$ penalty $\phi(\B{c}_i) :=
-\alpha\|\B{c}_i\|_1$ as in   \citep{mairal2010}. We note that in contrast to
+\alpha\|\B{c}_i\|_1$ as in   \citep{mairal2010}, corresponding to a Laplace prior on the codes, namely $p(\B{c}_i) \propto \exp(-\alpha\|\B{c}_i\|_1)$. We note that in contrast to
 the $\ell_1$ penalty, the Ridge leads to stable codes. The parameter $\alpha > 0$ controls the amount of penalization on the codes. %, which can be updated in closed-form via SVD. %% (w.r.t small pertubations in the input data $\X$) due to strong-convexity of the resulting coding problem \eqref{eq:coding}.
 
   %% It is essential to constrain the magnitude of the codes $\B{c}_i$ to
@@ -255,6 +255,18 @@ dictionary-learning framework of   \citep{mairal2010} --henceforth referred to a
 % [\nabla_x, \nabla_y, \nabla_z,\ldots]$, in place of the 3-dimensional ($D=3$) case considered in this manuscript. Thus our methods
 % can be readily applied to multiple-valued imaging modalities, such as Diffusion Tensor Imaging (DTI) data.
 % \end{remark}
+
+\subsection{Interpretation as an ``encoder-less'' generative model of brain data}
+One notes that the proposed model \ref{eq:ss} can be seen as an auto-encoding model of brain data with linear generator
+
+\begin{equation}
+  G_{\B{D}} = \langle \B{D}, .\rangle: \mathbb R^k \times \mathbb R^p,\; \B{c} \mapsto \B{Dc},
+\end{equation}
+parametrized by the learned dictionary $\B{D} \in \mathcal C$, and an \textit{implicit} encoder
+\begin{equation}
+  E_{\B{D}}: \mathbb R^p \rightarrow \mathbb R^k,\; \x \mapsto \argmin_{\B{c} \in \mathbb R^k} -\text{loglik}(p(\B{c}|\x,\B{D})p(\B{c})) = \argmin_{\B{c} \in \mathbb R^k}\ell(G_\B{D}(\B{c}),\x) + \alpha\phi(\B{c}).
+  \end{equation}
+
 
 \section{Algorithms}
 % \paragraph*{Optimizing the proposed model: a simple algorithm.}
