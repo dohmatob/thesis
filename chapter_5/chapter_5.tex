@@ -667,7 +667,7 @@ In all cases, positive values show that the predictions, on average, match the
 actual maps better than the mean, particularly for the cognitive tasks.
 We see that our proposed method consistently beats the reference method \citep{tavor2016task} by several folds.
 
-\begin{figure}[!htbp]
+\begin{pagefigure}
   \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_135528_01bags.pdf}
   \hspace{-.2cm}
   \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_173536_01bags.pdf}
@@ -684,96 +684,11 @@ We see that our proposed method consistently beats the reference method \citep{t
     (cyan) for different contrasts. Each column represents a different subject (here 3),
     while each row represents a task contrast (here 2): first row is for ``2BK-0BK'' and second row is ``Story-vs-Math''.}
   \label{fig:zmaps}
-\end{figure}
-
-\begin{pagefigure}
-\subfloat[Shapes vs Faces] { 
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/SHAPES-FACES.png}
-}
-\subfloat[Faces] {
-  \hspace{-.5em}
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/FACES.png}
-  }
-  \hspace{-.5em}
-\subfloat[Shapes] {  
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/SHAPES.png}
-}
-\hspace{-.5em}
-
-\subfloat[Reward vs Punish] { 
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/REWARD-PUNISH.png}
-}
-\subfloat[Reward] {
-  \hspace{-.5em}
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/REWARD.png}
-  }
-  \hspace{-.5em}
-\subfloat[Punish] {  
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/PUNISH.png}
-}
-\hspace{-.5em}
-
-\subfloat[Story vs Math] { 
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/STORY-MATH.png}
-}
-\subfloat[Story] {
-  \hspace{-.5em}
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/STORY.png}
-  }
-  \hspace{-.5em}
-\subfloat[Math] {  
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/MATH.png}
-}
-
-\hspace{-.5em}
-
-\subfloat[Tongue vs Avg] { 
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/T-AVG.png}
-}
-\subfloat[Tongue] {
-  \hspace{-.5em}
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/T.png}
-  }
-  \hspace{-.5em}
-\subfloat[Avg] {  
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/AVG.png}
-}
-\hspace{-.5em}
-
-\subfloat[Rel vs Match] { 
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/REL-MATCH.png}
-}
-\subfloat[Rel] {
-  \hspace{-.5em}
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/REL.png}
-  }
-  \hspace{-.5em}
-\subfloat[Match] {  
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/MATCH.png}
-}
-\hspace{-.5em}
-
-\subfloat[2BK vs 0BK] { 
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/2BK-0BK.png}
-}
-\subfloat[2BK] {
-  \hspace{-.5em}
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/2BK.png}
-  }
-  \hspace{-.5em}
-\subfloat[0BK] {  
-  \includegraphics[width=.33\linewidth]{figures/cmatrices/0BK.png}
-}
-\hspace{-.5em}
-
-\caption{\textbf{Confusion matrices} for the Pearson correlation between true and predicted $Z$-maps, for different task contrasts. \textbf{XXX: these figures should be regenerated with a pair of (vmin,vmax) per contrast!}}
 \end{pagefigure}
 
-\begin{pagefigure}%[!htbp]
-  \includegraphics[width=1\linewidth]{figures/r2_scores.pdf}
-  \includegraphics[width=1\linewidth]{figures/pearsonr_scores.pdf}
-  \caption{\textbf{Top:}
-    Confusion matrices for predicted versus true activation maps for
+\begin{figure}
+  \includegraphics[width=1\linewidth]{figures/confusion_STORY-MATH.png}
+  \caption{Confusion matrices for predicted versus true activation maps for
     the ``Story vs Math'' task contrast. The left plot corresponds to the reference
     method\citep{tavor2016task} while the right one is for our proposed method.
       Higher diagonal values is better.
@@ -782,10 +697,110 @@ We see that our proposed method consistently beats the reference method \citep{t
       % (self-to-self predicted to true activation map) relative
       to average off-diagonal
       % (self-to-other predicted to true activation map) in the matrices
-      of Fig \ref{fig:conf}. Results for the reference method \citep{tavor2016task} are also shown.      
-    }
-    \label{fig:conf}
-  \end{pagefigure}
+      of Fig \ref{fig:conf}. Results for the reference method \citep{tavor2016task} are also shown.
+      }
+\end{figure}
+
+% \begin{pagefigure}
+% \subfloat[Shapes vs Faces] { 
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/SHAPES-FACES.png}
+% }
+% \subfloat[Faces] {
+%   \hspace{-.5em}
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/FACES.png}
+%   }
+%   \hspace{-.5em}
+% \subfloat[Shapes] {  
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/SHAPES.png}
+% }
+% \hspace{-.5em}
+
+% \subfloat[Reward vs Punish] { 
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/REWARD-PUNISH.png}
+% }
+% \subfloat[Reward] {
+%   \hspace{-.5em}
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/REWARD.png}
+%   }
+%   \hspace{-.5em}
+% \subfloat[Punish] {  
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/PUNISH.png}
+% }
+% \hspace{-.5em}
+
+% \subfloat[Story vs Math] { 
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/STORY-MATH.png}
+% }
+% \subfloat[Story] {
+%   \hspace{-.5em}
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/STORY.png}
+%   }
+%   \hspace{-.5em}
+% \subfloat[Math] {  
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/MATH.png}
+% }
+
+% \hspace{-.5em}
+
+% \subfloat[Tongue vs Avg] { 
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/T-AVG.png}
+% }
+% \subfloat[Tongue] {
+%   \hspace{-.5em}
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/T.png}
+%   }
+%   \hspace{-.5em}
+% \subfloat[Avg] {  
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/AVG.png}
+% }
+% \hspace{-.5em}
+
+% \subfloat[Rel vs Match] { 
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/REL-MATCH.png}
+% }
+% \subfloat[Rel] {
+%   \hspace{-.5em}
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/REL.png}
+%   }
+%   \hspace{-.5em}
+% \subfloat[Match] {  
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/MATCH.png}
+% }
+% \hspace{-.5em}
+
+% \subfloat[2BK vs 0BK] { 
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/2BK-0BK.png}
+% }
+% \subfloat[2BK] {
+%   \hspace{-.5em}
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/2BK.png}
+%   }
+%   \hspace{-.5em}
+% \subfloat[0BK] {  
+%   \includegraphics[width=.33\linewidth]{figures/cmatrices/0BK.png}
+% }
+% \hspace{-.5em}
+
+% \caption{\textbf{Confusion matrices} for the Pearson correlation between true and predicted $Z$-maps, for different task contrasts. \textbf{XXX: these figures should be regenerated with a pair of (vmin,vmax) per contrast!}}
+% \end{pagefigure}
+
+% \begin{pagefigure}%[!htbp]
+%   \includegraphics[width=1\linewidth]{figures/r2_scores.pdf}
+%   \includegraphics[width=1\linewidth]{figures/pearsonr_scores.pdf}
+%   \caption{\textbf{Top:}
+%     Confusion matrices for predicted versus true activation maps for
+%     the ``Story vs Math'' task contrast. The left plot corresponds to the reference
+%     method\citep{tavor2016task} while the right one is for our proposed method.
+%       Higher diagonal values is better.
+%       The strong diagonal dorminance of these matrices reveals that the predicted maps of the subjects are more similar to their true maps than to other subjects. \textbf{Bottom:}
+%       Percentage gain (the higher the better) in average diagonal
+%       % (self-to-self predicted to true activation map) relative
+%       to average off-diagonal
+%       % (self-to-other predicted to true activation map) in the matrices
+%       of Fig \ref{fig:conf}. Results for the reference method \citep{tavor2016task} are also shown.      
+%     }
+%     \label{fig:conf}
+%   \end{pagefigure}
 
 \paragraph{Qualitative metrics} In Fig. \ref{fig:zmaps}, we display level-curves of the population mean (magenta) of
 activation maps for the ``Story-vs-Math'' and ``2BK-vs-0BK'' task contrasts, superimposed on the true activation maps of the

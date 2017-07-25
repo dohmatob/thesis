@@ -1,4 +1,4 @@
-\begin{thebibliography}{17}
+\begin{thebibliography}{21}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -112,6 +112,13 @@ Hubert Pell{\'e}, Philippe Ciuciu, Mehdi Rahim, Elvis Dohmatob, Patrice Abry,
 \newblock In \emph{13th IEEE International Symposium on Biomedical Imaging},
   2016.
 
+\bibitem[Power et~al.(2012)Power, Barnes, Snyder, Schlaggar, and
+  Petersen]{power2012}
+J.~D. Power, K.~A. Barnes, A.~Z. Snyder, B.~L. Schlaggar, and S.~E. Petersen.
+\newblock {{S}purious but systematic correlations in functional connectivity
+  {M}{R}{I} networks arise from subject motion}.
+\newblock \emph{Neuroimage}, 59\penalty0 (3):\penalty0 2142--2154, 2012.
+
 \bibitem[Rahim et~al.(2015)Rahim, Thirion, Abraham, Eickenberg, Dohmatob,
   Comtat, and Varoquaux]{rahim2015integrating}
 Mehdi Rahim, Bertrand Thirion, Alexandre Abraham, Michael Eickenberg, Elvis
@@ -121,11 +128,30 @@ Mehdi Rahim, Bertrand Thirion, Alexandre Abraham, Michael Eickenberg, Elvis
 \newblock In \emph{International Conference on Medical Image Computing and
   Computer-Assisted Intervention}. Springer International Publishing, 2015.
 
+\bibitem[Raichle(2010)]{raichle10}
+Marcus~E. Raichle.
+\newblock Two views of brain function.
+\newblock \emph{Trends in Cognitive Sciences}, 14\penalty0 (4):\penalty0
+  180--190, 2010.
+
+\bibitem[Thirion(2009)]{thirion_hdr}
+Bertrand Thirion.
+\newblock \emph{Structural and probabilistic methods for group analysis in
+  functional neuroimaging}.
+\newblock PhD thesis, {\'E}cole normale sup{\'e}rieure de Cachan-ENS Cachan,
+  2009.
+
 \bibitem[Thirion et~al.(2014)Thirion, Varoquaux, Dohmatob, and
   Poline]{thirion2014fmri}
 Bertrand Thirion, Ga{\"e}l Varoquaux, Elvis Dohmatob, and Jean-Baptiste Poline.
 \newblock Which fmri clustering gives good brain parcellations?
 \newblock \emph{Frontiers in neuroscience}, 8, 2014.
+
+\bibitem[Van~Dijk et~al.(2012)Van~Dijk, Sabuncu, and Buckner]{vandijk2012}
+K.R.A. Van~Dijk, M.R. Sabuncu, and R.L. Buckner.
+\newblock The influence of head motion on intrinsic functional connectivity
+  mri.
+\newblock \emph{Neuroimage}, 59, 2012.
 
 \bibitem[Varoquaux et~al.(2015)Varoquaux, Eickenberg, Dohmatob, and
   Thirion]{varoquaux2015faasta}
