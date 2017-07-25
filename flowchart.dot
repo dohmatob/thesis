@@ -1,0 +1,20 @@
+digraph {
+    /* label="*SBRef: single-band high-resolution EPI 3D volume" */
+
+    DistCorr[shape="rectangle", style="rounded", label="distortion-correction of EPI"]
+    EPI2SBRef[shape="rectangle", style="rounded", label="affine registration of \n 4D EPI to SBRef"];
+    if_direct[shape="diamond", style="rounded", label="direct (proposed) method ?"];
+    SBRef2Template[shape="rectangle", style="rounded", label="nonlinear registration of SBRef \n to group SBRef template"]
+    T12Template[shape="rectangle", style="rounded", label="nonlinear registration of \n SBRef to group T1 template"]    
+    SBRef2T1[shape="rectangle", style="rounded", label="BBR co-registration of SBRef to T1"]
+    GenerateTemplate[shape="rectangle", style="rounded", label="generate group template \n (with data pooled from all subjects)"]
+
+    DistCorr -> EPI2SBRef
+    SBRef2T1 -> T12Template
+    EPI2SBRef -> if_direct
+    if_direct -> SBRef2Template[label="yes"];
+    if_direct -> SBRef2T1[label="no"];
+    T12Template -> GenerateTemplate
+    SBRef2Template -> GenerateTemplate
+    GenerateTemplate -> if_direct
+}
