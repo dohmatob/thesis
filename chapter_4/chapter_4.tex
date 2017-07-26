@@ -256,7 +256,7 @@ dictionary-learning framework of   \citep{mairal2010} --henceforth referred to a
 % can be readily applied to multiple-valued imaging modalities, such as Diffusion Tensor Imaging (DTI) data.
 % \end{remark}
 
-\subsection{Interpretation as an ``encoder-less'' generative model of brain data}
+\paragraph{Interpretation as an ``encoder-less'' generative model of brain data.}
 One notes that the proposed model \ref{eq:ss} can be seen as an auto-encoding model of brain data with linear generator
 
 \begin{equation}
@@ -264,7 +264,7 @@ One notes that the proposed model \ref{eq:ss} can be seen as an auto-encoding mo
 \end{equation}
 parametrized by the learned dictionary $\B{D} \in \mathcal C$, and an \textit{implicit} encoder
 \begin{equation}
-  E_{\B{D}}: \mathbb R^p \rightarrow \mathbb R^k,\; \x \mapsto \argmin_{\B{c} \in \mathbb R^k} -\text{loglik}(p(\B{c}|\x,\B{D})p(\B{c})) = \argmin_{\B{c} \in \mathbb R^k}\ell(G_\B{D}(\B{c}),\x) + \alpha\phi(\B{c}).
+  E_{\B{D}}: \mathbb R^p \rightarrow \mathbb R^k,\; \x \mapsto \argmin_{\B{c} \in \mathbb R^k} -\text{loglik}(\x|\B{c},\B{D}) = \argmin_{\B{c} \in \mathbb R^k}\ell(G_\B{D}(\B{c}),\x) + \alpha\phi(\B{c}).
   \end{equation}
 
 
@@ -511,15 +511,17 @@ To close this section, let us point out a few special instances cases of problem
 as
 \begin{equation}
   \begin{split}
-    F_{\gamma\B{A}_t[j,j]^{-1}}(\B{v}, \B{V}^j + \B{A}_t[j,j]^{-1}(\B{V}\B{A}^j - \B{B}_t^j)) &=\frac{1}{2}(\B{v}-\tilde{\B{V}}^j)^T(\Id - \gamma\B{A}_t[j,j]^{-1}\Delta)(\B{v}-\tilde{\B{V}}^j)\\
-    &=\frac{1}{2}(\hat{\B{v}}-\hat{\tilde{\B{V}}}^j)^T(\Id - \gamma\B{A}_t[j,j]^{-1}\Delta)(\hat{\B{v}}-\hat{\tilde{\B{V}}}^j),
+    F_{\gamma\B{A}_t[j,j]^{-1}}(\B{v}, \B{v}^j + \B{A}_t[j,j]^{-1}(\B{v}\B{A}^j - \B{B}_t^j)) &= \frac{1}{2}(\B{v}-\tilde{\B{v}}^j)^T(\Id - \gamma\B{A}_t[j,j]^{-1}\Delta)(\B{v}-\tilde{\B{v}}^j)
+    \\
+    &=\frac{1}{2}(\hat{\B{v}}-\hat{\tilde{\B{v}}}^j)^T(\Id - \gamma\B{A}_t[j,j]^{-1}\Delta)(\hat{\B{v}}
+    -\hat{\tilde{\B{v}}}^j),
   \end{split}
 \end{equation}
 with
-  \begin{equation}
-  \tilde{\B{V}}^j := (\B{A}_t[j,j]\Id -
-  \gamma\Delta)^{-1}\left(\B{V}^j + \B{A}_t[j,j]^{-1}(\B{V}\B{A}^j - \B{B}_t^j)\right).
-  \end{equation}
+\begin{equation}
+  \tilde{\B{v}}^j := (\B{A}_t[j,j]\Id -
+  \gamma\Delta)^{-1}\left(\B{v}^j + \B{A}_t[j,j]^{-1}(\B{v}\B{A}^j - \B{B}_t^j)\right).
+\end{equation}
 
 We note that the matrix-inversion $(\Id - \tilde{\gamma}\Delta)^{-1}$ that appears in the formula above is a Laplacian filter, and can
 be efficiently applied in closed-form (i.e non-iteratively) in the Fourier / frequency domain. Indeed, under periodic
@@ -567,23 +569,23 @@ Here, the constraint set $\mathcal C$ is an L2 ball (with radius $=1$, w.l.o.g) 
 $$\|\hat{\B{v}}\|^2 = p\|\B{v}\|_2^2,\;\forall \B{v} \in \mathbb R^p$$ and so problem (7) can be written as
 \begin{equation}
   \begin{split}
-    \B{V}^j &\leftarrow \argmin_{\B{v} \in \mathbb R^p,\;\|\B{v}\|_2^2 \le 1}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)\\
-    &= \mathcal F^*\left(\argmin_{\hat{\B{v}} \in \mathbb C^p,\;\|\hat{\B{v}}\|_2^2 \le p}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)\right)\\
-    &= \mathcal F^*\left(P_{\mathcal E}(\hat{\tilde{\B{V}}}^j)\right)
+    \B{v}^j &\leftarrow \argmin_{\B{v} \in \mathbb R^p,\;\|\B{v}\|_2^2 \le 1}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{v}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}} - \hat{\tilde{\B{v}}}^j)\\
+    &= \mathcal F^*\left(\argmin_{\hat{\B{v}} \in \mathbb C^p,\;\|\hat{\B{v}}\|_2^2 \le p}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{v}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}} - \hat{\tilde{\B{v}}}^j)\right)\\
+    &= \mathcal F^*\left(P_{\mathcal E}(\hat{\tilde{\B{v}}}^j)\right)
   \end{split}
 \end{equation}
 where
 \begin{equation}\mathcal E := \left\{(\Id-\gamma\B{A}_t[j,j]^{-1}\Lambda)^{\frac{1}{2}}\hat{\B{v}}\text{ s.t }\hat{\B{v}} \in \mathbb C^p,\;\|\hat{\B{v}}\|_2^2 \le p\right\},
 \end{equation}
-a hyper-ellipsoid in standard position (i.e $\mathbf{0}$-centered and axes-aligned). Using elementary geometric arguments, one can show that the projection $P_{\mathcal E}(\hat{\tilde{\B{V}}}^j)$ can be computed efficiently using a kind of root-finding algorithm \cite{Dai06}, and converges exponentially fast.
+a hyper-ellipsoid in standard position (i.e $\mathbf{0}$-centered and axes-aligned). Using elementary geometric arguments, one can show that the projection $P_{\mathcal E}(\hat{\tilde{\B{v}}}^j)$ can be computed efficiently using a kind of root-finding algorithm \cite{Dai06}, and converges exponentially fast.
 
 \paragraph{Non-negative Lasso.}
 In case the constraint set $\mathcal C$ for the dictionary atoms is a
 simplex $\mathcal S_p(\tau)$, the simplex (see section \ref{sec:contrib}), then the BCD update for the $j$th atom becomes
 \begin{equation}
   \begin{split}
-    \B{V}^j &\leftarrow \argmin_{\B{v} \in \mathbb R^p,\;\B{v} \ge 0,\;\1^T\B{v} \le 1}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)\\
-    &= \mathcal F^*\left(\argmin_{\hat{\B{v}} \in \mathbb C^p,\;-\mathcal F^*\hat{\B{v}} \le 0,\; \hat{\1}^T\hat{\B{v}} \le 1}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{V}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}y} - \hat{\tilde{\B{V}}}^j)\right),
+    \B{v}^j &\leftarrow \argmin_{\B{v} \in \mathbb R^p,\;\B{v} \ge 0,\;\1^T\B{v} \le 1}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{v}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}} - \hat{\tilde{\B{v}}}^j)\\
+    &= \mathcal F^*\left(\argmin_{\hat{\B{v}} \in \mathbb C^p,\;-\mathcal F^*\hat{\B{v}} \le 0,\; \hat{\1}^T\hat{\B{v}} \le 1}\frac{1}{2}(\hat{\B{v}} - \hat{\tilde{\B{v}}}^j)^*(\Id - \gamma\B{A}_t[j,j]^{-1}\Lambda)(\hat{\B{v}} - \hat{\tilde{\B{v}}}^j)\right),
   \end{split}
 \end{equation}
 which is a diagonal quadratic program with linear constraints, and can be effectively solved via the well-known simplex method, for example.

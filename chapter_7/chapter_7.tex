@@ -53,13 +53,11 @@ with the optimal scaling vector $\boldsymbol{\gamma} \in \mathbb R_{++}^p$ given
 $E_{\text{TV-L1}}(\B{w}) := \ell(\y,\X\w) + \alpha \mathcal P_{\text{TV-L1}}(\B{w})$ coincide with the minimizers of
 the rescaled GraphNet energy
 \begin{equation}
-\begin{split}
 E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\B{w}) = \ell(\y,\X\w) +
 \alpha\rho\|\B{w}\|_1
 + \frac{1}{2}\alpha(1 - \rho)
 \sum_{j \in [\![p]\!],\|(\textbf{Diff } w)_j\|_2 > 0} \gamma_j\|(\textbf{Diff } \B{w})_j\|_2^2
 + \gamma_j^{-1},
-\end{split}
 \label{eq:rgn}
 \end{equation}
 where the minimization is done both over regression coefficients $\B{w}$ and the scaling parameters

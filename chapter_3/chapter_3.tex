@@ -299,13 +299,13 @@ optimal parameters set by 10-fold cross-validation to maximize prediction
 accuracy.
 
 \subsection{Results: convergence times}
- \begin{figure}[!htbp]
+ \begin{pagefigure}%[!htbp]
    \includegraphics[width=1\linewidth]{figures/solvers_1.png}
    \includegraphics[width=1\linewidth]{figures/solvers_2.png}
    \caption{\textbf{Benchmarking } solvers for TV-$\ell_1$ penalized models. \textbf{Top:} TV-$\ell_1$ penalized Logistic Regression on the visual recognition face-house discrimination task. \textbf{Top Left:} excess energy $E(\B{w}_t ) - E(\B{w}^*)$ as a function of time. \textbf{Top Right:} convergence time of the various solvers for different choice of regularization parameters. Broken lines correspond to a tolerance of
      $10^0$ , whilst full-lines correspond to $10^{-2}$ . The thick vertical line indicates the best model selected by cross-validation. \textbf{Bottom:} TV-$\ell_1$ penalized Least-Squares Regression. \textbf{Bottom Left:} on the visual recognition face-house discrimination task; \textbf{Bottom Right:} on the Mixed gambles dataset. The thick vertical line indicates the best model selected by cross-validation.}
    \label{fig:tvl1bench}
-\end{figure}
+\end{pagefigure}
 
 \label{sec:results}
 Here, we present benchmark results for our experiments. Figure
@@ -341,43 +341,43 @@ improving, and (b) univariate feature-screening, whereby irrelevant
 optimization problem is entered, thus reducing the size of the
 problem.
 
+\begin{figure}[!htb]
+  \includegraphics[width=1\linewidth]{figures/screening.png}
+  \caption{Univariate feature-screening for the
+    GraphNet~\citep{hebiri2011,grosenick2013}
+    problem \eqref{eq:opt_pb} on
+    different datasets.
+    % $(\X,\y)$.
+    This figure shows spatial maps of
+    $\B{X}^T_j\y$, thresholded so that only voxels $j$ with (from left to
+    rightmost column)  $|\B{X}^T_j\y| \ge p_{10\%}(|\B{X}^T\y|)$, $|\B{X}^T_j\y| \ge
+    p_{20\%}(|\B{X}^T\y|)$, $|\B{X}^T_j\y| \ge p_{50\%}(|\B{X}^T\y|)$, and $|\B{X}^T_j\y|
+    \ge p_{100\%}(|\B{X}^T\y|)$ (full-brain) respectively, survive. The
+    green contours enclose the elite voxels which are selected by the
+    screening procedure at the respective threshold
+    levels. \textit{(a)}: Mixed Gambles dataset
+    \citep{jimura2012}.%  Remarkably, the geometry of the regions obtained
+    % here for the 10th and 20th screening-percentiles match pretty well
+    % the results obtained in  \citep{gramfort2013} with their TV-L1
+    % penalty. \textit{(b)}: Face vs House contrast of the visual recognition
+    % dataset  \citep{haxby2001}. 
+    Weights maps obtained for the GraphNet
+    model \eqref{eq:opt_pb} with these different
+    screening-percentiles are shown in Figure
+    \ref{fig:haxby}. \textit{(c)}: OASIS dataset  \citep{marcus2007open}
+    with VBM. See Figure \ref{fig:oasis} for weights maps and
+    age predictions obtained using these different
+    screening-percentiles. % on the GraphNet model \eqref{eq:opt_pb}.
+  }
+  
+  \label{fig:screening}
+\end{figure}
+
 Empirical results with GraphNet on real MRI (Magnetic
 Resonance Imaging)
 datasets indicated that these heuristics are a win-win strategy, as
 they add speed without sacrificing the quality of the predictions
 / classifications.
-
- \begin{figure}[!htb]
-   \includegraphics[width=1\linewidth]{figures/screening.png}
-\caption{Univariate feature-screening for the
-  GraphNet~\citep{hebiri2011,grosenick2013}
-  problem \eqref{eq:opt_pb} on
-  different datasets.
-  % $(\X,\y)$.
-  This figure shows spatial maps of
-  $\B{X}^T_j\y$, thresholded so that only voxels $j$ with (from left to
-  rightmost column)  $|\B{X}^T_j\y| \ge p_{10\%}(|\B{X}^T\y|)$, $|\B{X}^T_j\y| \ge
-  p_{20\%}(|\B{X}^T\y|)$, $|\B{X}^T_j\y| \ge p_{50\%}(|\B{X}^T\y|)$, and $|\B{X}^T_j\y|
-  \ge p_{100\%}(|\B{X}^T\y|)$ (full-brain) respectively, survive. The
-  green contours enclose the elite voxels which are selected by the
-  screening procedure at the respective threshold
-  levels. \textit{(a)}: Mixed Gambles dataset
-   \citep{jimura2012}.%  Remarkably, the geometry of the regions obtained
-  % here for the 10th and 20th screening-percentiles match pretty well
-  % the results obtained in  \citep{gramfort2013} with their TV-L1
-  % penalty. \textit{(b)}: Face vs House contrast of the visual recognition
-  % dataset  \citep{haxby2001}. 
-  Weights maps obtained for the GraphNet
-  model \eqref{eq:opt_pb} with these different
-  screening-percentiles are shown in Figure
-  \ref{fig:haxby}. \textit{(c)}: OASIS dataset  \citep{marcus2007open}
-  with VBM. See Figure \ref{fig:oasis} for weights maps and
-  age predictions obtained using these different
-  screening-percentiles. % on the GraphNet model \eqref{eq:opt_pb}.
-}
-
-\label{fig:screening}
-\end{figure}
 
 \subsection{Methods}
 %% We will now detail the heuristic techiques for speeding up
