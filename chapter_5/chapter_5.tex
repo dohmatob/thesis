@@ -690,14 +690,9 @@ We see that our proposed method consistently beats the reference method \citep{t
   \includegraphics[width=1\linewidth]{figures/confusion_STORY-MATH.png}
   \caption{Confusion matrices for predicted versus true activation maps for
     the ``Story vs Math'' task contrast. The left plot corresponds to the reference
-    method\citep{tavor2016task} while the right one is for our proposed method.
+    method~\citep{tavor2016task} while the right one is for our proposed method.
       Higher diagonal values is better.
-      The strong diagonal dorminance of these matrices reveals that the predicted maps of the subjects are more similar to their true maps than to other subjects. \textbf{Bottom:}
-      Percentage gain (the higher the better) in average diagonal
-      % (self-to-self predicted to true activation map) relative
-      to average off-diagonal
-      % (self-to-other predicted to true activation map) in the matrices
-      of Fig \ref{fig:conf}. Results for the reference method \citep{tavor2016task} are also shown.
+      The strong diagonal dorminance of these matrices reveals that the predicted maps of the subjects are more similar to their true maps than to other subjects.
       }
 \end{figure}
 
@@ -784,23 +779,18 @@ We see that our proposed method consistently beats the reference method \citep{t
 % \caption{\textbf{Confusion matrices} for the Pearson correlation between true and predicted $Z$-maps, for different task contrasts. \textbf{XXX: these figures should be regenerated with a pair of (vmin,vmax) per contrast!}}
 % \end{pagefigure}
 
-% \begin{pagefigure}%[!htbp]
-%   \includegraphics[width=1\linewidth]{figures/r2_scores.pdf}
-%   \includegraphics[width=1\linewidth]{figures/pearsonr_scores.pdf}
-%   \caption{\textbf{Top:}
-%     Confusion matrices for predicted versus true activation maps for
-%     the ``Story vs Math'' task contrast. The left plot corresponds to the reference
-%     method\citep{tavor2016task} while the right one is for our proposed method.
-%       Higher diagonal values is better.
-%       The strong diagonal dorminance of these matrices reveals that the predicted maps of the subjects are more similar to their true maps than to other subjects. \textbf{Bottom:}
-%       Percentage gain (the higher the better) in average diagonal
-%       % (self-to-self predicted to true activation map) relative
-%       to average off-diagonal
-%       % (self-to-other predicted to true activation map) in the matrices
-%       of Fig \ref{fig:conf}. Results for the reference method \citep{tavor2016task} are also shown.      
-%     }
-%     \label{fig:conf}
-%   \end{pagefigure}
+\begin{pagefigure}%[!htbp]
+  \includegraphics[width=1\linewidth]{figures/r2_scores.pdf}
+  \includegraphics[width=1\linewidth]{figures/pearsonr_scores.pdf}
+  \caption{
+      Percentage gain (the higher the better) in average diagonal
+      % (self-to-self predicted to true activation map) relative
+      to average off-diagonal
+      % (self-to-other predicted to true activation map) in the matrices
+      of Fig \ref{fig:conf}. Results for the reference method \citep{tavor2016task} are also shown.      
+    }
+    \label{fig:conf}
+  \end{pagefigure}
 
 \paragraph{Qualitative metrics} In Fig. \ref{fig:zmaps}, we display level-curves of the population mean (magenta) of
 activation maps for the ``Story-vs-Math'' and ``2BK-vs-0BK'' task contrasts, superimposed on the true activation maps of the

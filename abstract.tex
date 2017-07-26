@@ -177,13 +177,13 @@ brain functional networks that can be modulated
 either by specic cognitive tasks or appear as
 networks of correlated activity. This method is subject to several physical and physiological
 noises. First,
-some artifacts may be induced by radio transmitters or other equipments. Then,
-spurious activations are naturally introduced by the blood vessels present in
+some artifacts may be induced by radio transmitters or other equipment. Then,
+spurious activations are naturally introduced by arteries present in
 the brain, heart beats and breathing movements. Finally, the brain can be
 shifted if the subject makes large movements in the scanner.
 
 \subsection{Preprocessing and analysis of fMRI data}
-Raw fMRI images are not interpretable with bare eyes. In particular because
+Raw fMRI images are not intepretable with bare eyes. In particular because
 we are interested in small signal co-variation between voxels\footnote{Voxel stands for volume element. It refers
 to a point in a 3D image, just as pixel refers to a point in a 2D image.}  and not by the
 values themselves. Human eye, however, is good at perceiving global artifacts
@@ -286,8 +286,8 @@ matrix $\X \in \mathbb R^{T \times k}$, where $k$ is the number of conditions an
 \begin{equation}
   \B{y}_v = \B{X}\boldsymbol{\beta}_v + \boldsymbol{\epsilon}_v,
 \end{equation}
-where $\boldsymbol{\beta}_v \in \mathbb R^k$ are regression coefficients.
-Such a problem is posed and least-squares is used to obtain a solution
+where $\boldsymbol{\beta}_v \in \mathbb R^k$ are regression coefficients and $\boldsymbol{\epsilon}_v = (\epsilon_{v,1},\ldots,\epsilon_{v,T}) \in \mathbb R^T$ is a non-iid vector of normally distributed noise terms.
+Such a problem is posed and weighted least-squares (WLS) is used to obtain a solution
 \footnote{There are usually more time points than experimental conditions, and so problem is full-rank.},
 to obtain $\hat{\boldsymbol{\beta}}_v = \B{X}^\dagger\B{y}_v$.  Stacking these coefficients across all voxels per-brain correspond to $k$ so-called $\boldsymbol{\beta}$-maps~\citep{friston1994statistical}. For a given combination of experimental conditions \footnote{For example, for $k = 3$ conditions, one may be interested in take $\B{c} = (1, -1, 0)$, meaning we wish the find the effect of the first condition relative to the second, or $\B{c}=(1,-1/2,-1/2)$ corresponding to the effect of the first condition w.r.t the average effect.\\}
 $\B{c}  = (c_1,c_2,\ldots,c_k)\in \mathbb R^k$ , one can compute a statistic
@@ -299,7 +299,8 @@ Under the null hypothesis that the effect were are interested in is zero, i.e
 \begin{equation}
   H_0: \B{c}^T\boldsymbol{\beta}_v = 0,
 \end{equation}
-the above statistic is student-t distributed with $T-k$ degrees of freedom, and one can do testing analytically to obtain $p$-values and confidence intervals. Projecting these values unto the brain (one value per voxel) yields a so-called \textit{activation map}. Such maps are the main output of any forward analysis in task-based fMRI studies.
+the above statistic is student-t distributed with $T-k$ degrees of freedom, and one can
+analytically obtain $p$-values and confidence intervals for inference. Projecting these values unto the brain (one value per voxel) yields a so-called \textit{activation map}. Such maps are the main output of any forward analysis in task-based fMRI studies.
 
 One notes that $T-k$ is only a crude over-estimation of the true degrees of freedom, confounded by the fact that there are correlations between neighboring voxels, leading to \textit{multiple comparison} issues in these so-called \textit{mass-univariate} methods. Bonferoni and similar correction procedures are usually used to alleviate these issues, but maybe too conservative and destroy the the sought-for effects. An alternative is to use \textit{multi-variate} methods which directly model the spatial interactions between the voxels. Such methods will be the subject of chapter \ref{chap:structured_priors}.
 
@@ -308,6 +309,12 @@ One notes that $T-k$ is only a crude over-estimation of the true degrees of free
 Resting state fMRI (or rsfMRI) uses the same acquisition method as task fMRI.
 However, instead of giving a particular task to the subject, they are asked to let their mind wander without sleeping. By studying this background activity of
 the brain, it is possible to uncover its underlying organization~\citep{raichle10}. Unlike the techniques described previously where the aim was to localize regions of activation for a given set of conditions, in functional connectivitly analysis were interested in infering connections between such regions.
+
+\begin{marginfigure}%[!htbp]
+  \includegraphics[width=1\linewidth]{figures/connectome.png}
+  \caption{\textbf{Functional connectivity} patterns extracted from resting state data. The nodes are regions of the brain, and the thickness
+  of the edges represent the relative strength average signal between the two corresponding regions.}
+\end{marginfigure}
 
 Depending on the protocol, the subject can be asked to keep eyes closed or
 to contemplate a fixation cross. The fixation cross prevents random eye movements
@@ -334,11 +341,6 @@ selection or extraction-- is necessary to study connectivity.
 %   \caption{...}
 % \end{figure}
 % \section{The functional brain as a dynamic graph}
-\begin{marginfigure}%[!htbp]
-  \includegraphics[width=1\linewidth]{figures/connectome.png}
-  \caption{\textbf{Functional connectivity} patterns extracted from resting state data. The nodes are regions of the brain, and the thickness
-  of the edges represent the relative strength average signal between the two corresponding regions.}
-\end{marginfigure}
 
 % \section{Task activation as a small perturbation of resting-state networks}
 
