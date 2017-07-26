@@ -632,20 +632,20 @@ $i_C$ & Indicator function of $C$ & $i_C(\B{x}):= \begin{cases}0,&\mbox{ if }\B{
   $L_F$ & Lipschitz constant of $F: \mathcal H_1 \rightarrow \mathcal H_2$ & $\inf\{C \ge 0 | \|F(\x) - F(\y)\|_{\mathcal H_2} \le C\|\x - \y\|_{\mathcal H_1}\;\forall \x,\y \in \mathcal H_1\}$ \\
   \midrule
 
-  $\textbf{Diff }$ & Discrete spatial gradient operator. This defines a linear operator from $\mathbb R^p$ to $\mathbb R^{3p}$, where $p$ is the number of voxels in the image & At a voxel $j$, the spatial gradient of an image $\B{w}$ is a vector ${\textbf{Diff }} {\w}(j) := [\textbf{Diff }_{x} {\w}(j), \textbf{Diff }_{y} {\w}(j), \textbf{Diff }_{z} {\w}(j)]$, $\forall \w \in \mathbb R^p$ \\
+  $\nabla $ & Discrete spatial gradient operator. This defines a linear operator from $\mathbb R^p$ to $\mathbb R^{3p}$, where $p$ is the number of voxels in the image & At a voxel $j$, the spatial gradient of an image $\B{w}$ is a vector ${\nabla } {\w}(j) := [\nabla_{x} {\w}(j), \nabla_{y} {\w}(j), \nabla_{z} {\w}(j)]$, $\forall \w \in \mathbb R^p$ \\
   
-  $\Delta$ & Discrete spatial image Laplacian operator & $-\textbf{Diff }^T\textbf{Diff } \in \mathbb R^{p \times p}$\\
-  $\textbf{Diff }_\rho$ & The identity-augmented version of the discrete spatial gradient operator & ${\textbf{Diff }_\rho} {\w} := [(1-\rho)\textbf{Diff }\w, \rho \w] \in \mathbb R^{4p}$, $\forall \w \in \mathbb R^p$ \\
-  $\Delta_\rho$ & Laplacian operator corresponding to the identity-augmented spatial gradient operator $\textbf{Diff }_\rho$ . This defines a linear operator from $\mathbb R^p$ to $\mathbb R^{4p}$ & $\rho^2\I + (1-\rho)^2\Delta \in \mathbb R^{p \times p}$ \\
+  $\Delta$ & Discrete spatial image Laplacian operator & $-\nabla ^T\nabla  \in \mathbb R^{p \times p}$\\
+  $\nabla_\rho$ & The identity-augmented version of the discrete spatial gradient operator & ${\nabla_\rho} {\w} := [(1-\rho)\nabla \w, \rho \w] \in \mathbb R^{4p}$, $\forall \w \in \mathbb R^p$ \\
+  $\Delta_\rho$ & Laplacian operator corresponding to the identity-augmented spatial gradient operator $\nabla_\rho$ . This defines a linear operator from $\mathbb R^p$ to $\mathbb R^{4p}$ & $\rho^2\I + (1-\rho)^2\Delta \in \mathbb R^{p \times p}$ \\
   
-  $\text{Lap}(\B{w})$ & Laplacian regularization of a 3D image $\B{w}$ & $\frac{1}{2}\|\textbf{Diff }\w\|_\text{Fro}^2 = \frac{1}{2}\sum_{j=1}^p(\textbf{Diff }_x \B{w})_j^2 + (\textbf{Diff }_y \B{w})_j^2 + (\textbf{Diff }_z \B{w})_j^2$ \\ % = \frac{1}{2}{\B{v}}^T\Delta \B{v} \ge 0$
-  $\|\B{w}\|_{\text{TV}}$ & Isotropic Total-Variation (TV) regularization & $\|\textbf{Diff }\w\|_{2,1} =
-  % \sum_{j}\|(\textbf{Diff }\w)_j\|_2=
-\sum_{j}\sqrt{(\textbf{Diff }_x \B{w})_j^2 + (\textbf{Diff }_y \B{w})_j^2 + (\textbf{Diff }_z \B{w})_j^2}$\\
-  $\|\B{w}\|_{\text{SV}}$ & Sparse Variation regularization & $\|\textbf{Diff }_\rho \w\|_{2,1} = \sum_{j}\sqrt{\rho^2 w_j + (1-\rho)^2\|\textbf{Diff }\w)_j\|_2^2}$\\  
-  $\|\B{w}\|_{\text{AnisoTV}}$ & Anisotropic TV regularization & $\|\textbf{Diff }\w\|_{1,1} = 
-% \sum_{j}\|(\textbf{Diff }\w)_j\|_1=
-\sum_{j}|(\textbf{Diff }_x \B{w})_j| + |(\textbf{Diff }_y \B{w})_j| + |(\textbf{Diff }_z \B{w})_j|$\\
+  $\text{Lap}(\B{w})$ & Laplacian regularization of a 3D image $\B{w}$ & $\frac{1}{2}\|\nabla \w\|_\text{Fro}^2 = \frac{1}{2}\sum_{j=1}^p(\nabla_x \B{w})_j^2 + (\nabla_y \B{w})_j^2 + (\nabla_z \B{w})_j^2$ \\ % = \frac{1}{2}{\B{v}}^T\Delta \B{v} \ge 0$
+  $\|\B{w}\|_{\text{TV}}$ & Isotropic Total-Variation (TV) regularization & $\|\nabla \w\|_{2,1} =
+  % \sum_{j}\|(\nabla \w)_j\|_2=
+\sum_{j}\sqrt{(\nabla_x \B{w})_j^2 + (\nabla_y \B{w})_j^2 + (\nabla_z \B{w})_j^2}$\\
+  $\|\B{w}\|_{\text{SV}}$ & Sparse Variation regularization & $\|\nabla_\rho \w\|_{2,1} = \sum_{j}\sqrt{\rho^2 w_j + (1-\rho)^2\|\nabla \w)_j\|_2^2}$\\  
+  $\|\B{w}\|_{\text{AnisoTV}}$ & Anisotropic TV regularization & $\|\nabla \w\|_{1,1} = 
+% \sum_{j}\|(\nabla \w)_j\|_1=
+\sum_{j}|(\nabla_x \B{w})_j| + |(\nabla_y \B{w})_j| + |(\nabla_z \B{w})_j|$\\
   
 
   

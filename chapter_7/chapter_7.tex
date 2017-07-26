@@ -26,25 +26,25 @@ well-known elementary result\footnote{To prove it, one simply uses the fact
 we can rewrite the TV semi-norm as follows,
 \begin{eqnarray}
 \begin{split}
- \|\B{w}\|_{\text{TV}} := \sum_{j \in [\![p]\!],\|(\textbf{Diff }\w)_j\|_2 > 0}\|(\textbf{Diff }
+ \|\B{w}\|_{\text{TV}} := \sum_{j \in [\![p]\!],\|(\nabla\w)_j\|_2 > 0}\|(\nabla
  \B{w})_j\|_2 \le \frac{1}{2}
-\sum_{j \in [\![p]\!],\|(\textbf{Diff }\w)_j\|_2 > 0} \gamma_j\|(\textbf{Diff } \B{w})_j\|_2^2 + \gamma_j^{-1},
-%% &= \frac{1}{2}\sum_{j \in \mathcal P}\|(\text{diag}(r)\textbf{Diff }
+\sum_{j \in [\![p]\!],\|(\nabla\w)_j\|_2 > 0} \gamma_j\|(\nabla \B{w})_j\|_2^2 + \gamma_j^{-1},
+%% &= \frac{1}{2}\sum_{j \in \mathcal P}\|(\text{diag}(r)\nabla
 %% \B{w})_j\|_2^2 + \gamma_j^{-1},
 \forall \boldsymbol{\gamma} \in \mathbb R_{++}^p,
 \end{split}
 \end{eqnarray}
 with equality  iff
 \begin{eqnarray}
-\gamma_j = \|(\textbf{Diff } \B{w})_j\|_2^{-1},\;\forall j \in [\![p]\!]\text{ s.t }\|(\textbf{Diff }\w)_j\|_2 > 0.
+\gamma_j = \|(\nabla \B{w})_j\|_2^{-1},\;\forall j \in [\![p]\!]\text{ s.t }\|(\nabla\w)_j\|_2 > 0.
 \label{eq:weights}
 \end{eqnarray}
 Thus,
 \begin{eqnarray}
 \|\B{w}\|_{\text{TV}} = \min_{\boldsymbol{\gamma} \in
   \mathbb R_{++}^p}
-\frac{1}{2}\sum_{j \in [\![p]\!],\|(\textbf{Diff }\w)_j\|_2 > 0} \gamma_j\|(\textbf{Diff } \B{w})_j\|_2^2 + \gamma_j^{-1}
-%% \sum_{j \in \mathcal P}\|(\text{diag}(r)\textbf{Diff }
+\frac{1}{2}\sum_{j \in [\![p]\!],\|(\nabla\w)_j\|_2 > 0} \gamma_j\|(\nabla \B{w})_j\|_2^2 + \gamma_j^{-1}
+%% \sum_{j \in \mathcal P}\|(\text{diag}(r)\nabla
 %% \B{w})_j\|_2^2 + \gamma_j^{-1}
 ,
 \end{eqnarray}
@@ -56,7 +56,7 @@ the rescaled GraphNet energy
 E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\B{w}) = \ell(\y,\X\w) +
 \alpha\rho\|\B{w}\|_1
 + \frac{1}{2}\alpha(1 - \rho)
-\sum_{j \in [\![p]\!],\|(\textbf{Diff } w)_j\|_2 > 0} \gamma_j\|(\textbf{Diff } \B{w})_j\|_2^2
+\sum_{j \in [\![p]\!],\|(\nabla w)_j\|_2 > 0} \gamma_j\|(\nabla \B{w})_j\|_2^2
 + \gamma_j^{-1},
 \label{eq:rgn}
 \end{equation}
@@ -77,7 +77,7 @@ $\gamma_1,\ldots,\gamma_p > 0$.
 for the TV-L1 model.
 \State  \textbf{Initialize:} $k \leftarrow 0$; $\mu \leftarrow 10^{-4}$
 \While{$\|\B{w}^{(k + 1)} - \B{w}^{(k)}\|_\infty \ge \epsilon$}
-\State \textbf{Recompute scaling:} $\gamma_j^{(k)} \leftarrow (\|(\textbf{Diff }
+\State \textbf{Recompute scaling:} $\gamma_j^{(k)} \leftarrow (\|(\nabla
 \B{w}^{(k)})_j\|_2^2 + {\mu}^2)^{-\frac{1}{2}}$, for every voxel $j$
 \State  \textbf{Recompute coefficients:} $\B{w}^{(k + 1)}
   \leftarrow \argmin_{\B{w} \in \mathbb R^p}
@@ -96,7 +96,7 @@ As a function of the regressor coefficients $\B{w}$, the energy in
 GraphNet model in which per-voxel weights $\alpha(1 - \rho)\gamma_j$ given
 by \eqref{eq:weights} replace the constant $\alpha(1 - \rho)$ factor
 in the pure GraphNet model \eqref{eq:opt_pb}, or
-equivalently the $\textbf{Diff }$ is pre-\textit{whitened} by the diagonal
+equivalently the $\nabla$ is pre-\textit{whitened} by the diagonal
 matrix $\boldsymbol{\Gamma} := \mathrm{diag}(\sqrt{\gamma_1},\ldots,\sqrt{\gamma_p})$. This energy
 is optimized by an alternating scheme cyclically switching between
 optimizing w.r.t the regressor coefficients $\B{w}$ and then w.r.t
@@ -133,7 +133,7 @@ one just presented can be found in
 Similarly, one can show that Sparse-Variation
 \citep{eickenberg2015total} can be solved via an IRLS
 (iteratively-reweighted Least Squares) scheme, where the weights are
-computed via \eqref{eq:weights}, with the $\textbf{Diff }$ operator replaced
+computed via \eqref{eq:weights}, with the $\nabla$ operator replaced
 with an identity-augmented version. In fact, thanks to the inequality
 \eqref{eq:rabbit}, it turns out that most
 complex rich non-smooth $\ell_p$-norm-based models are just

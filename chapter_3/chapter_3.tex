@@ -161,7 +161,7 @@ solving convex-optimization problems by splitting the
 objective function in two convex terms which are functions of linearly-related auxiliary variables
  \citep{boyd2010}.  ADMM is particularly appealing for problems such as TV
 regression: using the variable split $\mathbf{z}
-\leftarrow \textbf{Diff }\mathbf{w}$, the regularization is a simple $\ell_{1}/\ell_2$
+\leftarrow \nabla \mathbf{w}$, the regularization is a simple $\ell_{1}/\ell_2$
 norm on $\mathbf{z}$ for which the proximal is exact and computationally
 cheap. However, in our settings, limitations of ADMM are:
 \begin{itemize}
@@ -170,7 +170,7 @@ cheap. However, in our settings, limitations of ADMM are:
   $\mathbf{X}^T\mathbf{X}$, the laplacian $\Delta$, and the identity
   operator).
 \item The $\rho$ parameter for penalizing the split
-  residual $\mathbf{z} - \textbf{Diff }\mathbf{w}$ is hard to set (this is still an
+  residual $\mathbf{z} - \nabla \mathbf{w}$ is hard to set (this is still an
   open problem), and though under mild conditions ADMM
   converges for any value of $\rho$, the convergence rate depends
   on $\rho$. In chapter \ref{chap:admm}, we study the rate of convergence of ADMM on the kinds
@@ -198,8 +198,8 @@ Here, we used the original authors' implementation.
 
 \paragraph{Uniform approximation by smooth convex surrogates.}
 The $\ell_{1}$ norm (resp. TV semi-norm) is differentiable everywhere with
-gradient $\left(w_j/|w_j|\right)_{j \in [\![p]\!]}$ (resp. $-\dive (((\textbf{Diff }\mathbf{w})_j/\|(\textbf{Diff }\mathbf{w})_j\|_2)_{j \in [\![p]\!]}))$), except when some voxels are inactive with
-$w_j = 0$ (resp. $(\textbf{Diff }\w)_j = 0$), corresponding to black spots (resp. edges).  A convenient
+gradient $\left(w_j/|w_j|\right)_{j \in [\![p]\!]}$ (resp. $-\dive (((\nabla \mathbf{w})_j/\|(\nabla \mathbf{w})_j\|_2)_{j \in [\![p]\!]}))$), except when some voxels are inactive with
+$w_j = 0$ (resp. $(\nabla \w)_j = 0$), corresponding to black spots (resp. edges).  A convenient
 approach (see for example  \citep{NESTA, nesterov2005a, nesterov2005b,
   beck2012}) for dealing with such singularities is to uniformly
 approximate the offending function with smooth surrogates that
@@ -211,7 +211,7 @@ of $\ell_1$ and TV:
     \|\mathbf{w}\|_{1,\mu} := \sum_j
     \sqrt{\mathbf{w}_j^2 + \mu^2},\;
     \|\mathbf{w}\|_{\text{TV}, \mu} :=
-    \sum_{j} \sqrt{\|(\textbf{Diff }\mathbf{w})_j\|_{2}^2 + \mu^2}
+    \sum_{j} \sqrt{\|(\nabla \mathbf{w})_j\|_{2}^2 + \mu^2}
 \end{eqnarray}
 These surrogate upper-bounds are convex and everywhere-differentiable
 with gradients that are Lipschitz-continuous with constants $1/\mu$ and
@@ -388,8 +388,7 @@ they add speed without sacrificing the quality of the predictions
 % \paragraph{A note on implementation of the solver.}
 One notes that in the case of GraphNet, the penalty term % $J(\w)$
 of problem
-\eqref{eq:opt_pb}, the $\|\textbf{Diff }
-\w\|^2_2$ sub-term is smooth (i.e differentiable) with
+\eqref{eq:opt_pb}, the $\|\nabla \w\|^2_2$ sub-term is smooth (i.e differentiable) with
 \textit{Lipschitz} gradient, whilst the $\ell_{1}$ term though
 nonsmooth, is proximable
 % \footnote{That is, there is a

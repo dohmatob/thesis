@@ -67,10 +67,10 @@ maps from anatomy, etc.). The integer $p$ is the number of voxels,
 and $n$ the number of samples (images). In brain imaging, $n \ll p$;
 typically, $p \sim 10^3-10^6$ (in full-brain analysis),
 while $n \sim 10-10^3$ ($n$ being limited by the cost of acquisition,
-etc.). $\textbf{Diff }_x$ will denote the discrete spatial gradient operator
-along the $x$-axis, $\textbf{Diff }_y$ along the $y$-axis, etc.
-Thus, at a voxel $j$, the spatial gradient of an image $\B{w}$ is a vector ${\nabla} {\w}(j) := [\textbf{Diff }_{x} {\w}(j), \textbf{Diff }_{y} {\w}(j), \textbf{Diff }_{z} {\w}(j)]$, $\forall \w \in \mathbb R^p$.
-This defines a linear operator $\nabla \in \mathbb R^{3p \times p}$ (the discrete 3D spatial gradient operator) from $\mathbb R^p$ to $\mathbb R^{3p}$. For a mixing constant $\rho \in [0, 1]$, $\textbf{Diff }_\rho \in \mathbb R^{4p \times p}$ will denote the identity-augmented version of $\nabla$, defined by ${\textbf{Diff }_\rho} {\w} := [(1-\rho)\textbf{Diff }\w, \rho \w] \in \mathbb R^{4p}$.
+etc.). $\nabla_x$ will denote the discrete spatial gradient operator
+along the $x$-axis, $\nabla_y$ along the $y$-axis, etc.
+Thus, at a voxel $j$, the spatial gradient of an image $\B{w}$ is a vector ${\nabla} {\w}(j) := [\nabla_{x} {\w}(j), \nabla_{y} {\w}(j), \nabla_{z} {\w}(j)]$, $\forall \w \in \mathbb R^p$.
+This defines a linear operator $\nabla \in \mathbb R^{3p \times p}$ (the discrete 3D spatial gradient operator) from $\mathbb R^p$ to $\mathbb R^{3p}$. For a mixing constant $\rho \in [0, 1]$, $\nabla_\rho \in \mathbb R^{4p \times p}$ will denote the identity-augmented version of $\nabla$, defined by ${\nabla_\rho} {\w} := [(1-\rho)\nabla \w, \rho \w] \in \mathbb R^{4p}$.
 
 %% Let $\mathcal P \subset \mathbb{R}^3$ be
 %% the 3D image domain representing the region occupied by the brain --or
@@ -111,15 +111,15 @@ correspond to different choices of the convex penalty $\mathcal P$ acting on the
 \begin{equation}
   \begin{split}
   \mathcal P(\w) = \begin{cases}
-    \rho\|\w\|_1 + \frac{1}{2}(1-\rho)\|\textbf{Diff }\w\|_{\text{Fro}}^2 = \sum_{j \in [\![p]\!]}\rho|w_j| + \frac{1}{2}(1-\rho)\|(\textbf{Diff }\w)_j\|_2^2, &\mbox{ for GraphNet
+    \rho\|\w\|_1 + \frac{1}{2}(1-\rho)\|\nabla \w\|_{\text{Fro}}^2 = \sum_{j \in [\![p]\!]}\rho|w_j| + \frac{1}{2}(1-\rho)\|(\nabla \w)_j\|_2^2, &\mbox{ for GraphNet
       %~\citep{grosenick2013,hebiri2011}
     },\\
-    \|\textbf{Diff }_\rho \w\|_{1+2,1} = \rho\|\w\|_1 + \|\textbf{Diff }\w\|_{2,1} = \sum_{j  \in [\![p]\!]}\rho|w_j| + (1-\rho)\|(\textbf{Diff }\w)_j\|_2, &\mbox{ for isotropic TV-$\ell_1$
+    \|\nabla_\rho \w\|_{1+2,1} = \rho\|\w\|_1 + \|\nabla \w\|_{2,1} = \sum_{j  \in [\![p]\!]}\rho|w_j| + (1-\rho)\|(\nabla \w)_j\|_2, &\mbox{ for isotropic TV-$\ell_1$
       %~\citep{baldassarre2012,gramfort2013}
     },\\
-    \|\textbf{Diff }_\rho \w\|_{1,1} = \rho\|\w\|_1 + (1-\rho)\|\textbf{Diff }\w\|_{1,1} = \sum_{j  \in [\![p]\!]}\rho|w_j| + (1-\rho)\|(\textbf{Diff }\w)_j\|_1, &\mbox{ for anisotropic TV-$\ell_1$
+    \|\nabla_\rho \w\|_{1,1} = \rho\|\w\|_1 + (1-\rho)\|\nabla \w\|_{1,1} = \sum_{j  \in [\![p]\!]}\rho|w_j| + (1-\rho)\|(\nabla \w)_j\|_1, &\mbox{ for anisotropic TV-$\ell_1$
     },\\
-    \|\textbf{Diff }_\rho \w\|_{2,1} = \sum_{j  \in [\![p]\!]}\|(\textbf{Diff }_\rho \w)_j\|_2, &\mbox{ for Sparse Variation
+    \|\nabla_\rho \w\|_{2,1} = \sum_{j  \in [\![p]\!]}\|(\nabla_\rho \w)_j\|_2, &\mbox{ for Sparse Variation
       % \citep{eickenberg2015total}
     },\\
       \vdots
@@ -132,7 +132,7 @@ $\rho$ ($0 < \rho \le 1$) is a mixing constant between
   the {sparsity-inducing} $\ell_1$ part and the
   {cluster-promoting} part of the penalty term.
   The particular case {$\rho = 1$} corresponds to the usual Lasso. Vanilla TV   \citep{michel2011tv} corresponds to TV-$\ell_1$ with $\rho = 0$.
- The matrix $\textbf{Diff }_\rho$ is the extended discrete gradient operator defined in Chapter ~\ref{sec:notations}.  
+ The matrix $\nabla_\rho$ is the extended discrete gradient operator defined in Chapter ~\ref{sec:notations}.  
 \begin{shaded}
 \paragraph{Bayesian interpretation.} The penalties $\mathcal P(\w)$ in \eqref{eq:opt_pb} admit a Bayesian interpretation as a prior on the distribution of the coefficients $\w$
 \begin{equation}
