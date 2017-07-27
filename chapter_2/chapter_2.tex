@@ -9,16 +9,29 @@ Functional brain imaging provides a distinctive opportunity to study brain funct
 \paragraph{The standard approach.}
 The standard approach used for analyzing these activation maps is called classical inference, and relies on a mass-univariate statistical tests (one for each voxel), yielding the so-called Statistical Parametric Maps (SPMs)~\citep{friston1994statistical}. Such maps are of particular interest in cognitive neuroscience, as they open the door to localizing the voxels that are significantly active for any combination of experimental conditions, and thus are probably implied in the underlying neural code of the cognitive processes. However, this classical inference suffers from multiple comparisons issues, and does not take into account the multivariate structure of the fMRI data.
 
+\begin{pagefigure}
+  \includegraphics[width=1\linewidth]{figures/decoding.png}
+  \caption{\textbf{Decoding} models mine
+patterns of activity to discriminate
+between cognitive states. Different
+activation patterns reflect different mental states. For example,
+those associated with different images viewed by the subject.
+In a training phase, the classifier will
+learn to discriminate between brain activity measured under different
+cognitive states. In the testing phase the generalization performance of the trained model is
+quantified by evaluating the classifier on the testing set and comparing
+the output of the classifier with the true labels associated with
+the stimuli. One can map the accuracy of the decoder to ...~\citep{dehaene1998}. Adapted from [Smith, 2013]}
+\end{pagefigure}
+
 \paragraph{Inference inference (or ``brain reading'').}
 An alternative approach called \textit{inverse inference} (or ``brain-reading'')~\citep{dehaene1998,cox2003}, has been proposed in order to cope with the limitations of the afore-mentioned classical inference. Inverse inference relies on a pattern recognition, and aims at decoding the neural code by using machine-learning methods. Based on a set of brain activation maps, inverse inference builds a predictive model that can be used for predicting a behavioral target (age, sex, IQ, etc.) for a new set of images. The prediction accuracy of the model is used as a measure of the quantity of information about the cognitive task shared by the voxels. By construction, this approach is multivariate, and can provide more sensitive analysis than standard statistical parametric mapping procedure [Kamitani 05, Haynes 06]. Several methods have been tested for classification or regression of activation images (Linear Discriminant Analysis -- LDA, Support Vector Machines -- SVM, Lasso, Elastic net regression, and many others), but, in this problem, the major bottleneck remains the localization of predictive regions within the brain volume. Additionally, we have to deal with the curse of dimensionality, as the number of features (voxels, regions) is much larger ($\sim 10^5-10^6$ ) than the numbers of sample (images) ($\sim 10^2 - 10^3$ ), the latter being limited by the cost of acquisition. Thus the prediction method may overfit the training set and thus not generalize well to new samples.
 
-\begin{shaded}
 \paragraph{Towards intepretable multi-variate models.}
 To cope with the high dimensionality of the data, the learning method has to be
 regularized. However, the spatial structure of the image is not
 taken into account in standard regularization methods, so that the
 extracted features are often hard to interpret.
-\end{shaded}
 
 \section{Sparsity and structure-inducing priors}
 Sparsity and smoothness inducing priors can used to
@@ -87,7 +100,6 @@ This defines a linear operator $\nabla \in \mathbb R^{3p \times p}$ (the discret
 \section{SpaceNet: sparse structured models for brain data}
 Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)~\citep{michel2011tv}, TV-$\ell_1$~\citep{baldassarre2012,gramfort2013}, GraphNet   \citep{grosenick2013,hebiri2011},
   TV-ElasticNet~\citep{dubois2014predictive}, Sparse Variation~\citep{eickenberg2015total}, and social-sparsity~\citep{kowalski2013social,varoquaux2016social}. These can all be written in a general framework as follows
-
 
 \begin{equation}
   \underset{\w \in \mathbb R^p}{\text{minimize }}E(\w) := \ell(\y,\X\w) + \alpha \mathcal P(\w).
@@ -187,7 +199,7 @@ defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v
 \section{Methods}
 The SpaceNet model leads to difficult non-smooth mathematical optimization problems making their implementation and practical usability challenging. \citep{dohmatob2014benchmarking} benchmarked a rich variety of cutting-edge solvers for such problems, and gave crucial recommendations on how to effectively implement these algorithms in practice. In these benchmarks, the FISTA algorithm emerged as the go-to algorithm for the TV-L1 problem~\citep{dohmatob2015speeding}. These hints have been carefully used in implementing SpaceNet. Also as a preprocessing step, we use univariate feature-screening (ANOVA) to eliminate voxels which are irrelevant to the learning problem, thus reducing the size of the problem. As a result the implementation of SpaceNet is fast, robust, and automatically sets its parameters (internal cross-validation). All these technical details will be properly presented in the next few chapters.
 
-\section{Comparing SpaceNet with against basic models}
+\subsection{Comparing SpaceNet with against basic models}
 \paragraph{Classification.}
 We compared SpaceNet (TV-L1 and GraphNet / Smooth-Lasso priors) with an SVM (Support Vector Machine) on the visual-recognition dataset~\citep{haxby2001}. This dataset consists of 6 subjects with 12 runs per subject. In each run, the subjects passively viewed images of eight object categories, grouped in 24-second blocks separated by intermittent rest periods. This experiment is a classification task: predicting the object category. The design matrix is made of time-series from the full-brain mask of $p=23,707$ voxels over 216 TRs (Repetition Times), of a single subject (subj1). 126 TRs were used for training all the models, whilst testing was done on 90 left-out TRs. The results are depicted in Figures 1 (bar chat) and 2 (brain maps).
 
@@ -216,9 +228,40 @@ The results are shown in Fig. \ref{fig:tvl1_regression}.
   \label{fig:tvl1_regression}
 \end{figure}
 
+\subsection{Cross-validation}
+Cross-validation (e.g see ~\citep{stone74}) is a technique used to protect against overfitting in a predictive model, particularly in a case where the amount of data may be limited. In cross-validation, you make a fixed number of folds (or partitions) of the data, run the analysis on each fold, and then average the overall error estimate. This gives an (asymptotically) unbiased estimate of the true generalization error of the model. 
+
+Two major types of cross-validation are K-Fold and Leave-One-Out (LOO).
+
+\paragraph{K-Fold cross-validation.}
+One iteration of the K-fold cross-validation is performed in the following way: First, a random permutation of the sample set is generated and partitioned into K subsets ("folds") of about equal size. Of the K subsets, a single subset is retained as the validation data for testing the model (this subset is called the "testset"), and the remaining K - 1 subsets together are used as training data ("trainset"). Then a model is trained on the trainset and its accuracy is evaluated on the testset. Model training and evaluation is repeated K times, with each of the K subsets used exactly once as the testset.
+The case of a 5-fold cross-validation with 30 samples is illustrated in Fig. \ref{fig:cv}.
+
+\paragraph{Leave-One-Out cross-validation.}
+As the name suggests, leave-one-out cross-validation involves using a single sample from the original sample set as the validation data, and the remaining samples as the training data. This is repeated such that each sample in the sample set is used exactly once as the validation data. This is the same as K-fold cross-validation where K is equal to the number of samples in the sample set.
+In LOO, there is no need in generating random permutations and in repeating it, because the training and validation datasets for each of the folds are always the same, and therefore the result of the accuracy estimation is determined.
+
+\begin{figure}
+  \subfloat[1 iteration of 5-Fold cross-validation]{\includegraphics[width=1\linewidth]{figures/cv_folds.png}}\\
+  \subfloat[Parameter grid]{\includegraphics[width=1\linewidth]{figures/cv_grid.pdf}}
+  \caption{\textbf{Model-selection} via cross-validation.
+\textbf{\textit{(a)}} K-Fold cross-validation, illustrated
+here for the case $K = 5$, involves
+taking the available data and partitioning it into $K$ groups. Then
+$K - 1$ groups are used to train a set of models that are then
+evaluated on the remaining group. Adapted from \url{http://genome.tugraz.at/proclassify/help/pages/XV.html}.
+\textbf{\textit{(b)}} $L \times M$ grid over which to search for optimal configuration in
+a model with two hyper-parameters $\alpha$ and $\rho$. For a model like SpaceNet \eqref{eq:main_pb}, the grid is is constrained to verify $0 \le\alpha_L < \ldots < \alpha_1 = \alpha_{\text{max}}$ and $0 \le \rho_M < \ldots < \rho_1 \le 1$, with $L = 10$ and $M = 3$ typically, given a total of $LM = 30$ models to compare. In chapter \ref{chap:speeding}, we show how \textit{early-stopping} and other heuristics can be used to make the total cost much more effective than just fitting $LM$ models in a CV loop. }
+  \label{fig:cv}
+\end{figure}
+
+\paragraph{Model-selection via cross-validation.}
+One can instrument cross-validation to tune the hyper-parameters of a model like SpaceNet \eqref{eq:main_pb}, by selected the configuration of model parameters with least cross-validation error. The number of models fitted is proportional to the size of the parameter grid --i.e exponential in the number of parameters to tune-- and therefor can become prohibitive in case there are many free hyper-parameters in the model. Also, since some of the data has to be set aside for validation, cross-validation in very small sample settings (e.g e few tenths, as is the in some neuroimaging experiments) may be troublesome as the error estimates then have very high variance. A reasonable alternative in such situations are SURE (short for \textit{Stein's Unbiased Risk Estimator}~\citep{stein1981})-based methods,
+which are applicable whenever a procedure for obtaining (an unbiased estimate) of the number of degrees of freedom of the model is available. Recently, ~\citep{sugar} has proposed a STEIN-based technique for structured models with many hyper-parameters.
+
 \section{Conclusion}
 We have presented SpaceNet, a family of priors for brain decoding that enforce both sparsity and structure, leading to better prediction scores and intepretable brain maps. We believe that such priors will become commonplace in future.
-In the next chapter we open the ``black box'' and develop from ground-up, the details of such models, including their practical implementation on a computer.
+In the next few chapters, we open the ``black-box'' and develop from ground-up, the details of such models, including their practical implementation on a computer.
 
 % \clearpage
 \bibliographystyle{plainnat}

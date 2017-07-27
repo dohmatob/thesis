@@ -1,4 +1,4 @@
-all: clean dot tikz svg
+all: clean tables dot tikz svg
 	pdflatex index
 	bibtex abstract.aux
 	bibtex chapter_1/chapter_1.aux
@@ -9,6 +9,7 @@ all: clean dot tikz svg
 	bibtex chapter_7/chapter_7.aux
 	bibtex chapter_8/chapter_8.aux
 	bibtex chapter_9/chapter_9.aux
+	bibtex chapter_10/chapter_10.aux
 	pdflatex index
 	pdflatex index
 
@@ -23,6 +24,10 @@ svg:
 
 dot:
 	dot flowchart.dot -Tpdf > flowchart.pdf
+
+tables:
+	pdflatex figures/cv_grid.tex
+	mv cv_grid.pdf figures
 
 clean:
 	rm -f *.aux *.log *.glo *.toc *.dvi index.pdf *.out
