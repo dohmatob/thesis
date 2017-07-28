@@ -13,7 +13,7 @@ This work follows the spirit of \citep{candes2007enhancing} which proposed an en
 See Figure \ref{fig:igraphnet}. Pending figures comparing (maps, scores, and
 runtime) GraphNet, iGraphNet, and the baseline TV-L1 implementation via double-FISTA implementations~\citep{dohmatob2014benchmarking,varoquaux2015faasta}.
 
-\subsection{Derivation}
+\section{Derivation}
 Invoking the following
 well-known elementary result\footnote{To prove it, one simply uses the fact
   that $w^2u^2 + 1 - 2wu = (wu - 1)^2 \ge 0$, with equality iff $wu =
@@ -101,10 +101,10 @@ matrix $\boldsymbol{\Gamma} := \mathrm{diag}(\sqrt{\gamma_1},\ldots,\sqrt{\gamma
 is optimized by an alternating scheme cyclically switching between
 optimizing w.r.t the regressor coefficients $\B{w}$ and then w.r.t
 then rescales the coefficients $\w$ (via formula \eqref{eq:weights}). The algorithm
-so-obtained (detailed in subsection \ref{sec:algo}) alternates between minimization over the scaling parameters $\boldsymbol{\gamma}$ and minimization over the coefficients $\w$.
+so-obtained (detailed in section \ref{sec:algo}) alternates between minimization over the scaling parameters $\boldsymbol{\gamma}$ and minimization over the coefficients $\w$.
 % \textbf{XXX: Elvis to Elvis: cite some recent work by Pesquet \& Chouzenoux
 %   on proximal methods with conjugate gradient schemes (or something like that)}
-\subsection{The algorithm: iGraphNet}
+\section{The algorithm: iGraphNet}
 \label{sec:algo}
 We now present iGraphNet, an iteratively-reweighted scheme for
 solving the TV-L1 model, based on modified GraphNet \eqref{eq:opt_pb}
@@ -140,7 +140,7 @@ complex rich non-smooth $\ell_p$-norm-based models are just
 iteratively-reweighted versions of much simpler counterparts like
 Ordinary Least Squares, Lasso, ElasticNet, GraphNet, etc....
 
-\subsection{Experimental results}
+\section{Experimental results}
 Preliminary experimental results are shown in Fig. \ref{fig:igraphnet}...
 
 \begin{marginfigure}
