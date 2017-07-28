@@ -107,12 +107,6 @@ that in the future, normalization will be based on multi-modal atlases
 (tissue probability maps, functional parcellation maps, etc.)
 \citep{pmid24936682}.
 \subsection{General preprocessing procedures}
-\begin{figure}[!htpb]
-     \includegraphics[width=1\linewidth]{flowchart.pdf}
-\caption{\textbf{The pipelines.} The template-generation step is done using ANTS. It pools registered data from all subjects. \textbf{N.B.:} SBRef = single-band high-resolution 3D volume. As in \citep{glasser2013}, all the transformations are postponed and the original 4D EPI is resampled at the end by applying the composition of these transformations in a single step.}
-\label{fig:pipelines}
-\end{figure}
-
 \label{sec:gen_proc}
 \paragraph{Motion correction}
 During acquisitions, subjects move their heads in the
@@ -138,6 +132,12 @@ the methods described in \citep{VanEssen20122222}. %% In particular, we replace 
 Both methods use  FSL's \textit{topup} tool \citep{smith2004} to
 estimate the deformation field due to B0 inhomogeneities (the
 distortions) \citep{glasser2013}.
+
+\begin{figure}[!htpb]
+     \includegraphics[width=1\linewidth]{flowchart.pdf}
+\caption{\textbf{The pipelines.} The template-generation step is done using ANTS. It pools registered data from all subjects. \textbf{N.B.:} SBRef = single-band high-resolution 3D volume. As in \citep{glasser2013}, all the transformations are postponed and the original 4D EPI is resampled at the end by applying the composition of these transformations in a single step.}
+\label{fig:pipelines}
+\end{figure}
 
 \paragraph{Deformation model}
 We used ANTs' \textit{Symmetric Normalization} (aka \textit{SyN})
