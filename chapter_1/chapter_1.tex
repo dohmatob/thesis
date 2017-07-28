@@ -554,6 +554,19 @@ our proposed direct EPI-based pipeline mildly outperforms the classical indirect
 %% \end{figure}
 
 
+\subsubsection{Residual inter-subject spatial variability}
+\begin{figure}[!htb]
+\includegraphics[width=1\linewidth]{figures/cov1.png}
+\includegraphics[width=1\linewidth]{figures/cov2.png}
+\caption{\textbf{Coefficient-of-Variation (CoV)} after registration. \textbf{Top:} Log10 of ratio of across-subject Coefficient of Variation (CoV) for indirect T1-based pipeline / direct EPI-based. We see that the gain of our proposed method is most pronounced along the cortical surface.
+\textbf{Bottom:} Histograms of CoV  for both
+  pipelines. Again, we see clearly that our proposed method reduces the inter-subject variability by a much larger margin, indicative of improved subject-to-subject alignment.}
+\label{fig:cv}
+\end{figure}
+
+In Figure \ref{fig:cv}, we show across-subject histograms of
+across-subject per-voxel Coefficient of Variation (small is better).
+We see that our proposed direct method outperforms the classical indirect T1-based method, as the former leads to relatively more mis-aligned voxels across subjects, most concentrated on the outer edge of the cortex (see Figure \ref{fig:cv} \textit{(a)}).
 
 \subsubsection{Quality of estimated EPI group template}
 To compare the quality of the group template produced by either pipeline, a snapshot of the resulting mean image or template is displayed in
@@ -585,20 +598,6 @@ left-to-right direction), even though distortion correction was done as part of 
 \label{fig:template}
 \end{figure}
 
-\subsubsection{Residual inter-subject spatial variability}
-\begin{figure}[!htb]
-\includegraphics[width=1\linewidth]{figures/cov.png}
- 
-             
-\caption{\textbf{Coefficient-of-Variation (CoV)} after registration. \textbf{Top:} Log10 of ratio of across-subject Coefficient of Variation (CoV) for indirect T1-based pipeline / direct EPI-based. We see that the gain of our proposed method is most pronounced along the cortical surface.
-\textbf{Bottom:} Histograms of CoV  for both
-  pipelines. Again, we see clearly that our proposed method reduces the inter-subject variability by a much larger margin, indicative of improved subject-to-subject alignment.}
-\label{fig:cv}
-\end{figure}
-
-In Figure \ref{fig:cv}, we show across-subject histograms of
-across-subject per-voxel Coefficient of Variation (small is better).
-We see that our proposed direct method outperforms the classical indirect T1-based method, as the former leads to relatively more mis-aligned voxels across subjects, most concentrated on the outer edge of the cortex (see Figure \ref{fig:cv} \textit{(a)}).
 
 
 \subsubsection{Group-level statistics and Functional brain network patterns}
