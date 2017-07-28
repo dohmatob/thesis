@@ -101,9 +101,9 @@ $\Omega = $ the \textit{mixed-norm} $\ell_{2,1}= \|.\|_{2,1}:z
 \paragraph*{Isotropic TV-L1 and Sparse Variation.}
 The different extensions of the TV penalty presented in chapter \ref{chap:structured_priors} can be posed in the form of the problem above.
 For example, Sparse Variation~\citep{eickenberg2015total} corresponds to taking
-$\K = [\rho\Id,\hspace{.5em}(1-\rho)\textbf{Diff }]^T \in
-\mathbb{R}^{4p \times p}$, where $\textbf{Diff }$ is the discrete
-(multi-dimensional) spatial gradient operator
+$\K = [\rho\Id,\hspace{.5em}(1-\rho)\nabla]^T \in
+\mathbb{R}^{4p \times p}$, where $\nabla$ is the discrete
+(refer to chapter \ref{chap:structured_priors}) spatial gradient operator
 and $\rho \in [0, 1]$ is a mixing parameter.
 For TV-L1 ~\citep{baldassarre2012,gramfort2013}, the penalty is
 given by $\Omega(\B{z}) = \sum_{j \in [\![p]\!]}|z_{j,1}| + \sum_{j \in
@@ -253,8 +253,8 @@ to the anisotropic case. The results presented in Theorem
 \eqref{thm:frechet} carry over effortlessly to the case where the
 $\varphi$ is the
   concatenation of $\ell_{2,1}$ norms, for example as in the the TV-L1
-  semi-norm.%%  $\varphi(K\cdot)$, where $\B{Kw} \equiv ((1-\rho)
-  %%   \textbf{Diff }(w),\hspace{.5em}\rho w)$ and $\varphi = (\ell_{2,1},
+  semi-norm. %%  $\varphi(K\cdot)$, where $\B{Kw} \equiv ((1-\rho)
+  %%   \nabla(w),\hspace{.5em}\rho w)$ and $\varphi = (\ell_{2,1},
   %% \ell_1)$.
   %% Also, part \textit{(b)} of \ref{thm:frechet} can be
   %% extended to even more general instances of problem

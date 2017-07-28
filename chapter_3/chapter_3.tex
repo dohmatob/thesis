@@ -126,21 +126,21 @@ constant $L_{\nabla \ell}$, of the derivative of smooth part of the objective fu
 the faster the resulting FISTA algorithm. In FISTA, the main use of 
 $L_{\nabla \ell}$ is the fact that: for any
 stepsize $0 < t \le 1/L_{\nabla \ell}$ and for any point $\mathbf{z}$,
-\begin{shaded}
+% \begin{shaded}
 \begin{equation}%
   \begin{gathered}
     \ell(\mathbf{p}_{t}(\mathbf{z})) \le
     \ell(\mathbf{z}) + \mathbf{r}_{t}^T\nabla
     \ell(\mathbf{z}) + \frac{1}{2t} \|\mathbf{r}_{t}\|_{2}^2,
     \text{  where} \quad\\
-    \mathbf{p}_{t}(\mathbf{z}) := \textrm{prox}_{\alpha t J}(\mathbf{z} - t
+    \mathbf{p}_{t}(\mathbf{z}) := \textrm{prox}_{\alpha t \mathcal P}(\mathbf{z} - t
     \nabla \ell(\mathbf{z})) \,\text{  and  }\,
     \mathbf{r}_{t} :=
     \mathbf{p}_{t}(\mathbf{z}) - \mathbf{z} \quad
   \end{gathered}
   \label{eq:fista_ineq}
 \end{equation}
-\end{shaded}
+% \end{shaded}
 In least-squares regression, $L_{\nabla \ell}$ is precisely the largest
 singular value of the design matrix $\mathbf{X}$.
 For logistic
