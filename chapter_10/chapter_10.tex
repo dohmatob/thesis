@@ -12,6 +12,11 @@ improving, and (b) univariate feature-screening, whereby irrelevant
 (non-predictive) voxels are detected and eliminated before the
 optimization problem is entered, thus reducing the size of the
 problem.
+Empirical results with GraphNet on real MRI (Magnetic
+Resonance Imaging)
+datasets indicated that these heuristics are a win-win strategy, as
+they add speed without sacrificing the quality of the predictions
+/ classifications.
 
 \begin{figure}[!htb]
   \includegraphics[width=1\linewidth]{figures/screening.png}
@@ -44,12 +49,6 @@ problem.
   
   \label{fig:screening}
 \end{figure}
-
-Empirical results with GraphNet on real MRI (Magnetic
-Resonance Imaging)
-datasets indicated that these heuristics are a win-win strategy, as
-they add speed without sacrificing the quality of the predictions
-/ classifications.
 
 %% We will now detail the heuristic techiques for speeding up
 %% numerical optimization of GraphNet  \citep{hebiri2011,grosenick2013}
@@ -96,7 +95,6 @@ is to compute for each value of the regularization parameter, a
 \textit{relevance measure} for each feature, which is then compared with a
 threshold (produced by the screening procedure itself). Features which fall short
 of this threshold are detected as irrelevant and eliminated.
-
 For the
 Lasso and similar models (including Group Lasso),
 \textit{exact}
@@ -121,7 +119,7 @@ $\X$ is computed.
 For a given screening-percentile
 $sp \in [0, 100]$ , the $sp$th percentile value of the
 vector $|\B{X}^T\y| := (|\B{X}^T_1\y|, ..., |\B{X}^T_p\y|)$, denoted $p_{sp}(|\B{X}^T\y|)$,
-is computed. The case $sp=100$ corresponds to full-brain analysis. 25
+is computed. The case $sp=100$ corresponds to full-brain analysis with no screening. $sp=25$
 means we keep the quarter of the brain made of voxels with the highest
 $|\B{X}^T_j\y|$ values, and so on.
 % ; this is the threshold.
@@ -135,10 +133,14 @@ dilated, to obtain a more structured mask.  Figure
 to various datasets, prior to model fitting.
 
 \subsection{Early-stopping}
-In each train sub-sample (for example a fold, in the case of $K$-fold
-cross-validation) of the internal cross-validation loop for setting
+The only incentive for optimizing a model is to improve its generalization power: performance on unseen data. If this performs stops improving during training (statistical convergence), as measured on a left-out subset of data
+, then we may as well abrupt the optimization algorithm (numerical convergence). We implement this principle heuristically as follows.
+In each train sub-sample
+% (for example a fold, in the case of $K$-fold
+% cross-validation)
+of the internal cross-validation loop for setting
 the parameters of the GraphNet model \eqref{eq:opt_pb}, a pass is done
-on the 2-dimensional parameter grid and each parameter pair
+on the 2-dimensional parameter grid (see Fig. \ref{fig:cv}) and each parameter pair
 $(\alpha,\rho)$ is scored according to its prediction /
 classification performance. For a fixed parameter pair
 $(\alpha,\rho)$, an instance of problem \eqref{eq:opt_pb} is solved
@@ -284,7 +286,7 @@ increasing $sp$ ($10$ to $100$): \textbf{44.2m, 81.3m, 186.5m, 341.3m}}
 \end{pagefigure}
 
 \section{Conclusion}
-we have presented heuristics that provide
+We have presented heuristics that provide
 speedups for optimizing GraphNet~\citep{hebiri2011,grosenick2013}  in the difficult
 context of brain data. These heuristics are a win-win strat-
 egy as they add speed without sacrificing the quality of

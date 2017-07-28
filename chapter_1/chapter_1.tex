@@ -4,7 +4,7 @@
 \minitoc
 
 In this chapter, we turn our attention to another key problem in neuro-imaging: registration of functional brain data from different subjects. After a concise review of the existing literature,
-we present a contribution of ours.
+we present a contribution of ours, namely direct registration of fMRI data without using the subject's anatomy as a proxy.
 
 \section{Introduction}
 Registering brain images from different subjects in a common space
@@ -135,13 +135,13 @@ distortions) \citep{glasser2013}.
 
 \begin{figure}[!htpb]
      \includegraphics[width=1\linewidth]{flowchart.pdf}
-\caption{\textbf{The pipelines.} The template-generation step is done using ANTS. It pools registered data from all subjects. \textbf{N.B.:} SBRef = single-band high-resolution 3D volume. As in \citep{glasser2013}, all the transformations are postponed and the original 4D EPI is resampled at the end by applying the composition of these transformations in a single step.}
+\caption{\textbf{The pipelines.} The template-generation step is done using ANTs~\citep{avants2008,avants2011}. It pools registered data from all subjects. \textbf{N.B.:} SBRef = single-band high-resolution 3D volume. As in \citep{glasser2013}, all the transformations are postponed and the original 4D EPI is resampled at the end by applying the composition of these transformations in a single step.}
 \label{fig:pipelines}
 \end{figure}
 
 \paragraph{Deformation model}
 We used ANTs' \textit{Symmetric Normalization} (aka \textit{SyN})
-deformation model \citep{avants2008,avants2011}, which has been shown
+deformation model ~\citep{avants2008,avants2011}, which has been shown
 to be a state-of-the art method for nonlinear registration
 \citep{pmid19195496}. As done usually, we initialize a nonlinear
 registration algorithm with an affine (rigid-body) registration

@@ -453,12 +453,6 @@ In the experiments, $\alpha$ was chosen according to \eqref{eq:varyingalpha}. \t
   \label{fig:param}
 \end{figure}
 
-\paragraph*{Fidelity-stability tradeoffs.}
-\textbf{Please make readbale statements. I can't help.}
-Very faithful decompositions won't be stable across different splits. Also,
-they will overfit on training data... There is an inherent fidelity-stability tradeoff to be made by the field practitional   \citep{abraham2013}
-... See Fig. \ref{fig:param}.
-
 Concerning the $\alpha$ parameter, inspired by   \citep{ying2006online}, we have found the following time-varying data-adaptive choice for the $\alpha$ parameter to work very well in practice:
 \begin{equation}
   \alpha = \alpha_t \sim t^{-1/2}.
@@ -736,7 +730,7 @@ That notwithstanding, notice how the major structures (parietal lobes, sulci, et
 \caption{\textbf{Qualitative comparison of the estimated dictionaries.} Each column represents an atom of the estimated dictionary, where atoms from
   the different models (the rows of the plots) have been matched via a Hungarian algorithm. Here, we only show a limited number of the most ``intepretable'' atoms. Notice how the major structures in each atom are reproducible across the different models. %% We see that our proposed approach produces more structured dictionaries: the atoms are well-segmented piece-wise smooth and compact, making up blobs, as opposed to scattered patterns of activation.
   Maps corresponding to hard-thresholded CanICA
-    \citep{varoquaux2010group} components have also been included, and have been called tCanICA. In contrast, the maps from the SODL   \citep{mairal2010} and our proposed Smooth-SODL \eqref{eq:ss} were not been thresholded.
+    \citep{varoquaux2010group} components have also been included, and have been called tCanICA. In contrast, the maps from the SODL~\citep{mairal2010} and our proposed Smooth-SODL \eqref{eq:ss} were not been thresholded.
  }
    
 % \end{subfigure}
@@ -799,14 +793,15 @@ Ideally, one does not need spatial regularization if data are abundant (like in 
 In the beginning of the curve, our proposed spatially regularized Smooth-SODL model starts off with more than 31\% explained variance (computed on 241 subjects), after having pooled only 17 subjects. In contrast, the vanilla SODL model   \citep{mairal2010} scores a meager 2\% explained variance; this corresponds  to a 14-fold gain of Smooth-SODL over SODL. As more and more that are pooled, both models explain more variance, and the gap between Smooth-SODL and SODL reduces, and both models perform comparably asymptotically. % (i.e the gain factor tends to $1$).
 
 \begin{figure}[!htp]
- \begin{tabular}{|c|c|c|c|c}\hline%\hline
-    {Nb. subjects pooled} & {vanilla SODL} & {proposed model} & {gain factor} \\ \hline
-17 & {2\%} & \bf{31\%} & {x13.8}\\\hline
-92 & 37\% & \bf{50\%} & x1.35\\\hline
-167 & 47\% & \bf{54\%} & x1.15\\\hline
-241 & 49\% & \bf{55\%} & x1.11\\
+ \begin{tabular}{c|c|c|c}\hline%\hline
+    {\# subjects pooled} & {vanilla SODL} & {proposed model} & {gain factor} \\ \hline
+17 & {2\%} & {31\%} & \bf{x13.8}\\\hline
+92 & 37\% & {50\%} & \bf{x1.35}\\\hline
+167 & 47\% & {54\%} & \bf{x1.15}\\\hline
+241 & 49\% & {55\%} & \bf{x1.11}\\
   \end{tabular}
- \caption{\textbf{Learning-curve} for boost in explained variance of our proposed Smooth-SODL model over the reference SODL model.
+ \caption{\textbf{Learning-curve} for boost in explained variance of our proposed Smooth-SODL model \eqref{eq:ss} 
+over the reference sparse online dictionary-learning (SODL) model~\citep{mairal2010}.
    Note the reduction in the gain in EV as more data are pooled.}
  \label{fig:ev}
 \end{figure}

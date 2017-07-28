@@ -1,4 +1,4 @@
-\begin{thebibliography}{26}
+\begin{thebibliography}{28}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -110,6 +110,21 @@ A.~Klein, J.~Andersson, B.~A. Ardekani, J.~Ashburner, B.~Avants, M.~C. Chiang,
 \newblock {{E}valuation of 14 nonlinear deformation algorithms applied to human
   brain {M}{R}{I} registration}.
 \newblock \emph{Neuroimage}, 46\penalty0 (3):\penalty0 786--802, Jul 2009.
+
+\bibitem[Ogawa et~al.(1990{\natexlab{a}})Ogawa, Lee, Kay, and Tank]{agawa1990}
+S.~Ogawa, T.~M. Lee, A.~R. Kay, and D.~W. Tank.
+\newblock Brain magnetic resonance imaging with contrast dependent on blood
+  oxygenation.
+\newblock \emph{Proc Natl Acad Sci U S A}, 87\penalty0 (24):\penalty0
+  9868--9872, 1990{\natexlab{a}}.
+
+\bibitem[Ogawa et~al.(1990{\natexlab{b}})Ogawa, Lee, Nayak, and
+  Glynn]{ogawa1990b}
+Seiji Ogawa, Tso-Ming Lee, Asha~S. Nayak, and Paul Glynn.
+\newblock Oxygenation-sensitive contrast in magnetic resonance image of rodent
+  brain at high magnetic fields.
+\newblock \emph{Magnetic Resonance in Medicine}, 14\penalty0 (1):\penalty0
+  68--78, 1990{\natexlab{b}}.
 
 \bibitem[Pell{\'e} et~al.(2016)Pell{\'e}, Ciuciu, Rahim, Dohmatob, Abry, and
   Van~Wassenhove]{pelle2016multivariate}

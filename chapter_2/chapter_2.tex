@@ -4,10 +4,10 @@
 \minitoc
 
 \section{Introduction to brain decoding}
-Functional brain imaging provides a distinctive opportunity to study brain functional architecture, while being minimally invasive, and is thus well-suited for the challenging study of the spatial layout of neural coding. Different modalities exist, each one having specific spatial and temporal resolutions; among them Functional Magnetic Resonance Imaging (fMRI)~\citep{agawa1990,ogawa1990b} has emerged as a fundamental modality for brain imaging, striking a good balance between spatial and temporal resolution.  fMRI images are pre-processed, and modeled through a General Linear Model, that takes into account the different experimental conditions and the dynamics of the hemodynamic response in the design matrix. The resulting model parameters, a.k.a. activation maps, represent the influence of the different experimental conditions on local fMRI signals.
+As already discussed in chapter \ref{chap:bigpic}, functional brain imaging provides a distinctive opportunity to study brain functional architecture, while being minimally invasive, and is thus well-suited for the challenging study of the spatial layout of neural coding. Different modalities exist, each one having specific spatial and temporal resolutions; among them Functional Magnetic Resonance Imaging (fMRI)~\citep{agawa1990,ogawa1990b} has emerged as a fundamental modality for brain imaging, striking a good balance between spatial and temporal resolution.  fMRI images are pre-processed, and modeled through a general linear model (GLM), that takes into account the different experimental conditions and the dynamics of the haemodynamic response in the design matrix. The resulting model parameters, a.k.a. activation maps, represent the influence of the different experimental conditions on local fMRI signals.
 
 \paragraph{The standard approach.}
-The standard approach used for analyzing these activation maps is called classical inference, and relies on a mass-univariate statistical tests (one for each voxel), yielding the so-called Statistical Parametric Maps (SPMs)~\citep{friston1994statistical}. Such maps are of particular interest in cognitive neuroscience, as they open the door to localizing the voxels that are significantly active for any combination of experimental conditions, and thus are probably implied in the underlying neural code of the cognitive processes. However, this classical inference suffers from multiple comparisons issues, and does not take into account the multivariate structure of the fMRI data.
+The standard approach used for analyzing these activation maps is called classical inference, and relies on a mass-univariate statistical tests (one for each voxel), yielding the so-called statistical parametric maps (SPMs)~\citep{friston1994statistical}. Such maps are of particular interest in cognitive neuroscience, as they open the door to localizing the voxels that are significantly active for any combination of experimental conditions, and thus are probably implied in the underlying neural code of the cognitive processes. However, this classical inference suffers from multiple comparisons issues. Also, it does not take into account the multivariate structure of the fMRI data.
 
 \begin{pagefigure}
   \includegraphics[width=1\linewidth]{figures/decoding.png}
@@ -61,7 +61,7 @@ but has weaker mini-max rates, and the visual effect is less appealing.
 
 In the context of neuro-imaging, sparsity and smoothness have been compiled to yield
 regression coefficients which are faithful to known neurobiological organization of the brain,
-while alleviating the risk of over-fitting due inherent int small-sample settings.
+while alleviating the risk of over-fitting due to inherently small-sample settings.
 Specifically, it has been shown that one can employ priors like TV-$\ell_1$
  \citep{baldassarre2012,gramfort2013}, TV-ElasticNet \citep{dubois2014predictive},
 and GraphNet  \citep{grosenick2013}
@@ -71,7 +71,7 @@ and GraphNet  \citep{grosenick2013}
 to regularize regression and classification
 problems in brain imaging.
 
-We denote by ${\y} \in \mathbb{R}^{n}$ the targets to
+\paragraph{Notation.} We denote by ${\y} \in \mathbb{R}^{n}$ the targets to
 be predicted (age, sex, IQ, etc.); the \textit{design matrix}
 ${\X}\in\mathbb{R}^{n \times p}$ are the masked (see Fig. \ref{fig:masking})
 brain images related to the presentation of different
@@ -99,8 +99,7 @@ This defines a linear operator $\nabla \in \mathbb R^{3p \times p}$ (the discret
 
 \section{SpaceNet: sparse structured models for brain data}
 Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)~\citep{michel2011tv}, TV-$\ell_1$~\citep{baldassarre2012,gramfort2013}, GraphNet   \citep{grosenick2013,hebiri2011},
-  TV-ElasticNet~\citep{dubois2014predictive}, Sparse Variation~\citep{eickenberg2015total}, and social-sparsity~\citep{kowalski2013social,varoquaux2016social}. These can all be written in a general framework as follows
-
+  TV-ElasticNet~\citep{dubois2014predictive}, Sparse Variation~\citep{eickenberg2015total}, and social-sparsity~\citep{kowalski2013social,varoquaux2016social}. These can all be synthesized into a general framework, referred to as \textit{SpaceNet}~\citep{spacenetohbm}, as follows
 \begin{equation}
   \underset{\w \in \mathbb R^p}{\text{minimize }}E(\w) := \ell(\y,\X\w) + \alpha \mathcal P(\w).
     \label{eq:opt_pb}
@@ -139,12 +138,15 @@ correspond to different choices of the convex penalty $\mathcal P$ acting on the
   \end{split}
   \label{eq:penalty}
 \end{equation}
-where $\alpha > 0$ is a regularization parameter controls the total amount of regularization, and
-$\rho$ ($0 < \rho \le 1$) is a mixing constant between
+where
+\begin{itemize}
+  \item $\alpha > 0$ is a regularization parameter controls the total amount of regularization;
+\item $\rho$ ($0 < \rho \le 1$) is a mixing constant between
   the {sparsity-inducing} $\ell_1$ part and the
   {cluster-promoting} part of the penalty term.
   The particular case {$\rho = 1$} corresponds to the usual Lasso. Vanilla TV   \citep{michel2011tv} corresponds to TV-$\ell_1$ with $\rho = 0$.
- The matrix $\nabla_\rho$ is the extended discrete gradient operator defined in Chapter ~\ref{sec:notations}.  
+\item The matrix $\nabla_\rho$ is the extended discrete gradient operator defined in the table of notations.
+\end{itemize}
 \begin{shaded}
 \paragraph{Bayesian interpretation.} The penalties $\mathcal P(\w)$ in \eqref{eq:opt_pb} admit a Bayesian interpretation as a prior on the distribution of the coefficients $\w$
 \begin{equation}
@@ -164,8 +166,7 @@ p_{\alpha,\rho}(\w) \propto    \prod_{j=1}^p\exp(-\alpha\rho |w_j|)\prod_{j=1}^p
   \label{fig:roi}
 \end{marginfigure}
 
-The result of such regularized models, dubbed \emph{SpaceNet}
-~\citep{spacenetohbm}, are brain maps which are both
+SpaceNet models \eqref{eq:main_pb} result brain maps which are both
 sparse (i.e regression coefficients $\w$ are zero everywhere, except at
 predictive voxels) and structured (blobby). See Fig. \ref{fig:roi}. The superiority of such
 methods over methods without structured priors like the Lasso, ANOVA,
@@ -199,35 +200,6 @@ defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v
 \section{Methods}
 The SpaceNet model leads to difficult non-smooth mathematical optimization problems making their implementation and practical usability challenging. \citep{dohmatob2014benchmarking} benchmarked a rich variety of cutting-edge solvers for such problems, and gave crucial recommendations on how to effectively implement these algorithms in practice. In these benchmarks, the FISTA algorithm emerged as the go-to algorithm for the TV-L1 problem~\citep{dohmatob2015speeding}. These hints have been carefully used in implementing SpaceNet. Also as a preprocessing step, we use univariate feature-screening (ANOVA) to eliminate voxels which are irrelevant to the learning problem, thus reducing the size of the problem. As a result the implementation of SpaceNet is fast, robust, and automatically sets its parameters (internal cross-validation). All these technical details will be properly presented in the next few chapters.
 
-\subsection{Comparing SpaceNet with against basic models}
-\paragraph{Classification.}
-We compared SpaceNet (TV-L1 and GraphNet / Smooth-Lasso priors) with an SVM (Support Vector Machine) on the visual-recognition dataset~\citep{haxby2001}. This dataset consists of 6 subjects with 12 runs per subject. In each run, the subjects passively viewed images of eight object categories, grouped in 24-second blocks separated by intermittent rest periods. This experiment is a classification task: predicting the object category. The design matrix is made of time-series from the full-brain mask of $p=23,707$ voxels over 216 TRs (Repetition Times), of a single subject (subj1). 126 TRs were used for training all the models, whilst testing was done on 90 left-out TRs. The results are depicted in Figures 1 (bar chat) and 2 (brain maps).
-
-\begin{pagefigure}%[!htb] 
-  \includegraphics[width=.32\linewidth]{figures/svm.png}
-  \includegraphics[width=.32\linewidth]{figures/graphnet.png}
-  \includegraphics[width=.32\linewidth]{figures/tvl1.png}  
-  \caption{The figure shows results of comparing the SpaceNet  models TV-$\ell_1$ and
-    Graph-Net against an SVM (Support Vector Machine) classifier on
-    the visual-recognition dataset   \citep{haxby2001}
-    As can be seen from the figure, SpaceNet priors (TV-$\ell_1$, GraphNet, etc.)
-    yield stable and more intepretable maps by enforcing smoothness on the coefficients while segmenting predictive regions (blobs) from noisy background.}
-  \label{fig:spacenet_maps}
-\end{pagefigure}
-
-\paragraph{Regression.}
-In ~\citep{gramfort2013}, the authors compared several models on a dataset in which subjects were presented with mixed (gain/loss) gambles, and decided whether they would accept each gamble~\citep{jimura2012}. No outcomes of these gambles were presented during scanning, but after the scan three gambles were selected at random and played for real money. The prediction task here is to predict the magnitude of the gain and thus a regression on a continuous variable. The full dataset of 16
-subjects with 48 3D scans each, making up for a total of $n=768$ samples with approximately $p=3.3 \times 10^4$ voxels. The prediction here is inter-subject: the estimator
-learns on some subjects and predicts on left out subjects.
-The results are shown in Fig. \ref{fig:tvl1_regression}.
-
-\begin{figure}[!htbp] 
-  \includegraphics[width=1\linewidth]{figures/gramfort_tvl1.png}
-  \caption{Results on fMRI data from [4] (from left to right F-test, ElasticNet and TV-L1). The TV-L1 regularized model segments neuroscientifically
-    meaningful predictive regions in agreement with univariate statistics while the ElasticNet yields sparse although very scattered non-zero weights. Source: adapted from ~\citep{gramfort2013}.}
-  \label{fig:tvl1_regression}
-\end{figure}
-
 \subsection{Cross-validation}
 Cross-validation (e.g see ~\citep{stone74}) is a technique used to protect against overfitting in a predictive model, particularly in a case where the amount of data may be limited. In cross-validation, you make a fixed number of folds (or partitions) of the data, run the analysis on each fold, and then average the overall error estimate. This gives an (asymptotically) unbiased estimate of the true generalization error of the model. 
 
@@ -258,6 +230,36 @@ a model with two hyper-parameters $\alpha$ and $\rho$. For a model like SpaceNet
 \paragraph{Model-selection via cross-validation.}
 One can instrument cross-validation to tune the hyper-parameters of a model like SpaceNet \eqref{eq:main_pb}, by selected the configuration of model parameters with least cross-validation error. The number of models fitted is proportional to the size of the parameter grid --i.e exponential in the number of parameters to tune-- and therefor can become prohibitive in case there are many free hyper-parameters in the model. Also, since some of the data has to be set aside for validation, cross-validation in very small sample settings (e.g e few tenths, as is the in some neuroimaging experiments) may be troublesome as the error estimates then have very high variance. A reasonable alternative in such situations are SURE (short for \textit{Stein's Unbiased Risk Estimator}~\citep{stein1981})-based methods,
 which are applicable whenever a procedure for obtaining (an unbiased estimate) of the number of degrees of freedom of the model is available. Recently, ~\citep{sugar} has proposed a STEIN-based technique for structured models with many hyper-parameters.
+
+
+\subsection{How SpaceNet compares against classical unstructured models}
+\paragraph{Classification.}
+We compared SpaceNet (TV-L1 and GraphNet / Smooth-Lasso priors) with an SVM (Support Vector Machine) on the visual-recognition dataset~\citep{haxby2001}. This dataset consists of 6 subjects with 12 runs per subject. In each run, the subjects passively viewed images of eight object categories, grouped in 24-second blocks separated by intermittent rest periods. This experiment is a classification task: predicting the object category. The design matrix is made of time-series from the full-brain mask of $p=23,707$ voxels over 216 TRs (Repetition Times), of a single subject (subj1). 126 TRs were used for training all the models, whilst testing was done on 90 left-out TRs. The results are depicted in Figures 1 (bar chat) and 2 (brain maps).
+
+\begin{pagefigure}%[!htb] 
+  \includegraphics[width=.32\linewidth]{figures/svm.png}
+  \includegraphics[width=.32\linewidth]{figures/graphnet.png}
+  \includegraphics[width=.32\linewidth]{figures/tvl1.png}  
+  \caption{The figure shows results of comparing the SpaceNet  models TV-$\ell_1$ and
+    Graph-Net against an SVM (Support Vector Machine) classifier on
+    the visual-recognition dataset   \citep{haxby2001}
+    As can be seen from the figure, SpaceNet priors (TV-$\ell_1$, GraphNet, etc.)
+    yield stable and more intepretable maps by enforcing smoothness on the coefficients while segmenting predictive regions (blobs) from noisy background.}
+  \label{fig:spacenet_maps}
+\end{pagefigure}
+
+\paragraph{Regression.}
+In ~\citep{gramfort2013}, the authors compared several models on a dataset in which subjects were presented with mixed (gain/loss) gambles, and decided whether they would accept each gamble~\citep{jimura2012}. No outcomes of these gambles were presented during scanning, but after the scan three gambles were selected at random and played for real money. The prediction task here is to predict the magnitude of the gain and thus a regression on a continuous variable. The full dataset of 16
+subjects with 48 3D scans each, making up for a total of $n=768$ samples with approximately $p=3.3 \times 10^4$ voxels. The prediction here is inter-subject: the estimator
+learns on some subjects and predicts on left out subjects.
+The results are shown in Fig. \ref{fig:tvl1_regression}.
+
+\begin{figure}[!htbp] 
+  \includegraphics[width=1\linewidth]{figures/gramfort_tvl1.png}
+  \caption{Results on fMRI data from [4] (from left to right F-test, ElasticNet and TV-L1). The TV-L1 regularized model segments neuroscientifically
+    meaningful predictive regions in agreement with univariate statistics while the ElasticNet yields sparse although very scattered non-zero weights. Source: adapted from ~\citep{gramfort2013}.}
+  \label{fig:tvl1_regression}
+\end{figure}
 
 \section{Conclusion}
 We have presented SpaceNet, a family of priors for brain decoding that enforce both sparsity and structure, leading to better prediction scores and intepretable brain maps. We believe that such priors will become commonplace in future.

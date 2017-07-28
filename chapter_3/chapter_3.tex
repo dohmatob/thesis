@@ -3,9 +3,9 @@
 
 \minitoc
 
-\newthought{Though the SpaceNet model} presented above leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet~\citep{hebiri2011,grosenick2013} and social-sparsity~\citep{kowalski2013social,varoquaux2016social},
-the penalty term $\mathcal P(\w)$ is neither smooth nor proximable.
-\footnote{ A function $f$ is said to be \textit{proximable} if its operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for $\ell_p$-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}
+\newthought{Though the SpaceNet model} introduced in chapter \ref{chap:structured_priors} leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet~\citep{hebiri2011,grosenick2013} and social-sparsity~\citep{kowalski2013social,varoquaux2016social},
+the penalty term $\mathcal P(\w)$ is neither smooth nor proximable\footnote{
+A function $f$ is said to be \textit{proximable} if its operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for $\ell_p$-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}.
 For the penalty to fully exercise its
 structuring effect on the maps, this optimization problem must be
 solved to a good tolerance resulting in a computational challenge. Lack of good solver and explicit control of
@@ -76,6 +76,9 @@ The optimization problem \eqref{eq:opt_pb} is very challenging:
 it is non-smooth (except in the case of Laplacian regularization), non-separable and heavily ill-conditioned. For the penalty to fully exercise its
 structuring effect on the maps, this optimization problem must be
 solved to a good tolerance resulting in a computational challenge.
+In \citep{dohmatob2014benchmarking}, we did an extensive study of all solvers applicable to the problem in TV-$\ell_1$ special case (which happens to be the most difficult scenario).
+Our results outlined the best strategy: a double FISTA loop, where the
+inner loop computes the proximal operator of the penalty term, with approximate precision on the duality-gap. This was further refined and implemented in  \citep{varoquaux2015faasta}.
 \begin{figure}[!htb]
   \includegraphics[width=1.\linewidth]{tvl1_why_optimize.png}%
 \caption{TV-$\ell_1$ maps for the face-house discrimination task on
@@ -88,10 +91,6 @@ solved to a good tolerance resulting in a computational challenge.
   the need for fast solvers for SpaceNet priors, especially the non-smooth ones like TV-$\ell_1$ and Sparse Variation. See~\citep{dohmatob2014benchmarking} for details.}
   \label{Fig:benchmarks_prni}
 \end{figure}
-
-In \citep{dohmatob2014benchmarking}, we did an extensive study of all solvers applicable to the problem in TV-$\ell_1$ special case (which happens to be the most difficult scenario).
-Our results outlined the best strategy: a double FISTA loop, where the
-inner loop computes the proximal operator of the penalty term, with approximate precision on the duality-gap. This was further refined and implemented in  \citep{varoquaux2015faasta}.
 
 % In  \citep{dohmatob2014benchmarking}, we explored a wide variety of solvers and exhibited their
 % convergence properties on fMRI data. Below we present a brief overview of the paper.
