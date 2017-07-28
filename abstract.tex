@@ -8,13 +8,13 @@
 Mapping brain functional connectivity from functional Magnetic Resonance Imaging (MRI) data has become
 a very active field of research. However, analysis tools are limited and many important tasks, such as the empirical
 definition of brain networks, remain difficult due to the lack of a good framework for the statistical
-modeling of these networks. We propose to develop population models of anatomical and functional connectivity
-data to improve the alignment of subjects brain structures of interest while inferring an average template
-of these structures. % Based on this essential contribution, we will design new statistical inference procedures to
+modeling of these networks.%  We propose to develop population models of anatomical and functional connectivity
+% data to improve the alignment of subjects brain structures of interest while inferring an average template
+% of these structures.
+% Based on this essential contribution, we will design new statistical inference procedures to
 % compare the functional connections between conditions or populations and improve the sensitivity of connectivity
 % analysis performed on noisy data.
-The goal of this PhD thesis is develop new statistical methods for studying inter-subject variability, the prime goal being to improve analysis of functional connectivity in the human brain. This naturally leads to problems related to data-driven extraction of functional atlases, and
-multivariate models for brain decoding, inter-subject registration of MRI images,
+The goal of this PhD thesis is develop new statistical methods for studying inter-subject variability (eg. amplitude of activation, size of activation clusters, topography of activation maps, etc.), the prime goal being to improve analysis of functional connectivity in the human brain at the population level. This turns out that this naturally leads to problems related to data-driven extraction of functional atlases, and multivariate models for brain decoding and segmentation, inter-subject registration of MRI images,
 
 % Finally,
 % we test and validate the methods on multiple datasets and
@@ -40,7 +40,7 @@ Frontiers in Neuroscience, etc.).
 A complete least of my publications can be found on my Google scholar page \url{https://scholar.google.fr/citations?user=FDWgJY8AAAAJ&hl=fr}. In figures,
 \begin{shaded}
 \begin{itemize}
-\item Total citations $\ge 169$.
+\item Total citations $\ge 173$.
   \item Total papers (including co-authored papers) $\ge 15$.
   \item h index $\ge 3$.
   \item 110 index $ \ge 3$.
@@ -72,7 +72,7 @@ There are also a number of preprints currently being prepared for jornal publica
   \item{Sparsity and spatial regularization:}
      \textit{``Structured penalties for brain decomposition and decoding: a unified view''}
    \item \textit{``Inter-subject registration of functional images: do we need anatomical images ?''}
-   \item \textit{``SHARE: Semi-supervised HierarRchical auto-encodErs for predicting task activation maps
+   \item \textit{``Enhanced prediction of task-based activation maps
      from resting-state data''}
  \item{Neuroscience:}
    \item ...
@@ -83,9 +83,10 @@ There are also a number of preprints currently being prepared for jornal publica
 \section{Organization of the manuscript}
 In this report, I shall present a selection of the work I have done during the preparation of my PhD project. This selection will be centered around
 \begin{itemize}
-\item (A) \textbf{Structured penalties for brain decoding} $\implies$ chapters \ref{chap:structured_priors}, \ref{chap:efficient_opt}, \ref{chap:admm}.
-\item (B) \textbf{Structured generative models for brain data} $\implies$ chapters \ref{chap:func_var}, \ref{chap:proxdict}.
-\item (C) \textbf{New schemes for direct registration} of functional brain data $\implies$ chapter \ref{chap:epi2epi}.
+\item (A) \textbf{Big-picture: general preliminaries, motivations, state-of-the-art} $\implies$ chapter \ref{chap:bigpic}.
+\item (B) \textbf{Structured penalties for brain decoding} $\implies$ chapters \ref{chap:structured_priors}, \ref{chap:efficient_opt}, \ref{chap:speeding}, \ref{chap:admm}.
+\item (C) \textbf{Structured generative models for brain data} $\implies$ chapters \ref{chap:func_var}, \ref{chap:proxdict}.
+\item (D) \textbf{New schemes for direct registration} of functional brain data $\implies$ chapter \ref{chap:epi2epi}.
 \item (D) \textbf{Semi-supervised auto-encoding models} for predicting task-based brain activation
   maps from task-free resting-state data $\implies$ chapter \ref{chap:rsfmri2tfmri}.
 \end{itemize}
@@ -238,10 +239,8 @@ As stated before, brain slices are not acquired
 at the same time. This introduces a shift in the haemodynamic response
 associated to each of them. This problem can be solved by interpolating the
 signal of each slice so that all of them can be considered as acquired at the
-same time~\citep{henson1999slice}. This step is optional as, in practice, it does not bring significant
-improvement. In a preliminary experiment performed on 50 individuals, we
-did not observe differences in term of prediction score with or without slice
-timing correction.
+same time. ~\citep{sladky2011} showed that
+depending on repetition time and paradigm design, slice-timing effects can significantly impair fMRI results and slice-timing correction methods can successfully compensate for these effects and therefore increase the robustness of the data analysis.
 
 \paragraph{Registration of brain data into a common reference space.}
 Each brain is of different size

@@ -1,4 +1,4 @@
-\begin{thebibliography}{25}
+\begin{thebibliography}{26}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -141,6 +141,13 @@ Marcus~E. Raichle.
 \newblock Two views of brain function.
 \newblock \emph{Trends in Cognitive Sciences}, 14\penalty0 (4):\penalty0
   180--190, 2010.
+
+\bibitem[Sladky et~al.(2011)Sladky, Friston, Tr{\"o}stl, Cunnington, Moser, and
+  Windischberger]{sladky2011}
+Ronald Sladky, Karl~J. Friston, Jasmin Tr{\"o}stl, Ross Cunnington, Ewald
+  Moser, and Christian Windischberger.
+\newblock Slice-timing effects and their correction in functional mri.
+\newblock \emph{Neuroimage}, 58\penalty0 (2-2):\penalty0 588--594, Sep 2011.
 
 \bibitem[Tavor et~al.(2016)Tavor, Jones, Mars, Smith, Behrens, and
   Jbabdi]{tavor2016task}
