@@ -63,9 +63,9 @@ In the context of neuro-imaging, sparsity and smoothness have been compiled to y
 regression coefficients which are faithful to known neurobiological organization of the brain,
 while alleviating the risk of over-fitting due to inherently small-sample settings.
 Specifically, it has been shown that one can employ priors like TV-$\ell_1$
- \citep{baldassarre2012,gramfort2013}, TV-ElasticNet \citep{dubois2014predictive},
-and GraphNet  \citep{grosenick2013}
-(aka Smooth-Lasso   \citep{hebiri2011})
+~\citep{baldassarre2012,gramfort2013}, TV-ElasticNet~\citep{dubois2014predictive},
+and GraphNet ~\citep{grosenick2013}
+(aka Smooth-Lasso~\citep{hebiri2011})
 %\footnote{Henceforth, we will use GraphNet and S-Lasso
 %interchangeably.}
 to regularize regression and classification
@@ -93,12 +93,12 @@ This defines a linear operator $\nabla \in \mathbb R^{3p \times p}$ (the discret
   \begin{figure}[!htb] 
   \includegraphics[width=1\linewidth]{figures/masking.jpg}
   \caption{\textbf{Masking} of volumic brain data (4D = 3D space + 1 \textbf{time} or \textbf{samples})
-    to produce a design matrix required in standard machine learning (clustering, classification, regression, etc.). Each 3D volume considered is a sample point. The values of the voxels in this volume that lie in the mask are collected into a \textbf{feature vector}. All these vectors are vertically stacked to produce an $n$-by-$p$ design matrix $\X$, where $p$ is the number of voxels in the mask. The mask can be just the region of the 3D cube occupied by the brain, or a subset of such. In the latter case, this typically corresponds to Region-of-Interests (ROIs) deemed to be interesting for an experiment. The former case is referred to as ``full brain'', and the mask typically contains up to $p = $ millions of voxels. See  \citep{abraham2014machine} for more details.}
+    to produce a design matrix required in standard machine learning (clustering, classification, regression, etc.). Each 3D volume considered is a sample point. The values of the voxels in this volume that lie in the mask are collected into a \textbf{feature vector}. All these vectors are vertically stacked to produce an $n$-by-$p$ design matrix $\X$, where $p$ is the number of voxels in the mask. The mask can be just the region of the 3D cube occupied by the brain, or a subset of such. In the latter case, this typically corresponds to Region-of-Interests (ROIs) deemed to be interesting for an experiment. The former case is referred to as ``full brain'', and the mask typically contains up to $p = $ millions of voxels. See ~\citep{abraham2014machine} for more details.}
   \label{fig:masking}
 \end{figure}
 
 \section{SpaceNet: sparse structured models for brain data}
-Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)~\citep{michel2011tv}, TV-$\ell_1$~\citep{baldassarre2012,gramfort2013}, GraphNet   \citep{grosenick2013,hebiri2011},
+Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)~\citep{michel2011tv}, TV-$\ell_1$~\citep{baldassarre2012,gramfort2013}, GraphNet  ~\citep{grosenick2013,hebiri2011},
   TV-ElasticNet~\citep{dubois2014predictive}, Sparse Variation~\citep{eickenberg2015total}, and social-sparsity~\citep{kowalski2013social,varoquaux2016social}. These can all be synthesized into a general framework, referred to as \textit{SpaceNet}~\citep{spacenetohbm}, as follows
 \begin{equation}
   \underset{\w \in \mathbb R^p}{\text{minimize }}E(\w) := \ell(\y,\X\w) + \alpha \mathcal P(\w).
@@ -131,7 +131,7 @@ correspond to different choices of the convex penalty $\mathcal P$ acting on the
     \|\nabla_\rho \w\|_{1,1} = \rho\|\w\|_1 + (1-\rho)\|\nabla \w\|_{1,1} = \sum_{j  \in [\![p]\!]}\rho|w_j| + (1-\rho)\|(\nabla \w)_j\|_1, &\mbox{ for anisotropic TV-$\ell_1$
     },\\
     \|\nabla_\rho \w\|_{2,1} = \sum_{j  \in [\![p]\!]}\|(\nabla_\rho \w)_j\|_2, &\mbox{ for Sparse Variation
-      % \citep{eickenberg2015total}
+      %~\citep{eickenberg2015total}
     },\\
       \vdots
     \end{cases}
@@ -144,7 +144,7 @@ where
 \item $\rho$ ($0 < \rho \le 1$) is a mixing constant between
   the {sparsity-inducing} $\ell_1$ part and the
   {cluster-promoting} part of the penalty term.
-  The particular case {$\rho = 1$} corresponds to the usual Lasso. Vanilla TV   \citep{michel2011tv} corresponds to TV-$\ell_1$ with $\rho = 0$.
+  The particular case {$\rho = 1$} corresponds to the usual Lasso. Vanilla TV  ~\citep{michel2011tv} corresponds to TV-$\ell_1$ with $\rho = 0$.
 \item The matrix $\nabla_\rho$ is the extended discrete gradient operator defined in the table of notations.
 \end{itemize}
 \begin{shaded}
@@ -172,7 +172,7 @@ predictive voxels) and structured (blobby). See Fig. \ref{fig:roi}. The superior
 methods over methods without structured priors like the Lasso, ANOVA,
 Ridge, SVM, etc. for yielding more intepretable maps and improved
 prediction scores is now well established. See for example
-  \citep{baldassarre2012,gramfort2013}. These priors are fast becoming
+ ~\citep{baldassarre2012,gramfort2013}. These priors are fast becoming
 popular for brain decoding and segmentation. Indeed, they leverage a
 feature-selection function
 (since they limit the number of active voxels),
@@ -181,7 +181,7 @@ and also a structuring function
 differences in the values of the brain map). For example, see Fig.
 \ref{fig:spacenet_maps}.
 Also, such priors produce state-of-the-art methods for automatic
-extraction of functional brain atlases   \citep{abraham2013}.
+extraction of functional brain atlases  ~\citep{abraham2013}.
 
 \begin{shaded}
   \paragraph{Submodular interpretation of TV.} We note that anisotropic TV penalty \eqref{eq:penalty} on
@@ -198,11 +198,10 @@ defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v
 \end{figure}
 
 \section{Methods}
-The SpaceNet model leads to difficult non-smooth mathematical optimization problems making their implementation and practical usability challenging. \citep{dohmatob2014benchmarking} benchmarked a rich variety of cutting-edge solvers for such problems, and gave crucial recommendations on how to effectively implement these algorithms in practice. In these benchmarks, the FISTA algorithm emerged as the go-to algorithm for the TV-L1 problem~\citep{dohmatob2015speeding}. These hints have been carefully used in implementing SpaceNet. Also as a preprocessing step, we use univariate feature-screening (ANOVA) to eliminate voxels which are irrelevant to the learning problem, thus reducing the size of the problem. As a result the implementation of SpaceNet is fast, robust, and automatically sets its parameters (internal cross-validation). All these technical details will be properly presented in the next few chapters.
+The SpaceNet model leads to difficult non-smooth mathematical optimization problems making their implementation and practical usability challenging.~\citep{dohmatob2014benchmarking} benchmarked a rich variety of cutting-edge solvers for such problems, and gave crucial recommendations on how to effectively implement these algorithms in practice. In these benchmarks, the FISTA algorithm emerged as the go-to algorithm for the TV-L1 problem~\citep{dohmatob2015speeding}. These hints have been carefully used in implementing SpaceNet. Also as a preprocessing step, we use univariate feature-screening (ANOVA) to eliminate voxels which are irrelevant to the learning problem, thus reducing the size of the problem. As a result the implementation of SpaceNet is fast, robust, and automatically sets its parameters (internal cross-validation). All these technical details will be properly presented in the next few chapters.
 
 \subsection{Cross-validation}
 Cross-validation (e.g see ~\citep{stone74}) is a technique used to protect against overfitting in a predictive model, particularly in a case where the amount of data may be limited. In cross-validation, you make a fixed number of folds (or partitions) of the data, run the analysis on each fold, and then average the overall error estimate. This gives an (asymptotically) unbiased estimate of the true generalization error of the model. 
-
 Two major types of cross-validation are K-Fold and Leave-One-Out (LOO).
 
 \paragraph{K-Fold cross-validation.}
@@ -229,7 +228,8 @@ a model with two hyper-parameters $\alpha$ and $\rho$. For a model like SpaceNet
 
 \paragraph{Model-selection via cross-validation.}
 One can instrument cross-validation to tune the hyper-parameters of a model like SpaceNet \eqref{eq:main_pb}, by selected the configuration of model parameters with least cross-validation error. The number of models fitted is proportional to the size of the parameter grid --i.e exponential in the number of parameters to tune-- and therefor can become prohibitive in case there are many free hyper-parameters in the model. Also, since some of the data has to be set aside for validation, cross-validation in very small sample settings (e.g e few tenths, as is the in some neuroimaging experiments) may be troublesome as the error estimates then have very high variance. A reasonable alternative in such situations are SURE (short for \textit{Stein's Unbiased Risk Estimator}~\citep{stein1981})-based methods,
-which are applicable whenever a procedure for obtaining (an unbiased estimate) of the number of degrees of freedom of the model is available. Recently, ~\citep{sugar} has proposed a STEIN-based technique for structured models with many hyper-parameters.
+which are applicable whenever a procedure for obtaining (an unbiased estimate of) the number of degrees of freedom of the model is available. This is the case with the models like the ElasticNet and
+GraphNet~\citep{hebiri2011}. Recently, ~\citep{sugar} has proposed a STEIN-based technique for structured models with many hyper-parameters.
 
 
 \subsection{How SpaceNet compares against classical unstructured models}
@@ -242,7 +242,7 @@ We compared SpaceNet (TV-L1 and GraphNet / Smooth-Lasso priors) with an SVM (Sup
   \includegraphics[width=.32\linewidth]{figures/tvl1.png}  
   \caption{The figure shows results of comparing the SpaceNet  models TV-$\ell_1$ and
     Graph-Net against an SVM (Support Vector Machine) classifier on
-    the visual-recognition dataset   \citep{haxby2001}
+    the visual-recognition dataset  ~\citep{haxby2001}
     As can be seen from the figure, SpaceNet priors (TV-$\ell_1$, GraphNet, etc.)
     yield stable and more intepretable maps by enforcing smoothness on the coefficients while segmenting predictive regions (blobs) from noisy background.}
   \label{fig:spacenet_maps}

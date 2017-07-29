@@ -168,11 +168,11 @@ cheap. However, in our settings, limitations of ADMM are:
   ill-conditioned linear operator (precisely a weighted sum of
   $\mathbf{X}^T\mathbf{X}$, the laplacian $\Delta$, and the identity
   operator).
-\item The $\rho$ parameter for penalizing the split
-  residual $\mathbf{z} - \nabla \mathbf{w}$ is hard to set (this is still an
+\item The dual stepsize parameter $\nu$ in the penalization of the split
+  residual $\frac{1}{2}\nu\|\mathbf{z} - \nabla \mathbf{w}\|_2^2$ is hard to set (this is still an
   open problem), and though under mild conditions ADMM
-  converges for any value of $\rho$, the convergence rate depends
-  on $\rho$. In chapter \ref{chap:admm}, we study the rate of convergence of ADMM on the kinds
+  converges for any value of $\nu$, the convergence rate depends
+  on $\nu$. In chapter \ref{chap:admm}, we study the rate of convergence of ADMM on the kinds
   of penalized
   least squares regression problem considered in this manuscript, and derive some theoretical
   results.
