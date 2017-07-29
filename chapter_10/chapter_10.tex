@@ -133,6 +133,7 @@ dilated, to obtain a more structured mask.  Figure
 to various datasets, prior to model fitting.
 
 \subsection{Early-stopping}
+Optimization is a means to an end and not an end on its own.
 The only incentive for optimizing a model is to improve its generalization power: performance on unseen data. If this performs stops improving during training (statistical convergence), as measured on a left-out subset of data
 , then we may as well abrupt the optimization algorithm (numerical convergence). We implement this principle heuristically as follows.
 In each train sub-sample
