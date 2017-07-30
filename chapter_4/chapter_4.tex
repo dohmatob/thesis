@@ -158,14 +158,7 @@ Here we do things that are closer to probabilistic segmentations
 %%   Laplacian.
 
 \section{Smooth Sparse Online Dictionary-Learning (Smooth-SODL)}
-\label{sec:contrib}
-\begin{figure}
-    \centering
-    \def\svgwidth{\columnwidth}
-    \input{figures/dlsvg.pdf_tex}
-    \caption{...}
-  \end{figure}
-  
+\label{sec:contrib}  
 % \begin{figure}[!htp]
 % \includesvg[width=1.\linewidth]{figures/dlsvg.svg}
 % \end{figure}
@@ -184,6 +177,20 @@ $\B{c}_1, \ldots, \B{c}_n \in \mathbb R^{k \times 1}$ called \textit{codes} (one
 \B{x}_i \approx \B{D} \B{c}_i, \text{ for } i=1,2,\ldots,n
 \end{eqnarray}
 where $\B{D} := [\B{d}^1|\ldots|\B{d}^k] \in \mathbb{R}^{p \times k}$, an unknown dictionary to be estimated.
+\begin{figure}
+    \centering
+    \def\svgwidth{\columnwidth}
+    \input{figures/dlsvg.pdf_tex}
+    \caption{\textbf{Dictionary-learning} with smoothness and sparsity constraints on the atoms. On the right, each time point is a masked 3D brain
+      image and corresponds to a sample, and each voxel corresponds to a feature, giving an $p$-by-$n$ matrix $\B{X}$, where $n$ is the number
+      of samples and $p$ is the number of features.
+      On the right of the equation, the sought-for $p$-by-$k$ dictionary $\B{V}$  is a low-dimensional representation these images,
+      by means of a (non-orthonormal) basis of $k$ $\ll \min(n,p)$ smooth and sparse 3D brain images called \textit{atoms}.
+      In this representation, each sample point (i.e 3D brain image) $\B{X}_i \in \mathbb R^p$
+      is mapped onto $k$-dimensional vector $\B{u}_i$, called the \textit{code} of $\B{X}_i$.
+      }
+    \label{fig:smoothdict}
+  \end{figure}
 Typically, $p \sim 10^{5}$ --
 $10^{6}$ (in full-brain high-resolution fMRI) and $n \sim 10^{2}$ --
 $10^{5}$ (for example, in considering all the 500 subjects and all
@@ -198,7 +205,7 @@ case where $n / p$ is big; it is relevant whenever $n$ is large,
 leading to prohibitive memory issues irrespective of how big or small
 $p$ is.
 
-As explained in section \ref{sec:intro}, we want the component maps (aka dictionary atoms) $\B{d}^j$ to be sparse and spatially smooth. A principled way to achieve such a goal is to impose a boundedness constraint on $\ell_1$-like norms of these maps to achieve sparsity and
+As explained in section \ref{sec:intro}, we want the component maps (aka dictionary atoms) $\B{d}^j$ to be sparse and spatially smooth (illustrated in Fig. \ref{fig:smoothdict}). A principled way to achieve such a goal is to impose a boundedness constraint on $\ell_1$-like norms of these maps to achieve sparsity and
 simultaneously impose smoothness by penalizing their Laplacian.
 Thus, we propose the following penalized dictionary-learning model
 \begin{eqnarray}
