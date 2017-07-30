@@ -13,7 +13,7 @@ The standard approach used for analyzing these activation maps is called classic
   \includegraphics[width=1\linewidth]{figures/decoding.png}
   \caption{\textbf{Decoding} models mine
 patterns of activity to discriminate
-between cognitive states. Different
+between cognitive states~\citep{dehaene1998}. Different
 activation patterns reflect different mental states. For example,
 those associated with different images viewed by the subject.
 In a training phase, the classifier will
@@ -21,7 +21,8 @@ learn to discriminate between brain activity measured under different
 cognitive states. In the testing phase the generalization performance of the trained model is
 quantified by evaluating the classifier on the testing set and comparing
 the output of the classifier with the true labels associated with
-the stimuli. One can map the accuracy of the decoder to ...~\citep{dehaene1998}. Adapted from ~\citep{pedregosa2015feature}}.
+the stimuli. % One can map the accuracy of the decoder to ....
+Adapted from ~\citep{pedregosa2015feature}}.
 \end{pagefigure}
 
 \paragraph{Inference inference (or ``brain reading'').}
@@ -148,7 +149,7 @@ where
 \item The matrix $\nabla_\rho$ is the extended discrete gradient operator defined in the table of notations.
 \end{itemize}
 \begin{shaded}
-\paragraph{Bayesian interpretation.} The penalties $\mathcal P(\w)$ in \eqref{eq:opt_pb} admit a Bayesian interpretation as a prior on the distribution of the coefficients $\w$
+\paragraph{Bayesian interpretation of SpaceNet models.} The penalties $\mathcal P(\w)$ in \eqref{eq:opt_pb} admit a Bayesian interpretation as a prior on the distribution of the coefficients $\w$
 \begin{equation}
   \label{eq:bayesian}
   p_{\alpha,\rho}(\w) \propto \exp(-\mathcal P(\w)).
@@ -187,7 +188,7 @@ extraction of functional brain atlases  ~\citep{abraham2013}.
   \paragraph{Submodular interpretation of TV.} We note that anisotropic TV penalty \eqref{eq:penalty} on
   an arbitrary (undirected) graph $G = (V,E)$ is the \textit{Lovasz extension} of the \textit{cut-function}
   $F : 2^V \rightarrow \mathbb N$, $S \mapsto "\text{number of edges between } S \text{ and }V\setminus S"$,
-defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v \ge \lambda\})]$, for all $x \in [0,1]^{\#V}$.
+defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v \ge \lambda\})]$, for all $x \in [0,1]^{\#V}$. Thus anisotropic total variation can be seen as a graph-cut problem for which efficient algorithms exist.
 \end{shaded}
 
 \begin{figure}[!htbp]

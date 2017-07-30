@@ -149,7 +149,7 @@ Acquisition of the data goes hand-in-hand with
 In this introductory chapter, I review the relevant theory sufficient to situate my own work in a larger scientific context. Section \ref{sec:fmri} will
 focus on imaging the brain and preprocessing of the collected data and also classical methodologies for analyzing the data.
 % , with a focus on the localization of task-based brain activity.
-  Section \ref{sec:rsfmri} will present the another way of infering brain function,
+  Section \ref{sec:rsfmri} will present another way of infering brain function,
   namely the study of background activity at rest.
 
 
@@ -179,14 +179,13 @@ in an auditory task. Adapted with permission from~\citep{thirion_hdr}.}
 \end{pagefigure}
 
 \subsection{The BOLD signal}
-When a brain area is solicited, the brain fires chemical signals to provide it
+When a brain area is solicited, it brain fires chemical signals to provide it
 with oxygen and sugar. Nearby blood capillaries dilate to increase the quantity
 of flowing blood and provide these resources. This phenomenon is called the
 haemodynamic response.
 As a result, we expect a higher concentration of oxygenated hemoglobin
 in a given brain area soon after its activation.
-fMRI imaging can be used to measured this effect, called the BOLD (\textit{Blood Oxygen-Level-Dependent}) signal~\citep{agawa1990,ogawa1990b}, at a spatial typically resolution of 1.5 to 3mm, and a temporal resolution
-of 1-3s. This yields a spatially resolved image of
+fMRI imaging can be used to measured this effect, called the BOLD (\textit{Blood Oxygen-Level-Dependent}) signal~\citep{agawa1990,ogawa1990b}, at a spatial resolution of 1.5 to 3mm, and a temporal resolution of 1--3s, typically. This yields a spatially resolved image of
 brain functional networks that can be modulated
 either by specific cognitive tasks or appear as
 networks of correlated activity. This method is subject to several physical and physiological
@@ -209,12 +208,12 @@ some preprocessing steps are required. Below, we outline the main ones. Viz,
 \paragraph{Data acquisition.}
 The resolution of fMRI is usually between 1mm 3 and
 3mm 3 . In a single 3D scan, the brain represents $10^4$ to $10^6$ voxels.
-A run contains usually from 100 to 1000 scans. Functional MRI scans are
-acquired by slices, usually in the axial direction. The time required to acquire
+A run contains usually from 100 to 1000 scans. fMRI scans are
+acquired slice-by-slice, usually in the axial direction. The time required to acquire
 one slice is called echo time (TE) and is in the order of tens of milliseconds.
 The time required to acquire a whole 3D volume is called repetition time (TR)
 and is in the order of seconds. Typical values for a 3D volume of 60 slices are
-TE=33ms and TR=2s for a 3 Tesla scanner.
+TE=33ms and TR=2s for a 3T (Tesla) scanner.
 
 \paragraph{Motion-correction and coregistration to the anatomy.}
 Head movement has a big impact on fMRI. A movement
