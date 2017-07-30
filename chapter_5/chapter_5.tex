@@ -375,8 +375,7 @@ activations for the different task contrasts, jointly.
   
   \ParFor{each parcel $\mathcal P$}
   \ParFor{each bootstrap sub-sample of subjects $\mathcal S$}
-  \State  \textbf{Fit} a model $\hat{f}_{\mathcal S}$ from \eqref{eq:lrrr} if
-  LRRR mode or \eqref{eq:pls} if PLS mode, for predicting $\B{Y}_{\mathcal S}$ from
+  \State  \textbf{Fit} a model $\hat{f}_{\mathcal S}$ from \eqref{eq:lrrr}, for predicting $\B{Y}_{\mathcal S}$ from
   $\tilde{\B{X}}_{\mathcal S}$ restricted on the parcel $\mathcal P$
   % Store $\hat{f}_{\mathcal S}$ in the set of trained models   $\mathcal F_{\mathcal P^{(i)}}$ for parcel $\mathcal P^{(i)}$.
 \EndParFor
@@ -625,7 +624,7 @@ At prediction time, these different models are queried on held-out subjects and 
 \label{sec:exp}
 Our experiments were done on task fMRI data from
 $200$ subjects from the HCP --Human Connectome Project-- dataset
- \citep{VanEssen20122222}. These task fMRI data were acquired in an
+ ~\citep{VanEssen20122222}. These task fMRI data were acquired in an
  attempt to assess major
  domains that sample the diversity of neural systems , including
  language processing (semantic and phonological
@@ -657,43 +656,25 @@ computed via Alg. \ref{Tab:algpred}.
 
 \section{Results}
   % We now present results of the experiments detailed in section \ref{sec:exp}.
-\paragraph{Quantitative metrics} Fig. \ref{fig:conf} shows
-confusion matrices (via Pearson correlation) of predicted against true activation maps. We see that consistently, a subject's predicted activation
-maps are more similar to their true activation than to other subjects', reflected by the fact that the confusion matrices are strongly diagonal-dominant.
-This is even more true for our proposed method. The barplots in Fig. \ref{fig:diag} show
-the difference between the mean of the diagonal and of the extra-diagonal elements of the matrices in Fig. \ref{fig:conf}
-(as a percentage relative to the mean of the extra-diagonal elements). This measure termed ``diagonalness'' was introduced in \citep{tavor2016task}.
-In all cases, positive values show that the predictions, on average, match the
-actual maps better than the mean, particularly for the cognitive tasks.
-We see that our proposed method consistently beats the reference method \citep{tavor2016task} by several folds.
-
-\begin{pagefigure}
-  \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_135528_01bags.pdf}
-  \hspace{-.2cm}
-  \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_173536_01bags.pdf}
-  \hspace{-.2cm}
-  \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_137633_01bags.pdf}
-  \\
-  \includegraphics[width=.33\linewidth]{figures/brain_STORY-MATH_135528_01bags.pdf}
-  \hspace{-.2cm}
-  \includegraphics[width=.33\linewidth]{figures/brain_STORY-MATH_173536_01bags.pdf}
-  \hspace{-.2cm}
-  \includegraphics[width=.33\linewidth]{figures/brain_STORY-MATH_137633_01bags.pdf}
-  \caption{Level-curves of the population mean (magenta), predicted activation
-    maps using our proposed method (green) and the reference method \citep{tavor2016task}
-    (cyan) for different contrasts. Each column represents a different subject (here 3),
-    while each row represents a task contrast (here 2): first row is for ``2BK-0BK'' and second row is ``Story-vs-Math''.}
-  \label{fig:zmaps}
-\end{pagefigure}
+\paragraph{Quantitative metrics} Fig. \ref{fig:confusion} shows
+confusion matrices (via Pearson correlation) of predicted against true activation maps. We see that a subject's predicted activation
+maps are consistently more similar to their true activation than to other subjects', reflected by the fact that the confusion matrices are strongly diagonal-dominant.
+This is even more true for our proposed method. The Fig. \ref{fig:confusion_boxplots} shows box-plots of prediction $R^2$-score and Pearson correlation
+for the 47 distinct contrast of the HCP task fMRI dataset~\citep{VanEssen20122222}. We see that both the reference method~\citep{tavor2016task} and our proposed method
+successfully predict the subjects' activation maps well above chance, with our method doing much better.
+% In all cases, positive values show that the predictions, on average, match the
+% actual maps better than the mean, particularly for the cognitive tasks.
+% We see that our proposed method consistently beats the reference method \citep{tavor2016task} by several folds.
 
 \begin{figure}
   \includegraphics[width=1\linewidth]{figures/confusion_STORY-MATH.png}
-  \caption{Confusion matrices for predicted versus true activation maps for
+  \caption{\textbf{Confusion matrices} for predicted versus true activation maps for
     the ``Story vs Math'' task contrast. The left plot corresponds to the reference
     method~\citep{tavor2016task} while the right one is for our proposed method.
       Higher diagonal values is better.
       The strong diagonal dorminance of these matrices reveals that the predicted maps of the subjects are more similar to their true maps than to other subjects.
       }
+\label{fig:confusion}
 \end{figure}
 
 % \begin{pagefigure}
@@ -782,14 +763,12 @@ We see that our proposed method consistently beats the reference method \citep{t
 \begin{pagefigure}%[!htbp]
   \includegraphics[width=1\linewidth]{figures/r2_scores.pdf}
   \includegraphics[width=1\linewidth]{figures/pearsonr_scores.pdf}
-  \caption{
-      Percentage gain (the higher the better) in average diagonal
-      % (self-to-self predicted to true activation map) relative
-      to average off-diagonal
-      % (self-to-other predicted to true activation map) in the matrices
-      of Fig \ref{fig:conf}. Results for the reference method \citep{tavor2016task} are also shown.      
+  \caption{\textbf{Top:} $R^2$-score for predicting subject-specific activation maps from resting
+    data. These results are for the different contrasts of the HCP dataset~\citep{VanEssen20122222} are shown.
+    Results for the reference method \citep{tavor2016task} are also shown.
+    \textbf{Bottom:} Pearson correlation for the same prediction problem.
     }
-    \label{fig:conf}
+    \label{fig:confusion_boxplots}
   \end{pagefigure}
 
 \paragraph{Qualitative metrics} In Fig. \ref{fig:zmaps}, we display level-curves of the population mean (magenta) of
@@ -799,6 +778,25 @@ We see that the contours for the predicted activation maps using our proposed me
 faithfully follow topography of the true activation maps, indicating that the model successfully
 predicted the topography of the subjects' activation patterns for the contrasts.
 
+
+\begin{pagefigure}
+  \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_135528_01bags.pdf}
+  \hspace{-.2cm}
+  \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_173536_01bags.pdf}
+  \hspace{-.2cm}
+  \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_137633_01bags.pdf}
+  \\
+  \includegraphics[width=.33\linewidth]{figures/brain_STORY-MATH_135528_01bags.pdf}
+  \hspace{-.2cm}
+  \includegraphics[width=.33\linewidth]{figures/brain_STORY-MATH_173536_01bags.pdf}
+  \hspace{-.2cm}
+  \includegraphics[width=.33\linewidth]{figures/brain_STORY-MATH_137633_01bags.pdf}
+  \caption{Level-curves of the population mean (magenta), predicted activation
+    maps using our proposed method (green) and the reference method \citep{tavor2016task}
+    (cyan) for different contrasts. Each column represents a different subject (here 3),
+    while each row represents a task contrast (here 2): first row is for ``2BK-0BK'' and second row is ``Story-vs-Math''.}
+  \label{fig:zmaps}
+\end{pagefigure}
   
 \section{Concluding remarks}
 We have proposed a general framework for the problem of predicting task fMRI activation maps
