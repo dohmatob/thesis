@@ -5,7 +5,9 @@
 
 \minitoc
 
-We present a result that shows that TV-L1 regularized regression problems \eqref{eq:opt_pb} are nothing but an iteratively reweighted GraphNet problem. Among other things, this provides a long-awaited statistical interpretation of the TV-L1 penalty. The method dubbed iGraphNet, solves TV-L1 penalized model by considering modified GraphNet sub-problems corresponding to the minimization of the energy
+We present a result that shows that TV-L1 regularized regression problems \eqref{eq:opt_pb} can also be solved through an iteratively reweighted GraphNet problem. 
+%
+Among other things, this provides a long-awaited statistical interpretation of the TV-L1 penalty. The method dubbed iGraphNet, solves TV-L1 penalized model by considering modified GraphNet sub-problems corresponding to the minimization of the energy
 $E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\w)$ defined in \eqref{eq:rgn}. These sub-problems  are very well-conditioned and are quadratically easier to solve than TV-L1 itself, and can be solved by
 a fast first-order method like FISTA or LARS. The limit of this sub-problems is solve the exact TV-L1 penalized problem.
 

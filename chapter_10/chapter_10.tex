@@ -1,6 +1,6 @@
 \chapter{More speed via univariate feature-screening and early-stopping}
 \label{chap:speeding}
-\markright{{~{\rm \ref{chap:speeding}}. More speed via univariate feature-screening and early-stopping}\hfill}{}
+\markright{{~{\rm \ref{chap:speeding}}. Faster estimation  via univariate feature-screening and early-stopping}\hfill}{}
 
 \minitoc
 
@@ -14,7 +14,7 @@ optimization problem is entered, thus reducing the size of the
 problem.
 Empirical results with GraphNet on real MRI (Magnetic
 Resonance Imaging)
-datasets indicated that these heuristics are a win-win strategy, as
+datasets indicated that these heuristics are a winning strategy, as
 they add speed without sacrificing the quality of the predictions
 / classifications.
 
@@ -289,11 +289,9 @@ increasing $sp$ ($10$ to $100$): \textbf{44.2m, 81.3m, 186.5m, 341.3m}}
 \section{Conclusion}
 We have presented heuristics that provide
 speedups for optimizing GraphNet~\citep{hebiri2011,grosenick2013}  in the difficult
-context of brain data. These heuristics are a win-win strat-
-egy as they add speed without sacrificing the quality of
+context of brain data. These heuristics are a winning strategy as they add speed without sacrificing the quality of
 the predictions / classifications. In practice, we do a 20%
-univariate feature-screening by default, which ensures a 5-
-fold speedup over full-brain analysis, and independently of an
+univariate feature-screening by default, which ensures a 5-fold speedup over full-brain analysis, and independently of an
 approximately 2-fold speedup obtained by the early-stopping
 heuristic, leading to an overall 10-fold speedup. Our results
 have been verified empirically on different MRI datasets. Our heuristics should
