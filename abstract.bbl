@@ -1,4 +1,4 @@
-\begin{thebibliography}{28}
+\begin{thebibliography}{29}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -214,5 +214,11 @@ Ga{\"e}l Varoquaux, Michael Eickenberg, Elvis Dohmatob, and Bertand Thirion.
 \newblock Faasta: A fast solver for total-variation regularization of
   ill-conditioned problems with application to brain imaging.
 \newblock \emph{arXiv:1512.06999}, 2015.
+
+\bibitem[Xu et~al.(2009)Xu, Johnson, Nichols, and Nee]{Xu2009}
+Lei Xu, Timothy~D. Johnson, Thomas~E. Nichols, and Derek~E. Nee.
+\newblock Modeling inter-subject variability in fmri activation location: A
+  bayesian hierarchical spatial model.
+\newblock \emph{Biometrics}, 65\penalty0 (4):\penalty0 1041--1051, Dec 2009.
 
 \end{thebibliography}
