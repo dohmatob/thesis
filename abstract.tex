@@ -5,33 +5,35 @@
 \minitoc
 
 \section{Context}
-\newthought{A major goal} of the neurosciences is to understand the structure, function, and variability of the human brain, and how these give rise to the complex high-level behavior patterns observed. One is typically interested in such things like:
+\newthought{A major goal} of the neurosciences is to understand the structure, function, and variability of the human brain, and how these give rise to the complex high-level behavior of human beings. One is typically interested in questions such as:
 \begin{itemize}
-  \item Which parts of the brain are in-charge of processing mathematical formulae as opposed to ordinary natural language ?
-  \item \textit{Which parts of the brain increase their activity when the brain is at rest ?}
-  \item \textit{What are the neuro-biological markers of this or that mental illness ?}
-  \item \textit{How does the brain structure (sulci, gyri, etc.) change during aging ? etc.}
- \item \textit{How does the language network of one subject compare to that of another ? Are they alignable ?}
- \item \textit{How are the different cognitive functions (language, motor, emotion, etc.) distributed over the brain, in terms of regions and networks of regions ?}
+  \item \textit{Which parts of the brain are in-charge of processing mathematical formulae as opposed to ordinary natural language ?}
+  \item \textit{Which parts of the brain increase/decrease their activity when the brain is at rest ?}
+  \item \textit{What are the neuro-biological markers of neurological os psychiatric mental illness ?}
+  \item \textit{How does the brain structure (sulci, gyri, etc.) and function change during aging ? etc.}
+ \item \textit{How do the language-responsive regions of one subject compare with that of another ? Can they be registered anatomically ?}
+ \item \textit{How are the different motor or cognitive functions (language, emotion, etc.) distributed over the brain, in terms of regions and networks of regions ?}
  \item \textit{How are numbers represented and manipulated in the brain ?}
-\item \textit{How does the brain and behavior change under the attack of an illness (e.g Schizophrenia)}   
+\item \textit{How does the brain and behavior change under the attack of a disease (e.g schizophrenia or a neuro-degenerative disease)}   
 \end{itemize}
+Note that this list is by no way exhaustive.
 
  \begin{pagefigure}
     \centering
     \def\svgwidth{.23\columnwidth}
     \input{figures/neuron.pdf_tex}
     \includegraphics[width=.74\linewidth]{figures/brain_function.png}    
-    \caption{\textbf{Views of the brain} at different levels of detail. The brain is composed of regions and (connected) regions are in turn composed of populations of neurons.
-\textbf{Right:} Each region is associated with a particular
-function such as sensory areas (e.g.
-visual cortex, auditory cortex) that
-receive and process information
-from sensory organs, motors areas
-(e.g. primary motor cortex, premotor cortex) that control the move-
-ments of the subject, and associative areas (e.g. Broca’s area,
-Lateral Occipital Complex --LOC-- or Intra Parietal Sulcus  --IPS--)
-that process the high-level information related to cognition.
+    \caption{\textbf{Views of the brain} at different levels of detail. The brain is composed of (spatially connected) regions and  such regions are in turn composed of populations of neurons.
+%
+\textbf{Right:} Each region is associated with a particular function
+such as sensory areas (e.g.  visual cortex, auditory cortex) that
+receive and process information from sensory organs, motors areas
+(e.g. primary motor cortex, premotor cortex) that control the
+movements of the subject, and associative areas (e.g. Broca’s area,
+Wernicke's area) that process the high-level information related to
+language production and understanding or the Intra Parietal Sulcus
+--IPS-- that processes spatial information.
+%
 Adapted from \url{http://agaudi.files.wordpress.com/}.
 \textbf{Left:} Simplified view of a neuron.
 A \textit{neuron} has a cell body
@@ -46,10 +48,13 @@ properties of the neuronal membrane. Adapted from
 }
 \end{pagefigure}
 
-Along the way, mapping brain functional connectivity from functional Magnetic Resonance Imaging (MRI) data has become
-a very active field of research. However, analysis tools are limited and many important tasks, such as the empirical
-definition of brain networks, remain difficult due to the lack of a good framework for the statistical
-modeling of these networks.
+In the last three decades, mapping brain functional connectivity from
+functional Magnetic Resonance Imaging (MRI) data has become a very
+active field of research. However, analysis tools are limited and many
+important tasks, such as the empirical definition of brain networks,
+remain difficult due to the lack of a good framework for the
+statistical modeling of the data used to define these networks.
+%
 % We propose to develop population models of anatomical and functional connectivity
 % data to improve the alignment of subjects brain structures of interest while inferring an average template
 % of these structures.
@@ -57,7 +62,7 @@ modeling of these networks.
 % compare the functional connections between conditions or populations and improve the sensitivity of connectivity
 % analysis performed on noisy data.
 
-\paragraph{Objectives.} The goal of this PhD thesis is develop new statistical methods for studying inter-subject variability (eg. amplitude of activation, size of activation clusters, topography of activation maps, etc.), the prime goal being to improve analysis of functional connectivity in the human brain at the population level. It turns out that these concerns naturally lead to problems related to data-driven
+\paragraph{Objectives.} The goal of this PhD thesis is develop new statistical methods for studying inter-subject variability (eg. amplitude of activation, size of activation clusters, topography of activation maps, etc.), the prime goal being to improve the analysis of functional connectivity in the human brain at the population level. It turns out that these concerns naturally lead to problems related to data-driven
 extraction of functional atlases, and multivariate models for brain decoding and segmentation, inter-subject registration of MRI images,
 
 % Finally,
@@ -78,8 +83,7 @@ extraction of functional atlases, and multivariate models for brain decoding and
 
 \section{Sketch of contributions}
 \label{sec:contrib}
-During my the preparation of the PhD project, I (the PhD
-candidate, Elvis Dohmatob) has authored and co-authored a number of papers in conferences and journals (including NIPS, ICASSP, MICCAI,
+During my the preparation of the PhD project, I  have authored and co-authored a number of papers in conferences and journals (including NIPS, ICASSP, MICCAI,
 Frontiers in Neuroscience, etc.).
 A complete least of my publications can be found on my Google scholar page \url{https://scholar.google.fr/citations?user=FDWgJY8AAAAJ&hl=fr}. In figures,
 \begin{shaded}
@@ -118,8 +122,6 @@ There are also a number of preprints currently being prepared for jornal publica
    \item \textit{``Inter-subject registration of functional images: do we need anatomical images ?''}
    \item \textit{``Enhanced prediction of task-based activation maps
      from resting-state data''}
- \item{Neuroscience:}
-   \item ...
 \end{itemize}
 \end{shaded}
 
@@ -138,18 +140,20 @@ My precise contributions w.r.t these subjects will be outlined  as we proceed.
 % I will conclude the manuscript with a synthesis of the progress made so far, and detailed plans for
 % the future.
 
+\textbf{XXX What about Chapter 6 ?}
+
 \chapter{Big-picture: functional magnetic resonance imaging to study the human brain}\label{chap:bigpic}
 
 \minitoc
  
-\newthought{Neuroimaging has emerged} as a distinguished data-acquisition and analysis set of techniques for probing and observing the relevant brain systems.
+\newthought{Neuroimaging has emerged} as a distinguished data-acquisition and set of  analysis techniques for probing and observing brain activity.
 Acquisition of the data goes hand-in-hand with
   statistical analysis methods for analyzing the data, in view of making specific quantifiable claims. These techniques operate at a scale much coarser than that of the neuron: one is interested physiological effects which are ultimately aggregates of activity over large population of neurons.
 
-In this introductory chapter, I review the relevant theory sufficient to situate my own work in a larger scientific context. Section \ref{sec:fmri} will
-focus on imaging the brain and preprocessing of the collected data and also classical methodologies for analyzing the data.
+In this introductory chapter, we review the relevant theory sufficient to situate my own work in a larger scientific context. Section \ref{sec:fmri} will
+focus on imaging the human brain and preprocessing of the collected data and also classical methodologies for analyzing the data.
 % , with a focus on the localization of task-based brain activity.
-  Section \ref{sec:rsfmri} will present the another way of infering brain function,
+  Section \ref{sec:rsfmri} will present the another way of probing brain function,
   namely the study of background activity at rest.
 
 
@@ -160,7 +164,7 @@ Human neuroimaging consists in acquiring ex-vivo
 diseased human populations.
 Several types of functional imaging techniques have been developed. Electro-encephalography (EEG) and magneto-encephalography (MEG) measure the superficial cortical neural activity of the brain with a high temporal resolution. Functional
 magnetic resonance imaging (fMRI)~\citep{agawa1990,ogawa1990b} uses strong magnetic fields to measure changes in
-oxygen flow in the brain that correlates with brain activity. This technique yields
+oxygen flow in the brain that correlates with synaptic activity in the brain. This technique yields
 information on brain structure, variability, and function at high
 spatial resolution. Finally, invasive
 techniques have been developed such as positron emission tomography (PET) that
@@ -179,13 +183,15 @@ in an auditory task. Adapted with permission from~\citep{thirion_hdr}.}
 \end{pagefigure}
 
 \subsection{The BOLD signal}
-When a brain area is solicited, the brain fires chemical signals to provide it
-with oxygen and sugar. Nearby blood capillaries dilate to increase the quantity
+When a brain area is solicited, the brain fires chemical signals to \textit{report}
+the consumption of oxygen and sugar. Nearby blood capillaries dilate to increase the quantity
 of flowing blood and provide these resources. This phenomenon is called the
 haemodynamic response.
+%
 As a result, we expect a higher concentration of oxygenated hemoglobin
 in a given brain area soon after its activation.
-fMRI imaging can be used to measured this effect, called the BOLD (\textit{Blood Oxygen-Level-Dependent}) signal~\citep{agawa1990,ogawa1990b}, at a spatial typically resolution of 1.5 to 3mm, and a temporal resolution
+%
+MRI imaging can be used to measure this effect, called the BOLD (\textit{Blood Oxygen-Level-Dependent}) signal~\citep{agawa1990,ogawa1990b}, at a spatial typically resolution of 1.5 to 3mm, and a temporal resolution
 of 1-3s. This yields a spatially resolved image of
 brain functional networks that can be modulated
 either by specific cognitive tasks or appear as
@@ -207,8 +213,8 @@ imaging software. In order to prepare the data for further statistical analysis,
 some preprocessing steps are required. Below, we outline the main ones. Viz,
 
 \paragraph{Data acquisition.}
-The resolution of fMRI is usually between 1mm 3 and
-3mm 3 . In a single 3D scan, the brain represents $10^4$ to $10^6$ voxels.
+The resolution of fMRI is usually between 1mm$^3$ and
+(3mm)$^3$ . In a single 3D scan, the brain represents $10^4$ to $10^6$ voxels.
 A run contains usually from 100 to 1000 scans. Functional MRI scans are
 acquired by slices, usually in the axial direction. The time required to acquire
 one slice is called echo time (TE) and is in the order of tens of milliseconds.
@@ -241,7 +247,7 @@ at the same time. This introduces a shift in the haemodynamic response
 associated to each of them. The problem can be solved by interpolating the
 signal of each slice so that all of them can be considered as acquired at the
 same time. ~\citep{sladky2011} showed that
-depending on repetition time and paradigm design, slice-timing effects can significantly impair fMRI results and slice-timing correction methods can successfully compensate for these effects and therefore increase the robustness of the data analysis.
+depending on repetition time and paradigm design, slice-timing effects can significantly impair fMRI results and slice-timing correction methods can successfully compensate for these effects and therefore increase the robustness of subsequent data analysis.
 
 \paragraph{Registration of brain data into a common reference space.}
 Each brain is of different size
@@ -257,9 +263,10 @@ the template\footnote{In chapter \ref{chap:epi2epi}, we study the possibility of
 
 \begin{figure}
   \includegraphics[width=1\linewidth]{figures/normalize.png}
-  \caption{\textbf{Tissue segmentation} and \textbf{normalization.} Showing (\textbf{top}) outlines of a subject's anatomical / T1 image (foreground) projected onto an MNI template image (background) and also the tissue probability maps (TPMs), after registration to the latter. The contours should match the background image well. Otherwise, something might have gone wrong.
-    Typically things that can go wrong include:
-    lesions (missing brain tissue), bad orientation headers,
+  \caption{\textbf{Tissue segmentation} and \textbf{normalization.} Showing (\textbf{top}) outlines of a subject's anatomical / T1 image (foreground) projected onto an MNI template image (background) and also the tissue probability maps (TPMs), after registration to the latter. The contours should match the background image well. 
+% Otherwise, something might have gone wrong.
+    Typically impediments to correct registration include:
+    lesions (missing brain tissue), corrupted image headers,
 non-brain tissue in anatomical image (i.e needs brain
 extraction), etc.}
 \end{figure}
@@ -270,9 +277,9 @@ Forward inference made on fMRI data (e.g. prediction of brain
 activation from the stimuli) can be conceptualized as the \textit{encoding} of perceptual,
 motor or cognitive parameters into brain signals. The inverse model, that
 predicts behavioral data from brain activation is called \textit{decoding}, and will be the subject matter of chapter \ref{chap:structured_priors}. Two main paradigms allow to experimentally study brain
-signals: either we study them in controlled condition on a particular task,
-this is the task paradigm, or we study the spontaneous activity of the brain in
-order to uncover its organization, this is the resting-state paradigm.
+signals: either we study them in controlled condition on a particular task
+--this is the task paradigm-- or we study the spontaneous activity of the brain in
+order to uncover its organization: this is the resting-state paradigm.
 
 \subsubsection{The task paradigm and the general linear model}
 Using an experimental design, it is possible to relate the BOLD signal with
@@ -281,7 +288,7 @@ the left or the right ear of the subject. By comparing brain activation between
 resting state and when the sound is playing, we can isolate the auditory cortex
 of the brain.
 Statistically, we do that by crafting a design matrix corresponding to the
-experiment: one column of the matrix represents one particular activation~\citep{friston1994statistical}.
+experiment: one column of the matrix represents an ideal response to one of the presented conditions~\citep{friston1994statistical}.
 
 \begin{figure}
   \includegraphics[width=1\linewidth]{figures/activation.png}
@@ -297,9 +304,9 @@ matrix $\X \in \mathbb R^{T \times k}$, where $k$ is the number of conditions an
 \begin{equation}
   \B{y}_v = \B{X}\boldsymbol{\beta}_v + \boldsymbol{\epsilon}_v,
 \end{equation}
-where $\boldsymbol{\beta}_v \in \mathbb R^k$ are regression coefficients and $\boldsymbol{\epsilon}_v = (\epsilon_{v,1},\ldots,\epsilon_{v,T}) \in \mathbb R^T$ is a non-iid vector of normally distributed noise terms.
-Such a problem is posed and weighted least-squares (WLS) is used to obtain a solution
-\footnote{There are usually more time points than experimental conditions, and so problem is full-rank.},
+where $\boldsymbol{\beta}_v \in \mathbb R^k$ are regression coefficients and $\boldsymbol{\epsilon}_v = (\epsilon_{v,1},\ldots,\epsilon_{v,T}) \in \mathbb R^T$ is a non-iid vector of normally distributed noise.
+Such a problem is well-posed and weighted least-squares (WLS) are used to obtain a solution
+\footnote{There are usually more time points than experimental conditions, and so the design matrix is full-rank.},
 to obtain $\hat{\boldsymbol{\beta}}_v = \B{X}^\dagger\B{y}_v$.  Stacking these coefficients across all voxels per-brain correspond to $k$ so-called $\boldsymbol{\beta}$-maps~\citep{friston1994statistical}. For a given combination of experimental conditions \footnote{For example, for $k = 3$ conditions, one may be interested in take $\B{c} = (1, -1, 0)$, meaning we wish the find the effect of the first condition relative to the second, or $\B{c}=(1,-1/2,-1/2)$ corresponding to the effect of the first condition w.r.t the average effect.\\}
 $\B{c}  = (c_1,c_2,\ldots,c_k)\in \mathbb R^k$ , one can compute a statistic
 
@@ -313,13 +320,19 @@ Under the null hypothesis that the effect were are interested in is zero, i.e
 the above statistic is student-t distributed with $T-k$ degrees of freedom, and one can
 analytically obtain $p$-values and confidence intervals for inference. Projecting these values unto the brain (one value per voxel) yields a so-called \textit{activation map}. Such maps are the main output of any forward analysis in task-based fMRI studies.
 
-It should be that $T-k$ is only a crude over-estimation of the true degrees of freedom, confounded by the fact that there are correlations between neighboring voxels, leading to \textit{multiple comparison} issues in these so-called \textit{mass-univariate} methods. Bonferoni and similar correction procedures are usually used to alleviate these issues, but maybe too conservative and destroy the the sought-for effects. An alternative is to use \textit{multi-variate} methods which directly model the spatial interactions between the voxels. Such methods will be the subject of chapter \ref{chap:structured_priors}.
+%It should be noted that $T-k$ is only a crude over-estimation of the true degrees of freedom, 
+Subsequent statistical inference suffers from heavy \textit{multiple comparison} issues in these so-called \textit{mass-univariate} methods.
+%
+The problem
+is further confounded by the fact that there are correlations between neighboring voxels, leading to  situation where the Bonferoni and similar correction procedures, usually used to deal with these issues, may be too conservative and destroy the the sought-for effects.
+%
+An alternative is to use \textit{multi-variate} methods which directly model the spatial interactions between the voxels. Such methods will be the subject of chapter \ref{chap:structured_priors}.
 
 \section{Resting-state fMRI, brain networks, and functional connectivity}
 \label{sec:rsfmri}
 Resting-state fMRI --or rsfMRI for short-- uses the same acquisition method as task fMRI.
 However, instead of giving a particular task to the subject, they are asked to let their mind wander without sleeping. By studying this background activity of
-the brain, it is possible to uncover its underlying organization~\citep{raichle10}. Unlike the techniques described previously where the aim was to localize regions of activation for a given set of conditions, in functional connectivitly analysis were interested in infering connections between such regions.
+the brain, it is possible to uncover its underlying organization~\citep{raichle10}. Unlike the techniques described previously where the aim was to localize regions of activation for a given set of conditions, in functional connectivitly analysis were are interested in infering connections between such regions.
 
 \begin{marginfigure}%[!htbp]
   \includegraphics[width=1\linewidth]{figures/connectome.png}
@@ -356,7 +369,7 @@ selection or extraction-- is necessary to study connectivity.
 % \section{Task activation as a small perturbation of resting-state networks}
 
 \section{Inter-subject variability in the human brain}
-... as noted in
+As noted in
 \citep{thirion2007analysis,pmid22425669}, the inter-subject variability
 in GLM results is not due to misregistration, but intrinsic subject
 differences with a more physiological nature: the size of effects and
@@ -365,6 +378,7 @@ dual regression \citep{Filippini2009} to provide quantitative evidence that inte
 differences in task-based brain activations are largely physiological --in contrast to being driven
 by subjects' brain morphological differences...
 
+\textbf{XXX Unfinished}
 
 % \clearpage
 \bibliographystyle{plainnat}
