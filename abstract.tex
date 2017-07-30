@@ -4,39 +4,15 @@
 
 \minitoc
 
-\section{Context}
-\newthought{A major goal} of the neurosciences is to understand the structure, function, and variability of the human brain, and how these give rise to the complex high-level behavior of human beings. One is typically interested in questions such as:
-\begin{itemize}
-  \item \textit{Which parts of the brain are in-charge of processing mathematical formulae as opposed to ordinary natural language ?}
-  \item \textit{Which parts of the brain increase/decrease their activity when the brain is at rest ?}
-  \item \textit{What are the neuro-biological markers of neurological os psychiatric mental illness ?}
-  \item \textit{How does the brain structure (sulci, gyri, etc.) and function change during aging ? etc.}
- \item \textit{How do the language-responsive regions of one subject compare with that of another ? Can they be registered anatomically ?}
- \item \textit{How are the different motor or cognitive functions (language, emotion, etc.) distributed over the brain, in terms of regions and networks of regions ?}
- \item \textit{How are numbers represented and manipulated in the brain ?}
-\item \textit{How does the brain and behavior change under the attack of a disease (e.g schizophrenia or a neuro-degenerative disease)}   
-\end{itemize}
-Note that this list is by no way exhaustive.
-
  \begin{pagefigure}
     \centering
     \def\svgwidth{.23\columnwidth}
     \input{figures/neuron.pdf_tex}
     \includegraphics[width=.74\linewidth]{figures/brain_function.png}    
     \caption{\textbf{Views of the brain} at different levels of detail. The brain is composed of (spatially connected) regions and  such regions are in turn composed of populations of neurons.
-%
-\textbf{Right:} Each region is associated with a particular function
-such as sensory areas (e.g.  visual cortex, auditory cortex) that
-receive and process information from sensory organs, motors areas
-(e.g. primary motor cortex, premotor cortex) that control the
-movements of the subject, and associative areas (e.g. Broca’s area,
-Wernicke's area) that process the high-level information related to
-language production and understanding or the Intra Parietal Sulcus
---IPS-- that processes spatial information.
-%
-Adapted from \url{http://agaudi.files.wordpress.com/}.
+      %
 \textbf{Left:} Simplified view of a neuron.
-A \textit{neuron} has a cell body
+A neuron (there are many types) has a cell body
 called the \textit{soma}, many regions for receiving information from other neural cells
 called \textit{dendrites}, and often an \textit{axon} (nerve
 fiber) for transmitting information to other
@@ -45,8 +21,35 @@ The information in the axon is transmitted through an electrical
 signal called action potential, which is based on the electrical
 properties of the neuronal membrane. Adapted from
 \url{http://commons.wikimedia.org/}.
+%      
+\textbf{Right:} Each region is associated with a particular function
+such as sensory areas (e.g.  visual cortex, auditory cortex) that
+receive and process information from sensory organs, motors areas
+(e.g. primary motor cortex, premotor cortex) that control the
+movements of the subject, and associative areas (e.g. Broca’s area,
+Wernicke's area) that process the high-level information related to
+language production and understanding or the Intra Parietal Sulcus
+--IPS-- that processes spatial information.
+Adapted from \url{http://agaudi.files.wordpress.com/}.
 }
+\label{fig:neuron}
 \end{pagefigure}
+
+\section{Context}
+
+\newthought{A major goal} of the neurosciences is to understand the structure, function, and variability of the human brain, and how these give rise to the complex high-level behavior of human beings. One is typically interested in questions such as:
+
+\begin{itemize}
+  \item \textit{Which parts of the brain are in-charge of processing mathematical formulae as opposed to ordinary natural language ?}
+  \item \textit{Which parts of the brain increase/decrease their activity when the brain is at rest ?}
+  \item \textit{What are the neuro-biological markers of neurological or psychiatric mental illness ?}
+  \item \textit{How does the brain structure (sulci, gyri, etc.) and function change during aging ? etc.}
+ \item \textit{How do the language-responsive regions of one subject compare with that of another ? Can they be registered anatomically ?}
+ \item \textit{How are the different motor or cognitive functions (language, emotion, etc.) distributed over the brain, in terms of regions and networks of regions ?}
+ \item \textit{How are numbers represented and manipulated in the brain ?}
+\item \textit{How does the brain and behavior change under the attack of a disease (e.g schizophrenia or a neuro-degenerative disease)}   
+\end{itemize}
+Note that this list is by no way exhaustive.
 
 In the last three decades, mapping brain functional connectivity from
 functional Magnetic Resonance Imaging (MRI) data has become a very
@@ -130,7 +133,7 @@ There are also a number of preprints currently being prepared for jornal publica
 In this report, I shall present a selection of the work I have done during the preparation of my PhD project. This selection will be centered around
 \begin{itemize}
 \item (A) \textbf{Big-picture: general preliminaries, motivations, state-of-the-art} $\implies$ chapter \ref{chap:bigpic}.
-\item (B) \textbf{Structured penalties for brain decoding} $\implies$ chapters \ref{chap:structured_priors}, \ref{chap:efficient_opt}, \ref{chap:speeding}, \ref{chap:admm}.
+\item (B) \textbf{Structured penalties for brain decoding} $\implies$ chapters \ref{chap:structured_priors}, \ref{chap:efficient_opt}, \ref{chap:speeding}, \ref{chap:igraphnet}, \ref{chap:admm}.
 \item (C) \textbf{Structured generative models for brain data} $\implies$ chapters \ref{chap:func_var}, \ref{chap:proxdict}.
 \item (D) \textbf{New schemes for direct registration} of functional brain data $\implies$ chapter \ref{chap:epi2epi}.
 \item (D) \textbf{Semi-supervised auto-encoding models} for predicting task-based brain activation
@@ -140,15 +143,13 @@ My precise contributions w.r.t these subjects will be outlined  as we proceed.
 % I will conclude the manuscript with a synthesis of the progress made so far, and detailed plans for
 % the future.
 
-\textbf{XXX What about Chapter 6 ?}
-
 \chapter{Big-picture: functional magnetic resonance imaging to study the human brain}\label{chap:bigpic}
 
 \minitoc
  
 \newthought{Neuroimaging has emerged} as a distinguished data-acquisition and set of  analysis techniques for probing and observing brain activity.
 Acquisition of the data goes hand-in-hand with
-  statistical analysis methods for analyzing the data, in view of making specific quantifiable claims. These techniques operate at a scale much coarser than that of the neuron: one is interested physiological effects which are ultimately aggregates of activity over large population of neurons.
+  statistical analysis methods for analyzing the data, in view of making specific quantifiable claims. These techniques operate at a scale much coarser than that of the \textit{neuron}: one is interested physiological effects which are ultimately aggregates of activity over large population of neurons (see Fig. \ref{fig:neuron}).
 
 In this introductory chapter, we review the relevant theory sufficient to situate my own work in a larger scientific context. Section \ref{sec:fmri} will
 focus on imaging the human brain and preprocessing of the collected data and also classical methodologies for analyzing the data.

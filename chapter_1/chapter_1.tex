@@ -719,21 +719,23 @@ registered EPI image (Figure \ref{fig:template}), our proposes method
 outperforms the classical indirect T1-based registration.
 %
 In terms of more high-level metrics like group-level GLM statistics, these gains though still present as not as pronounced (refer to Figure \ref{fig:zmaps}). Indeed, as noted in
-\citep{thirion2007analysis,pmid22425669}, the inter-subject variability
+\citep{thirion2007analysis,pmid22425669,Xu2009}, the inter-subject variability
 in GLM results is not due to misregistration, but intrinsic subject
 differences with a more physiological nature: the size of effects and
-the anatomical localization are subject-specific. Also, \citep{tavor2016task} used
-dual regression \citep{Filippini2009} to provide quantitative evidence that inter-subject
+the anatomical localization are subject-specific. In chapter \ref{chap:rsfmri2tfmri},
+we show that resting-state fMRI data can be used to predict the activation maps of
+a subject to a task, with an $R^2$-score which can be up to \textbf{0.5} for some subjects and task.
+This is an enhancement on previous work by \citep{tavor2016task}, and shows
 differences in task-based brain activations are largely physiological --in contrast to being driven
-by subjects' brain
-morphological differences-- and can be predicted from resting state fMRI data.
-In a separate work \citep{dohmatob2016}, we have considered the possibility explicitly
+by subjects' brain morphological differences-- and can be predicted from resting state fMRI data.
+
+In a separate work \citep{dohmatob2016}, also presented in chapter \ref{chap:func_var} in detail, we have considered the possibility explicitly
 modeling this physiology differences by estimating latent
 factors of variability across-subjects in a data-driven way using
-dictionary-learning. The motivation behind such a model
-is be that, activation across-subjects is produced by the same
-generative model (the latent model), and modulated on the subject-level by
-subject-specific physiology.
+dictionary-learning. The motivating idea behind such a model, is that activation
+across-subjects would be governed by the same generative model (the latent model),
+and modulated on the subject-level by
+subject-specific physiology. 
 
 %% FInally, the misconception according to which function and anatomy
 %% (i.e that accordingly, a local morphological variability could lead to a corre
