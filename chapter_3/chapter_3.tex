@@ -146,10 +146,10 @@ singular value of the design matrix $\mathbf{X}$.
 For logistic
 regression however, the tightest known upper bound for
 $L_{\nabla \ell}$ is $\|\mathbf{X}\|\|\mathbf{X}^T\|$,
-% (for example see Appendix A of  \citep{yuan2012}),
+% (for example see Appendix A of ~\citep{yuan2012}),
 which performs very poorly locally (i.e, stepsizes $\sim 1 / L_{\nabla \ell}$ are
 sub-optimal locally). A way to circumvent this difficulty is
-\emph{backtracking line search}  \citep{beck2009a}, where one tunes the
+\emph{backtracking line search} ~\citep{beck2009a}, where one tunes the
 stepsize $t$ to satisfy inequality \eqref{eq:fista_ineq} locally at
 point $\mathbf{z}$. 
 
@@ -158,7 +158,7 @@ point $\mathbf{z}$.
 ADMM is a Bregman Operator Splitting primal-dual method for
 solving convex-optimization problems by splitting the
 objective function in two convex terms which are functions of linearly-related auxiliary variables
- \citep{boyd2010}.  ADMM is particularly appealing for problems such as TV
+~\citep{boyd2010}.  ADMM is particularly appealing for problems such as TV
 regression: using the variable split $\mathbf{z}
 \leftarrow \nabla \mathbf{w}$, the regularization is a simple $\ell_{1}/\ell_2$
 norm on $\mathbf{z}$ for which the proximal is exact and computationally
@@ -178,19 +178,19 @@ cheap. However, in our settings, limitations of ADMM are:
   results.
 \end{itemize}
 
-\paragraph{Primal-Dual algorithm of Chambolle and Pock  \citep{chambolle2010}.}
+\paragraph{Primal-Dual algorithm of Chambolle and Pock ~\citep{chambolle2010}.}
 This scheme is another method based on operator splitting.
-Used for fMRI TV regression by  \citep{gramfort-etal:2013a},
+Used for fMRI TV regression by ~\citep{gramfort-etal:2013a},
 it does not require setting a hyperparameter.  % XXX : this is wrong you have the tau / sigma
 However it is a first-order single-step method and is thus more impacted by the
 conditioning of the problem. Note that here we explore this primal-dual
 method only in the squared loss setting, in which the algorithm can be accelerated by
-precomputing the SVD of $\mathbf{X}$  \citep{gramfort-etal:2013a}
+precomputing the SVD of $\mathbf{X}$ ~\citep{gramfort-etal:2013a}
 .
 
-\paragraph{HANSO  \citep{lewis2008}.}
+\paragraph{HANSO ~\citep{lewis2008}.}
 a modified LBFGS scheme based on gradient 
-sampling methods  \citep{burke2005} and inexact
+sampling methods ~\citep{burke2005} and inexact
 line-search. For non-smooth problems as in our case, the algorithm relies on
 random initialization, to avoid singularities with high probability. 
 Here, we used the original authors' implementation.
@@ -199,7 +199,7 @@ Here, we used the original authors' implementation.
 The $\ell_{1}$ norm (resp. TV semi-norm) is differentiable everywhere with
 gradient $\left(w_j/|w_j|\right)_{j \in [\![p]\!]}$ (resp. $-\dive (((\nabla \mathbf{w})_j/\|(\nabla \mathbf{w})_j\|_2)_{j \in [\![p]\!]}))$), except when some voxels are inactive with
 $w_j = 0$ (resp. $(\nabla \w)_j = 0$), corresponding to black spots (resp. edges).  A convenient
-approach (see for example  \citep{NESTA, nesterov2005a, nesterov2005b,
+approach (see for example ~\citep{NESTA, nesterov2005a, nesterov2005b,
   beck2012}) for dealing with such singularities is to uniformly
 approximate the offending function with smooth surrogates that
 preserve its convexity. Given  % I removed "and other important properties"
@@ -229,7 +229,7 @@ To solve \eqref{eq:opt_pb}, we consider problems of the form
 \eqref{eq:sopt_pb} with $\mu \rightarrow 0^+$: we start with a coarse
 $\mu$ ($= 10^{-2}$, \emph{e.g}) and cheaply solve the $\mu$-smoothed problem
 \eqref{eq:sopt_pb} to a precision $\sim \mu$ using a fast
-iterative oracle like the LBFGS \citep{ciyou1994}; we
+iterative oracle like the LBFGS~\citep{ciyou1994}; we
 obtain a better estimate for the solution; then we decrease $\mu$ by a fixed factor,
 and restart the solver on problem \eqref{eq:sopt_pb} with this solution; and so on, in a 
 \emph{continuation} process~\citep{NESTA} detailed in Alg.
@@ -269,7 +269,7 @@ data. All experiments were run full-brain without spatial smoothing.
 \paragraph{Visual recognition.}
 \label{subsec:haxby}
 Our first benchmark dataset is a popular block-design fMRI dataset from a study on face and
-object representation in human ventral temporal cortex  \citep{haxby2001}.
+object representation in human ventral temporal cortex ~\citep{haxby2001}.
 It consists of
 6 subjects with 12 runs per subject. In each run, the subjects
 passively viewed images of eight object categories, grouped
@@ -283,11 +283,11 @@ time-series from the full-brain mask of $p = 23\,707$ voxels over $n =
 \paragraph{Mixed Gambles.}
 Our second benchmark dataset is a study in which
 subjects were presented with mixed (gain/loss) gambles, and decided
-whether they would accept each gamble \citep{mixedgambles2007}.  No outcomes of these gambles
+whether they would accept each gamble~\citep{mixedgambles2007}.  No outcomes of these gambles
 were presented during scanning, but after the scan three gambles were
 elected at random and played for real money. The prediction task here is
 to predict the magnitude of the gain and thus a regression on a
-continuous variable \citep{jimura2012}. The data
+continuous variable~\citep{jimura2012}. The data
 The are pulled from 16 subjects with 48 3D scans each, making up for a total of $n=768$ samples with approximately $p=3.3 \times 10^4$ voxels.
 
 % We validate our algorithms on both simulated and real data.
