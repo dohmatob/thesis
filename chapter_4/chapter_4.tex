@@ -263,18 +263,6 @@ dictionary-learning framework of   \citep{mairal2010} --henceforth referred to a
 % can be readily applied to multiple-valued imaging modalities, such as Diffusion Tensor Imaging (DTI) data.
 % \end{remark}
 
-\paragraph{Interpretation as an ``encoder-less'' generative model of brain data.}
-One notes that the proposed model \ref{eq:ss} can be seen as an auto-encoding model of brain data with linear generator
-
-\begin{equation}
-  G_{\B{D}} = \langle \B{D}, .\rangle: \mathbb R^k \times \mathbb R^p,\; \B{c} \mapsto \B{Dc},
-\end{equation}
-parametrized by the learned dictionary $\B{D} \in \mathcal C$, and an \textit{implicit} encoder
-\begin{equation}
-  E_{\B{D}}: \mathbb R^p \rightarrow \mathbb R^k,\; \x \mapsto \argmin_{\B{c} \in \mathbb R^k} -\text{loglik}(\x|\B{c},\B{D}) = \argmin_{\B{c} \in \mathbb R^k}\ell(G_\B{D}(\B{c}),\x) + \alpha\phi(\B{c}).
-  \end{equation}
-
-
 \section{Algorithms}
 % \paragraph*{Optimizing the proposed model: a simple algorithm.}
 The objective function in problem
@@ -832,14 +820,30 @@ Through experiments, we have shown that the resultant model --Smooth-SODL model 
 We believe such online multivariate online methods shall become the de facto
 way do dimensionality reduction and ROI extraction in future.
 
-\paragraph{Extensions.} One can envisage to replace the Laplacian regularization with a general structure-inducing penalty for which the proximal operator is easy to compute. Such a framework is developed in chapter \ref{chap:proxdict}, and produces an entire family models, with potentially different properties.
-
-
 \paragraph{Implementation.} The authors' implementation of the proposed
 SS0MF \eqref{eq:ss} model will soon be made available as part of the
 \textit{Nilearn} package   \citep{nilearn}.
 
+\subsection{Possible extensions}
+\paragraph{More general structure-imposing penalties.}
+One can envisage to replace the Laplacian regularization with a general structure-inducing penalty for which the proximal operator is easy to compute. Such a framework is developed in chapter \ref{chap:proxdict}, and produces an entire family models, with potentially different properties.
 
+\paragraph{Replacing the dictionary with a general neural net.}
+One notes that the proposed model \eqref{eq:ss} can be seen as an auto-encoding model of brain data with linear generator
+
+\begin{equation}
+  G_{\B{D}} = \langle \B{D}, .\rangle: \mathbb R^k \rightarrow \mathbb R^p,\; \B{c} \mapsto \B{x}:=\B{Dc},
+  \label{eq:lingen}
+\end{equation}
+parametrized by the shared learned dictionary $\B{D}$, and an \textit{implicit} encoder
+\begin{equation}
+  E_{\B{D}}: \mathbb R^p \rightarrow \mathbb R^k,\; \x \mapsto \argmin_{\B{c} \in \mathbb R^k} -\text{loglik}(\x|\B{c},\B{D}) = \argmin_{\B{c} \in \mathbb R^k}\ell(G_\B{D}(\B{c}),\x) + \alpha\phi(\B{c}),
+  \end{equation}
+which is by construction, the optimal encoder~\footnote{Under the prior for the codes $p(\B{c}) \propto \exp(-\alpha\phi(\B{c}))$.} for the the generator $G_{\B{D}}$.  One could obtain much greater modeling flexibility by replacing the generator \eqref{eq:lingen} by a neural network
+  $$G_{\boldsymbol{\theta}}: \mathbb R^k \rightarrow \mathbb R^p,\; \B{c} \mapsto \B{x} := \G_{\boldsymbol{\theta}}(\B{c}),$$
+  with parameters $\boldsymbol{\theta} \in \Theta$. Such a model could be successfully trained via stochastic gradient descent (SGD) or its various enhanced variants.
+Such models, which can be referred to as "encoder-less auto-encoders", have recently been proposed in the compressed sensing~\citep{bora17} and computer vision literatures~\citep{bojanowski17}.
+  
 % \newglossaryentry{MRI}{name=MRI,description={{Magnetic Resonance Imaging}}}
 
 
