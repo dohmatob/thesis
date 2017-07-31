@@ -136,14 +136,18 @@ Similarly, one can show that Sparse-Variation
 \citep{eickenberg2015total} can be solved via an IRLS
 (iteratively-reweighted Least Squares) scheme, where the weights are
 computed via \eqref{eq:weights}, with the $\nabla$ operator replaced
-with an identity-augmented version. In fact, thanks to the inequality
+with an identity-augmented version. Indeed, thanks to the inequality
 \eqref{eq:rabbit}, it turns out that most
 complex rich non-smooth $\ell_p$-norm-based models are just
 iteratively-reweighted versions of much simpler counterparts like
-Ordinary Least Squares, Lasso, ElasticNet, GraphNet, etc....
+Ordinary Least Squares, Lasso, ElasticNet, GraphNet, etc.
+
 
 \section{Experimental results}
-Preliminary experimental results are shown in Fig. \ref{fig:igraphnet}...
+Preliminary experimental results are shown in Fig. \ref{fig:igraphnet}.
+We run our procedure on data for the Face vs House condition of the visual
+recognition dataset \citep{haxby2001}.
+Model coefficients and accuracies on held-out data are shown. We monitor the evolution of the model as a function of the number of iGraphNet iterations $k = 0, 1, 2,\ldots$. The limit $k \rightarrow \infty$ would correspond to TV-L1 regularization.
 
 \begin{marginfigure}
 \includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_0_yz.png}

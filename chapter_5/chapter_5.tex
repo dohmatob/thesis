@@ -677,6 +677,16 @@ successfully predict the subjects' activation maps well above chance, with our m
 \label{fig:confusion}
 \end{figure}
 
+\begin{pagefigure}%[!htbp]
+  \includegraphics[width=1\linewidth]{figures/all_r2.png}
+  \includegraphics[width=1\linewidth]{figures/all_pearsonr.png}
+  \caption{\textbf{Top:} $R^2$-score for predicting subject-specific activation maps for different task contrasts, from their resting data. These results are for the different contrasts of the HCP dataset~\citep{VanEssen20122222} are shown.
+    Results for the reference method \citep{tavor2016task} are also shown.
+    \textbf{Bottom:} Pearson correlation for the same prediction problem.
+    }
+    \label{fig:confusion_boxplots}
+  \end{pagefigure}
+
 % \begin{pagefigure}
 % \subfloat[Shapes vs Faces] { 
 %   \includegraphics[width=.33\linewidth]{figures/cmatrices/SHAPES-FACES.png}
@@ -759,17 +769,6 @@ successfully predict the subjects' activation maps well above chance, with our m
 
 % \caption{\textbf{Confusion matrices} for the Pearson correlation between true and predicted $Z$-maps, for different task contrasts. \textbf{XXX: these figures should be regenerated with a pair of (vmin,vmax) per contrast!}}
 % \end{pagefigure}
-
-\begin{pagefigure}%[!htbp]
-  \includegraphics[width=1\linewidth]{figures/r2_scores.pdf}
-  \includegraphics[width=1\linewidth]{figures/pearsonr_scores.pdf}
-  \caption{\textbf{Top:} $R^2$-score for predicting subject-specific activation maps from resting
-    data. These results are for the different contrasts of the HCP dataset~\citep{VanEssen20122222} are shown.
-    Results for the reference method \citep{tavor2016task} are also shown.
-    \textbf{Bottom:} Pearson correlation for the same prediction problem.
-    }
-    \label{fig:confusion_boxplots}
-  \end{pagefigure}
 
 \paragraph{Qualitative metrics} In Fig. \ref{fig:zmaps}, we display level-curves of the population mean (magenta) of
 activation maps for the ``Story-vs-Math'' and ``2BK-vs-0BK'' task contrasts, superimposed on the true activation maps of the
