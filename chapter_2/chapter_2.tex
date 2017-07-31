@@ -186,15 +186,8 @@ extraction of functional brain atlases  ~\citep{abraham2013}.
   \paragraph{Submodular interpretation of TV.} We note that anisotropic TV penalty \eqref{eq:penalty} on
   an arbitrary (undirected) graph $G = (V,E)$ is the \textit{Lovasz extension} of the \textit{cut-function}
   $F : 2^V \rightarrow \mathbb N$, $S \mapsto "\text{number of edges between } S \text{ and }V\setminus S"$,
-defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v \ge \lambda\})]$, for all $x \in [0,1]^{\#V}$. Thus anisotropic total variation can be seen as a graph-cut problem for which efficient algorithms exist.
+defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v \ge \lambda\})]$, for all $x \in [0,1]^{\#V}$. Thus anisotropic TV can be seen as a graph-cut problem for which efficient algorithms exist~\citep{bach13sub,landrieu16}.
 \end{shaded}
-
-\begin{figure}[!htbp]
-  \includegraphics[width=1\linewidth]{figures/haxby_barchart.png}
-  \caption{Bar chart showing percentage classification on leftout, for one-vrs-one classification on the visual recognition dataset~\citep{haxby2001}.
-  }
-  \label{fig:spacenet_bars}
-\end{figure}
 
 \section{Methods}
 The SpaceNet model leads to difficult non-smooth mathematical optimization problems making their implementation and practical usability challenging.~\citep{dohmatob2014benchmarking} benchmarked a rich variety of cutting-edge solvers for such problems, and gave crucial recommendations on how to effectively implement these algorithms in practice. In these benchmarks, the FISTA algorithm emerged as the go-to algorithm for the TV-L1 problem~\citep{dohmatob2015speeding}. These hints have been carefully used in implementing SpaceNet. Also as a preprocessing step, we use univariate feature-screening (ANOVA) to eliminate voxels which are irrelevant to the learning problem, thus reducing the size of the problem. As a result the implementation of SpaceNet is fast, robust, and automatically sets its parameters (internal cross-validation). All these technical details will be properly presented in the next few chapters.
@@ -233,7 +226,13 @@ GraphNet~\citep{hebiri2011}. Recently, ~\citep{sugar} has proposed a STEIN-based
 
 \subsection{How SpaceNet compares against classical unstructured models}
 \paragraph{Classification.}
-We compared SpaceNet (TV-L1 and GraphNet / Smooth-Lasso priors) with an SVM (Support Vector Machine) on the visual-recognition dataset~\citep{haxby2001}. This dataset consists of 6 subjects with 12 runs per subject. In each run, the subjects passively viewed images of eight object categories, grouped in 24-second blocks separated by intermittent rest periods. This experiment is a classification task: predicting the object category. The design matrix is made of time-series from the full-brain mask of $p=23,707$ voxels over 216 TRs (Repetition Times), of a single subject (subj1). 126 TRs were used for training all the models, whilst testing was done on 90 left-out TRs. The results are depicted in Figures 1 (bar chat) and 2 (brain maps).
+We compared SpaceNet (TV-L1 and GraphNet / Smooth-Lasso priors) with an SVM (Support Vector Machine) on the visual-recognition dataset~\citep{haxby2001}. This dataset consists of 6 subjects with 12 runs per subject. In each run, the subjects passively viewed images of eight object categories, grouped in 24-second blocks separated by intermittent rest periods. This experiment is a classification task: predicting the object category. The design matrix is made of time-series from the full-brain mask of $p=23,707$ voxels over 216 TRs (Repetition Times), of a single subject (subj1). 126 TRs were used for training all the models, whilst testing was done on 90 left-out TRs. The results are depicted in Figures \ref{fig:spacenet_maps} and \ref{fig:spacenet_bars}.
+
+\paragraph{Regression.}
+In ~\citep{gramfort2013}, the authors compared several models on a dataset in which subjects were presented with mixed (gain/loss) gambles, and decided whether they would accept each gamble~\citep{jimura2012}. No outcomes of these gambles were presented during scanning, but after the scan three gambles were selected at random and played for real money. The prediction task here is to predict the magnitude of the gain and thus a regression on a continuous variable. The full dataset of 16
+subjects with 48 3D scans each, making up for a total of $n=768$ samples with approximately $p=3.3 \times 10^4$ voxels. The prediction here is inter-subject: the estimator
+learns on some subjects and predicts on left out subjects.
+The results are shown in Fig. \ref{fig:tvl1_regression}.
 
 \begin{pagefigure}%[!htb] 
   \includegraphics[width=.32\linewidth]{figures/svm.png}
@@ -246,12 +245,16 @@ We compared SpaceNet (TV-L1 and GraphNet / Smooth-Lasso priors) with an SVM (Sup
     yield stable and more intepretable maps by enforcing smoothness on the coefficients while segmenting predictive regions (blobs) from noisy background.}
   \label{fig:spacenet_maps}
 \end{pagefigure}
+\begin{figure}[!htbp]
+  \includegraphics[width=1\linewidth]{figures/haxby_barchart.png}
+  \caption{Bar chart showing percentage classification on leftout, for one-vrs-one classification on the visual recognition dataset~\citep{haxby2001}.
+  }
+  \label{fig:spacenet_bars}
+\end{figure}
 
-\paragraph{Regression.}
-In ~\citep{gramfort2013}, the authors compared several models on a dataset in which subjects were presented with mixed (gain/loss) gambles, and decided whether they would accept each gamble~\citep{jimura2012}. No outcomes of these gambles were presented during scanning, but after the scan three gambles were selected at random and played for real money. The prediction task here is to predict the magnitude of the gain and thus a regression on a continuous variable. The full dataset of 16
-subjects with 48 3D scans each, making up for a total of $n=768$ samples with approximately $p=3.3 \times 10^4$ voxels. The prediction here is inter-subject: the estimator
-learns on some subjects and predicts on left out subjects.
-The results are shown in Fig. \ref{fig:tvl1_regression}.
+\section{Conclusion}
+We have presented SpaceNet, a family of priors for brain decoding that enforce both sparsity and structure, leading to better prediction scores and intepretable brain maps. We believe that such priors will become commonplace in future.
+In the next few chapters, we open the ``black-box'' and develop from ground-up, the details of such models, including their practical implementation on a computer.
 
 \begin{figure}[!htbp] 
   \includegraphics[width=1\linewidth]{figures/gramfort_tvl1.png}
@@ -259,10 +262,6 @@ The results are shown in Fig. \ref{fig:tvl1_regression}.
     meaningful predictive regions in agreement with univariate statistics while the ElasticNet yields sparse although very scattered non-zero weights. Source: adapted from ~\citep{gramfort2013}.}
   \label{fig:tvl1_regression}
 \end{figure}
-
-\section{Conclusion}
-We have presented SpaceNet, a family of priors for brain decoding that enforce both sparsity and structure, leading to better prediction scores and intepretable brain maps. We believe that such priors will become commonplace in future.
-In the next few chapters, we open the ``black-box'' and develop from ground-up, the details of such models, including their practical implementation on a computer.
 
 % \clearpage
 \bibliographystyle{plainnat}
