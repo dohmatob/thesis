@@ -44,20 +44,6 @@ proven to be particularly powerful for realizing such effects. Laplacian regular
 is an easier means to this end (because in leads to a differentiable problem),
 but have sub-optimal rates for noisy signal recovery~\citep{minimaxtv}, and the visual effect is less appealing.
 
-\begin{figure}[!htbp]
-  \includegraphics[width=1\linewidth]{figures/balls.png}
-  \caption{$\ell_p$ unit ball for various values of $p$. The kinks
-    in the cases $0 \le p \le 1$ impose sparsity. One notes however that, the
-  cases $0 \le p < 1$ lead to non-convex intractable optimization problems.}
-\end{figure}
-
-\begin{marginfigure}[4cm]
-  \centering
-  \includegraphics[width=1\linewidth]{figures/ball.jpg}
-  \caption{$\ell_p$ ball with $0 < p \ll 1$.}
-  \label{fig:flower}
-\end{marginfigure}
-
 In the context of neuro-imaging, sparsity and smoothness have been compiled to yield
 regression coefficients which are faithful to known neurobiological organization of the brain,
 while alleviating the risk of over-fitting due to inherently small-sample settings.
@@ -68,7 +54,9 @@ and GraphNet ~\citep{grosenick2013}
 %\footnote{Henceforth, we will use GraphNet and S-Lasso
 %interchangeably.}
 to regularize regression and classification
-problems in brain imaging.
+problems in brain imaging. TV has also been employed to enhance the estimation of the voxel-wise \textit{Hurst exponent}~\footnote{$H := \lim_{N \rightarrow \infty}\frac{\mathbb E(r_N/\sigma_N)}{\log N}$,
+where $r_N$ is the empirical range (i.e max value minus min value) of the first $N$ values in a time-series, and $\sigma_N$ is their standard deviation. For example in 1D, white noise has $H = -1/2$.},
+as a measure of temporal self-similarity in brain dynamics~\citep{pelle2016multivariate}.
 
 \paragraph{Notation.} We denote by ${\y} \in \mathbb{R}^{n}$ the targets to
 be predicted (age, sex, IQ, etc.); the \textit{design matrix}
@@ -98,7 +86,15 @@ This defines a linear operator $\nabla \in \mathbb R^{3p \times p}$ (the discret
 
 \section{SpaceNet: sparse structured models for brain data}
 Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)~\citep{michel2011tv}, TV-$\ell_1$~\citep{baldassarre2012,gramfort2013}, GraphNet  ~\citep{grosenick2013,hebiri2011},
-  TV-ElasticNet~\citep{dubois2014predictive}, Sparse Variation~\citep{eickenberg2015total}, and social-sparsity~\citep{kowalski2013social,varoquaux2016social}. These can all be synthesized into a general framework, referred to as \textit{SpaceNet}~\citep{spacenetohbm}, as follows
+TV-ElasticNet~\citep{dubois2014predictive}, Sparse Variation~\citep{eickenberg2015total}, and social-sparsity~\citep{kowalski2013social,varoquaux2016social}. These can all be synthesized into a general framework, referred to as \textit{SpaceNet}~\citep{spacenetohbm}, as follows
+
+\begin{figure}[!htbp]
+  \includegraphics[width=1\linewidth]{figures/balls.png}
+  \caption{$\ell_p$ unit ball for various values of $p$. The kinks
+    in the cases $0 \le p \le 1$ impose sparsity. One notes however that, the
+  cases $0 \le p < 1$ lead to non-convex intractable optimization problems.}
+\end{figure}
+
 \begin{equation}
   \underset{\w \in \mathbb R^p}{\text{minimize }}E(\w) := \ell(\y,\X\w) + \alpha \mathcal P(\w).
     \label{eq:opt_pb}
@@ -114,7 +110,13 @@ The term {$\ell(\y,\X\w)$} is the
     (1 - y_i\X^T_i\w)_+,&\mbox{\text{ for hinge loss (used in SVMs)}}\\
       \vdots\end{cases}
     $$
-$\mathcal P(\w)$ is the penalty term, which simultaneously imposes both sparsity and structure (blobs). The different spatial regularization
+% \begin{marginfigure}[4cm]
+%   \centering
+%   \includegraphics[width=1\linewidth]{figures/ball.jpg}
+%   \caption{$\ell_p$ ball with $0 < p \ll 1$.}
+%   \label{fig:flower}
+% \end{marginfigure}
+In the above general model, $\mathcal P(\w)$ is the penalty term, which simultaneously imposes both sparsity and structure (blobs). The different spatial regularization
 methods that have appeared in neuro-imaging literature can be cast into this
 correspond to different choices of the convex penalty $\mathcal P$ acting on the extended gradient of the coefficients $\w$. Viz,
 
