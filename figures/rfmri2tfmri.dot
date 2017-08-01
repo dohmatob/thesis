@@ -1,0 +1,22 @@
+digraph {
+// rankdir = LR; //order things from left to right
+
+x [shape=circle];
+d [shape=circle];
+y [shape=circle];
+y_ [shape=circle, label=<y<SUB>pred</SUB>>];
+F [shape=rectangle, label=<F<SUB>&beta;</SUB>>];
+beta [shape=circle, label=<&beta;>];
+E [shape=rectangle, label=DR];
+loss [shape=diamond, label=loss];
+
+x -> E -> d -> F -> y_;
+y -> loss;
+y_ -> loss;
+beta -> F;
+loss -> beta [label=<grad<SUB>&beta;</SUB>>];
+
+{rank = same; x; y};
+{rank = same; beta; F};
+
+}

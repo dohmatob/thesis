@@ -17,5 +17,5 @@ theta -> G;
 loss -> theta [label=<grad<SUB>&theta;</SUB>>];
 loss -> z [label=<grad<SUB>c</SUB>>];
 
-{rank=x; theta z; G; x_; loss}
+{rank = same; theta; G};
 }

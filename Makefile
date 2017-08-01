@@ -25,6 +25,7 @@ svg:
 dot:
 	dot figures/flowchart.dot -Tpdf > figures/flowchart.pdf
 	dot figures/gen_model.dot -Tpdf > figures/gen_model.pdf
+	dot figures/rfmri2tfmri.dot -Tpdf > figures/rfmri2tfmri.pdf
 
 tables:
 	pdflatex figures/cv_grid.tex

@@ -188,7 +188,7 @@ extraction of functional brain atlases  ~\citep{abraham2013}.
   \paragraph{Submodular interpretation of TV.} We note that anisotropic TV penalty \eqref{eq:penalty} on
   an arbitrary (undirected) graph $G = (V,E)$ is the \textit{Lovasz extension} of the \textit{cut-function}
   $F : 2^V \rightarrow \mathbb N$, $S \mapsto "\text{number of edges between } S \text{ and }V\setminus S"$,
-defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v \ge \lambda\})]$, for all $x \in [0,1]^{\#V}$. Thus anisotropic TV can be seen as a graph-cut problem for which efficient algorithms exist~\citep{bach13sub,landrieu16}.
+defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v \ge \lambda\})]$, for all $x \in [0,1]^{\#V}$. Thus anisotropic TV minimization can be seen as a graph-cut problem for which efficient algorithms exist~\citep{bach13sub,landrieu16}.
 \end{shaded}
 
 \section{Methods}
