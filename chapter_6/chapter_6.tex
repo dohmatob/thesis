@@ -3,15 +3,17 @@
 
 \minitoc
 
-\section{Recap of main contributions}
+\section{Summary of main contributions}
 This thesis was kicked-off with the goal of developing methods for modeling inter-subject
 functional variability, the aim being to enhance the estimation of functional connectomes
 (data-driven regions of interest, connectivity matrices, etc.)
-across populations of subjects. The quest led to the study of, and proposal of methods for, structured (sparsity, smoothness, etc.) multi-variate models for brain encoding / decoding~\citep{dohmatob2015speeding,abrahamregion,eickenberg2015total,pelle2016multivariate}. Nonlinear registration of functional brain images also came up as a natural concern, we contributed a method for direct registration of functional brain images~\citep{dohmatob2016epi2epi} (submitted to \textit{Neuroimage} journal).
+across populations of subjects. The quest led to the study of, and proposal of methods for, structured (sparsity, smoothness, etc.) multi-variate models for brain encoding / decoding~\citep{dohmatob2015speeding,abrahamregion,eickenberg2015total,pelle2016multivariate}. Nonlinear registration of functional brain images also came up as a natural concern, and we contributed a method for direct registration of functional brain images~\citep{dohmatob2016epi2epi} (submitted to \textit{Neuroimage} journal).
 
-We also improved the current state-of-the-art in ROI extraction and dimensionality reduction by combing techniques from online learning and structured sparsity (like TV-L1) to propose a novel scalable dictionary-learning framework for obtaining decompositions of brain images, which are closer to known neuro-biological organization of brain brain: networks with spatially localized smooth components with sharp boundaries.
+We also improved the current state-of-the-art in ROI extraction and dimensionality reduction by combining techniques from online learning and structured sparsity (like TV-L1) to propose a novel scalable dictionary-learning framework for obtaining decompositions of brain images, which are closer to known neuro-biological organization of the brain: networks made of spatially localized smooth components with sharp boundaries.
 
-The ultimate indicator for having understood a phenomenon is being able to recreate it, at least approximately. Indeed, Feynman once said, \textit{``What I cannot (re)create, I do not understand!''} By combing techniques in generative modeling and ensembles, we improved state-of-the-art methods for predicting task-based activation maps (at the individual level!) from resting-state fMRI data, with accuracy well above chance. For example, across-subject median $R^2$ score on test data is close to $0.2$ for the different tasks. This work is being prepared for journal submission.
+The ultimate indicator for having understood a phenomenon is being able to recreate it, at least approximately. Indeed, Feynman once said, \textit{``What I cannot (re)create, I do not understand!''} By combing techniques in generative modeling and ensembles, we improved state-of-the-art methods for predicting task-based activation maps (at the individual level!) from resting-state fMRI data, with accuracy well above chance.
+% For example, across-subject median $R^2$ score on test data is close to $0.2$ for the different tasks.
+This work is being prepared for journal submission.
 
 Due to the intimate relationship between modeling and optimization, the
 bulk of this work was made possible by development of new or improvement of existing methods of
