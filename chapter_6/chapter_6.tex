@@ -1,11 +1,17 @@
-\chapter{Concluding remarks}
+\chapter{Concluding remarks}\label{chap:conclusion}
 \markright{{~{\rm \ref{chap:conclusion}}. Conclusion and Perspectives}\hfill}{}
 
-\minitoc
+This thesis was kicked-off with the goal of developing methods for modeling inter-subject
+functional variability, the aim being to enhance the estimation of functional connectomes
+(data-driven regions of interest, connectivity matrices, etc.)
+across populations of subjects. The quest led to the study of, and proposal of methods for, structured (sparsity, smoothness, etc.) multi-variate models for brain encoding / decoding. Nonlinear registration of functional brain images also came up as a natural concern, we contributed a method for direct registration of functional brain images. We also improved the current state of the art in ROI extraction and dimensionality reduction by combing techniques from online learning and structured sparsity (like TV-L1) to propose a novel scalable dictionary-learning framework for obtaining decomposition of brain images, which is closer to known neuro-biological organization of brain brain: networks with smooth components with sharp boundaries, sparsely interconnected.
 
-\section{Summary of main contributions}
-\section{Software}
-\section{Concluding remarks and perspectives}
+The ultimate certificate for having understood a phenomenon is being able to recreate it, at least approximately. Indeed, Feynman once said \textit{What I cannot recreate, I do not understand!} By combing techniques in generative modeling and ensembles, we improved state-of-the-art methods for predicting task-based activation maps (at the individual level!) from resting-state fMRI data, with accuracy well above chance. For example, across-subject median $R^2$ score on test data is close to $0.2$ for the different tasks.
+
+Due to the intimate relationship between modeling and optimization, the
+bulk of this work was made possible by development of new or improvement of existing methods of
+optimization, with scalability and robustness at heart...
+
 
 % \clearpage
 \bibliographystyle{plainnat}
