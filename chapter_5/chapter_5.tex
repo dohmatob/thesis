@@ -348,9 +348,9 @@ We note that the form of the solutions provided by the above lemma is particular
 
 \section{Algorithms}
 \subsection{Learning}
-\paragraph{Note on inter-subject covariate shift.}...
+% \paragraph{Note on inter-subject covariate shift.}...
 
-\paragraph{Low-rank Ridge regression}
+\paragraph{Low-rank Ridge regression.}
 For the estimation of the predictive model
 linking resting-state features to activation maps, the template model
 \eqref{eq:lrrr} is solved for each parcel and each bootstrap sub-sample of
@@ -404,7 +404,7 @@ leave-one-out (LOO) cross validation. However, cross-validation is very costly a
 multiple models must be fitted on different splits of the training data. Moreover it might not even
 be possible in the case limited training data.
 
-\paragraph{Generalized cross-validation}
+\paragraph{Generalized cross-validation.}
 A very attractive alternative to cross-validation is the so-called \textit{generalized cross-validation (GCV)} \citep{gcv}, whereby one attempts to
 directly minimize (an unbiased estimate of) the generalization error, which in our case reduces to
 
@@ -629,7 +629,7 @@ $200$ subjects from the HCP --Human Connectome Project-- dataset
  domains that sample the diversity of neural systems , including
  language processing (semantic and phonological
 processing) and working memory.
-\paragraph{The activation maps $\Y$ to predict}
+\paragraph{The activation maps $\Y$ to predict.}
 This data includes includes task activation
 maps from General Linear Models (GLMs)  \citep{friston1994statistical} that show the activation
 of different brain voxels to different cognitive conditions / task contrasts, for each subject.
@@ -642,12 +642,12 @@ $\Y_s \in \mathbb R^{p \times c}$, were $c$ is the total number of contrasts con
 In our experiments, we only considered the language (3 contrasts) and working memory
 (19 contrasts), giving a total of $c=22$ task contrasts.\\
 
-\paragraph{Extracted resting-state only features}
+\paragraph{Extracted resting-state only features.}
 The data also comes shipped with resting-state fMRI data consisting of $n_s = 1200$ 3D volumes
 of $p = 2 \times 10^5$ voxels each, per subject, forming an $n_s$-by-$p$ matrix $\X_s$.
 The feature extraction described in section \ref{sec:fe} was then applied to transform each $\X_s$
 into low-dimensional functional connectivity features $\tilde{\X}_s \in \mathbb R^{k \times p}$, with $k=100$.
-\paragraph{The setup}
+\paragraph{The setup.}
 $N_{\text{train}} = 100$ subjects were used in Alg. \ref{Tab:algfit} to fit an ensemble of models
 (section \ref{sec:bags}). We used parcellations in which each parcel was worth about 4000 voxels,
 for a total of about 60 parcels.
@@ -656,7 +656,7 @@ computed via Alg. \ref{Tab:algpred}.
 
 \section{Results}
   % We now present results of the experiments detailed in section \ref{sec:exp}.
-\paragraph{Quantitative metrics} Fig. \ref{fig:confusion} shows
+\paragraph{Quantitative metrics.} Fig. \ref{fig:confusion} shows
 confusion matrices (via Pearson correlation) of predicted against true activation maps. We see that a subject's predicted activation
 maps are consistently more similar to their true activation than to other subjects', reflected by the fact that the confusion matrices are strongly diagonal-dominant.
 This is even more true for our proposed method. The Fig. \ref{fig:confusion_boxplots} shows box-plots of prediction $R^2$-score and Pearson correlation
@@ -770,7 +770,7 @@ successfully predict the subjects' activation maps well above chance, with our m
 % \caption{\textbf{Confusion matrices} for the Pearson correlation between true and predicted $Z$-maps, for different task contrasts. \textbf{XXX: these figures should be regenerated with a pair of (vmin,vmax) per contrast!}}
 % \end{pagefigure}
 
-\paragraph{Qualitative metrics} In Fig. \ref{fig:zmaps}, we display level-curves of the population mean (magenta) of
+\paragraph{Qualitative metrics.} In Fig. \ref{fig:zmaps}, we display level-curves of the population mean (magenta) of
 activation maps for the ``Story-vs-Math'' and ``2BK-vs-0BK'' task contrasts, superimposed on the true activation maps of the
 subjects (the background image).  The population mean activation map (magenta) is shown as a baseline (dummy predictor).
 We see that the contours for the predicted activation maps using our proposed method (green)
