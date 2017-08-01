@@ -830,6 +830,12 @@ One can envisage to replace the Laplacian regularization with a general structur
 
 \paragraph{Replacing the dictionary with a general neural net.}
 One notes that the proposed model \eqref{eq:ss} can be seen as an auto-encoding model of brain data with linear generator
+\begin{marginfigure}
+  \includegraphics[width=1\linewidth]{figures/gen_model.pdf}
+  \caption{\textbf{General neural net} schema for structured online dictionary learning. The model is trained via stochastic gradient descent --SGD. For an incoming image $\B{x} \in \mathbb R^p$ (or mini-batch of images), a code $\B{z} \in \mathbb R^k$ is sampled and fed into th generator $G_{\boldsymbol{\theta}}$ to produce a reconstructed image $\B{x}\_ \in \mathbb R^p$, which is compared with the original via a loss function. The gradient (and perhaps sub-gradients, in case of constraints) of this loss w.r.t the code $\B{z}$ (resp. the parameters $\boldsymbol{\theta}$) is \textit{back-propagated} through the code (resp. the parameters) to update it towards better reconstructions.
+  }
+  \label{fig:gen_net}
+\end{marginfigure}
 
 \begin{equation}
   G_{\B{D}} = \langle \B{D}, .\rangle: \mathbb R^k \rightarrow \mathbb R^p,\; \B{c} \mapsto \B{x}:=\B{Dc},
@@ -839,11 +845,12 @@ parametrized by the shared learned dictionary $\B{D}$, and an \textit{implicit} 
 \begin{equation}
   E_{\B{D}}: \mathbb R^p \rightarrow \mathbb R^k,\; \x \mapsto \argmin_{\B{c} \in \mathbb R^k} -\text{loglik}(\x|\B{c},\B{D}) = \argmin_{\B{c} \in \mathbb R^k}\ell(G_\B{D}(\B{c}),\x) + \alpha\phi(\B{c}),
   \end{equation}
-which is by construction, the optimal encoder~\footnote{Under the prior for the codes $p(\B{c}) \propto \exp(-\alpha\phi(\B{c}))$.} for the the generator $G_{\B{D}}$.  One could obtain much greater modeling flexibility by replacing the generator \eqref{eq:lingen} by a neural network
+which is by construction, the optimal encoder~\footnote{Under the prior for the codes $p(\B{c}) \propto \exp(-\alpha\phi(\B{c}))$.} for the the generator $G_{\B{D}}$.  One could obtain much greater modeling flexibility by replacing the generator \eqref{eq:lingen} by a neural network (see Fig. \ref{fig:gen_net})
   $$G_{\boldsymbol{\theta}}: \mathbb R^k \rightarrow \mathbb R^p,\; \B{c} \mapsto \B{x} := \G_{\boldsymbol{\theta}}(\B{c}),$$
   with parameters $\boldsymbol{\theta} \in \Theta$. Such a model could be successfully trained via stochastic gradient descent (SGD) or its various enhanced variants.
 Such models, which can be referred to as "encoder-less auto-encoders", have recently been proposed in the compressed sensing~\citep{bora17} and computer vision literatures~\citep{bojanowski17}.
-  
+
+
 % \newglossaryentry{MRI}{name=MRI,description={{Magnetic Resonance Imaging}}}
 
 

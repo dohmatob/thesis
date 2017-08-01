@@ -1,0 +1,20 @@
+digraph {
+// rankdir = LR; //order things from left to right
+
+// y [shape=circle]
+x [shape=circle];
+x_ [shape=circle];
+z [shape=circle, style=filled, label="c"];
+theta [shape=circle, label="&theta;"];
+G [shape=rectangle, label=<G<SUB>&theta;</SUB>>];
+// F [shape=rectangle, label=<F<SUB>&phi;</SUB>>];
+loss [shape=diamond, label=loss];
+
+z -> G -> x_;
+x_ -> loss;
+x -> loss;
+theta -> G;
+loss -> theta [label=<grad<SUB>&theta;</SUB>>];
+loss -> z [label=<grad<SUB>z</SUB>>];
+// z -> F -> y;
+}

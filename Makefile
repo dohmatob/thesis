@@ -21,9 +21,9 @@ svg:
 	inkscape -D -z --file=figures/dlsvg.svg --export-pdf=figures/dlsvg.pdf --export-latex
 	inkscape -D -z --file=figures/neuron.svg --export-pdf=figures/neuron.pdf --export-latex
 
-
 dot:
-	dot flowchart.dot -Tpdf > flowchart.pdf
+	dot figures/flowchart.dot -Tpdf > figures/flowchart.pdf
+	dot figures/gen_model.dot -Tpdf > figures/gen_model.pdf
 
 tables:
 	pdflatex figures/cv_grid.tex
