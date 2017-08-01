@@ -9,7 +9,7 @@
 \algrenewtext{ParFor}[1]{\algorithmicparfor\ #1\ \algorithmicpardo}
 \algrenewtext{EndParFor}{\algorithmicendparfor}
 
-\chapter{Prediction of task activation maps from task-free resting-state data}\label{chap:rsfmri2tfmri}
+\chapter{\;\;Prediction of task activation maps from task-free resting-state data}\label{chap:rsfmri2tfmri}
 \markright{{~{\rm \ref{chap:rsfmri2tfmri}}. Prediction of task activation maps from task-free resting-state data}\hfill}{}
 
 \minitoc
@@ -262,7 +262,7 @@ of the intra-subject activation maps into our predictive model.
 
 Low-rank linear models do just this. It provides a with a smaller and tighter model (in
 terms of number of free parameters) which best explains the covariance structure
-between activation maps for the different conditions. This can be written as
+between activation maps $\B{Y}$ for the different conditions. This can be written as
 \begin{eqnarray}
   \begin{split}
     &\text{ Find }\bbeta_{\mathcal S} \in \mathbb R^{k \times c},
@@ -350,7 +350,7 @@ We note that the form of the solutions provided by the above lemma is particular
 \subsection{Learning}
 % \paragraph{Note on inter-subject covariate shift.}...
 
-\paragraph{Low-rank Ridge regression.}
+\paragraph{Low-rank multi-output regression.}
 For the estimation of the predictive model
 linking resting-state features to activation maps, the template model
 \eqref{eq:lrrr} is solved for each parcel and each bootstrap sub-sample of
@@ -463,7 +463,7 @@ and in fact equals the latter (almost surely) in the asymptotic limit $n \righta
 
 \subsection{Inference}
 At prediction time, these different models are queried on held-out subjects and their results are
-  aggregated by averaging. Such a divide-and-conquer approach allows the to learn
+  aggregated by averaging. Such a divide-and-conquer approach allows us to learn
   complementary aspects of the data landscape, boosting prediction scores, while reducing the
   variance of the individual
   component models of which its is made. 

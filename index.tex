@@ -3,6 +3,7 @@
 
 \RequirePackage{filecontents}
 
+\renewcommand{\thepart}{}%removes part roman numerals
 
 \usepackage{amsmath,amssymb,amsfonts,amsbsy,amsthm}
 
@@ -810,12 +811,13 @@ $i_C$ & Indicator function of $C$ & $i_C(\B{x}):= \begin{cases}0,&\mbox{ if }\B{
 % \listoftables
 
 % \listofalgorithms
-\addtocontents{loa}{\def\string\figurename{Algorithm}}
+% \addtocontents{loa}{\def\string\figurename{Algorithm}}
 
- \part{\Huge{Introduction}}
+\part{\Huge{I -- Introduction}}
+
 \include{abstract}
 
-\part{\Huge{Multi-variate priors for analyzing brain data: models and algorithms}}
+\part{\Huge{II -- Multi-variate priors for analyzing brain data: models and algorithms}}
 \include{chapter_2/chapter_2} % SpaceNet model
 
 \include{chapter_3/chapter_3} % SpaceNet algos
@@ -824,7 +826,7 @@ $i_C$ & Indicator function of $C$ & $i_C(\B{x}):= \begin{cases}0,&\mbox{ if }\B{
 \include{chapter_7/chapter_7} % iGraphNet
 \include{chapter_8/chapter_8} % ADMM
 
-\part{\Huge{Functional inter-subject variability}}
+\part{\Huge{III -- Functional inter-subject variability}}
 \include{chapter_1/chapter_1}  % EPI-to-EPI
 
 % \part{Predicting individual functional differences using resting-state fMRI}
@@ -832,7 +834,7 @@ $i_C$ & Indicator function of $C$ & $i_C(\B{x}):= \begin{cases}0,&\mbox{ if }\B{
 \include{chapter_9/chapter_9} % proximal dict learning
 \include{chapter_5/chapter_5} % From rsfMRI to tfMRI
 
-\part{\Huge{Conclusion}}
+\part{Conclusion}
 \include{chapter_6/chapter_6} % Conclusion
 \include{appendix_1}
 \printglossaries
