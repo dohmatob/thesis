@@ -3,7 +3,7 @@ digraph {
 
 // y [shape=circle]
 x [shape=circle];
-x_ [shape=circle];
+x_ [shape=circle, label=<x<SUB>recon</SUB>>];
 z [shape=circle, style=filled, label="c"];
 theta [shape=circle, label="&theta;"];
 G [shape=rectangle, label=<G<SUB>&theta;</SUB>>];
@@ -15,6 +15,7 @@ x_ -> loss;
 x -> loss;
 theta -> G;
 loss -> theta [label=<grad<SUB>&theta;</SUB>>];
-loss -> z [label=<grad<SUB>z</SUB>>];
-// z -> F -> y;
+loss -> z [label=<grad<SUB>c</SUB>>];
+
+{rank=x; theta z; G; x_; loss}
 }

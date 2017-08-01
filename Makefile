@@ -6,6 +6,7 @@ all: clean tables dot tikz svg
 	bibtex chapter_3/chapter_3.aux
 	bibtex chapter_4/chapter_4.aux
 	bibtex chapter_5/chapter_5.aux
+	bibtex chapter_6/chapter_6.aux
 	bibtex chapter_7/chapter_7.aux
 	bibtex chapter_8/chapter_8.aux
 	bibtex chapter_9/chapter_9.aux

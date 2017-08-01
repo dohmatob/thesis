@@ -821,7 +821,7 @@ We believe such online multivariate online methods shall become the de facto
 way do dimensionality reduction and ROI extraction in future.
 
 \paragraph{Implementation.} The authors' implementation of the proposed
-SS0MF \eqref{eq:ss} model will soon be made available as part of the
+SSODL \eqref{eq:ss} model will soon be made available as part of the
 \textit{Nilearn} package   \citep{nilearn}.
 
 \subsection{Possible extensions}
@@ -832,7 +832,8 @@ One can envisage to replace the Laplacian regularization with a general structur
 One notes that the proposed model \eqref{eq:ss} can be seen as an auto-encoding model of brain data with linear generator
 \begin{marginfigure}
   \includegraphics[width=1\linewidth]{figures/gen_model.pdf}
-  \caption{\textbf{General neural net} schema for structured online dictionary learning. The model is trained via stochastic gradient descent --SGD. For an incoming image $\B{x} \in \mathbb R^p$ (or mini-batch of images), a code $\B{z} \in \mathbb R^k$ is sampled and fed into th generator $G_{\boldsymbol{\theta}}$ to produce a reconstructed image $\B{x}\_ \in \mathbb R^p$, which is compared with the original via a loss function. The gradient (and perhaps sub-gradients, in case of constraints) of this loss w.r.t the code $\B{z}$ (resp. the parameters $\boldsymbol{\theta}$) is \textit{back-propagated} through the code (resp. the parameters) to update it towards better reconstructions.
+  \caption{\textbf{General neural net} schema for structured online dictionary learning. The model is trained via stochastic gradient descent --SGD. For an incoming image $\B{x} \in \mathbb R^p$ (or mini-batch of images), a code $\B{z} \in \mathbb R^k$ is sampled and fed into th generator $G_{\boldsymbol{\theta}}$ to produce a reconstructed image $\B{x}_{\text{recon}} \in \mathbb R^p$, which is compared with the original via a loss function. The gradient (and perhaps sub-gradients, in case of constraints) of this loss w.r.t the code $\B{z}$ (resp. the parameters $\boldsymbol{\theta}$) is \textit{back-propagated} through the code (resp. the parameters) to update it towards better reconstructions.
+The model \eqref{eq:ss} corresponds to a linear generator $G_{\boldsymbol{\theta}} = G_{\B{D}} = \langle \B{D},.\rangle.$
   }
   \label{fig:gen_net}
 \end{marginfigure}
