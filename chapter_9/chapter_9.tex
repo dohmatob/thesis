@@ -139,8 +139,7 @@ Akin to ICA-type methods, one can take $C_j =$ the orthogonal complement of the 
   
 
  \subsection{``Social'' sparsity:  simultaneous sparsity and smoothness via windowed group-Lasso}
-The first non-trivial results of our ramblings this far is obtained by considering the \textit{social sparsity}  \citep{kowalski2013social,kowalski2009structured} prior. In this model, a weakly activated voxel $v$ in the middle of strongly activated voxels will be saved (as if rescued by the clan), whilst a strongly activated voxel in the middle of weakly activated voxels will be eliminated (as if killed by isolation). ``Strongness'' and ``weakness'' are measured with respect to a specified threshold $\alpha > 0$.
-Formally, social sparsity corresponds to a penalty  $g_{\text{social}} : \mathbb R^p \rightarrow \mathbb R$ defined implicitly via its proximal operator
+The first non-trivial results of our ramblings this far is obtained by considering the \textit{social sparsity}  \citep{kowalski2013social,kowalski2009structured} prior. In this model, a weakly activated voxel $v$ in the middle of strongly activated voxels will be saved (as if rescued by the clan), whilst a strongly activated voxel in the middle of weakly activated voxels will be eliminated (as if killed by isolation). ``Strongness'' and ``weakness'' are measured with respect to a specified threshold $\alpha > 0$, which plays a rule similar to the regularization parameter in Group-Lasso. The penalty imposes both sparsity and structure simultaneously! Formally, social sparsity corresponds to a penalty  $g_{\text{social}} : \mathbb R^p \rightarrow \mathbb R$ defined implicitly via its proximal operator
 
  \begin{marginfigure}
    \includegraphics[width=\linewidth]{figures/social.png}
@@ -169,15 +168,15 @@ Adapted from~\citep{kowalski2013social}.
 \end{equation}
 where $\boldsymbol{\gamma}_v \bullet \B{z} := (\gamma^1_v z_1,\gamma^2_v z_2,\ldots,\gamma^p_v z_p) \in \mathbb R^p$ for weights
 $(\gamma^s_v)_{v,s \in [\![p]\!]}$ satisfying $\sum_v |\gamma^{s}_v|^2 = 1$ for all $s$, and $\mathcal N(v) := \{s \in [\![p]\!] | \gamma^{s}_v \ne 0\}$ is the \textit{neighborhood} of the $v$th voxel, assumed to be non-empty. Thus each $\boldsymbol{\gamma}_v$ can be thought of as
-(normalized) mean-filter supported on a patch $\text{neigh}(v)$ around the voxel $v$.
+(normalized) mean-filter supported on a patch $\mathcal N(v)$ around the voxel $v$.
 Examples include rectangular filters, truncated Gaussians, etc.
 %  Social sparsity applies a soft-thresholding using the norm of a local neighborhood, but modifies only the coordinate $\B{z}_v$ at the center voxel $v$ of this neighborhood.
-%  It is a generalization of the overlapping group-lasso shrinkage operator\citep{ogrouplasso}; the latter is recovered by taking if the $w^v_s$ are chosen so that $w^v_s$ is independent of $s$ for all $s \in \text{neigh}(v)$, i.e $w^v_s = \frac{1}{\#\text{neigh}(v)}$ for all $v$ and $s \in \text{neigh}(v)$.
+%  It is a generalization of the overlapping group-lasso shrinkage operator\citep{ogrouplasso}; the latter is recovered by taking if the $w^v_s$ are chosen so that $w^v_s$ is independent of $s$ for all $s \in \mathcal N(v)$, i.e $w^v_s = \frac{1}{\#\mathcal N(v)}$ for all $v$ and $s \in \mathcal N(v)$.
 One notes the following facts
 \begin{itemize}
 \item $\|\B{E}\B{z}\|^2_2 \equiv \|\B{z}\|^2_2$, where $\B{E}\B{z} := (\boldsymbol{\gamma}_v \bullet \B{z})_{v \in [\![p]\!]} \in \mathbb R^{p^2}$
   is the \textit{expansion operator} associated with the weights $w^s_v$. In other words, $\B{E}$ is a \textit{linear isometry}.
-\item social sparsity is related to GLasso by the formula
+\item social sparsity is related to Group-Lasso (GL) by the formula
   \begin{equation}
     \text{prox}_{\alpha g_{\text{social}}} = \B{F} \circ \text{prox}_{\alpha \text{GL}} \circ \B{E},
   \end{equation}

@@ -260,10 +260,10 @@ model per experimental condition would therefore be statistically inefficient du
 model over-specification. We need a principled way to incorporate the covariance structure
 of the intra-subject activation maps into our predictive model.
 
-\begin{marginfigure}
+\begin{figure}
   \includegraphics[width=1\linewidth]{figures/rfmri2tfmri.pdf}
   \caption{\textbf{Training for 1 subject.} Dual-regression (DR) is applied to an incoming image patch $\B{x}$ to produce spatial features $\B{d}$ ($k$ features per-voxel). This is fed into a parametrized model which attempts to predict the task-activation this patch, over all the different contrasts jointly. The predicted activation is compared with true, and the prediction error is back-propagated to update the model parameters. Note that in case the prediction model is linear / affine (e.g as in Ridge regression), this learning can be done in closed form.}
-\end{marginfigure}
+\end{figure}
 
 Low-rank linear models do just this. It provides a with a smaller and tighter model (in
 terms of number of free parameters) which best explains the covariance structure
