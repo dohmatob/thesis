@@ -5,18 +5,18 @@ x [shape=circle];
 d [shape=circle];
 y [shape=circle];
 y_ [shape=circle, label=<y<SUB>pred</SUB>>];
-F [shape=rectangle, label=<F<SUB>&beta;</SUB>>];
+f [shape=rectangle, label=<f<SUB>&beta;</SUB>>];
 beta [shape=circle, label=<&beta;>];
 E [shape=rectangle, label=DR];
 loss [shape=diamond, label=loss];
 
-x -> E -> d -> F -> y_;
+x -> E -> d -> f -> y_;
 y -> loss;
 y_ -> loss;
-beta -> F;
+beta -> f;
 loss -> beta [label=<grad<SUB>&beta;</SUB>>];
 
-{rank = same; x; y};
-{rank = same; beta; F};
+{rank = same; y; loss};
+{rank = same; beta; f};
 
 }

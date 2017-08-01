@@ -847,8 +847,8 @@ parametrized by the shared learned dictionary $\B{D}$, and an \textit{implicit} 
   E_{\B{D}}: \mathbb R^p \rightarrow \mathbb R^k,\; \x \mapsto \argmin_{\B{c} \in \mathbb R^k} -\text{loglik}(\x|\B{c},\B{D}) = \argmin_{\B{c} \in \mathbb R^k}\ell(G_\B{D}(\B{c}),\x) + \alpha\phi(\B{c}),
   \end{equation}
 which is by construction, the optimal encoder~\footnote{Under the prior for the codes $p(\B{c}) \propto \exp(-\alpha\phi(\B{c}))$.} for the the generator $G_{\B{D}}$.  One could obtain much greater modeling flexibility by replacing the generator \eqref{eq:lingen} by a neural network (see Fig. \ref{fig:gen_net})
-  $$G_{\boldsymbol{\theta}}: \mathbb R^k \rightarrow \mathbb R^p,\; \B{c} \mapsto \B{x} := \G_{\boldsymbol{\theta}}(\B{c}),$$
-  with parameters $\boldsymbol{\theta} \in \Theta$. Such a model could be successfully trained via stochastic gradient descent (SGD) or its various enhanced variants.
+  $$G_{\boldsymbol{\theta}}: \mathbb R^k \rightarrow \mathbb R^p,\; \B{c} \mapsto \B{x} := G_{\boldsymbol{\theta}}(\B{c}),$$
+  with parameters $\boldsymbol{\theta} \in \Theta$. The model could be successfully trained via stochastic gradient descent (SGD) or its various enhanced variants.
 Such models, which can be referred to as "encoder-less auto-encoders", have recently been proposed in the compressed sensing~\citep{bora17} and computer vision literatures~\citep{bojanowski17}.
 
 
