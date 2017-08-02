@@ -7,7 +7,10 @@
 This thesis was kicked-off with the goal of developing methods for modeling inter-subject
 functional variability, the aim being to enhance the estimation of functional connectomes
 (data-driven regions of interest, connectivity matrices, etc.)
-across populations of subjects. The quest led to the study of, and proposal of methods for, structured (sparsity, smoothness, etc.) multi-variate models for brain encoding / decoding~\citep{dohmatob2015speeding,abrahamregion,eickenberg2015total,pelle2016multivariate}. Nonlinear registration of functional brain images also came up as a natural concern, and we contributed a method for direct registration of functional brain images~\citep{dohmatob2016epi2epi} (submitted to \textit{Neuroimage} journal).
+across populations of subjects. Below we summarize the things achieved.
+
+\subsection{Scientific contributions}
+The quest led to the study of, and proposal of methods for, structured (sparsity, smoothness, etc.) multi-variate models for brain encoding / decoding~\citep{dohmatob2015speeding,abrahamregion,eickenberg2015total,pelle2016multivariate}. Nonlinear registration of functional brain images also came up as a natural concern, and we contributed a method for direct registration of functional brain images~\citep{dohmatob2016epi2epi} (submitted to \textit{Neuroimage} journal).
 
 We also improved the current state-of-the-art in ROI extraction and dimensionality reduction by combining techniques from online learning and structured sparsity (like TV-L1) to propose a novel scalable dictionary-learning framework for obtaining decompositions of brain images, which are closer to known neuro-biological organization of the brain: networks made of spatially localized smooth components with sharp boundaries.
 
@@ -21,6 +24,14 @@ optimization, with scalability and robustness at heart~\citep{dohmatob2014benchm
 
 Some of the work done in the thesis have cross-fertilized other collaborative papers like~\citep{rahim2015integrating,thirion2014fmri}.
 
+\subsection{Software contributions}
+While preparing this PhD project, I have made contributions to numerous open-source projects, including:
+\begin{itemize}
+\item \textit{Nilearn} \url{http://nilearn.github.io/index.html}: Python package for leveraging machine learning algorithm in neuro-imaging. For example, the multi-variate models presented in chapter \ref{chap:structured_priors} are implemented as part of this package.
+\item \textit{Pypreprocess} https://github.com/neurospin/pypreprocess: Python scripts scripts for preprocessing and QA of MRI data.
+\item \textit{Nistats} \url{https://github.com/nistats/nistats}: Python package for statistical analyis (GLM, permutation tests, etC.) on MRI data.
+\end{itemize}
+    
 
 \section{Ongoing work and future directions}
 \paragraph{Unified view on structured models for brain data.}
