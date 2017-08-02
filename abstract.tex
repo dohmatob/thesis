@@ -286,12 +286,6 @@ resting state and when the sound is playing, we can isolate the auditory cortex
 of the brain.
 Statistically, we do that by crafting a design matrix corresponding to the
 experiment: one column of the matrix represents an ideal response to one of the presented conditions~\citep{friston1994statistical}.
-
-\begin{figure}
-  \includegraphics[width=1\linewidth]{figures/activation.png}
-  \caption{\textbf{Subject-level Activation maps } for auditory versus visual and visual versus auditory conditions. Here, we show an axial via (z-coordinate) of the Z-values corresponding the size of the effect, in each voxel. Values range from -13 (light blue) to +13 (light red). Analysis was done using the \textit{Nistats} open-source Python library \url{https://github.com/nistats/nistats}.}
-\end{figure}
-
 Columns corresponding to known artifacts of the BOLD signal, such as heart
 beats or movements, can be added in the design matrix in order to regress out
 the part of the signal related to them. We then use a general linear model (GLM) to
@@ -316,6 +310,11 @@ Under the null hypothesis that the effect were are interested in is zero, i.e
 \end{equation}
 the above statistic is student-t distributed with $T-k$ degrees of freedom, and one can
 analytically obtain $p$-values and confidence intervals for inference. Projecting these values unto the brain (one value per voxel) yields a so-called \textit{activation map}. Such maps are the main output of any forward analysis in task-based fMRI studies.
+
+\begin{figure}
+  \includegraphics[width=1\linewidth]{figures/activation.png}
+  \caption{\textbf{Subject-level Activation maps } for auditory versus visual and visual versus auditory conditions. Here, we show an axial via (z-coordinate) of the Z-values corresponding the size of the effect, in each voxel. Values range from -13 (light blue) to +13 (light red). Analysis was done using the \textit{Nistats} open-source Python library \url{https://github.com/nistats/nistats}.}
+\end{figure}
 
 %It should be noted that $T-k$ is only a crude over-estimation of the true degrees of freedom, 
 Subsequent statistical inference suffers from heavy \textit{multiple comparison} issues in these so-called \textit{mass-univariate} methods.
