@@ -4,13 +4,16 @@
 
 \minitoc
 
+\newthought{In this chapter}, we consider possible generalization of model \eqref{eq:ss} proposed in chapter \ref{chap:func_var}, by allowing for more general block-separable penalties on the dictionary.
+
 \section{The power of the prox}
-\newthought{Recall} from chapter \ref{chap:func_var} that after $n$ passes over the data, the objective function whose minimization gives the dictionary updates is $E(\B{D}) := \frac{1}{2n}\|\B{X} - \B{D}\B{C}^T\|_{\text{F}}^2$, where $\B{C} \in \mathbb R^{n \times k}$ is the fixed matrix of codes computed up to this point, and $\B{D} \in \mathbb R^{p \times k}$ is the dictionary variable. Adding a \textbf{block-separable} penalty term $\gamma\sum_{j=1}^kg_j(\B{d}^j)$, the energy becomes
+Recall from equation \eqref{eq:ss} of chapter \ref{chap:func_var} that after $n$ passes over the data, the unpenalized objective (i.e loss) function whose minimization gives the dictionary updates is $E(\B{D}) := \frac{1}{2n}\|\B{X} - \B{D}\B{C}^T\|_{\text{F}}^2$, where $\B{C} \in \mathbb R^{n \times k}$ is the fixed matrix of codes computed up to this point, and $\B{D} \in \mathbb R^{p \times k}$ is the dictionary variable. Adding a \textbf{block-separable} penalty term $\gamma\sum_{j=1}^kg_j(\B{d}^j)$, the energy becomes
 \begin{equation}
   E(\B{D}) = \frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2 + \gamma \sum_{j} g_j(\B{d}^j).
   \label{eq:model}
 \end{equation}
-One easily computes
+In particular, taking $g_j(\B{d}^j) := \frac{1}{2}\|\nabla \B{d}^j\|_{\text{F}}^2 + i_{\mathbb B_{p,1}}(\B{d}^j)$ corresponds to the model proposed in chapter \ref{chap:func_var}.
+Now, one easily computes
 $$\nabla_{\B{D}}\left(\frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2\right) = \frac{1}{n}(\B{DC} - \B{X})\B{C}^T = \B{DA} - \B{B},$$
 where $ \B{A} := \frac{1}{n}\B{C}\B{C}^T = \frac{1}{n}\sum_{i=1}^n\B{c}_i\B{c}_i^T \in \mathbb R^{k \times k}$ and $\B{B} := \frac{1}{n}\B{X}\B{C}^T = \frac{1}{n}\sum_{i=1}^n\B{x}_i\B{c}_i^T \in \mathbb R^{p \times k}$. 
 Now in BCD, the $j$th atom is updated whilst all the others are held constant. 
@@ -98,10 +101,6 @@ Putting everything together, we have the close-form BCD update formula for regul
 where $\B{z}^{-j} := a_{j,j}^{-1}\B{r}^j$ and $\B{R} := \left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right) = \B{DA} - \B{B} + \B{d}^j \circ \B{a}^j $.
 \end{shaded}
 
-\paragraph{Convergence of the algorithm.}
-Direct application of \cite{fercoq2015}, since the general DL algorithm constructs unbiased
-estimates of $\nabla_j f(\B{D}_t)$, where $f(\B{D}) := \mathbb E_{\B{x}}\min_{\B{c} \in \mathbb R^k}\ell (\B{D}\B{c}, \B{x})$ ...
-
 \section{Applications}
 Now that we have the hammer, where are the nails...
 \subsection{Special cases}
@@ -141,19 +140,6 @@ Akin to ICA-type methods, one can take $C_j =$ the orthogonal complement of the 
  \subsection{``Social'' sparsity:  simultaneous sparsity and smoothness via windowed group-Lasso}
 The first non-trivial results of our ramblings this far is obtained by considering the \textit{social sparsity}  \citep{kowalski2013social,kowalski2009structured} prior. In this model, a weakly activated voxel $v$ in the middle of strongly activated voxels will be saved (as if rescued by the clan), whilst a strongly activated voxel in the middle of weakly activated voxels will be eliminated (as if killed by isolation). ``Strongness'' and ``weakness'' are measured with respect to a specified threshold $\alpha > 0$, which plays a rule similar to the regularization parameter in Group-Lasso. The penalty imposes both sparsity and structure simultaneously! Formally, social sparsity corresponds to a penalty  $g_{\text{social}} : \mathbb R^p \rightarrow \mathbb R$ defined implicitly via its proximal operator
 
- \begin{marginfigure}
-   \includegraphics[width=\linewidth]{figures/social.png}
-   \caption{\textbf{Social sparsity} illustrated in 2D. The neighborhood of the coefficient $k_1$ is given by the red
-window, and the neighborhood of the coefficient $k_2$ by the blue one. These
-two neighborhoods share one coefficient. When considering the red group,
-coefficients are weighted by some weights $\boldsymbol{\gamma}_{k'}^{k_1} \ne 0$, $k' \in \mathcal N(k^1)$.
-Outside the red group, the weights are equal to zero. When considering the blue group,
-coefficients are weighted by some weights $\boldsymbol{\gamma}_{k'}^{k_2} \ne 0$, $k' \in \mathcal N(k^2)$.
-Adapted from~\citep{kowalski2013social}.
-}
-\label{fig:social}
- \end{marginfigure}
-
  \begin{equation}
    \begin{split}
      (\prox_{\alpha g_{\text{social}}}(\B{z}))_v &:=
@@ -172,6 +158,20 @@ $(\gamma^s_v)_{v,s \in [\![p]\!]}$ satisfying $\sum_v |\gamma^{s}_v|^2 = 1$ for 
 Examples include rectangular filters, truncated Gaussians, etc.
 %  Social sparsity applies a soft-thresholding using the norm of a local neighborhood, but modifies only the coordinate $\B{z}_v$ at the center voxel $v$ of this neighborhood.
 %  It is a generalization of the overlapping group-lasso shrinkage operator\citep{ogrouplasso}; the latter is recovered by taking if the $w^v_s$ are chosen so that $w^v_s$ is independent of $s$ for all $s \in \mathcal N(v)$, i.e $w^v_s = \frac{1}{\#\mathcal N(v)}$ for all $v$ and $s \in \mathcal N(v)$.
+
+\begin{marginfigure}
+  \includegraphics[width=\linewidth]{figures/social.png}
+  \caption{\textbf{Social sparsity} illustrated in 2D. The neighborhood of the coefficient $k_1$ is given by the red
+    window, and the neighborhood of the coefficient $k_2$ by the blue one. These
+    two neighborhoods share one coefficient. When considering the red group,
+    coefficients are weighted by some weights $\boldsymbol{\gamma}_{k'}^{k_1} \ne 0$, $k' \in \mathcal N(k^1)$.
+    Outside the red group, the weights are equal to zero. When considering the blue group,
+    coefficients are weighted by some weights $\boldsymbol{\gamma}_{k'}^{k_2} \ne 0$, $k' \in \mathcal N(k^2)$.
+    Adapted from~\citep{kowalski2013social}.
+  }
+  \label{fig:social}
+\end{marginfigure}
+%
 One notes the following facts
 \begin{itemize}
 \item $\|\B{E}\B{z}\|^2_2 \equiv \|\B{z}\|^2_2$, where $\B{E}\B{z} := (\boldsymbol{\gamma}_v \bullet \B{z})_{v \in [\![p]\!]} \in \mathbb R^{p^2}$
@@ -182,6 +182,12 @@ One notes the following facts
   \end{equation}
   where $\B{F}$ is the right pseudo-inverse of $\B{E}$.
 \end{itemize}
+
+\section{Conclusion}
+These ideas have a great potential to extend the classical dictionary-learning technology providing the practitioner with a modeling framework incorporating a much large class of constraints --namely proximable penalty functions-- than is currently being done.
+As regards convergence of our proposed proximal online dictionary-learning scheme, direct application of ~\cite{fercoq2015} seems to suffice, since the general DL algorithm constructs unbiased estimates of $\nabla_j f(\B{D}_t)$, where $f(\B{D}) := \mathbb E_{\B{x}}\min_{\B{c} \in \mathbb R^k}\ell (\B{D}\B{c}, \B{x})$. However, a more careful treatment is warranted, and is left for future work.
+
+
 
 % \clearpage
 \bibliographystyle{plainnat}

@@ -167,7 +167,7 @@ p_{\alpha,\rho}(\w) \propto    \prod_{j=1}^p\exp(-\alpha\rho |w_j|)\prod_{j=1}^p
   \label{fig:roi}
 \end{marginfigure}
 
-SpaceNet models \eqref{eq:main_pb} result brain maps which are both
+SpaceNet models \eqref{eq:opt_pb} result brain maps which are both
 sparse (i.e regression coefficients $\w$ are zero everywhere, except at
 predictive voxels) and structured (blobby). See Fig. \ref{fig:roi}. The superiority of such
 methods over methods without structured priors like the Lasso, ANOVA,
@@ -243,14 +243,14 @@ The results are shown in Fig. \ref{fig:tvl1_regression}.
   \caption{The figure shows results of comparing the SpaceNet  models TV-$\ell_1$ and
     Graph-Net against an SVM (Support Vector Machine) classifier on
     the visual-recognition dataset  ~\citep{haxby2001}
-    As can be seen from the figure, SpaceNet priors (TV-$\ell_1$, GraphNet, etc.)
+    As can be seen from the figure, SpaceNet priors (TV-$\ell_1$, GraphNet/Smooth-Lasso, etc.)
     yield stable and more intepretable maps by enforcing smoothness on the coefficients while segmenting predictive regions (blobs) from noisy background.}
   \label{fig:spacenet_maps}
 \end{pagefigure}
 \begin{figure}[!htbp]
   \includegraphics[width=1\linewidth]{figures/haxby_barchart.png}
-  \caption{Bar chart showing percentage classification on leftout, for one-vrs-one classification on the visual recognition dataset~\citep{haxby2001}.
-  }
+  \caption{Bar chart showing percentage classification on leftout, for one-vrs-one classification on the visual recognition dataset~\citep{haxby2001}. We see that the highly structured maps produced by SpaceNet models \eqref{eq:opt_pb} (e.g see Fig. \ref{fig:spacenet_maps}) are not at the expense of
+model accuracy.}
   \label{fig:spacenet_bars}
 \end{figure}
 

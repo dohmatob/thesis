@@ -42,8 +42,8 @@ $\K\in\mathbb{R}^{q \times p}$ is linear operator;  $\lambda > 0$ is the
 regularization parameter;
 and $\Omega: \mathbb{R}^p \rightarrow (-\infty, +\infty]$ is
     the penalty, which is assumed to be a \textit{closed proper
-      convex} function.
-    In signal processing literature, such a problem is referred to as synthesis problem: the penalty $\Omega$ is imposed not directly on the image, but on a the output of a dictionary, $\z = \K\w$. $\K$ is referred to the analysis operator. The case $\K = \Id$ corresponds to the \textit{synthesis}
+      convex} function. This is an instance of the SpaceNet model \eqref{eq:opt_pb} presented in chapter~\ref{chap:structured_priors}.
+    In signal processing literature, \eqref{eq:main_pb} is an example of what is referred to as a synthesis problem: the penalty $\Omega$ is imposed not directly on the image, but on a the output of a dictionary, $\z = \K\w$. $\K$ is referred to the analysis operator. The case $\K = \Id$ corresponds to the \textit{synthesis}
     setting.
 
 \subsection{The ADMM algorithms}
