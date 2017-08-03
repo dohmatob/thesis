@@ -1,5 +1,5 @@
-\chapter{EPI-to-EPI inter-subject nonlinear registration}\label{chap:epi2epi}
-\markright{{~{\rm \ref{chap:epi2epi}}.EPI-to-EPI inter-subject nonlinear registration}\hfill}{}
+\chapter{Direct EPI-to-EPI inter-subject nonlinear registration}\label{chap:epi2epi}
+\markright{{~{\rm \ref{chap:epi2epi}}.Direct EPI-to-EPI inter-subject nonlinear registration}\hfill}{}
 
 \minitoc
 
@@ -17,16 +17,16 @@ results in a consistent fashion, hence the comparison of experiments
 and meta-analysis \citep{pmid18985131,pmid25914639}.
 This is especially true in fMRI (functional Magnetic Resonance Imaging)
 studies in which the activations might span just a few voxels in diameter.
+
 Traditional indirect T1-based techniques for inter-subject
 registration of EPI data assume that the mismatch between a subject's
 T1 (i.e anatomical) image and associated EPI scan is only affine,
 i.e. it includes only pose differences related to slice orientation
-and field of view selection. Thus such methods intend to exploit the
+and field of view selection. such methods exploit the
 fact that learning a deformation from the subject's T1 to a template
 is easier, due to the relatively high anatomical contrast in T1
 images, than learning a deformation from the subject's EPI image to the
 template.
-
 Thus the EPI and the T1 are affinely aligned in a primary step called
 \textit{coregistration}, then one applies the transformation $\text{T1}
 \rightarrow \text{template}$ to the EPI images to warp them from subject to
@@ -37,21 +37,11 @@ template space. %% This can be schematized as follows\footnote{The
 %%   \rightarrow \text{templ.}) \circ  (\text{EPI} {\rightarrow} \text{T1}) 
 %% \label{eq:classical_pl}
 %% \end{eqnarray}
-
-Such methods assume (explicitly or implicitly) that the T1 and EPI images
-of the same subject can be properly aligned to one another via a affine transformation.
-Thus one assumes, for example, that distortion correction is
-good enough that the EPI image can be realigned to the T1 with a rigid or affine
-transformation. However, high-resolution EPI sequences deviate from the
-aforementioned underlying assumptions of classical T1-based indirect inter-subject
-registration methods, namely the EPI sequences suffer from distortions
-that push them nonlinearly out-of-match relative to the T1 image of
-the same subject. 
-%
 \begin{figure*}[!htbp]
      \includegraphics[width=1\linewidth]{tikz1.pdf}
-\caption{Nonlinear mismatch between EPI and T1 image of
-  the same subject before and after distortion-correction.
+\caption{\textbf{Nonlinear mismatch} between EPI and T1 image of
+  the same subject of the HCP dataset~\citep{VanEssen20122222},
+  before and after distortion-correction.
 % We see the Distortions in high-resolution EPI.
 \textbf{Left:} Single-band high-resolution EPI (SBRef) image of the
 same subject. Notice the large distortions along the Left-Right direction
@@ -64,16 +54,27 @@ coordinates where used in all of the 3 plots.}
 \label{fig:pb_fig}
 \end{figure*}
 
+A crucial assumption in these classical methods is  that the T1 and EPI images
+of the same subject can be properly aligned to one another via a affine transformation.
+Thus one assumes, for example, that distortion correction is
+good enough that the EPI image can be realigned to the T1 with a rigid or affine
+transformation. However, high-resolution EPI sequences deviate from the
+aforementioned underlying assumptions of classical T1-based indirect inter-subject
+registration methods, namely the EPI sequences suffer from distortions
+that push them nonlinearly out-of-match relative to the T1 image of
+the same subject. 
+%
+
 As illustrated in Figure \ref{fig:pb_fig}, this is the case, for
 example, with the HCP (Human Connectome Project)
-\citep{VanEssen20122222} dataset, a reference dataset that contains
+~\citep{VanEssen20122222} dataset, a reference dataset that contains
 high-quality EPI data acquired using state-of-the-art sequences, yet
 with severe distortions
-\citep{pmid9178246,pmid12270226,zeng2002,anderson2003}.
+~\citep{pmid9178246,pmid12270226,zeng2002,anderson2003}.
 %
-%de Indeed, as noted in \citep{pmid25405472}, subject motion 
+%de Indeed, as noted in ~\citep{pmid25405472}, subject motion 
 %and eddy current 
-Indeed, as discussed in the literature (e.g \citep{pmid12071618}), EPI
+Indeed, as discussed in the literature (e.g ~\citep{pmid12071618}), EPI
 distortions and signal loss related to B0 inhomogeneities cannot be
 separated with registration based techniques, which are compensatory
 operations.  Consequently, the set up of efficient distortion
@@ -81,7 +82,7 @@ correction method in EPI-based imaging is an open question.
 
 Moreover, sophisticated anatomy-based methods like Freesurfer's
 recon-all cannot scale to huge data sets like the 5,000 participants
-of the initial release of the UKBioBank dataset \citep{Miller2016}, due
+of the initial release of the UKBioBank dataset ~\citep{Miller2016}, due
 the long computation time 
 %
 that renders such approaches impractical.
@@ -105,7 +106,7 @@ anatomical images in pipelines.
 We also note that there is an increasing concern in the literature
 that in the future, normalization will be based on multi-modal atlases
 (tissue probability maps, functional parcellation maps, etc.)
-\citep{pmid24936682}.
+~\citep{pmid24936682}.
 \subsection{General preprocessing procedures}
 \label{sec:gen_proc}
 \paragraph{Motion correction}
@@ -114,7 +115,7 @@ scanner. This head movement induces an approximately affine mismatch
 between different volumes acquired in the same acquisition
 run. Motion correction is done to remove this source of intra-subject
 variability.
-We used FSL's \textit{flirt} tool \citep{smith2004} for motion correction.
+We used FSL's \textit{flirt} tool ~\citep{smith2004} for motion correction.
 
 \paragraph{Distortion correction}
 \label{sec:dc}
@@ -123,27 +124,27 @@ Due to inhomogeneities in the ambient B0 field,
 %% distortions corrupt
 the EPI images are distorted (i.e artifactually warped) along the \textit{phase-encoding
   directions} (Left-Right / Right-Left in the case of HCP dataset
-\citep{VanEssen20122222}). See Figure \ref{fig:pb_fig}. In our
-experiments, distortion correction \citep{pmid9178246,pmid12270226,zeng2002,anderson2003,jezzard1995correction,wan1997reduction} was
+~\citep{VanEssen20122222}). See Figure \ref{fig:pb_fig}. In our
+experiments, distortion correction ~\citep{pmid9178246,pmid12270226,zeng2002,anderson2003,jezzard1995correction,wan1997reduction} was
 achieved using % a modification of
-the methods described in \citep{VanEssen20122222}. %% In particular, we replace the costly
-%% BBR \citep{greve2009accurate}
+the methods described in ~\citep{VanEssen20122222}. %% In particular, we replace the costly
+%% BBR ~\citep{greve2009accurate}
 %% registration with an ordinary voxel-based rigid-body registration.
-Both methods use  FSL's \textit{topup} tool \citep{smith2004} to
+Both methods use  FSL's \textit{topup} tool ~\citep{smith2004} to
 estimate the deformation field due to B0 inhomogeneities (the
-distortions) \citep{glasser2013}.
+distortions) ~\citep{glasser2013}.
 
 \begin{figure}[!htpb]
      \includegraphics[width=1\linewidth]{flowchart.pdf}
-\caption{\textbf{The pipelines.} The template-generation step is done using ANTs~\citep{avants2008,avants2011}. It pools registered data from all subjects. \textbf{N.B.:} SBRef = single-band high-resolution 3D volume. As in \citep{glasser2013}, all the transformations are postponed and the original 4D EPI is resampled at the end by applying the composition of these transformations in a single step.}
+\caption{\textbf{The pipelines.} The template-generation step is done using ANTs~~\citep{avants2008,avants2011}. It pools registered data from all subjects. \textbf{N.B.:} SBRef = single-band high-resolution 3D volume. As in ~\citep{glasser2013}, all the transformations are postponed and the original 4D EPI is resampled at the end by applying the composition of these transformations in a single step.}
 \label{fig:pipelines}
 \end{figure}
 
 \paragraph{Deformation model}
 We used ANTs' \textit{Symmetric Normalization} (aka \textit{SyN})
-deformation model ~\citep{avants2008,avants2011}, which has been shown
+deformation model ~~\citep{avants2008,avants2011}, which has been shown
 to be a state-of-the art method for nonlinear registration
-\citep{pmid19195496}. As done usually, we initialize a nonlinear
+~\citep{pmid19195496}. As done usually, we initialize a nonlinear
 registration algorithm with an affine (rigid-body) registration
 algorithm.
 %
@@ -157,9 +158,9 @@ pass of the pyramid is initialized with the solution of the
 previous pass (this is known as \textit{warmstarting}).}  affine
 transformation model (as initialization) with a 3-level pyramidal
 SyN deformation model. \textit{Mattes mutual information}
-\citep{mattes2003} is used as the loss function.
+~\citep{mattes2003} is used as the loss function.
 
-%% This model is triggered in ANTs \citep{avants2008,avants2011} using the following command-line options:
+%% This model is triggered in ANTs ~\citep{avants2008,avants2011} using the following command-line options:
 %% \begin{verbatim}
 %% 	    --transform Affine[ 2.0 ]
 %% 	    --metric Mattes[ ${fixed_img}.nii.gz, ${moving_img}.nii.gz, \
@@ -178,14 +179,14 @@ SyN deformation model. \textit{Mattes mutual information}
 We now present constructions for the pipelines whose benchmark is the
 core of this work. All registration pipelines presented here were
 scripted in using command-line tools from FSL version 5.0
-\citep{smith2004} for affine registration, distortion correction,
-motion correction, ANTs \citep{avants2009advanced}
+~\citep{smith2004} for affine registration, distortion correction,
+motion correction, ANTs ~\citep{avants2009advanced}
 antsRegistration, antsApplyTranforms, and some custom scripts
 (for distortion correction) from the HCP scripts described in
-\citep{glasser2013}, hosted on Github.
+~\citep{glasser2013}, hosted on Github.
 Except stated otherwise, all affine registrations (motion correction,
 coregistration) were performed using FSL's \textit{flirt} tool
-\citep{smith2004} with Normalized Mutual Information as cost the function (option: \textit{-cost
+~\citep{smith2004} with Normalized Mutual Information as cost the function (option: \textit{-cost
   normmi}).
 
 \subsubsection{Classical indirect T1-based method}
@@ -217,15 +218,15 @@ subject's EPI data to the mean thereof.
     The subject's T1 image is then aligned to this
     mean EPI image via coregistration (an affine transformation).
 We use BBR (boundary-based registration)
-    \citep{greve2009accurate} for this coregistration step,
+    ~\citep{greve2009accurate} for this coregistration step,
     for optimal results and fair comparison.
     BBR is a state-of-the-art functional-to-structural registration method driven by intensity
     difference across boundary (samples). It uses white-matter boundaries (via T1w segmentation).
     BBR need good structural images
     (with little contrast bias), and some anatomical contrast in the EPI image (which
     is the case of the single-band high-resolution reference images in the HCP dataset
-    \citep{VanEssen20122222}). The implementation we use is \textit{epi\_reg} script of FSL
-    \citep{smith2004}.
+    ~\citep{VanEssen20122222}). The implementation we use is \textit{epi\_reg} script of FSL
+    ~\citep{smith2004}.
     However, since BBR is an affine correction method, it still suffers from the limitations explained in
     the introductory section. In particular, it is not resiliant to distortions in the input EPI
     image.
@@ -253,7 +254,7 @@ Then mean of all the registered T1 images is computed, and becomes the template 
 
 %% \paragraph{A note on BBR}
 %% \begin{itemize}
-%% \item EPI to structural registration \citep{greve2009accurate}. See Fig. \ref{fig:bbr}.
+%% \item EPI to structural registration ~\citep{greve2009accurate}. See Fig. \ref{fig:bbr}.
 %%   \begin{itemize}
 %%   \item incorporates fieldmap correction (previously FUGUE)
 %%   \item used in FEAT (B0 unwarping)
@@ -282,7 +283,7 @@ Our proposed pipeline operates just as the
 classical indirect T1-based pipeline described above in
 \ref{sec:classical}, except that the anatomical image is replaced with
 the single-band high-resolution EPI (the SBRef) image, which has more tissue contrast than the any volume of the 4D EPI film being registered
-\citep{glasser2013}, and also does not suffer from multi-band artifacts. The anatomical image is not used anywhere in
+~\citep{glasser2013}, and also does not suffer from multi-band artifacts. The anatomical image is not used anywhere in
 this pipeline.  The pipeline can be schematized as follows:
 
 \begin{eqnarray}
@@ -303,24 +304,24 @@ stack all intermediate transformations and postpone the resampling
 operations to the end of the pipeline. The transformations are then
 concatenated (i.e composed), and applied to the input image in a
 one-step resampling procedure based on the \textit{ApplyTransforms}
-tool of the ANTs software \citep{avants2008,avants2009advanced}. For
+tool of the ANTs software ~\citep{avants2008,avants2009advanced}. For
 example,  affine transformations estimated during the
 motion correction step are converted to warpfields using FSL's
-\textit{convertwarp} tool \citep{smith2004}. FSL's \textit{applywarp}
-tool \citep{smith2004} is then used to jointly apply this affine
+\textit{convertwarp} tool ~\citep{smith2004}. FSL's \textit{applywarp}
+tool ~\citep{smith2004} is then used to jointly apply this affine
 transformation warpfields and the warpfields corresponding to the
-deformations estimated by \textit{topup} \citep{smith2004}, which
+deformations estimated by \textit{topup} ~\citep{smith2004}, which
 are then stacked with subsequent transformations. We use this strategy in both pipelines.
 
 \section{Relation to previous  works}
 \subsection{Direct EPI-to-EPI non-linear inter-subject  registration}
 % It should be noted that
 The idea of EPI-to-EPI registration has already been suggested in the
-literature. For example, the method in \citep{grabner2014} used
+literature. For example, the method in ~\citep{grabner2014} used
 high-resolution EPI (1.1mm isotropic) data for different subjects
 acquired at 7T to iteratively build a sequence of EPI-based
 study-specific templates of increasing quality / resolution
-\citep{pmid17354756}. The finest of these templates shows a great deal
+~\citep{pmid17354756}. The finest of these templates shows a great deal
 of anatomical detail. Group-level activation patterns for a
 finger-tapping task were also shown to be very accurately localized on
 the posterior bank of the central sulcus. The authors concluded that
@@ -329,10 +330,10 @@ for inter-subject registration, and so one can effectively by-pass the
 anatomical image of subjects in pipeline. This would for example allow
 one to avoid the classical coregistration step used to align the
 subject's EPI images to their anatomy.  Our experiments confirm and
-extend the findings of \citep{grabner2014}, but at an even lower
+extend the findings of ~\citep{grabner2014}, but at an even lower
 resolution: 2mm resolution, obtained from 3T MRI, and on a much larger
 dataset. Indeed, using a much larger bail of 110 subjects, from Human
-Connectom Project (HCP) dataset \citep{VanEssen20122222}, and a variety
+Connectom Project (HCP) dataset ~\citep{VanEssen20122222}, and a variety
 of different task contrasts, we show that registration with our
 pipeline increases the pairwise NMI of subjects, over the classical
 pipeline; crucially, this leads to a decrease in residual
@@ -351,15 +352,15 @@ post-registration inter-subject misalignement.
 In comparison, the pipeline we propose (refer to \ref{sec:proposed})
 is much lighter computationally as
 we bypass the potentially expensive and challenging step of generating a good
-template from EPI data \citep{pmid17354756}. Of course, this economy is
+template from EPI data ~\citep{pmid17354756}. Of course, this economy is
 more of a compromise between complexity and accuracy, and might be potential
 limitation of our
-contribution.  Finally, we note that the work in \citep{grabner2014}
+contribution.  Finally, we note that the work in ~\citep{grabner2014}
 did not consider the distortion problem which are severe even at 3T
-\citep{anderson2003}, as it is the case with the HCP data.
+~\citep{anderson2003}, as it is the case with the HCP data.
 
 \subsection{Non-linear EPI-to-structural coregistration}
-A recent work \citep{wang2017} has considered the possibility of replacing the classical
+A recent work ~\citep{wang2017} has considered the possibility of replacing the classical
 linear EPI-to-structural coregistration step with a non-linear counterpart,
 and then running a non-linear structural-to-template registration as usual.
 They show that their method outperforms the method based on distortion correction
@@ -372,7 +373,7 @@ method (refer to \ref{sec:proposed}) does not use the structural image at all.
 \label{sec:exp_epi2epi}
 We now describe benchmarks done to compare the pipelines presented in
 this paper (subsection \ref{sec:pipelines}) on the task fMRI data of
-110 subjects from the HCP dataset \citep{VanEssen20122222}. 
+110 subjects from the HCP dataset ~\citep{VanEssen20122222}. 
 The task fMRI data were acquired in an attempt to assess major domains
 that
 % are thought to
@@ -382,7 +383,7 @@ phonological processing); 3) social cognition (Theory of Mind); and 4)
 emotion processing.
 Due to time constraints, our benchmarks were run only on these 4 (out
 of a total of 7) tasks (i.e protocols). Also, only data for LR (left-right)
-phase-encoding direction \citep{chang1992technique} runs were used. In all the non T1-based
+phase-encoding direction ~\citep{chang1992technique} runs were used. In all the non T1-based
 pipelines, the single-band high-resolution (SBRef) image of the motor
 task was used to learn deformations of the subject's brain into
 template space (a fixed subject of the same dataset).
@@ -391,8 +392,8 @@ The estimated
 deformations were then applied to warp EPI data (previously
 coregistered to same subject's motor SBRef) acquired on the same
 subject during different task conditions, into template space.
-GLMs (General Linear Models) \citep{friston1994statistical} were run
-using \textit{nipy} \citep{Gorgolewski2011}, open-source Python library for analysis of neuro-imaging data. For the purpose of reporting the results, the resulting maps were was co-registered to
+GLMs (General Linear Models) ~\citep{friston1994statistical} were run
+using \textit{nipy} ~\citep{Gorgolewski2011}, open-source Python library for analysis of neuro-imaging data. For the purpose of reporting the results, the resulting maps were was co-registered to
 MNI space a posteriori.
 
 \subsection{Evaluation metrics}
@@ -408,14 +409,14 @@ metrics.
 NMI (see section \ref{sec:notations} for definition) is a
 popular similarity metric used to assess the quality of
 registration between two images, i.e how well aligned the images are to one another
-(for example \citep{maes1997multimodality}). It is also the loss function minimized by many
+(for example ~\citep{maes1997multimodality}). It is also the loss function minimized by many
 optimization algorithms in image registration.
 A detailed overview of
 the use of the NMI metric in medical image registration can be found
-in \citep{pluim2003}.
+in ~\citep{pluim2003}.
 In our experiments, FSL's \textit{flirt} \footnote{With the
    ``\textit{-schedule}'' option.}
-tool \citep{smith2004} was used to compute NMI. 
+tool ~\citep{smith2004} was used to compute NMI. 
 
 %%  In the
 %% supplementary materials,
@@ -488,7 +489,7 @@ if yes, how ? Should we use linear or nonlinear model for the
 deformation field ?
 %
 What degree should we use for the interpolating splines ? In fact as
-noted in \citep{Poldrack059188}, there are exponentially many pipelines
+noted in ~\citep{Poldrack059188}, there are exponentially many pipelines
 that can be considered, based on the answers to the above choices.
 %
 Of course some of these parameters have rule-of-thumb default values
@@ -502,7 +503,7 @@ traditional indirect T1-based pipeline ?
 \section{Results}
 \label{sec:results}
 We now present results of experiments performed on the task fMRI
-protocols of the HCP dataset \citep{VanEssen20122222}. Refer to
+protocols of the HCP dataset ~\citep{VanEssen20122222}. Refer to
 section \ref{sec:exp_epi2epi} for detailed information about the
 experiments we did. The different pipelines discussed in section
 \ref{sec:pipelines} were used to register the data (inter-subject
@@ -548,8 +549,8 @@ our proposed direct EPI-based pipeline mildly outperforms the classical indirect
 %% \includegraphics[width=1\linewidth]{figures/DC+SBRef_ica_atlas.png}
 %% \caption{Atlas of 16 network patterns from Independent
 %%   Component Analysis (ICA). Maps obtained using the \textit{nilearn}
-%%   \citep{abraham2014machine} implementation of CanICA\citep{varoquaux2010group,varoquaux2010ica} after inter-subject registration, on multi-subject functional data
-%%   registered using the different pipelines. We see that the geometry of the patterns are essentially the same across the different pipelines. The Default Mode Network \citep{raichle2001} has been labeled pink; a more detailed view of this network is presented in Figure \ref{fig:dmn} of the supplementary materials section.}
+%%   ~\citep{abraham2014machine} implementation of CanICA~\citep{varoquaux2010group,varoquaux2010ica} after inter-subject registration, on multi-subject functional data
+%%   registered using the different pipelines. We see that the geometry of the patterns are essentially the same across the different pipelines. The Default Mode Network ~\citep{raichle2001} has been labeled pink; a more detailed view of this network is presented in Figure \ref{fig:dmn} of the supplementary materials section.}
 %%   \label{fig:atlas}
 %% \end{figure}
 
@@ -649,7 +650,7 @@ As regards group-level GLM scores, we see from Figure \ref{fig:zmaps}
 that our proposed method does just as good as the classical indirect
 T1-based pipeline. This is remarkable, as the former pipeline does not
 use any anatomical data.
-However, as noted in \citep{thirion2007analysis,pmid22425669}, the
+However, as noted in ~\citep{thirion2007analysis,pmid22425669}, the
 inter-subject variability in GLM results is not due to
 misregistration, but intrinsic subject differences with a more
 physiological nature: the response of subjects to the same stimulus /
@@ -677,21 +678,21 @@ available, but more generally, it is not always possible to completely
 align the EPI images of a subject to their T1 image via
 coregistration. Added to this is the possibility that such an intermediate registration step is
 a potential source of interpolation artifacts, not to mention the added computational cost (which may exceed the rest of the computation time by many orders of magnitude, for example, in the case of surface-based methods). As shown by our experiments on the HCP dataset
-\citep{VanEssen20122222} (Figure \ref{fig:pb_fig}), this is for example
+~\citep{VanEssen20122222} (Figure \ref{fig:pb_fig}), this is for example
 the case in the presence of distortions
-\citep{pmid9178246,pmid12270226,zeng2002,anderson2003} that persist
-even after correction.  Further, as noted in \citep{pmid25405472},
+~\citep{pmid9178246,pmid12270226,zeng2002,anderson2003} that persist
+even after correction.  Further, as noted in ~\citep{pmid25405472},
 distortions cannot be separated with registration based techniques,
 which are compensatory operations. Consequently, the efficient
 distortion correction method in EPI data remains an
 open question. Our work proposes a direct EPI-based inter-subject
 registration pipeline that to some extent evades these bottlenecks.
 
-We have proposed a computationally cheap EPI-based pipeline for direct inter-subject nonlinear registration of functional data. Our method has been empirically validated on the HCP dataset \citep{VanEssen20122222}, where we have shown that we obtain registered subject images with less inter-subject variability. Such direct EPI-based methods should replace the well-accepted classical
+We have proposed a computationally cheap EPI-based pipeline for direct inter-subject nonlinear registration of functional data. Our method has been empirically validated on the HCP dataset ~\citep{VanEssen20122222}, where we have shown that we obtain registered subject images with less inter-subject variability. Such direct EPI-based methods should replace the well-accepted classical
 T1-based strategy.
-Results on the HCP dataset \citep{VanEssen20122222} show that the proposed pipeline outperforms the classical T1-based indirect registration strategy, according to a variety of different quality metrics: Normalized Mutual Information --NMI (Figure \ref{fig:nmi}), residual inter-subject
+Results on the HCP dataset ~\citep{VanEssen20122222} show that the proposed pipeline outperforms the classical T1-based indirect registration strategy, according to a variety of different quality metrics: Normalized Mutual Information --NMI (Figure \ref{fig:nmi}), residual inter-subject
 variance (Figure \ref{fig:cv}), and quality of estimated group template (Figure \ref{fig:template}), without compromising the quality of post-registration statistical analyses results (GLM, ICA, etc.).
-These results replicate the findings of \citep{grabner2014} on a larger dataset (110 subjects, compared to 10 in the reference paper) and in a 3T setting.
+These results replicate the findings of ~\citep{grabner2014} on a larger dataset (110 subjects, compared to 10 in the reference paper) and in a 3T setting.
 
 \begin{pagefigure}
 %   \includegraphics[width=.24\linewidth]{figures/DC+T1_AnteriormedialPFC.png}
@@ -708,7 +709,7 @@ These results replicate the findings of \citep{grabner2014} on a larger dataset 
 \includegraphics[width=.48\linewidth]{figures/DC+SBRef_Rightlateralparietal.png}
 % \includegraphics[width=.24\linewidth]{figures/DC+T1_Posteriorcingulate.png}
 % \includegraphics[width=.24\linewidth]{figures/DC+SBRef_Posteriorcingulate.png}
-\caption{Comparing functional brain networks from subject fMRI images registered with both pipelines, namely the classical indirect T1-based method, and our proposed direct EPI-based method). Shown here are group-level unthresholded sub-component maps of the Default Mode Network (DMN) \citep{raichle2001}, using MNI coordinates reported in Table 1 of \citep{Watanabe2013}.}
+\caption{Comparing functional brain networks from subject fMRI images registered with both pipelines, namely the classical indirect T1-based method, and our proposed direct EPI-based method). Shown here are group-level unthresholded sub-component maps of the Default Mode Network (DMN) ~\citep{raichle2001}, using MNI coordinates reported in Table 1 of ~\citep{Watanabe2013}.}
   \label{fig:dmn}
 \end{pagefigure}
 
@@ -719,17 +720,17 @@ registered EPI image (Figure \ref{fig:template}), our proposes method
 outperforms the classical indirect T1-based registration.
 %
 In terms of more high-level metrics like group-level GLM statistics, these gains though still present as not as pronounced (refer to Figure \ref{fig:zmaps}). Indeed, as noted in
-\citep{thirion2007analysis,pmid22425669,Xu2009}, the inter-subject variability
+~\citep{thirion2007analysis,pmid22425669,Xu2009}, the inter-subject variability
 in GLM results is not due to misregistration, but intrinsic subject
 differences with a more physiological nature: the size of effects and
 the anatomical localization are subject-specific. In chapter \ref{chap:rsfmri2tfmri},
 we show that resting-state fMRI data can be used to predict the activation maps of
 a subject to a task, with an $R^2$-score which can be up to \textbf{0.5} for some subjects and task.
-This is an enhancement on previous work by \citep{tavor2016task}, and shows
+This is an enhancement on previous work by ~\citep{tavor2016task}, and shows
 differences in task-based brain activations are largely physiological --in contrast to being driven
 by subjects' brain morphological differences-- and can be predicted from resting state fMRI data.
 
-In a separate work \citep{dohmatob2016}, also presented in chapter \ref{chap:func_var} in detail, we have considered the possibility explicitly
+In a separate work ~\citep{dohmatob2016}, also presented in chapter \ref{chap:func_var} in detail, we have considered the possibility explicitly
 modeling this physiology differences by estimating latent
 factors of variability across-subjects in a data-driven way using
 dictionary-learning. The motivating idea behind such a model, is that activation
@@ -740,7 +741,7 @@ subject-specific physiology.
 %% FInally, the misconception according to which function and anatomy
 %% (i.e that accordingly, a local morphological variability could lead to a corre
 %% sponding functional variability) are supposed to go hand in hand was further
-%% destroyed in \citep{p}. They indeed tested
+%% destroyed in ~\citep{p}. They indeed tested
 %% this hypothesis by linking the variability of the cortical
 %% folding pattern of 252 right-handed subjects to the local-
 %% ization or the pattern of functional activations induced by
@@ -784,7 +785,7 @@ subject-specific physiology.
 
 % \begin{marginfigure}[5cm]
 % \center \includegraphics[width=1.\linewidth]{chapter_1/meg.pdf}
-% \caption{Magnetic field measured with MEG on a somato-sensory experiment. It is a 2D topography 20 ms after stimulation. Source: \citep{gramfort:09}}
+% \caption{Magnetic field measured with MEG on a somato-sensory experiment. It is a 2D topography 20 ms after stimulation. Source: ~\citep{gramfort:09}}
 % \end{marginfigure}
 % \item{\bf{Magnetoencephalography - MEG}}
 % measures the magnetic field induced by neural electrical activity.
@@ -864,7 +865,7 @@ subject-specific physiology.
 % used for functional imaging. A typical fMRI acquisition (as of 2014) enjoys spatial resolution of the order of {$1-3mm^3$} and temporal resolution of the order of 1-3 seconds.}\label{fig:chapter1_methods}
 % \end{figure}
 
-% Certain imaging techniques are more adapted than other to answer certain neuroscientific questions. Due to its good spatial resolution and whole brain coverage, fMRI is particularly well adapted to \emph{localize} the effect of a certain experimental condition. This task is not reduced to the construction of brain maps, but also involves the understanding of the underlying brain connectivity~\citep{johansen2005functional,behrens2006consistent} and the effects regions exert on each other in a certain experimental context~\citep{pessiglione2007brain, behrens2007learning}. One of the main hopes in functional imagining is that it might be used as an objective diagnosis tool for several diseases. In particular, the aim is to find some \emph{biomarkers} for psychiatric diseases by comparing different population of patients: this is the case for autism, schizophrenia or Alzheimer's disease. 
+% Certain imaging techniques are more adapted than other to answer certain neuroscientific questions. Due to its good spatial resolution and whole brain coverage, fMRI is particularly well adapted to \emph{localize} the effect of a certain experimental condition. This task is not reduced to the construction of brain maps, but also involves the understanding of the underlying brain connectivity~~\citep{johansen2005functional,behrens2006consistent} and the effects regions exert on each other in a certain experimental context~~\citep{pessiglione2007brain, behrens2007learning}. One of the main hopes in functional imagining is that it might be used as an objective diagnosis tool for several diseases. In particular, the aim is to find some \emph{biomarkers} for psychiatric diseases by comparing different population of patients: this is the case for autism, schizophrenia or Alzheimer's disease. 
 
 % \clearpage
 \bibliographystyle{plainnat}

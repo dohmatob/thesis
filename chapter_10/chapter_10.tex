@@ -175,7 +175,7 @@ All experiments were run using a single core of
     single scan sessions are included.   A natural regression problem
     for this dataset is to predict the age of a subject from their
     anatomical data. To this end, we segmented the gray-matter from
-    the anatomy of each subject (obtained from the T1 images), and
+    the anatomical data of each subject (obtained from the T1 images), and
     used the gray-matter maps
     as features for predicting age. We split the 416 subjects into two
     equally-sized and age-balanced groups: a train set and a validation
@@ -190,7 +190,7 @@ All experiments were run using a single core of
     fMRI dataset from a
     study on face and object representation in human ventral temporal
     cortex.
-It consists of 6 subjects with 12 runs per subject. In each run, the
+It consists of 6 subjects with 12 sessions / runs per subject. In each run, the
 subjects
 passively viewed images of eight object categories, grouped
 in 24-second blocks separated by intermittent rest periods. This
@@ -200,7 +200,7 @@ matrix $\B{X}$ is made of
 time-series from the full-brain mask of $p = 23\,707$ voxels over $n =
 216$ TRs, of a single subject (subj1). We divided the 12 runs into 6
 runs for training and 6 other runs for
-validation. \textit{Leave-one-label-out} cross-validation was used for
+validation. Leave-one-session-out~\footnote{One session is held out and the other $S - 1$ sessions are used to train a model which is validated on the left-out session. This is repeated for all the sessions, yield an estimate --with error bars-- on the generalization error of the model.} cross-validation was used for
 selecting the model parameters $(\alpha, \rho)$. The results are
 depicted in Figure \ref{fig:haxby}.
 
@@ -238,7 +238,7 @@ little as a fifth of the brain volume ($sp=20$),
 compared to using the full-brain ($sp=100$).
 Figure \ref{fig:haxby} reports similar results for classification on
 the visual recognition dataset  \citep{haxby2001}. Overall, we see from
-Figures \ref{fig:haxby} and \ref{fig:oasis} that we can achieve upto
+Figures \ref{fig:haxby} and \ref{fig:oasis} that we can achieve up to
 $10$-fold speedup with the proposed heuristics, with very little loss
 in accuracy. Also, we see that contiguous groups of bars are roughly flat at the top, with a
     sligh increase from lower to high screening-percentile values. The
@@ -246,7 +246,7 @@ in accuracy. Also, we see that contiguous groups of bars are roughly flat at the
     if observed. A possible explanation is that $20$th percentile
     feature-screening already selects the right voxels (quasi-exact
     support recovery), and so including more voxels in the model can only hurt its
-    performance...    
+    performance.
 
  \begin{pagefigure}
    \includegraphics[width=1\linewidth]{figures/screening_weights_haxby.png}

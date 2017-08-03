@@ -276,8 +276,8 @@ between activation maps $\B{Y}$ for the different conditions. This can be writte
   \end{split}
       \label{eq:lrank}
 \end{eqnarray}
-for a chosen rank bound $r$, with $1 \le r \le \min(c, k)$.  The
-model \eqref{eq:lrank} can be captured by the following convex program
+for a chosen rank bound $r$, with $1 \le r \le \min(c, k)$.  Here, $\B{Y}_{\mathcal S}^j \in \mathbb R^{|\mathcal S|p \times 1}$ denotes the activation maps for contrast $j$, for the subjects in the bootstrap sub-population $\mathcal S$.
+The model \eqref{eq:lrank} can be captured by the following convex program
 \begin{equation}
   \begin{split}
     &\text{minimize } \frac{1}{2}\|\B{Y}_{\mathcal S} -
