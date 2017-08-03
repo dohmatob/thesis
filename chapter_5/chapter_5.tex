@@ -9,8 +9,8 @@
 \algrenewtext{ParFor}[1]{\algorithmicparfor\ #1\ \algorithmicpardo}
 \algrenewtext{EndParFor}{\algorithmicendparfor}
 
-\chapter{\;\;Prediction of task activation maps from task-free resting-state data}\label{chap:rsfmri2tfmri}
-\markright{{~{\rm \ref{chap:rsfmri2tfmri}}. Prediction of task activation maps from task-free resting-state data}\hfill}{}
+\chapter{\;\;Predicting task activation maps from task-free resting-state data}\label{chap:rsfmri2tfmri}
+\markright{{~{\rm \ref{chap:rsfmri2tfmri}}. Predicting task activation maps from task-free resting-state data}\hfill}{}
 
 \minitoc
 
@@ -211,7 +211,7 @@ This can be solved via a simple EM (\textit{expectation maximization}) algorithm
 \item \textbf{E-step:} $\A_s^{(k+1)} = \frac{1}{N}\sum_{s=1}^N\A_s^{(k)}$, where $\A_s^{(k)} := \B{X}_s{{}\tilde{\B{X}}_s^{(k)}}^T$
 \end{itemize}
 
-However DR is much more attractive due to its low cost (cf. HA performs and SVD per subject per iteration!)
+However DR is much more attractive due to its low cost: HA performs an SVD per subject per iteration.
 
 \section{Bags of low-rank multi-target linear models}
 \label{sec:bags}
@@ -316,6 +316,11 @@ $\hat{\bbeta}_{\mathcal S} = \hat{\bbeta}_{\mathcal S}^{\text{OLS}}\boldsymbol{\
   \label{thm:eym}
 \end{lemma}
 
+It should be noted that the form of the solutions provided by the above lemma is particularly
+  appealing: We only need to do a single fit to obtain a solution to problem \eqref{eq:lrrr}
+  from solutions to the unconstrained OLS version of \citep{tavor2016task}.
+
+
 \begin{proof}
 Indeed, by the orthogonality property of least-squares estimates, we have the
   decomposition
@@ -345,11 +350,6 @@ which, by the Eckart-Young-Mirsky theorem \citep{eckart2000} for the Frobenius n
 $\hat{\B{Y}}_{\mathcal S}^{\text{OLS}}$ w.r.t the Frobenius norm.
 % \qed
 \end{proof}
-
-
-We note that the form of the solutions provided by the above lemma is particularly
-  appealing: We only need to do a single fit to obtain a solution to problem \eqref{eq:lrrr}
-  from solutions to the unconstrained OLS version of \citep{tavor2016task}.
 
 \section{Algorithms}
 \subsection{Learning}
