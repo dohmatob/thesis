@@ -1,17 +1,9 @@
-\begin{thebibliography}{29}
+\begin{thebibliography}{17}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
-
-\bibitem[Abraham et~al.(2014)Abraham, Dohmatob, Thirion, Samaras, and
-  Varoquaux]{abrahamregion}
-Alexandre Abraham, Elvis Dohmatob, Bertrand Thirion, Dimitris Samaras, and Gael
-  Varoquaux.
-\newblock Region segmentation for sparse decompositions: better brain
-  parcellations from rest fmri.
-\newblock In \emph{Sparsity Techniques in Medical Imaging}, 2014.
 
 \bibitem[Ashburner(2007)]{ashburner2007}
 J.~Ashburner.
@@ -22,57 +14,6 @@ J.~Ashburner.
 J.~Ashburner and K.J. Friston.
 \newblock Unified segmentation.
 \newblock \emph{Neuroimage}, 26, 2005.
-
-\bibitem[Dohmatob(2016)]{dohmatob2015simple}
-Elvis Dohmatob.
-\newblock {A simple algorithm for computing Nash-equilibria in incomplete
-  information games}.
-\newblock In \emph{{OPT2016 -- NIPS workshop on optimization for machine
-  learning}}, 2016.
-
-\bibitem[Dohmatob et~al.(2014)Dohmatob, Gramfort, Thirion, and
-  Varoquaux]{dohmatob2014benchmarking}
-Elvis Dohmatob, Alexandre Gramfort, Bertrand Thirion, and Ga{\.e}l Varoquaux.
-\newblock Benchmarking solvers for tv-l1 least-squares and logistic regression
-  in brain imaging.
-\newblock In \emph{PRNI}. IEEE, 2014.
-
-\bibitem[Dohmatob et~al.(2015{\natexlab{a}})Dohmatob, Eickenberg, Thirion, and
-  Varoquaux]{dohmatob2015local}
-Elvis Dohmatob, Michael Eickenberg, Bertrand Thirion, and Gael Varoquaux.
-\newblock Local q-linear convergence and finite-time active set identification
-  of admm on a class of penalized regression problems.
-\newblock In \emph{ICASSP 2016}, 2015{\natexlab{a}}.
-
-\bibitem[Dohmatob et~al.(2015{\natexlab{b}})Dohmatob, Eickenberg, Thirion, and
-  Varoquaux]{dohmatob2015speeding}
-Elvis Dohmatob, Michael Eickenberg, Bertrand Thirion, and Ga{\"e}l Varoquaux.
-\newblock Speeding-up model-selection in graphnet via early-stopping and
-  univariate feature-screening.
-\newblock In \emph{Pattern Recognition in NeuroImaging (PRNI), 2015
-  International Workshop on}. IEEE, 2015{\natexlab{b}}.
-
-\bibitem[Dohmatob et~al.(2016{\natexlab{a}})Dohmatob, , Varoquaux, and
-  Thirion]{dohmatob2016epi2epi}
-Elvis Dohmatob, , Ga{\"e}l Varoquaux, and Bertrand Thirion.
-\newblock {Inter-subject highres EPI-to-EPI direct nonlinear registration
-  outperforms classical T1- based method}.
-\newblock In \emph{{Annual meeting of the Organization for Human Brain Mapping
-  - 2016}}, 2016{\natexlab{a}}.
-
-\bibitem[Dohmatob et~al.(2016{\natexlab{b}})Dohmatob, Mensch, Varoquaux, and
-  Bertrand]{dohmatob2016}
-Elvis Dohmatob, Arthur Mensch, Ga{\"e}l Varoquaux, and Thirion Bertrand.
-\newblock Learning brain regions via large-scale online structured sparse
-  dictionary-learning.
-\newblock In \emph{NIPS}, 2016{\natexlab{b}}.
-
-\bibitem[Eickenberg et~al.(2015)Eickenberg, Dohmatob, Thirion, and
-  Varoquaux]{eickenberg2015total}
-Michael Eickenberg, Elvis Dohmatob, Bertrand Thirion, and Ga{\"e}l Varoquaux.
-\newblock Total variation meets sparsity: statistical learning with segmenting
-  penalties.
-\newblock In \emph{MICCAI}. 2015.
 
 \bibitem[Filippini et~al.(2009)Filippini, MacIntosh, Hough, Goodwin, Frisoni,
   Smith, Matthews, Beckmann, and Mackay]{Filippini2009}
@@ -126,30 +67,12 @@ Seiji Ogawa, Tso-Ming Lee, Asha~S. Nayak, and Paul Glynn.
 \newblock \emph{Magnetic Resonance in Medicine}, 14\penalty0 (1):\penalty0
   68--78, 1990{\natexlab{b}}.
 
-\bibitem[Pell{\'e} et~al.(2016)Pell{\'e}, Ciuciu, Rahim, Dohmatob, Abry, and
-  Van~Wassenhove]{pelle2016multivariate}
-Hubert Pell{\'e}, Philippe Ciuciu, Mehdi Rahim, Elvis Dohmatob, Patrice Abry,
-  and Virginie Van~Wassenhove.
-\newblock Multivariate hurst exponent estimation in fmri. application to brain
-  decoding of perceptual learning.
-\newblock In \emph{13th IEEE International Symposium on Biomedical Imaging},
-  2016.
-
 \bibitem[Power et~al.(2012)Power, Barnes, Snyder, Schlaggar, and
   Petersen]{power2012}
 J.~D. Power, K.~A. Barnes, A.~Z. Snyder, B.~L. Schlaggar, and S.~E. Petersen.
 \newblock {{S}purious but systematic correlations in functional connectivity
   {M}{R}{I} networks arise from subject motion}.
 \newblock \emph{Neuroimage}, 59\penalty0 (3):\penalty0 2142--2154, 2012.
-
-\bibitem[Rahim et~al.(2015)Rahim, Thirion, Abraham, Eickenberg, Dohmatob,
-  Comtat, and Varoquaux]{rahim2015integrating}
-Mehdi Rahim, Bertrand Thirion, Alexandre Abraham, Michael Eickenberg, Elvis
-  Dohmatob, Claude Comtat, and Gael Varoquaux.
-\newblock Integrating multimodal priors in predictive models for the functional
-  characterization of alzheimer’s disease.
-\newblock In \emph{International Conference on Medical Image Computing and
-  Computer-Assisted Intervention}. Springer International Publishing, 2015.
 
 \bibitem[Raichle(2010)]{raichle10}
 Marcus~E. Raichle.
@@ -186,12 +109,6 @@ Bertrand Thirion, Philippe Pinel, S{\'e}bastien M{\'e}riaux, Alexis Roche,
   issues for group analyses.
 \newblock \emph{Neuroimage}, 35\penalty0 (1):\penalty0 105--120, 2007.
 
-\bibitem[Thirion et~al.(2014)Thirion, Varoquaux, Dohmatob, and
-  Poline]{thirion2014fmri}
-Bertrand Thirion, Ga{\"e}l Varoquaux, Elvis Dohmatob, and Jean-Baptiste Poline.
-\newblock Which fmri clustering gives good brain parcellations?
-\newblock \emph{Frontiers in neuroscience}, 8, 2014.
-
 \bibitem[Thyreau et~al.(2012)Thyreau, Schwartz, Thirion, Frouin, Loth,
   Vollstadt-Klein, Paus, Artiges, Conrod, Schumann, Whelan, and
   Poline]{pmid22425669}
@@ -207,13 +124,6 @@ K.R.A. Van~Dijk, M.R. Sabuncu, and R.L. Buckner.
 \newblock The influence of head motion on intrinsic functional connectivity
   mri.
 \newblock \emph{Neuroimage}, 59, 2012.
-
-\bibitem[Varoquaux et~al.(2015)Varoquaux, Eickenberg, Dohmatob, and
-  Thirion]{varoquaux2015faasta}
-Ga{\"e}l Varoquaux, Michael Eickenberg, Elvis Dohmatob, and Bertand Thirion.
-\newblock Faasta: A fast solver for total-variation regularization of
-  ill-conditioned problems with application to brain imaging.
-\newblock \emph{arXiv:1512.06999}, 2015.
 
 \bibitem[Xu et~al.(2009)Xu, Johnson, Nichols, and Nee]{Xu2009}
 Lei Xu, Timothy~D. Johnson, Thomas~E. Nichols, and Derek~E. Nee.

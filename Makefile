@@ -11,6 +11,7 @@ all: clean tables dot tikz svg
 	bibtex chapter_8/chapter_8.aux
 	bibtex chapter_9/chapter_9.aux
 	bibtex chapter_10/chapter_10.aux
+	bibtex chapter_11/chapter_11.aux
 	pdflatex index
 	pdflatex index
 
