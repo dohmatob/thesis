@@ -259,12 +259,10 @@ action maps would be correlated across different experimental conditions. Fittin
 model per experimental condition would therefore be statistically inefficient due to
 model over-specification. We need a principled way to incorporate the covariance structure
 of the intra-subject activation maps into our predictive model.
-
-\begin{figure}
-  \includegraphics[width=1\linewidth]{figures/rfmri2tfmri.pdf}
-  \caption{\textbf{Training for 1 subject.} Dual-regression (DR) is applied to an incoming image patch $\B{x}$ to produce spatial features $\B{d}$ ($k$ features per-voxel). This is fed into a parametrized model which attempts to predict the task-activation this patch, over all the different contrasts jointly. The predicted activation is compared with true, and the prediction error is back-propagated to update the model parameters. Note that in case the prediction model is linear / affine (e.g as in Ridge regression), this learning can be done in closed form.}
-\end{figure}
-
+% \begin{figure}
+%   \includegraphics[width=1\linewidth]{figures/rfmri2tfmri.pdf}
+%   \caption{\textbf{Training for 1 subject.} Dual-regression (DR) is applied to an incoming image patch $\B{x}$ to produce spatial features $\B{d}$ ($k$ features per-voxel). This is fed into a parametrized model which attempts to predict the task-activation this patch, over all the different contrasts jointly. The predicted activation is compared with true, and the prediction error is back-propagated to update the model parameters. Note that in case the prediction model is linear / affine (e.g as in Ridge regression), this learning can be done in closed form.}
+% \end{figure}
 Low-rank linear models do just this. It provides a with a smaller and tighter model (in
 terms of number of free parameters) which best explains the covariance structure
 between activation maps $\B{Y}$ for the different conditions. This can be written as
@@ -688,10 +686,19 @@ successfully predict the subjects' activation maps well above chance, with our m
   \caption{\textbf{Top:} $R^2$-score for predicting subject-specific activation maps for different task contrasts, from their resting data. These results are for the different contrasts of the HCP dataset~\citep{VanEssen20122222} are shown.
     Results for the reference method \citep{tavor2016task} are also shown.
     \textbf{Bottom:} Pearson correlation for the same prediction problem.
-    }
-    \label{fig:confusion_boxplots}
-  \end{pagefigure}
+  }
+  \label{fig:confusion_boxplots}
+\end{pagefigure}
 
+% \begin{pagefigure}%[!htbp]
+%   \includegraphics[width=1\linewidth]{figures/{LANG._STORY-MATH_r2}.png}
+%   \includegraphics[width=1\linewidth]{figures/{WM_2BK_r2}.png}
+%   \includegraphics[width=1\linewidth]{figures/{WM_BODY-AVG_r2}.png}
+%   \caption{...
+%   }
+%   \label{fig:subj_boxplots}
+% \end{pagefigure}
+  
 % \begin{pagefigure}
 % \subfloat[Shapes vs Faces] { 
 %   \includegraphics[width=.33\linewidth]{figures/cmatrices/SHAPES-FACES.png}
