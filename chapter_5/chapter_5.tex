@@ -823,9 +823,7 @@ image + resting-state fMRI: faster, cheaper scanning OR more control on data qua
 (imputation, outlier control). This explores new avenues for exploring
 the human brain via resting-state data, in patients and healthy subjects alike.
 
-\paragraph{Software.} The code will be made publicly available online soon.
-
-\subsection{Possible extensions with general approximators} Our work and also the previous works~\citep{tavor2016task,cole2016,bzdok2016} has shown beyond doubt, that there exists a predictive mapping from resting-state fMRI data $\B{X}$ to task activation maps $\B{Y}$. That is to say, the activation patterns in a person's brain during task are pre-determined by its background functional organization at rest. These works (including ours) have been limited to linear regression models, largely due to the simplicity of the latter. A priori, there is no reason why such a presumably complex relation should be accurately captured with a straight line, since there are probably many different layers of abstraction between functional connectivity patterns all the way through to activation patterns observed during task.
+\paragraph{Possible extensions with general approximators.} Our work and also the previous works~\citep{tavor2016task,cole2016,bzdok2016} has shown beyond doubt, that there exists a predictive mapping from resting-state fMRI data $\B{X}$ to task activation maps $\B{Y}$. That is to say, the activation patterns in a person's brain during task are pre-determined by its background functional organization at rest. These works (including ours) have been limited to linear regression models, largely due to the simplicity of the latter. A priori, there is no reason why such a presumably complex relation should be accurately captured with a straight line, since there are probably many different layers of abstraction between functional connectivity patterns all the way through to activation patterns observed during task.
 
 A simple extension would therefore be to replace the linear (Ridge) regression used to predict task activations from resting-state features, with a small \textit{multi-layer perceptron (MLP)}~\footnote{An MLP can in principle approximate any ``reasonable'' function to within arbitrary precision.}, a cascade of linear transformations $L_l$, merged via simple non-linear functions $\sigma_l$ like rectifier linear units (ReLU) or sigmoids
 $$\B{X} \overset{\sigma_1 \circ \B{L}_1}{\longrightarrow} \ldots \overset{\sigma_H \circ \B{L}_H}{\rightarrow}\B{Y}.
@@ -833,6 +831,8 @@ $$
 The intermediate representations extracted by such a model would be important in its own right.
 There would be enough data to fit such a model since voxels are the samples in this prediction problem, and there $2 \times 10^5$ voxels per subject.
 A preliminary implementation of this generalization appears to give even much better prediction results (not presented here). This excursion will be continued in a future work.
+
+\paragraph{Software.} The code for the models presented in this chapter will be made publicly available online soon.
 
 % \begin{proof}[Derivation of formula \eqref{eq:mr}]
 %   \begin{eqnarray*}

@@ -679,24 +679,7 @@ In contrast to both SODL and Smooth-SODL, CanICA   ~\citep{varoquaux2010group} i
 That notwithstanding, notice how the major structures (parietal lobes, sulci, etc.) in each atom are reproducible across the different models.
 
   
-\begin{figure}[!htb]
-%%   \includegraphics[width=.24\linewidth]{{rpca_nc=20_0}.png}
-%%   \hspace{-.5em}
-%%   \includegraphics[width=.24\linewidth]{{rpca_nc=20_1}.png}
-%%     \hspace{-.5em}
-%%     \includegraphics[width=.24\linewidth]{{rpca_nc=20_2}.png}
-%%       \hspace{-.5em}
-%%       \includegraphics[width=.24\linewidth]{{rpca_nc=20_3}.png}
-%% \subfigure [PCA components, thresholded to keep only top 90\% voxels] {
-%%   \includegraphics[width=.24\linewidth]{{rpca_nc=20_12}.png}
-%%     \hspace{-.5em}
-%%     \includegraphics[width=.24\linewidth]{{rpca_nc=20_13}.png}
-%%       \hspace{-.5em}
-%%       \includegraphics[width=.24\linewidth]{{rpca_nc=20_14}.png}
-%%         \hspace{-.5em}
-%% \includegraphics[width=.24\linewidth]{{rpca_nc=20_15}.png}
-  %% }
-
+\begin{pagefigure}
   \includegraphics[width=0.244\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=1000_radius=4_split=0_time=12_3}.png}
 \includegraphics[width=0.244\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=1000_radius=4_split=0_time=12_29}.png}
 \includegraphics[width=0.244\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=1000_radius=4_split=0_time=12_36}.png}
@@ -727,20 +710,8 @@ That notwithstanding, notice how the major structures (parietal lobes, sulci, et
   Maps corresponding to hard-thresholded CanICA
     ~\citep{varoquaux2010group} components have also been included, and have been called tCanICA. In contrast, the maps from the SODL~~\citep{mairal2010} and our proposed Smooth-SODL \eqref{eq:ss} have not been thresholded.
  }
-   
-% \end{subfigure}
-% ~
-% \begin{subfigure}[c]{.66\linewidth}
-%   \centering
-
-  ~~~~
-%  \begin{minipage}{.9\linewidth}
-%   \end{minipage}
-% \end{subfigure}
-
-% \caption{\textbf{Main results.} Benchmarking our proposed Smooth-SODL \eqref{eq:ss} model against competing state-of-the-art methods like SODL (sparse online dictionary-learning)   ~\citep{mairal2010} and CanICA   ~\citep{varoquaux2010group}.}
 \label{fig:maps}
-\end{figure}
+\end{pagefigure}
 
 
 \paragraph{Stability-fidelity trade-offs.}
@@ -752,7 +723,7 @@ recourse to some kind of post-processing hard-thresholding step, which destroys 
 assessing the stability of the dictionaries, measured by mean correlation between corresponding atoms, across different splits of the data, CanICA   ~\citep{varoquaux2010group} scores a meager 0.1, whilst the hard-thresholded version tCanICA obtains 0.2, compared to \textbf{0.4} for Smooth-SODL and 0.1 for SODL.   As is to be expected, notice how the RAW model over-fits.
 The voxel space of worth $p=261596$ voxels is reduced to $k=40$ components, and then each subject $Z$-map $\B{x}_t$ of worth $p=261596$ voxels is reduced to $k=40$ coefficients via a simple ridge regression \eqref{eq:coding}.
 
- \begin{figure}[!htpb]
+\begin{pagefigure}[!htpb]
    \includegraphics[width=.35\linewidth]{ev_scores_LANGUAGE.pdf}
    \includegraphics[width=.65\linewidth]{behavioral_scores_LANGUAGE.pdf}  
 
@@ -760,7 +731,7 @@ The voxel space of worth $p=261596$ voxels is reduced to $k=40$ components, and 
   background represent performance on \textbf{train} set. 
   \textbf{Right:} Predicting  behavioral  variables of the HCP  ~\citep{VanEssen20122222} dataset using subject-level $Z$-maps.
   }
-  \end{figure}
+  \end{pagefigure}
 
 
 \paragraph{Prediction of behavioral variables.}
