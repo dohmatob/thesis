@@ -7,11 +7,14 @@
 
 We present a result that shows that TV-L1 regularized regression problems \eqref{eq:opt_pb} can also be solved through an iteratively reweighted GraphNet problem. 
 %
-Among other things, this provides a long-awaited statistical interpretation of the TV-L1 penalty. The method dubbed iGraphNet, solves TV-L1 penalized model by considering modified GraphNet sub-problems corresponding to the minimization of the energy
-$E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\w)$ defined in \eqref{eq:rgn}. These sub-problems  are very well-conditioned and are quadratically easier to solve than TV-L1 itself, and can be solved by
-a fast first-order method like FISTA or LARS. The limit of this sub-problems is solve the exact TV-L1 penalized problem.
+Among other things, this provides a long-awaited statistical interpretation of the TV-L1 penalized models~\eqref{eq:opt_pb}.
+The method dubbed \textit{iGraphNet}, solves TV-L1 penalized model by considering modified GraphNet sub-problems corresponding to the minimization of the energy
+$E_{\text{GraphNet}}^{\boldsymbol{\gamma}}(\w)$ defined in \eqref{eq:rgn}. These sub-problems  are very well-conditioned and are quadratically easier to solve than TV-L1 itself.
+% , and can be solved by a fast first-order method like FISTA or LARS.
+The limit of this sub-problems is solve the exact TV-L1 penalized problem.
 
-This work follows the spirit of \citep{candes2007enhancing} which proposed an enhanced Lasso problem built iteratively from surrogate Ridge regression problems with inhomogeneous feature penalty parameters. However, unlike \citep{candes2007enhancing}, we leave the Lasso part of the TV-L1 penalty untouched and instead derive a surrogate on the TV part, which turns out to be a GraphNet problem with inhomogeneous penalty parameters.
+This work follows the spirit of \citep{candes2007enhancing} which proposed an enhanced Lasso problem built iteratively from surrogate Ridge regression problems with inhomogeneous feature penalty parameters. However, unlike \citep{candes2007enhancing}, we leave the Lasso part of the TV-L1 penalty~\eqref{eq:penalty}
+untouched and instead derive a surrogate on the TV part, which turns out to be a GraphNet problem with inhomogeneous penalty parameters.
 See Figure \ref{fig:igraphnet}. Pending figures comparing (maps, scores, and
 runtime) GraphNet, iGraphNet, and the baseline TV-L1 implementation via double-FISTA implementations~\citep{dohmatob2014benchmarking,varoquaux2015faasta}.
 
@@ -145,9 +148,12 @@ Ordinary Least Squares, Lasso, ElasticNet, GraphNet, etc.
 
 \section{Experimental results}
 Preliminary experimental results are shown in Fig. \ref{fig:igraphnet}.
-We run our procedure on data for the Face vs House condition of the visual
+We run our iGraphNet procedure (Alg. \ref{Tab:igraphnet})  on data for the Face vs House condition of the visual
 recognition dataset \citep{haxby2001}.
-Model coefficients and accuracies on held-out data are shown. We monitor the evolution of the model as a function of the number of iGraphNet iterations $k = 0, 1, 2,\ldots$. The limit $k \rightarrow \infty$ would correspond to TV-L1 regularization.
+Model coefficients and accuracies on held-out data are shown. We monitor the evolution of the model as a function of the number of iGraphNet iterations $k = 0, 1, 2,\ldots$.
+We see that as more and more iterations of iGraphNet are run, the coefficients become more and more spatially denoised and localized (and therefore more
+intepretable), without deterioration of prediction accuracy.
+% The limit $k \rightarrow \infty$ would correspond to TV-L1 regularization.
 
 \begin{marginfigure}
 \includegraphics[width=1\linewidth]{figures/haxby_igraphnet_w_0_yz.png}
@@ -158,7 +164,11 @@ Model coefficients and accuracies on held-out data are shown. We monitor the evo
 \caption{Estimated coefficients $\hat{\B{w}}$ on the Face vs House condition
       of the visual recognition dataset \citep{haxby2001}.
 Classification accuracies on held-out data are shown in the
-legends. We monitor the evolution of the model as a function of the number of iGraphNet iterations $k = 0, 1, 2,\ldots$. The limit $k \rightarrow \infty$ would correspond to TV-L1 regularization...
+legends. We monitor the evolution of the model as a function of the number of iGraphNet iterations $k = 0, 1, 2,\ldots$.
+We see that as more and more iterations of iGraphNet are run, the coefficients become more and more spatially denoised and localized (and therefore more
+intepretable), without deterioration of prediction accuracy.
+% The limit $k \rightarrow \infty$ would correspond to TV-L1 regularization,
+% and it is possible that some intermediate finite $k$ strikes an excellent compromise between
 }
 \vspace{.5cm}
 \label{fig:igraphnet}

@@ -3,7 +3,7 @@
 
 \minitoc
 
-\newthought{Though the SpaceNet model} introduced in chapter \ref{chap:structured_priors} leads to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, it is considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet~\citep{hebiri2011,grosenick2013} and social-sparsity~\citep{kowalski2013social,varoquaux2016social},
+\newthought{Though the SpaceNet models} introduced in equations \eqref{eq:opt_pb} of chapter \ref{chap:structured_priors} lead to superior estimators compared to classical estimators (Ridge regression, SVM, etc.) without spatial penalization, they are considerably harder to optimize than these classical models. Indeed, the corresponding optimization problems is non-separable in the model coefficients, and except for the case of GraphNet~\citep{hebiri2011,grosenick2013} and social-sparsity~\citep{kowalski2013social,varoquaux2016social},
 the penalty term $\mathcal P(\w)$ is neither smooth nor proximable\footnote{
 A function $f$ is said to be \textit{proximable} if its operator $\text{prox}_{\gamma f}$ is easy to compute. This is the case for $\ell_p$-norms  (with $ p \ge 1$, to ensure convexity) and indicator functions of simple closed convex sets like balls, simplexes, half-spaces, etc.}.
 For the penalty to fully exercise its
