@@ -87,8 +87,20 @@ This defines a linear operator $\nabla \in \mathbb R^{3p \times p}$ (the discret
   \label{fig:masking}
 \end{figure}
 
+\begin{shaded}
+  \paragraph{Prerequisites.} Given that this chapter and many others will be quite heavy on proximal calculus and sparse modelling, we would like to suggest the following references as a good starting point for the non-expert reader on these subjects:
+  \begin{itemize}
+  \item Proximal calculus ~\citep{combettes2005signal,beck09fista,combettes2011proximal}.
+  \item Sparse modelling ~\citep{mairal2012,bach2012optimization}.
+  \end{itemize}
+
+That notwithstanding, we shall endeavour to develop the material as much as possible assuming a bare minimum prerequisite knowledge.
+  
+\end{shaded}
+
 \section{SpaceNet: sparse structured models for brain data}
-Over time, a number of spatially regularized linear models have been proposed. These are mainly: Total-Variation (TV)~\citep{michel2011tv}, TV-$\ell_1$~\citep{baldassarre2012,gramfort2013}, GraphNet  ~\citep{grosenick2013,hebiri2011},
+
+We now describe the family of structured models which have been proposed for enhanced multivariate analysis in neuro-imaging, namely: Total-Variation (TV)~\citep{michel2011tv}, TV-$\ell_1$~\citep{baldassarre2012,gramfort2013}, GraphNet  ~\citep{grosenick2013,hebiri2011},
 TV-ElasticNet~\citep{dubois2014predictive}, Sparse Variation~\citep{eickenberg2015total}, and social-sparsity~\citep{kowalski2013social,varoquaux2016social}. These can all be synthesized into a general framework, referred to as \textit{SpaceNet}~\citep{spacenetohbm}, as follows
 
 \begin{figure}[!htbp]
@@ -195,7 +207,9 @@ defined by $F^L(x) := \mathbb E_{\lambda \sim \mathcal U([0,1])}[F(\{v \in V|x_v
 \end{shaded}
 
 \section{Methods}
-The SpaceNet model leads to difficult non-smooth mathematical optimization problems making their implementation and practical usability challenging.~\citep{dohmatob2014benchmarking} benchmarked a rich variety of cutting-edge solvers for such problems, and gave crucial recommendations on how to effectively implement these algorithms in practice. In these benchmarks, the FISTA algorithm emerged as the go-to algorithm for the TV-L1 problem~\citep{dohmatob2015speeding}. These hints have been carefully used in implementing SpaceNet. Also as a preprocessing step, we use univariate feature-screening (ANOVA) to eliminate voxels which are irrelevant to the learning problem, thus reducing the size of the problem. As a result the implementation of SpaceNet is fast, robust, and automatically sets its parameters (internal cross-validation). All these technical details will be properly presented in the next few chapters.
+The SpaceNet model leads to difficult non-smooth mathematical optimization problems making their implementation and practical usability challenging.~\citep{dohmatob2014benchmarking} benchmarked a rich variety of cutting-edge solvers for such problems, and gave crucial recommendations on how to effectively implement these algorithms in practice. In these benchmarks, the FISTA algorithm emerged as the go-to algorithm for the TV-L1 problem~\citep{dohmatob2015speeding}. These hints have been carefully used in implementing SpaceNet. Also as a preprocessing step, we use univariate feature-screening (ANOVA) to eliminate voxels which are irrelevant to the learning problem, thus reducing the size of the problem. As a result the implementation of SpaceNet is fast, robust, and automatically sets its 
+hyper-parameters (internal cross-validation). All these technical details will be properly presented
+in the next few chapters.
 
 \subsection{Cross-validation}
 Cross-validation (e.g see ~\citep{stone74}) is a technique used to protect against overfitting in a predictive model, particularly in a case where the amount of data may be limited. In cross-validation, you make a fixed number of folds (or partitions) of the data, run the analysis on each fold, and then average the overall error estimate. This gives an (asymptotically) unbiased estimate of the true generalization error of the model. 
