@@ -36,7 +36,7 @@ To cope with the high dimensionality of the data, the learning method has to be
 regularized. However, the spatial structure of the image is not
 taken into account in standard regularization methods, so that the
 extracted features are often hard to interpret.
-Sparsity and spatial smoothness inducing priors can used to
+Sparsity and spatial smoothness inducing priors can be used to
 perform jointly the prediction of a target variable and region
 segmentation in multivariate analysis settings. Sparsity can be enforced by
 penalizing the (sum of) absolute values of the regression coefficients, leading to the
@@ -149,7 +149,7 @@ where
   the {sparsity-inducing} $\ell_1$ part and the
   {cluster-promoting} part of the penalty term.
   The particular case {$\rho = 1$} corresponds to the usual Lasso. Vanilla TV  ~\citep{michel2011tv} corresponds to TV-$\ell_1$ with $\rho = 0$.
-\item The matrix $\nabla_\rho$ is the extended discrete gradient operator defined in the table of notations.
+\item The matrix $\nabla_\rho$ is the extended discrete gradient operator defined in Table \ref{Tab:notations}.
 \end{itemize}
 \begin{shaded}
 \paragraph{Bayesian interpretation of SpaceNet models.} The penalties $\mathcal P(\w)$ in \eqref{eq:opt_pb} admit a Bayesian interpretation as a prior on the distribution of the coefficients $\w$
@@ -170,7 +170,7 @@ p_{\alpha,\rho}(\w) \propto    \prod_{j=1}^p\exp(-\alpha\rho |w_j|)\prod_{j=1}^p
   \label{fig:roi}
 \end{marginfigure}
 
-SpaceNet models \eqref{eq:opt_pb} result brain maps which are both
+SpaceNet models \eqref{eq:opt_pb} result in brain maps which are both
 sparse (i.e regression coefficients $\w$ are zero everywhere, except at
 predictive voxels) and structured (blobby). See Fig. \ref{fig:roi}. The superiority of such
 methods over methods without structured priors like the Lasso, ANOVA,
@@ -226,7 +226,7 @@ a model with two hyper-parameters $\alpha$ and $\rho$. For a model like SpaceNet
 \paragraph{Model-selection via cross-validation.}
 One can instrument cross-validation to tune the hyper-parameters of a model like SpaceNet \eqref{eq:main_pb}, by selected the configuration of model parameters with least cross-validation error. The number of models fitted is proportional to the size of the parameter grid --i.e exponential in the number of parameters to tune-- and therefor can become prohibitive in case there are many free hyper-parameters in the model. Also, since some of the data has to be set aside for validation, cross-validation in very small sample settings (e.g e few tenths, as is the in some neuroimaging experiments) may be troublesome as the error estimates then have very high variance. A reasonable alternative in such situations are SURE (short for \textit{Stein's Unbiased Risk Estimator}~\citep{stein1981})-based methods,
 which are applicable whenever a procedure for obtaining (an unbiased estimate of) the number of degrees of freedom of the model is available. This is the case with the models like the ElasticNet and
-GraphNet~\citep{hebiri2011}. Recently, ~\citep{sugar} has proposed a STEIN-based technique for structured models with many hyper-parameters.
+GraphNet~\citep{hebiri2011}. Recently, ~\citep{sugar} has proposed a SURE-like technique for structured models with many hyper-parameters.
 
 
 \subsection{How SpaceNet compares against classical unstructured models}

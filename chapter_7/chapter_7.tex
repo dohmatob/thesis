@@ -98,14 +98,14 @@ for the TV-L1 model.
 
 As a function of the regressor coefficients $\B{w}$, the energy in
 \eqref{eq:rgn} corresponds to a modified
-GraphNet model in which per-voxel weights $\alpha(1 - \rho)\gamma_j$ given
+GraphNet model in which per-voxel penalty parameters $\alpha(1 - \rho)\gamma_j$ given
 by \eqref{eq:weights} replace the constant $\alpha(1 - \rho)$ factor
 in the pure GraphNet model \eqref{eq:opt_pb}, or
 equivalently the $\nabla$ is pre-\textit{whitened} by the diagonal
 matrix $\boldsymbol{\Gamma} := \mathrm{diag}(\sqrt{\gamma_1},\ldots,\sqrt{\gamma_p})$. This energy
 is optimized by an alternating scheme cyclically switching between
 optimizing w.r.t the regressor coefficients $\B{w}$ and then w.r.t
-then rescales the coefficients $\w$ (via formula \eqref{eq:weights}). The algorithm
+then rescaling parameters $\gamma_1,\ldots,\gamma_p$ (in closed form, via formula \eqref{eq:weights}). The algorithm
 so-obtained (detailed in section \ref{sec:algo}) alternates between minimization over the scaling parameters $\boldsymbol{\gamma}$ and minimization over the coefficients $\w$.
 % \textbf{XXX: Elvis to Elvis: cite some recent work by Pesquet \& Chouzenoux
 %   on proximal methods with conjugate gradient schemes (or something like that)}

@@ -33,7 +33,7 @@ they add speed without sacrificing the quality of the predictions
     green contours enclose the elite voxels which are selected by the
     screening procedure at the respective threshold
     levels. \textit{(a)}: Mixed Gambles dataset
-    \citep{jimura2012}.%  Remarkably, the geometry of the regions obtained
+    \citep{jimura2012}. %  Remarkably, the geometry of the regions obtained
     % here for the 10th and 20th screening-percentiles match pretty well
     % the results obtained in  \citep{gramfort2013} with their TV-L1
     % penalty. \textit{(b)}: Face vs House contrast of the visual recognition
@@ -135,7 +135,7 @@ to various datasets, prior to model fitting.
 \subsection{Early-stopping}
 Optimization is a means to an end and not an end on its own.
 The only incentive for optimizing a model is to improve its generalization power: performance on unseen data. If this performs stops improving during training (statistical convergence), as measured on a left-out subset of data
-, then we may as well abrupt the optimization algorithm (numerical convergence). We implement this principle heuristically as follows.
+, then we may as well abrupt the optimization algorithm. We implement this principle heuristically as follows.
 In each train sub-sample
 % (for example a fold, in the case of $K$-fold
 % cross-validation)
@@ -151,7 +151,7 @@ performance of the current (not yet optimal) solution $\hat{\B{w}}_k$ in
 \eqref{eq:opt_pb} is computed. If in a time-window of 5 iterations
 this score has not increased above an a priori fixed threshold, called
 the \textit{early-stopping tolerance (es tol)}, then the optimization
-process is halted for the currrent model parameter pair
+process is halted for the current model parameter pair
 $(\alpha,\rho)$ under inspection. This heuristic is motivated by the
 intuition that, for a particular problem, sub-optimal solutions
 $\hat{\B{w}}_k$ can give the same score as an optimal solution $\hat{\B{w}}$

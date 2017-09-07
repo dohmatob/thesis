@@ -14,7 +14,7 @@ processes in specific organ sub-parts that are defined from anatomy.
 Population-level tests of tissue properties, such as diffusion, or
 simply their density, are performed on ROIs adapted to the spatial
 impact of the pathology of interest. In functional brain imaging,
-e.g function magnetic resonance imaging (fMRI), ROIs must be
+e.g functional magnetic resonance imaging (fMRI), ROIs must be
 adapted to the cognitive process under study, and are often defined by
 the very activation elicited by a closely related process  \citep{saxe2006}.
 ROIs can boost statistical power by reducing multiple comparisons that
@@ -65,7 +65,7 @@ hits cross-modality correspondence problems.
 
 \section{Introduction and sketch of our contributions}
 \label{sec:intro}
-In this manuscript, we propose to use the \textit{variability} of the statistical
+\newthought{In this chapter}, we propose to use the \textit{variability} of the statistical
 maps across the population to define regions.
 %
 This idea is reminiscent of
@@ -92,7 +92,8 @@ zeros. This is imposed via an $\ell_1$ penalty on the atoms.
 %
 By "structured", we mean that the atoms are piece-wise smooth and
 compact, thus making up blobs, as opposed to scattered patterns of
-activation. We impose this type of structure via a Laplacian penalty on the
+activation. We impose this type of structure via a Laplacian penalty\footnote{This is a slight abuse of language as we really mean the Sobolev semi-norm
+$\B{v} \mapsto \B{v}^T \Delta \B{v} = (\nabla \B{v})^T\nabla \B{v}\ge 0$ and not the Laplacian linear operator $\Delta := \nabla^T\nabla$.} on the
 dictionary atoms. Combining the two penalties, we therefore
 obtain decompositions that are closer to known functional organization of the brain. This non-trivially extends the online dictionary-learning /
 dictionary-learning work   ~\citep{mairal2010}, with only a factor of 2
@@ -246,7 +247,7 @@ $\mathcal S_p(\tau) := \mathbb B_{p,\ell_1}(\tau) \cap \mathbb R_+^p.$
 Other choices (e.g ElasticNet ball) are of course possible. The radius parameter $\tau > 0$ controls the
 amount of sparsity: smaller values lead to sparser atoms.
 %% \item More general sparsity-inducing  constraint sets like elastic-net balls and probability simplexes can be be considered: we only require the existence of an efficient oracle for projection onto the constraint set $\mathcal C$.  
-The Laplacian regularization $\text{Lap}$ (see table of notations) is meant to impose blobs.
+The Laplacian regularization $\text{Lap}$ (see Table \ref{Tab:notations} for definition) is meant to impose blobs.
 $\gamma \ge 0$ controls how much regularization we impose on the atoms, compared to the
 reconstruction error.
 
@@ -351,10 +352,12 @@ kept fixed. The update for the atom $\B{d}^j$ can then be written as
 \end{split}
 \end{eqnarray}
 where
-$F_{\tilde{\gamma}}(\B{d}^j,\a) \equiv \frac{1}{2}\|\B{d}^j - \a\|_2^2
+\begin{equation}
+F_{\tilde{\gamma}}(\B{d}^j,\a) \equiv \frac{1}{2}\|\B{d}^j - \a\|_2^2
   + \tilde{\gamma}{\text{Lap}}(\B{d}^j) = \frac{1}{2}\|\B{d}^j - \a\|_2^2
   + \frac{1}{2}\|\nabla \B{d}^j\|^2.
-$
+  \label{eq:constrained_graphnet}
+\end{equation}
 Problem \eqref{eq:qp} is thus a compactly-constrained minimization of the $1$-strongly-convex quadratic functions $F_{\tilde{\gamma}}(.,\a): \mathbb R^p \rightarrow \mathbb R$ defined above. 
 \begin{algorithm}
   \caption{BCD dictionary update with Laplacian prior}
@@ -389,7 +392,7 @@ identity operator) of the GraphNet model
 %
 Fast first-order methods like FISTA  ~\citep{beck09fista} with optimal rates $\mathcal{O}(L/\sqrt{\epsilon})$ are available\footnote{For example, see   ~\citep{dohmatob2014benchmarking,varoquaux2015faasta}, implemented as part of the \textit{Nilearn} open-source Python library   ~\citep{nilearn}.} for solving such problems to arbitrary precision $\epsilon > 0$.
 One computes the Lipschitz constant to be
-$L_{F_{\tilde{\gamma}}(.,\a)} \equiv 1 + \tilde{\gamma} L_{{\text{Lap}}} = 1 + 4D\tilde{\gamma}$, where as before, $D$ is the number of spatial dimensions with $D=3$ for volumic images. One should also mention that under certain circumstances, it is possible to perform the dictionary updates in the Fourier domain, via FFT. This alternative approach is developed in the Appendix of   ~\citep{dohmatob2016}.
+$L_{F_{\tilde{\gamma}}(.,\a)} \equiv 1 + \tilde{\gamma} L_{{\text{Lap}}} = 1 + 4D\tilde{\gamma}$, where as before, $D$ is the number of spatial dimensions with $D=3$ for volumetric images. One should also mention that under certain circumstances, it is possible to perform the dictionary updates in the Fourier domain, via FFT. This alternative approach is developed in the Appendix of   ~\citep{dohmatob2016}.
 
 Finally, one notes that, since constraints in problem \eqref{eq:ss} are separable in the dictionary atoms $\B{d}^j$, the BCD dictionary-update algorithm Alg. \ref{Tab:algo_sobdict} is guaranteed to converge to a global optimum, at each iteration   ~\citep{bertsekas1999nonlinear, mairal2010}.
 
@@ -416,7 +419,7 @@ to converge to a qualitatively good dictionary.
 \section{Implementation and practical considerations}
 \paragraph{Software implementation.} All aspects of the code where
 implemented in the Python programming language. 
-For the implementation of the propose Alg. \ref{Tab:algo}, we
+For the implementation of the proposed Alg. \ref{Tab:algo}, we
 implemented a modified version of \textit{scikit-learn} Python library's
   \textit{dict\_learning} module, to handle more general constraint sets
   and more general penalties both for the codes $\B{c}_i$ and for the
@@ -496,7 +499,7 @@ Problem \eqref{eq:ss} is non-convex jointly in  $(\B{C}, \B{D})$, and so initial
 
 
 \subsection{Interlude: Working in the Fourier domain (when possible)}
-To close this section, let us point out a few special instances cases of problem (7), for peculiar choices of the constraint set $Q$. First note that the objective in problem (7) can be conveniently rewritten
+To close this section, let us point out a few special instances cases of problem \eqref{eq:constrained_graphnet}, for peculiar choices of the constraint set $Q$. First note that the objective in problem (7) can be conveniently rewritten
 as
 \begin{equation}
   \begin{split}
@@ -566,7 +569,7 @@ $$\|\hat{\B{v}}\|^2 = p\|\B{v}\|_2^2,\;\forall \B{v} \in \mathbb R^p$$ and so pr
 where
 \begin{equation}\mathcal E := \left\{(\Id-\gamma\B{A}_t[j,j]^{-1}\Lambda)^{\frac{1}{2}}\hat{\B{v}}\text{ s.t }\hat{\B{v}} \in \mathbb C^p,\;\|\hat{\B{v}}\|_2^2 \le p\right\},
 \end{equation}
-a hyper-ellipsoid in standard position (i.e $\mathbf{0}$-centered and axes-aligned). Using elementary geometric arguments, one can show that the projection $P_{\mathcal E}(\hat{\tilde{\B{v}}}^j)$ can be computed efficiently using a kind of root-finding algorithm \cite{Dai06}, and converges exponentially fast.
+a hyper-ellipsoid in standard position (i.e $\mathbf{0}$-centered and axes-aligned). Using elementary geometric arguments, one can show that the projection $P_{\mathcal E}(\hat{\tilde{\B{v}}}^j)$ can be computed efficiently using a kind of root-finding algorithm \citep{Dai06}, and converges exponentially fast.
 
 \paragraph{Non-negative Lasso.}
 In case the constraint set $\mathcal C$ for the dictionary atoms is a
@@ -668,14 +671,14 @@ and \ref{fig:ev}.
 \section{Results}
 \label{sec:results}
 \paragraph{Qualitative assessment of dictionaries.}
-As can be seen in Fig. \ref{fig:maps}\textit{(a)}, all methods recover
+As can be seen in Fig. \ref{fig:maps}, all methods recover
 dictionary atoms that represent known functional brain organization;
 notably the dictionaries all
 contain the well-known executive control and attention networks, at least
 in part. Vanilla dictionary-learning leverages the denoising properties
 of the $\ell_1$ sparsity constraint, but the voxel clusters are not very structured. For, example most blobs are surrounded with a thick ring of very small nonzero values.  In contrast, our proposed regularization model leverages both sparse and structured dictionary atoms, that are more spatially structured and less noisy.
 
-In contrast to both SODL and Smooth-SODL, CanICA   ~\citep{varoquaux2010group} is an ICA-based method which enforces no notion of sparsity whatsoever. The result are therefore dense and noisy dictionary atoms that explain the data very well (Fig. \ref{fig:maps}\textit{(b)} but which are completely unintepretable. In a futile attempt to remedy the situation, in practice such PCA/ICA-based methods (including FSL's MELODIC tool   ~\citep{smith2004advances}) are hard-thresholded in order to see information. For CanICA, the hard-thresholded version has been named tCanICA in Fig. \ref{fig:maps}.
+In contrast to both SODL and Smooth-SODL, CanICA   ~\citep{varoquaux2010group} is an ICA-based method which enforces no notion of sparsity whatsoever. The result are therefore dense and noisy dictionary atoms that explain the data very well (Fig. \ref{fig:dictscores} but which are completely unintepretable. In a futile attempt to remedy the situation, in practice such PCA/ICA-based methods (including FSL's MELODIC tool   ~\citep{smith2004advances}) are hard-thresholded in order to see information. For CanICA, the hard-thresholded version has been named tCanICA in Fig. \ref{fig:maps}.
 That notwithstanding, notice how the major structures (parietal lobes, sulci, etc.) in each atom are reproducible across the different models.
 
   
@@ -717,13 +720,13 @@ That notwithstanding, notice how the major structures (parietal lobes, sulci, et
 \paragraph{Stability-fidelity trade-offs.}
 PCA/ICA-based methods like CanICA   ~\citep{varoquaux2010group} and MELODIC   ~\citep{smith2004advances} are the optimal linear decomposition method to maximize
 explained variance on a dataset. On the training set,  CanICA   ~\citep{varoquaux2010group} out-performs all
-others algorithms with about 66\% (resp. 50\% for SODL  ~\citep{mairal2010} and 58\% for Smooth-SODL) of explained variance on the training set, and 60\% (resp. 49\% for SODL and \textbf{55\%} for Smooth-SODL) on left-out (test) data. See Fig. \ref{fig:maps}\textit{(b)}. However, as noted in the above paragraph, such methods lead to dictionaries that are hardly intepretable and thus the user must
+others algorithms with about 66\% (resp. 50\% for SODL  ~\citep{mairal2010} and 58\% for Smooth-SODL) of explained variance on the training set, and 60\% (resp. 49\% for SODL and \textbf{55\%} for Smooth-SODL) on left-out (test) data. See Fig. \ref{fig:dictscores}. However, as noted in the above paragraph, such methods lead to dictionaries that are hardly intepretable and thus the user must
 % invariably
 recourse to some kind of post-processing hard-thresholding step, which destroys the estimated model. More so,
 assessing the stability of the dictionaries, measured by mean correlation between corresponding atoms, across different splits of the data, CanICA   ~\citep{varoquaux2010group} scores a meager 0.1, whilst the hard-thresholded version tCanICA obtains 0.2, compared to \textbf{0.4} for Smooth-SODL and 0.1 for SODL.   As is to be expected, notice how the RAW model over-fits.
 The voxel space of worth $p=261596$ voxels is reduced to $k=40$ components, and then each subject $Z$-map $\B{x}_t$ of worth $p=261596$ voxels is reduced to $k=40$ coefficients via a simple ridge regression \eqref{eq:coding}.
 
-\begin{pagefigure}[!htpb]
+\begin{pagefigure}
    \includegraphics[width=.35\linewidth]{ev_scores_LANGUAGE.pdf}
    \includegraphics[width=.65\linewidth]{behavioral_scores_LANGUAGE.pdf}  
 
@@ -731,11 +734,12 @@ The voxel space of worth $p=261596$ voxels is reduced to $k=40$ components, and 
   background represent performance on \textbf{train} set. 
   \textbf{Right:} Predicting  behavioral  variables of the HCP  ~\citep{VanEssen20122222} dataset using subject-level $Z$-maps.
   }
+\label{fig:dictscores}
   \end{pagefigure}
 
 
 \paragraph{Prediction of behavioral variables.}
-If Smooth-SODL captures the patterns of inter-subject variability, then it should be possible to predict cognitive scores $\y$ like picture vocabulary, reading proficiency, math aptitude, etc. (the behavioral variables are explained in the HCP wiki   ~\citep{hcpwiki}) by projecting new subjects' data into this learned low-dimensional space (via solving the ridge problem \eqref{eq:coding} for each sample $\B{x}_t$), without loss of performance compared with using the raw $Z$-values values $\X$. Let RAW refer to the direct prediction of targets $\y$ from $\X$, using the top 2000 most voxels most correlated with the target variable. Results of for the comparison are shown in Fig. \ref{fig:maps}\textit{(c)}.  Only variables predicted with a a positive mean (across the different methods and across subjects) $R$-score are reported.
+If Smooth-SODL captures the patterns of inter-subject variability, then it should be possible to predict cognitive scores $\y$ like picture vocabulary, reading proficiency, math aptitude, etc. (the behavioral variables are explained in the HCP wiki   ~\citep{hcpwiki}) by projecting new subjects' data into this learned low-dimensional space (via solving the ridge problem \eqref{eq:coding} for each sample $\B{x}_t$), without loss of performance compared with using the raw $Z$-values values $\X$. Let RAW refer to the direct prediction of targets $\y$ from $\X$, using the top 2000 most voxels most correlated with the target variable. Results of the comparison are shown in Fig. \ref{fig:dictscores}.  Only variables predicted with a positive mean (across the different methods and across subjects) $R$-score are reported.
 %% Indeed, prediction results (Fig. \ref{fig:results}) show that the enhanced dictionaries obtained by our proposed method ($\gamma > 0$) is not at the expense of a decreased predictive power.
 We see that the RAW model, as expected over-fits drastically, scoring an $R^2$ of 0.3 on training data and only 0.14 on test data. Overall, for this metric CanICA performs best than all the other models in predicting the different behavioral variables on test data. However, our proposed Smooth-SODL model outperforms both SODL   ~\citep{mairal2010} and tCanICA, the thresholded version of CanICA.
 
@@ -797,7 +801,7 @@ SSODL \eqref{eq:ss} model will soon be made available as part of the
 
 \subsection{Possible extensions}
 \paragraph{More general structure-imposing penalties.}
-One can envisage to replace the Laplacian regularization with a general structure-inducing penalty for which the proximal operator is easy to compute. Such a framework is developed in chapter \ref{chap:proxdict}, and produces an entire family models, with potentially different properties.
+One can envisage to replace the Laplacian regularization with a general structure-inducing penalty for which the proximal operator is easy to compute. Such a framework is developed in chapter \ref{chap:proxdict}, and produces an entire family of models, with potentially different properties.
 
 \paragraph{Replacing the dictionary with a general neural net.}
 One notes that the proposed model \eqref{eq:ss} can be seen as an auto-encoding model of brain data with linear generator

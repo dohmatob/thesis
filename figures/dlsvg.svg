@@ -31,7 +31,7 @@
      inkscape:window-y="27"
      inkscape:window-x="0"
      inkscape:cy="310.22471"
-     inkscape:cx="493.8251"
+     inkscape:cx="498.40136"
      inkscape:zoom="1.3111111"
      showgrid="false"
      id="namedview7931"
@@ -1483,35 +1483,35 @@
      sodipodi:linespacing="125%"
      id="text4691"
      y="0.42702389"
-     x="0.6233263"
+     x="0.55666018"
      style="font-style:normal;font-weight:normal;font-size:0.02954696px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      xml:space="preserve"><tspan
        y="0.42702389"
-       x="0.6233263"
+       x="0.55666018"
        id="tspan4693"
-       sodipodi:role="line">dictionary</tspan></text>
+       sodipodi:role="line">dictionary ($\B{D})$</tspan></text>
   <text
      sodipodi:linespacing="125%"
      id="text4695"
      y="0.42702389"
-     x="0.95384634"
+     x="0.87884694"
      style="font-style:normal;font-weight:normal;font-size:0.02954696px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      xml:space="preserve"><tspan
        y="0.42702389"
-       x="0.95384634"
+       x="0.87884694"
        id="tspan4697"
-       sodipodi:role="line">codes</tspan></text>
+       sodipodi:role="line">codes ($\B{C}$)</tspan></text>
   <text
      sodipodi:linespacing="125%"
      id="text3670"
      y="0.42711744"
-     x="0.20395344"
+     x="0.14006439"
      style="font-style:normal;font-weight:normal;font-size:0.02891049px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      xml:space="preserve"><tspan
        y="0.42711744"
-       x="0.20395344"
+       x="0.14006439"
        id="tspan3672"
-       sodipodi:role="line">data matrix</tspan></text>
+       sodipodi:role="line">data matrix ($\B{X}$)</tspan></text>
   <rect
      y="0.081719808"
      x="0.085295729"

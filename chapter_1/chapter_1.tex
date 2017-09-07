@@ -39,7 +39,8 @@ template space. %% This can be schematized as follows\footnote{The
 %% \end{eqnarray}
 \begin{figure*}[!htbp]
      \includegraphics[width=1\linewidth]{tikz1.pdf}
-\caption{\textbf{Nonlinear mismatch} between EPI and T1 image of
+
+\caption{\textbf{Nonlinear mismatch} between EPI and T1-weighted image of
   the same subject of the HCP dataset~\citep{VanEssen20122222},
   before and after distortion-correction.
 % We see the Distortions in high-resolution EPI.
@@ -49,28 +50,26 @@ same subject. Notice the large distortions along the Left-Right direction
 single-band EPI image. Here, the distortion-correction managed to undo
 most --but not all-- of the distortions. Even after distortion
 correction, there are minor shape (nonlinear) differences between the
-EPI and the T1 image of the subject (\textbf{Right}). The same native-space
+EPI and the T1-weighted image of the subject (\textbf{Right}). The same native-space
 coordinates where used in all of the 3 plots.}
 \label{fig:pb_fig}
 \end{figure*}
 
 A crucial assumption in these classical methods is  that the T1 and EPI images
-of the same subject can be properly aligned to one another via a affine transformation.
+of the same subject can be properly aligned to one another via an affine transformation.
 Thus one assumes, for example, that distortion correction is
 good enough that the EPI image can be realigned to the T1 with a rigid or affine
 transformation. However, high-resolution EPI sequences deviate from the
 aforementioned underlying assumptions of classical T1-based indirect inter-subject
 registration methods, namely the EPI sequences suffer from distortions
-that push them nonlinearly out-of-match relative to the T1 image of
+that push them nonlinearly out-of-match relative to the T1-weighted image of
 the same subject. 
 %
 
-As illustrated in Figure \ref{fig:pb_fig}, this is the case, for
-example, with the HCP (Human Connectome Project)
+As an example, Fig. \ref{fig:pb_fig} illustrates this issue (distortions) on the HCP (Human Connectome Project)
 ~\citep{VanEssen20122222} dataset, a reference dataset that contains
 high-quality EPI data acquired using state-of-the-art sequences, yet
-with severe distortions
-~\citep{pmid9178246,pmid12270226,zeng2002,anderson2003}.
+with severe distortions ~\citep{pmid9178246,pmid12270226,zeng2002,anderson2003}.
 %
 %de Indeed, as noted in ~\citep{pmid25405472}, subject motion 
 %and eddy current 
@@ -91,7 +90,7 @@ The goal of this paper is to provide experimental evidence that the
 indirect T1-based inter-subject EPI registration explained above is no
 longer needed, if not sub-optimal in such settings. We also provide a
 computationally cheap pipeline based on publicly available tools,
-which bypasses the need for a T1 image, and do direct inter-subject
+which bypasses the need for a T1-weighted image, and do direct inter-subject
 registration of the EPI images.
 
 \section{Methods}
@@ -185,7 +184,7 @@ antsRegistration, antsApplyTranforms, and some custom scripts
 ~\citep{glasser2013}, hosted on Github.
 Except stated otherwise, all affine registrations (motion correction,
 coregistration) were performed using FSL's \textit{flirt} tool
-~\citep{smith2004} with Normalized Mutual Information as cost the function (option: \textit{-cost
+~\citep{smith2004} with Normalized Mutual Information as the cost function (option: \textit{-cost
   normmi}).
 
 \subsubsection{Classical indirect T1-based method}
@@ -208,13 +207,13 @@ volume of the film or the mean volume after motion correction. In our implementa
 former.
 
  For the template, a subject is fixed
-and its T1 image is used as the template. For each other subject,
+and its T1-weighted image is used as the template. For each other subject,
 \textit{(a)} distortion correction is used to learn a nonlinear
     undistorting warpfield, in a procedure already described in
     subsection \ref{sec:gen_proc} above. Then,
 \textit{(b)} motion correction is done to realign the the
 subject's EPI data to the mean thereof.
-    The subject's T1 image is then aligned to this
+    The subject's T1-weighted image is then aligned to this
     mean EPI image via coregistration (an affine transformation).
 We use BBR (boundary-based registration)
     ~\citep{greve2009accurate} for this coregistration step,
@@ -235,21 +234,21 @@ We use BBR (boundary-based registration)
 \textit{(c)} ANTs is used to learn a deformation of the T1
     image to the
     template (which is a fixed subject). This produces a warped
-    version of the T1 image, together with the corresponding
+    version of the T1-weighted image, together with the corresponding
     deformation (and its inverse too), for passing from the subject's
     space to the template space. Finally,
 \textit{(d)} the deformation above (T1-based), and all the
     other postponed
     warpfields, affine transformations, etc., are then applied (in
     respective order) to all EPI data previously aligned (rigidly, via
-    coregistration) with the T1 image of the subject; these may
+    coregistration) with the T1-weighted image of the subject; these may
     include EPI images acquired on the same subject during another task,
     for instance. This one-step resampling procedure (see subsection
     \ref{sec:gen_proc}) then produces a registered, motion-corrected,
     undistorted version of the input EPI data.
 \label{sec:classical}
 
-Then mean of all the registered T1 images is computed, and becomes the template henceforth. This procedure is iterated a couple of times.
+Then mean of all the registered T1-weighted images is computed, and becomes the template henceforth. This procedure is iterated a couple of times.
 
 %% \paragraph{A note on BBR}
 %% \begin{itemize}
@@ -332,7 +331,7 @@ subject's EPI images to their anatomy.  Our experiments confirm and
 extend the findings of ~\citep{grabner2014}, but at an even lower
 resolution: 2mm resolution, obtained from 3T MRI, and on a much larger
 dataset. Indeed, using a much larger bail of 110 subjects, from Human
-Connectom Project (HCP) dataset ~\citep{VanEssen20122222}, and a variety
+Connectome Project (HCP) dataset ~\citep{VanEssen20122222}, and a variety
 of different task contrasts, we show that registration with our
 pipeline increases the pairwise NMI of subjects, over the classical
 pipeline; crucially, this leads to a decrease in residual
@@ -392,7 +391,7 @@ deformations were then applied to warp EPI data (previously
 coregistered to same subject's motor SBRef) acquired on the same
 subject during different task conditions, into template space.
 GLMs (General Linear Models) ~\citep{friston1994statistical} were run
-using \textit{nipy} ~\citep{Gorgolewski2011}, open-source Python library for analysis of neuro-imaging data. For the purpose of reporting the results, the resulting maps were was co-registered to
+using \textit{nipy} ~\citep{Gorgolewski2011}, open-source Python library for analysis of neuro-imaging data. For the purpose of reporting the results, the resulting maps were co-registered to
 MNI space a posteriori.
 
 \subsection{Evaluation metrics}
@@ -405,7 +404,7 @@ metrics.
 %% * what your evaluation metrics are}.
 
 \subsubsection{Normalized mutual information evaluation (NMI)}
-NMI (see section \ref{sec:notations} for definition) is a
+NMI (see Table \ref{Tab:notations} for definition) is a
 popular similarity metric used to assess the quality of
 registration between two images, i.e how well aligned the images are to one another
 (for example ~\citep{maes1997multimodality}). It is also the loss function minimized by many
@@ -476,13 +475,13 @@ High values in this 3D image would outline regions of the brain which are not we
 
 \subsubsection{Group-level statistics and functional brain network patterns}
 Finally, in a successful inter-subject registration procedure, we
-expect the functional activation patterns to more localized in space
-and to have higher peaks. Or could this effect could be
+expect the functional activation patterns to be more localized in space
+and to have higher peaks. Or could this effect be
 masked by inter-subject variability in activation magnitude ?
 This will be discussed in detail in the discussion section \ref{sec:discussion}.
 
 \subsection{How many (plausible) pipelines are there ?}
-It is worth noting that potentially hundreds of pipelines which could
+It is worth noting that there are potentially hundreds of pipelines which could
 have considered for testing: should we do distortion correction ? And
 if yes, how ? Should we use linear or nonlinear model for the
 deformation field ?
@@ -642,10 +641,10 @@ left-to-right direction), even though distortion correction was done as part of 
  %  \textbf{XXX: it'd be nice to give some names to the neuro-atomic landmarks visible in the above
  % activation maps (to add a neuroscientific flavour to the figure).}\textbf{XXX WDYM ? We can do that together whenever you want.}
 }
-\label{fig:zmaps}
+\label{fig:group_zmaps}
 \end{figure}
 
-As regards group-level GLM scores, we see from Figure \ref{fig:zmaps}
+As regards group-level GLM scores, we see from Figure \ref{fig:group_zmaps}
 that our proposed method does just as good as the classical indirect
 T1-based pipeline. This is remarkable, as the former pipeline does not
 use any anatomical data.
@@ -657,7 +656,7 @@ task is modulated differently, and is more dependent on effect size fluctuations
 
 %
 This
-is confirmed in the curves in Figure \ref{fig:zmaps}, where we can see that the spatial across-subject activation profiles
+is confirmed in the curves in Figure \ref{fig:group_zmaps}, where we can see that the spatial across-subject activation profiles
 are very similar between the compared registration methods, except for the already noted
 slight improvement of the peak mean activation pattern obtained by our proposed method.
 
@@ -669,12 +668,12 @@ so the former are less sensitive to the quality of the underlying registration p
 
 \section{Discussion and concluding remarks}
 \label{sec:discussion}
-Classical inter-subject registration pipelines use the T1 scan of a
+Classical inter-subject registration pipelines use the T1-weighted (anatomical) image of a
 subject to estimate the subject-to-template warp.
 %
-An obvious issue is that high-quality T1 scans are not always
+An obvious issue is that high-quality T1-weighted images are not always
 available, but more generally, it is not always possible to completely
-align the EPI images of a subject to their T1 image via
+align the EPI images of a subject to their T1-weighted image via
 coregistration. Added to this is the possibility that such an intermediate registration step is
 a potential source of interpolation artifacts, not to mention the added computational cost (which may exceed the rest of the computation time by many orders of magnitude, for example, in the case of surface-based methods). As shown by our experiments on the HCP dataset
 ~\citep{VanEssen20122222} (Figure \ref{fig:pb_fig}), this is for example
@@ -718,7 +717,7 @@ variability (Figure \ref{fig:cv}) and the  quality of across-subject mean
 registered EPI image (Figure \ref{fig:template}), our proposes method
 outperforms the classical indirect T1-based registration.
 %
-In terms of more high-level metrics like group-level GLM statistics, these gains though still present as not as pronounced (refer to Figure \ref{fig:zmaps}). Indeed, as noted in
+In terms of more high-level metrics like group-level GLM statistics, these gains though still present, are as not as pronounced (refer to Figure \ref{fig:group_zmaps}). Indeed, as noted in
 ~\citep{thirion2007analysis,pmid22425669,Xu2009}, the inter-subject variability
 in GLM results is not due to misregistration, but intrinsic subject
 differences with a more physiological nature: the size of effects and
@@ -729,7 +728,7 @@ This is an enhancement on previous work by ~\citep{tavor2016task}, and shows
 differences in task-based brain activations are largely physiological --in contrast to being driven
 by subjects' brain morphological differences-- and can be predicted from resting state fMRI data.
 
-In a separate work ~\citep{dohmatob2016}, also presented in chapter \ref{chap:func_var} in detail, we have considered the possibility explicitly
+In a separate work ~\citep{dohmatob2016}, also presented in chapter \ref{chap:func_var} in detail, we have considered the possibility of explicitly
 modeling this physiology differences by estimating latent
 factors of variability across-subjects in a data-driven way using
 dictionary-learning. The motivating idea behind such a model, is that activation

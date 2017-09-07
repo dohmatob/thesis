@@ -122,27 +122,27 @@ The standard
     \label{eq:dr1}  
     \end{equation}
 % \textbf{XXX rather write it: }
-  \item Compute individual dictionary $\tilde{\B{X}}_s$ by regressing subject-to-components temporal
+  \item Compute individual dictionary $\B{Z}_s$ by regressing subject-to-components temporal
     dynamics $\B{C}_s$ onto subject data $\B{X}_s$:
   \begin{equation}
-    % \B{X}_s \approx \B{C}_s\tilde{\B{X}}_s.
-    \tilde{\B{X}}_s \in \text{argmin}_\B{Z} \|\B{X}_s - \B{C}_s\B{Z}\|^2_{\text{Fro}}
+    % \B{X}_s \approx \B{C}_s\B{Z}_s.
+    \B{Z}_s \in \text{argmin}_\B{Z} \|\B{X}_s - \B{C}_s\B{Z}\|^2_{\text{Fro}}
     \label{eq:dr2}
   \end{equation}%\textbf{XXX idem}
 \end{itemize}
 The end result is that for each subject $s$ and each voxel $v$, we
 obtain $k$ scalars,  namely the $vth$
-column of $\tilde{\B{X}}_s$, which represent the functional-connectivity profile w.r.t the group-level $k$-dimensional latent space.
+column of $\B{Z}_s$, which represent the functional-connectivity profile w.r.t the group-level $k$-dimensional latent space.
 These are the features (see Fig. \ref{fig:fe}).
 
 \subsection{Using only a single regression step}
 For the standard ``dual-regression'' feature-extraction method\citep{tavor2016task},
 a total of 2 regression steps are done (hence the name of the procedure).
 As a first (conceptual) improvement, we note that the individual dictionary
-$\tilde{\B{X}}_s = \B{C}_s^\dagger\B{X}_s$ can be rewritten as
+$\B{Z}_s = \B{C}_s^\dagger\B{X}_s$ can be rewritten as
 \[
   \begin{split}
-    \tilde{\B{X}}_s  &= (\B{C}_s^T\B{C}_s)^{-1}\B{C}_s^T\B{X}_s
+    \B{Z}_s  &= (\B{C}_s^T\B{C}_s)^{-1}\B{C}_s^T\B{X}_s
     \\
     &= ((\B{D}\B{D}^T)^{-1}\B{D}\B{X}_s^T\B{X}_s\B{D}^T(\B{D}\B{D}^T)^{-1})^{-1}(\B{D}\B{D}^T)^{-1}\B{D}\B{X}_s^T\B{X}_s\\
     &= \B{D}\B{D}^T(\B{D}\B{X}_s^T\B{X}_s\B{D}^T)^{-1}\B{D}\B{X}_s^T\B{X}_s\\
@@ -164,7 +164,7 @@ dictionary-learning method \citep{mairal2010}, a very fast
 implementation of which has been proposed in
 \citep{mensch2016dictionary}, based on random \textit{matrix sketching
   / sub-sampling}.
-Incremental PCA/ICA-base methods\citep{smith2014group,varoquaux2010group} are also a competitive choice.
+Incremental PCA/ICA-based methods\citep{smith2014group,varoquaux2010group} are also a competitive choice.
 % Group-PCA \citep{smith2014group} is also a competitive choice.
 % as was done in \citep{tavor2016task}.
 % \begin{itemize}
@@ -197,18 +197,18 @@ Indeed,  \citep{haxby2011} considers the following problem
 
 \begin{eqnarray}
   \begin{split}
-    &\text{minimize }\frac{1}{2N}\sum_{s=1}^N\|\B{X}_s - \A\tilde{\B{X}}_s\|^2_{\text{Fro}}\\
+    &\text{minimize }\frac{1}{2N}\sum_{s=1}^N\|\B{X}_s - \A\B{Z}_s\|^2_{\text{Fro}}\\
     &\text{ over }
-  \A \in \mathbb R^{n \times k},\;\tilde{\B{X}}_1,\ldots,\tilde{\B{X}}_N \in \mathbb R^{k \times p},
+  \A \in \mathbb R^{n \times k},\;\B{Z}_1,\ldots,\B{Z}_N \in \mathbb R^{k \times p},
   \\
-  &\text{ subject to }\tilde{\B{X}}_s\tilde{\B{X}}_s^T = \Id_k,\; \forall s \in [1\ldots N].
+  &\text{ subject to }\B{Z}_s\B{Z}_s^T = \Id_k,\; \forall s \in [1\ldots N].
   \end{split}
 \end{eqnarray}
 This can be solved via a simple EM (\textit{expectation maximization}) algorithm:
 
 \begin{itemize}
-\item \textbf{M-step:} $\tilde{\B{X}}_s^{(k)} = \U_s^{(k)}{\V_s^{(k)}}^T\; \forall s$, where ${\A^{(k)}}^T\B{X}_s = \U_s^{(k)}\boldsymbol{\Sigma}_s{\V_s^{(k)}}^T$ is an SVD
-\item \textbf{E-step:} $\A_s^{(k+1)} = \frac{1}{N}\sum_{s=1}^N\A_s^{(k)}$, where $\A_s^{(k)} := \B{X}_s{{}\tilde{\B{X}}_s^{(k)}}^T$
+\item \textbf{M-step:} $\B{Z}_s^{(k)} = \U_s^{(k)}{\V_s^{(k)}}^T\; \forall s$, where ${\A^{(k)}}^T\B{X}_s = \U_s^{(k)}\boldsymbol{\Sigma}_s{\V_s^{(k)}}^T$ is an SVD
+\item \textbf{E-step:} $\A_s^{(k+1)} = \frac{1}{N}\sum_{s=1}^N\A_s^{(k)}$, where $\A_s^{(k)} := \B{X}_s{{}\B{Z}_s^{(k)}}^T$
 \end{itemize}
 
 However DR is much more attractive due to its low cost: HA performs an SVD per subject per iteration.
@@ -216,7 +216,15 @@ However DR is much more attractive due to its low cost: HA performs an SVD per s
 \section{Bags of low-rank multi-target linear models}
 \label{sec:bags}
 % \paragraph*{\textbf{Why bootstrap sub-samples of more than 1 subject each?}}
-We now develop our model for predicting subject-specific activation maps $\B{Y}_s$ from resting-state features $\tilde{\B{X}}_s$
+\begin{marginfigure}
+  \includegraphics[width=1\linewidth]{figures/parcellation_00.pdf}
+  \caption{A \textbf{parcellation} is simply a collection of contiguous /
+    simply-connected masks $\mathcal P$ called \textbf{parcels} (the colored patches)
+    which cover the brain. Each \textbf{voxel} of the brain belongs / is assigned to exactly one
+    parcel. In the parcellation shown here, each parcel contains approximately 1000 voxels.}
+  \label{fig:parcels}
+\end{marginfigure}
+We now develop our model for predicting subject-specific activation maps $\B{Y}_s$ from resting-state features $\B{Z}_s$
 (refer to section \ref{sec:fe}).
 Our model considers bootstraps of sub-samples of subjects instead of on a subject-by-subject
 basis enforces a reduction in the complexity of the model without loss in capacity.
@@ -227,17 +235,8 @@ This reflects the hypothesis that the global cognitive organization of the brain
 similarities across different subjects. Also, stacking across subjects as such corrects for \textit{covariate-shift}~\footnote{Grossly speaking, covariate-shift is a situation in which the distribution of the test set is not the same as the distribution of the training set, and so the model learned on the training set may not generalize to unseen (i.e test) data.}
 between different subjects, and facilitates \textit{transfer-learning} from one-subject to another at test time.
 
-\begin{marginfigure}
-  \includegraphics[width=1\linewidth]{figures/parcellation_00.pdf}
-  \caption{A \textbf{parcellation} is simply a collection of contiguous /
-    simply-connected masks $\mathcal P$ called \textbf{parcels} (the colored patches)
-    which cover the brain. Each \textbf{voxel} of the brain belongs / is assigned to exactly one
-    parcel. In the parcellation shown here, each parcel contains approximately 1000 voxels.}
-  \label{fig:parcels}
-\end{marginfigure}
-
 Thus, for a bootstrap sub-sample $\mathcal S$ of $b$ ($1 \le b \le N$)
-subjects, let $\tilde{\B{X}}_{\mathcal S} = [\tilde{\B{X}}_1|\ldots|\tilde{\B{X}}_b] \in
+subjects, let $\B{Z}_{\mathcal S} = [\B{Z}_1|\ldots|\B{Z}_b] \in
 \mathbb R^{k \times p'b}$ be functional features masked over a parcel $\mathcal
 P$ of $p' \le p$ voxels (see Fig. \ref{fig:parcels}) and horizontally stacked
 matrix of functional features. Similarly, let $\B{Y}_{\mathcal S} \in \mathbb
@@ -266,15 +265,14 @@ of the intra-subject activation maps into our predictive model.
 %   \includegraphics[width=1\linewidth]{figures/rfmri2tfmri.pdf}
 %   \caption{\textbf{Training for 1 subject.} Dual-regression (DR) is applied to an incoming image patch $\B{x}$ to produce spatial features $\B{d}$ ($k$ features per-voxel). This is fed into a parametrized model which attempts to predict the task-activation this patch, over all the different contrasts jointly. The predicted activation is compared with true, and the prediction error is back-propagated to update the model parameters. Note that in case the prediction model is linear / affine (e.g as in Ridge regression), this learning can be done in closed form.}
 % \end{figure}
-Low-rank linear models do just this. It provides a with a smaller and tighter model (in
-terms of number of free parameters) which best explains the covariance structure
+Low-rank linear models do just this. It produces a much smaller model (i.e few number of free parameters) which best explains the covariance structure
 between activation maps $\B{Y}$ for the different conditions. This can be written as
 \begin{eqnarray}
   \begin{split}
     &\text{ Find }\bbeta_{\mathcal S} \in \mathbb R^{k \times c},
     \text{ with rank}(\bbeta_{\mathcal S}) \le r,\\
     &\text{ s.t }\B{Y}_{\mathcal S}^j
-    \approx \tilde{\B{X}}^T_{\mathcal S}\bbeta_{\mathcal S}^j\; \forall j \in [1 \ldots
+    \approx \B{Z}^T_{\mathcal S}\bbeta_{\mathcal S}^j\; \forall j \in [1 \ldots
     c],
   \end{split}
       \label{eq:lrank}
@@ -284,15 +282,15 @@ The model \eqref{eq:lrank} can be captured by the following convex program
 \begin{equation}
   \begin{split}
     &\text{minimize } \frac{1}{2}\|\B{Y}_{\mathcal S} -
-    \tilde{\B{X}}^T_{\mathcal S}\bbeta_{\mathcal S}\|_{\text{Fro}}^2 \text{ w.r.t
+    \B{Z}^T_{\mathcal S}\bbeta_{\mathcal S}\|_{\text{Fro}}^2 \text{ w.r.t
     }\bbeta_{\mathcal S} \in \mathbb R^{k\times c}\\
     &\text{ subject to rank}(\bbeta_{\mathcal S}) \le r.
   \end{split}
   \label{eq:lrrr}
 \end{equation}
   This defines a low-complexity linear model
-\begin{eqnarray} \hat{f}_{\mathcal S} : \tilde{\B{X}}_s \mapsto
-\tilde{\B{X}}_s^T\hat{\bbeta}_{\mathcal S}
+\begin{eqnarray} \hat{f}_{\mathcal S} : \B{Z}_s \mapsto
+\B{Z}_s^T\hat{\bbeta}_{\mathcal S}
   \label{eq:lrrr_f}
 \end{eqnarray} for predictively linking resting-state data to individual
 activation maps over the parcel $\mathcal P$.  The full-rank case $r = \min(c,
@@ -302,8 +300,8 @@ contrast-wise single-output linear regression model proposed in
 
 Now, let $\hat{\B{Y}}_{\mathcal S}^{\text{OLS}} = \U \boldsymbol{\Sigma} \V^T$ be the SVD
 (singular-value decomposition) of the least-squares prediction
-$\hat{\B{Y}}_{\mathcal S}^{\text{OLS}} := \tilde{\B{X}}_{\mathcal S}\hat{\bbeta}_{\mathcal S}^{\text{OLS}}$ where
-$\hat{\bbeta}_{\mathcal S}^{\text{OLS}} := (\tilde{\B{X}}_{\mathcal S}^T\tilde{\B{X}}_{\mathcal S})^\dagger\tilde{\B{X}}_{\mathcal S}^T\B{Y}_{\mathcal S}$
+$\hat{\B{Y}}_{\mathcal S}^{\text{OLS}} := \B{Z}_{\mathcal S}\hat{\bbeta}_{\mathcal S}^{\text{OLS}}$ where
+$\hat{\bbeta}_{\mathcal S}^{\text{OLS}} := (\B{Z}_{\mathcal S}^T\B{Z}_{\mathcal S})^\dagger\B{Z}_{\mathcal S}^T\B{Y}_{\mathcal S}$
 is the ordinary least-squares (OLS) solution to the unconstrained version of \eqref{eq:lrrr}.
 Of course \eqref{eq:lrrr} may fail to have a unique solution. The following elementary lemma,
 whose proof  (Supp. Mat.) follows directly from the \textit{Eckart-Young-Mirsky theorem}~\citep{eckart2000}
@@ -325,14 +323,14 @@ It should be noted that the form of the solutions provided by the above lemma is
 \begin{proof}
 Indeed, by the orthogonality property of least-squares estimates, we have the
   decomposition
- $$\|\B{Y}_{\mathcal S} - \tilde{\B{X}}_{\mathcal S}\bbeta_{\mathcal S}\|_{\text{Fro}}^2 = \|\B{Y}_{\mathcal S} - \hat{\B{Y}}_{\mathcal S}^{\text{OLS}}\|_{\text{Fro}}^2
- + \|\hat{\B{Y}}_{\mathcal S}^{\text{OLS}} - \tilde{\B{X}}_{\mathcal S}\bbeta_{\mathcal S}\|_{\text{Fro}}^2,$$
+ $$\|\B{Y}_{\mathcal S} - \B{Z}_{\mathcal S}\bbeta_{\mathcal S}\|_{\text{Fro}}^2 = \|\B{Y}_{\mathcal S} - \hat{\B{Y}}_{\mathcal S}^{\text{OLS}}\|_{\text{Fro}}^2
+ + \|\hat{\B{Y}}_{\mathcal S}^{\text{OLS}} - \B{Z}_{\mathcal S}\bbeta_{\mathcal S}\|_{\text{Fro}}^2,$$
  with the first summand being independent of the model parameters $\bbeta_{\mathcal S}$.
 Thus \eqref{eq:lrrr} can be rewritten as
 
 \begin{equation}
   \begin{split}
-    &\text{minimize } \frac{1}{2}\|\hat{\B{Y}}_{\mathcal S}^{\text{OLS}} - \tilde{\B{X}}_{\mathcal S}\bbeta_{\mathcal S}\|_{\text{Fro}}^2\text{ w.r.t }\bbeta_{\mathcal S} \in
+    &\text{minimize } \frac{1}{2}\|\hat{\B{Y}}_{\mathcal S}^{\text{OLS}} - \B{Z}_{\mathcal S}\bbeta_{\mathcal S}\|_{\text{Fro}}^2\text{ w.r.t }\bbeta_{\mathcal S} \in
     \mathbb R^{k\times c}\\
     &\text{ subject to rank}(\bbeta_{\mathcal S}) \le r.
     \end{split}
@@ -341,8 +339,8 @@ Thus \eqref{eq:lrrr} can be rewritten as
 It is clear that $\hat{\bbeta}_{\mathcal S}(r) := \hat{\bbeta}_{\mathcal S}^{\text{OLS}}\boldsymbol{\Pi}_{\mathcal S}(r)$ is of rank at most $r$. One computes
 \[
   \begin{split}
-    \tilde{\B{X}}_{\mathcal S}\hat{\bbeta}(r) &= \tilde{\B{X}}_{\mathcal S}\hat{\bbeta}_{\mathcal S}^{\text{OLS}}\boldsymbol{\Pi}_{\mathcal S}(r)
-= \tilde{\B{X}}_{\mathcal S}\hat{\bbeta}_{\mathcal S}^{\text{OLS}}\sum_{i=1}^{r}\v_i\v_i^T
+    \B{Z}_{\mathcal S}\hat{\bbeta}(r) &= \B{Z}_{\mathcal S}\hat{\bbeta}_{\mathcal S}^{\text{OLS}}\boldsymbol{\Pi}_{\mathcal S}(r)
+= \B{Z}_{\mathcal S}\hat{\bbeta}_{\mathcal S}^{\text{OLS}}\sum_{i=1}^{r}\v_i\v_i^T
 \\
 &= \hat{\B{Y}}_{\mathcal S}^{\text{OLS}}\sum_{i=1}^{r}\v_i\v_i^T,
 \end{split}
@@ -368,7 +366,7 @@ activations for the different task contrasts, jointly.
     \Require
     \begin{itemize}
     \item Data from $N_{\text{train}}$ subjects. For each subject $s$ we have
-      precomputed spatial features $\tilde{\B{X}}_s \in \mathbb R^{k \times p}$.
+      precomputed spatial features $\B{Z}_s \in \mathbb R^{k \times p}$.
       
       
       \item A set of brain parcellations (defined by sets of brain masks).
@@ -382,13 +380,13 @@ activations for the different task contrasts, jointly.
   \ParFor{each parcel $\mathcal P$}
   \ParFor{each bootstrap sub-sample of subjects $\mathcal S$}
   \State  \textbf{Fit} a model $\hat{f}_{\mathcal S}$ from \eqref{eq:lrrr}, for predicting $\B{Y}_{\mathcal S}$ from
-  $\tilde{\B{X}}_{\mathcal S}$ restricted on the parcel $\mathcal P$
+  $\B{Z}_{\mathcal S}$ restricted on the parcel $\mathcal P$
   % Store $\hat{f}_{\mathcal S}$ in the set of trained models   $\mathcal F_{\mathcal P^{(i)}}$ for parcel $\mathcal P^{(i)}$.
 \EndParFor
 %% \For{each subject $s$ (Leave-One-Out)}
 %% \begin{eqnarray}
 %%   \tilde{\bbeta}_{s,l} += % \frac{1}{N-1}\sum_{s' \ne s}\bbeta_{s',l,j} \text{ and }
-%%   \tilde{\B{Y}}_{s,l,j} := \tilde{\B{X}}_s\tilde{\bbeta}_{s,l,j}
+%%   \tilde{\B{Y}}_{s,l,j} := \B{Z}_s\tilde{\bbeta}_{s,l,j}
 %% \end{eqnarray}
 
 %% \EndFor
@@ -636,7 +634,7 @@ $200$ subjects from the HCP --Human Connectome Project-- dataset
  language processing (semantic and phonological
 processing) and working memory.
 \paragraph{The activation maps $\Y$ to predict.}
-This data includes includes task activation
+This data includes task activation
 maps from General Linear Models (GLMs)  \citep{friston1994statistical} that show the activation
 of different brain voxels to different cognitive conditions / task contrasts, for each subject.
 For example of these conditions include ``Math vs Story'' (part of language task),
@@ -815,7 +813,7 @@ predicted the topography of the subjects' activation patterns for the contrasts.
 \section{Concluding remarks}
 We have proposed a general framework for the problem of predicting task fMRI activation maps
 from resting-state-only features. Our method creates an ensemble of parcel-wise low-rank multi-target
-linear models models, over different random sub-populations of the training subjects to leverage
+linear models, over different random sub-populations of the training subjects to leverage
 the full richness of the data and jointly predict activation maps to different cognitive hypotheses
 (task contrasts). This is a major improvement over the state of the art \citep{tavor2016task},
 as confirmed by extensive experiments on real data. 
@@ -840,7 +838,7 @@ Indeed, a preliminary implementation of this generalization appears to give even
 % \begin{proof}[Derivation of formula \eqref{eq:mr}]
 %   \begin{eqnarray*}
 %   \begin{split}
-%     \tilde{\B{X}}_s(\lambda) &= (\A_s^T\A_ss + \lambda \Id_k)^{-1}\A_s^T\B{X}_s \\
+%     \B{Z}_s(\lambda) &= (\A_s^T\A_ss + \lambda \Id_k)^{-1}\A_s^T\B{X}_s \\
 %     &= ((\B{D}\B{D}^T)^{-1}\B{D}\B{X}_s^T\B{X}_s\B{D}^T(\B{D}\B{D}^T)^{-1}  + \lambda \Id_k)^{-1}(\B{D}\B{D}^T)^{-1}\B{D}\B{X}_s^T\B{X}_s\\
 %     &= \B{D}\B{D}^T\underbrace{(\B{D}\B{X}_s^T\B{X}_s\B{D}^T  + \lambda \Id_k)^{-1}\B{D}\B{X}_s^T\B{X}_s}_{\text{Ridge}_\lambda(\B{X}_s\B{D}^T,\B{X}_s)}
 %      = \B{D}\B{D}^T\B{D}\B{X}_s^T(\B{X}_s\B{D}^T\B{D}\B{X}_s^T  + \lambda \Id_n)^{-1}\B{X}_s.

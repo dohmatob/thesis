@@ -65,12 +65,11 @@ problem  \eqref{eq:main_pb} are given by the following equations:
     \begin{split}
       \B{w}^{(n+1)} &\leftarrow
       \underset{\w}{\argmin}\text{ }\mathcal{L}_{\nu}(\B{w}, \B{z}^{(n)},
-      \B{u}^{(n)}) =\\
-      &\hspace{.7em}(\nu \B{K}^T\K + \X^T\X)^{-1}(\nu \B{K}^T(\z^{(n)} -
+      \B{u}^{(n)}) =
+      (\nu \B{K}^T\K + \X^T\X)^{-1}(\nu \B{K}^T(\z^{(n)} -
       \B{u}^{(n)}) + \X^T\y)\\\z^{(n+1)} &\leftarrow
       \underset{\z}{\argmin}\text{ }\mathcal{L}_{\nu}(\B{w}^{(n+1)}, \z,
-      \B{u}^{(n)}) = \\
-      &\hspace{1.3em}\prox_{(\alpha/\nu)\Omega}(\B{Kw}^{(n+1)} + \B{u}^{(n)})\\
+      \B{u}^{(n)}) = \prox_{(\alpha/\nu)\Omega}(\B{Kw}^{(n+1)} + \B{u}^{(n)})\\
       \B{u}^{(n+1)} &\leftarrow \B{u}^{(n)} + \B{Kw}^{(n+1)} -\B{z}^{(n+1)}.
     \end{split}
 \label{eq:admm}
@@ -194,9 +193,8 @@ the results of \citep{ghadimi2013optimal} and \citep{boley2013}. In the
 latter simple situations, a strategy for speeding up the ADMM
 algorithm is then to choose the parameter $\nu$ so that the spectral
 radius of the linear part of the then affine transformation $\Lambda_\nu$
-is minimized. The following Corollary is immediate. Due to lack of
-space, we omit the proof, which is obtainable via the \textit{Spectral
-  Mapping Theorem}.
+is minimized. The following Corollary is immediate, whose proof is obtainable
+via the \textit{Spectral Mapping Theorem}.
 \begin{corollary}
   Let $\G_{\nu}$, $\A_{\nu}$, $\tilde{\A}_{\nu}$, and $\Lambda_\nu$ be
   defined as in Lemma \ref{thm:fixed_point}. 

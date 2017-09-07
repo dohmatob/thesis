@@ -7,12 +7,12 @@
 
 \bibitem[Ashburner(2007)]{ashburner2007}
 J.~Ashburner.
-\newblock A fast diffeomorphic image registration algorithm.
+\newblock {A fast diffeomorphic image registration algorithm}.
 \newblock \emph{Neuroimage}, 38, 2007.
 
 \bibitem[Ashburner and Friston(2005)]{ashburner2005}
 J.~Ashburner and K.J. Friston.
-\newblock Unified segmentation.
+\newblock {Unified segmentation}.
 \newblock \emph{Neuroimage}, 26, 2005.
 
 \bibitem[Filippini et~al.(2009)Filippini, MacIntosh, Hough, Goodwin, Frisoni,
@@ -27,15 +27,15 @@ N.~Filippini, B.J. MacIntosh, M.G. Hough, G.M. Goodwin, G.B. Frisoni, S.M.
   Frackowiak]{friston1994statistical}
 Karl~J Friston, Andrew~P Holmes, Keith~J Worsley, J-P Poline, Chris~D Frith,
   and Richard~SJ Frackowiak.
-\newblock Statistical parametric maps in functional imaging: a general linear
-  approach.
+\newblock {Statistical parametric maps in functional imaging: a general linear
+  approach}.
 \newblock \emph{Human brain mapping}, 2\penalty0 (4):\penalty0 189--210, 1994.
 
 \bibitem[Friston et~al.(1995)Friston, Ashburner, Frith, Poline, Heather, and
   Frackowiak]{fristonbook}
 Karl.~J. Friston, J.~Ashburner, C.~D. Frith, J.-B. Poline, J.~D. Heather, and
   R.~S.~J. Frackowiak.
-\newblock Spatial registration and normalization of images.
+\newblock {Spatial registration and normalization of images}.
 \newblock \emph{Human Brain Mapping}, 3\penalty0 (3):\penalty0 165--189, 1995.
 \newblock ISSN 1097-0193.
 \newblock \doi{10.1002/hbm.460030303}.
@@ -54,16 +54,16 @@ A.~Klein, J.~Andersson, B.~A. Ardekani, J.~Ashburner, B.~Avants, M.~C. Chiang,
 
 \bibitem[Ogawa et~al.(1990{\natexlab{a}})Ogawa, Lee, Kay, and Tank]{agawa1990}
 S.~Ogawa, T.~M. Lee, A.~R. Kay, and D.~W. Tank.
-\newblock Brain magnetic resonance imaging with contrast dependent on blood
-  oxygenation.
+\newblock {Brain magnetic resonance imaging with contrast dependent on blood
+  oxygenation.}
 \newblock \emph{Proc Natl Acad Sci U S A}, 87\penalty0 (24):\penalty0
   9868--9872, 1990{\natexlab{a}}.
 
 \bibitem[Ogawa et~al.(1990{\natexlab{b}})Ogawa, Lee, Nayak, and
   Glynn]{ogawa1990b}
 Seiji Ogawa, Tso-Ming Lee, Asha~S. Nayak, and Paul Glynn.
-\newblock Oxygenation-sensitive contrast in magnetic resonance image of rodent
-  brain at high magnetic fields.
+\newblock {Oxygenation-sensitive contrast in magnetic resonance image of rodent
+  brain at high magnetic fields}.
 \newblock \emph{Magnetic Resonance in Medicine}, 14\penalty0 (1):\penalty0
   68--78, 1990{\natexlab{b}}.
 
@@ -76,7 +76,7 @@ J.~D. Power, K.~A. Barnes, A.~Z. Snyder, B.~L. Schlaggar, and S.~E. Petersen.
 
 \bibitem[Raichle(2010)]{raichle10}
 Marcus~E. Raichle.
-\newblock Two views of brain function.
+\newblock {Two views of brain function}.
 \newblock \emph{Trends in Cognitive Sciences}, 14\penalty0 (4):\penalty0
   180--190, 2010.
 
@@ -84,20 +84,20 @@ Marcus~E. Raichle.
   Windischberger]{sladky2011}
 Ronald Sladky, Karl~J. Friston, Jasmin Tr{\"o}stl, Ross Cunnington, Ewald
   Moser, and Christian Windischberger.
-\newblock Slice-timing effects and their correction in functional mri.
+\newblock {Slice-timing effects and their correction in functional MRI}.
 \newblock \emph{Neuroimage}, 58\penalty0 (2-2):\penalty0 588--594, Sep 2011.
 
 \bibitem[Tavor et~al.(2016)Tavor, Jones, Mars, Smith, Behrens, and
   Jbabdi]{tavor2016task}
 I~Tavor, O~Parker Jones, RB~Mars, SM~Smith, TE~Behrens, and S~Jbabdi.
-\newblock Task-free mri predicts individual differences in brain activity
-  during task performance.
+\newblock {Task-free MRI predicts individual differences in brain activity
+  during task performance}.
 \newblock \emph{Science}, 352\penalty0 (6282):\penalty0 216--220, 2016.
 
 \bibitem[Thirion(2009)]{thirion_hdr}
 Bertrand Thirion.
-\newblock \emph{Structural and probabilistic methods for group analysis in
-  functional neuroimaging}.
+\newblock \emph{{Structural and probabilistic methods for group analysis in
+  functional neuroimaging}}.
 \newblock PhD thesis, {\'E}cole normale sup{\'e}rieure de Cachan-ENS Cachan,
   2009.
 
@@ -105,8 +105,8 @@ Bertrand Thirion.
   Poline]{thirion2007analysis}
 Bertrand Thirion, Philippe Pinel, S{\'e}bastien M{\'e}riaux, Alexis Roche,
   Stanislas Dehaene, and Jean-Baptiste Poline.
-\newblock Analysis of a large fmri cohort: Statistical and methodological
-  issues for group analyses.
+\newblock {Analysis of a large fMRI cohort: Statistical and methodological
+  issues for group analyses}.
 \newblock \emph{Neuroimage}, 35\penalty0 (1):\penalty0 105--120, 2007.
 
 \bibitem[Thyreau et~al.(2012)Thyreau, Schwartz, Thirion, Frouin, Loth,
@@ -121,14 +121,14 @@ B.~Thyreau, Y.~Schwartz, B.~Thirion, V.~Frouin, E.~Loth, S.~Vollstadt-Klein,
 
 \bibitem[Van~Dijk et~al.(2012)Van~Dijk, Sabuncu, and Buckner]{vandijk2012}
 K.R.A. Van~Dijk, M.R. Sabuncu, and R.L. Buckner.
-\newblock The influence of head motion on intrinsic functional connectivity
-  mri.
+\newblock {The influence of head motion on intrinsic functional connectivity
+  MRI}.
 \newblock \emph{Neuroimage}, 59, 2012.
 
 \bibitem[Xu et~al.(2009)Xu, Johnson, Nichols, and Nee]{Xu2009}
 Lei Xu, Timothy~D. Johnson, Thomas~E. Nichols, and Derek~E. Nee.
-\newblock Modeling inter-subject variability in fmri activation location: A
-  bayesian hierarchical spatial model.
+\newblock {Modeling inter-subject variability in fMRI activation location: A
+  Bayesian hierarchical spatial model}.
 \newblock \emph{Biometrics}, 65\penalty0 (4):\penalty0 1041--1051, Dec 2009.
 
 \end{thebibliography}
