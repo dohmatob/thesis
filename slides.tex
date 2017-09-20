@@ -88,6 +88,14 @@
 \tiny{\textit{(Courtesy of ???)}}
 \end{frame}
 
+\begin{frame}
+  \frametitle{General analysis steps}
+\includegraphics[width=.9\linewidth]{norm.png}
+
+\tiny \textit{(Adapted from Marion Oberhuber \& Giles Story)}
+\end{frame}
+
+
 
 \section{Structured penalties for multi-variate brain-decoding}
 \subsection{Preliminaries}
@@ -397,7 +405,14 @@
         \caption{Regression: mixed-gambles}
       \end{figure}
     }
+
+    \bigskip
+    \only<3->{
+      \mydot Retained strategy is nested FISTA \mycite{Beck '09} algorithm.
+      }
+    
   \end{overlayarea}
+
 \end{frame}
 
 \begin{frame}\frametitle{More speed via univariate feature-screening}
@@ -568,9 +583,11 @@
 
 
 \begin{frame}
-  \frametitle{\emph{The challenge}}\Large
+  \frametitle{The challenge}\Large
+\mycite{Dohmatob '16 (NIPS)}
+
   \bigskip
-  \bigskip
+  
   \mydot \textcolor{red}{Sparsity:} spatially localized atoms
 
   \bigskip
@@ -589,7 +606,7 @@
 
 \subsection{Introducing the proposed model}
 \begin{frame}
-  \frametitle{Introducing the proposed model}
+  \frametitle{Introducing the proposed model \textcolor{orange}{[Dohmatob '16 (NIPS)]}}
   \vspace{-2em}
     \begin{equation*}
       \begin{split}
@@ -681,97 +698,6 @@
 \end{frame}  
 
 
-% \subsection{Extension: Proximal online updates for dictionary-learning}
-\begin{frame}
-  \frametitle{Extension: Proximal online updates for dictionary atoms}
-  \vspace{-2em}
-\begin{table}[H]
-  \begin{tabular}{p{3.cm}|c|p{13cm}}\hline
-    \emph{penalty $g$} & \emph{$\B{p} = \prox_{\gamma g}(\B{z})$} & \emph{comments}\\\hline
-    L2 ball constraint & $p_v = \B{z}_v\frac{\gamma}{\max(\gamma,\|\B{z}\|_2)}$ & \mycite{Mairal 2010}\\ \hline
-%    nonneg. constraint & $p_v = (\B{z}_v)_+$ & used in NMF\\ \hline
-    convex constraint & $\B{p} = \proj_{\mathcal K}(\B{z})$ & interesting for simple $\mathcal K$\\ \hline
-    L1 penalty & $p_v = z_v\left(1 - \frac{\alpha}{|z_v|}\right)_+$ & soft-thresholding \\\hline
-    Group L2/L1 & $\B{p}_v = \B{z}_v\left(1 - \frac{\gamma}{\|\B{z}_v\|_2}\right)_+$ & $i$ is a group of features\\\hline
-    Social sparsity \newline \mycite{Kowalski '09} & $p_v = z_v\left(1 - \frac{\gamma}{\|\boldsymbol{\omega}_v * \B{z}\|_2}\right)_+$
-                                                    & feature $i$ survives if avg. \newline energy in neigh. is high\\\hline
-    % Social sparsity & $p_v = z_v\left(1 - \frac{\gamma}{\left(\sum_{l \in \mathcal N(i)}(\omega^{l}_{i})^2z_{l}^2\right)^{1/2}}\right)_+$
-    %                                                 & denominator is just a \newline
-    %                                                 convolution\\\hline
-%    etc. & etc. & etc.\\\hline
-  \end{tabular}
-\end{table}
-
-\vspace{-1.5em}
-\begin{overlayarea}{\textwidth}{\textheight}
-\begin{columns}
-  \column{.35\linewidth}
-  \only<2->{
-    \vspace{3.5em}
-    \includegraphics[width=.8\linewidth]{social.png}
-  }
-
-\vspace{-4em}  
-\column{.65\linewidth}
-\only<3->{
-  \emph{Zoom on social sparsity }\mycite{Kowalski '09}
-
-  \mydot $\|\boldsymbol{\omega}_v * \B{z}\|_2^2 := \sum_{l \in \mathcal N(i)}\omega^{l}_{i}z_{l}^2 \ge 0$%, a convolution with weights $\omega_v^1, \ldots,\omega_v^p \ge 0$,
-%  where $\sum_{i}\omega_v^l = 1$, $\forall l \in [\![p]\!]$
-
-  \bigskip
-  
-  \mydot Imposes \emph{sparsity} and \emph{smoothness}!
-  }
-\end{columns}
-\end{overlayarea}
-\end{frame}
-
-\begin{frame}
-  \frametitle{{Proximal online updates for dictionary atoms}}
-  % \mydot Our proposed model can an be extended to more general structured penalties of the form \emph{$\Omega(\B{D}) := \sum_{j=1}^kg_j(\B{d}^j)$}. Viz,
-  \begin{overprint}
-    \onslide<1>
-    \begin{eqnarray*}
-      \begin{split}
-        &\min_{\B{D} \in \mathbb R^{p \times k}}\frac{1}{n}\sum_{t=1}^n\left(\min_{\B{c}_t \in \mathbb R^{k}}\frac{1}{2} \|\B{x}_t-\B{D}\B{c}_t\|_2^2 +  \alpha\|\B{c}_t\|_2^2\right) + \gamma\textcolor{red}{\sum_{j=1}^k\Omega_{\text{Lap}}(\B{d}^j)}.\\
-    &\textcolor{red}{\text{subject to } \B{d}^1,\ldots,\B{d}^k \in \mathcal K}
-  \end{split}
-    \end{eqnarray*}
-\onslide<2->
-\begin{eqnarray*}
-  \begin{split}
-&\min_{\B{D} \in \mathbb R^{p \times k}}\frac{1}{n}\sum_{t=1}^n\left(\min_{\B{c}_t \in \mathbb R^{k}}\frac{1}{2} \|\B{x}_t-\B{D}\B{c}_t\|_2^2 +  \alpha\|\B{c}_t\|_2^2\right)
-     + \gamma\textcolor{green}{\sum_{j=1}^kg_j(\B{d}^j)}.
-   \end{split}
-\end{eqnarray*}
-\end{overprint}
-
-% \mydot Here, the \emph{$g_j$}'s are \textit{proximable} (e.g group-Lasso, social sparsity)
-% \bigskip
-\uncover<3->{
-\textbf{\textcolor{orange}{The proximal online BCD updates:}}\\
-\begin{equation*}
-  \begin{split}
-    \vspace*{-1em}
-    \rlap{\smash{\includegraphics[width=2em]{loop}}}%      
-    \quad\quad\B{d}^j \leftarrow \prox_{\gamma a_{j,j}^{-1}g_j}(\B{z}^{-j}),\;j \leftarrow j + 1 \text{ (go to next atom)}
-  \end{split}
-  \end{equation*}
-\mydot $\B{z}^{-j} := a_{j,j}^{-1}\B{r}^j$ and $\B{R} := \left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right) = \B{B}- \B{DA} + \B{d}^j \circ \B{a}^j $.
-}
-
-\uncover<4->
-{
-  \mydot \emph{Bonus:} It suffices to specify the $g_j$'s only via their prox!
-\begin{itemize}
-\item E.g Social sparsity! \mycite{Kowalski '09}
-\end{itemize}
-}
-
-\end{frame}
-
-
 \subsection{Results}
 \begin{frame}
   \frametitle{Experimental on results HCP fMRI data: qualitative}
@@ -802,50 +728,14 @@
   }
   \only<9->{
     \includegraphics[width=0.32\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=1000_radius=4_split=0_time=12_4}.png}
-    }  
-\end{overlayarea}
+  }
+
+\only<10->{
+\mydot Our method produces localized and blobby decompositions
+}
   
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_PCA_2}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_PCA_33}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_PCA_25}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_PCA_7}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_PCA_1}.png}
-% \\
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=0_radius=4_split=0_time=12_34}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=0_radius=4_split=0_time=12_22}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=0_radius=4_split=0_time=12_4}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=0_radius=4_split=0_time=12_29}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=0_radius=4_split=0_time=12_37}.png}
-% \\
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=1000_radius=4_split=0_time=12_3}.png}
-%   \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=1000_radius=4_split=0_time=12_4}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=1000_radius=4_split=0_time=12_8}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=1000_radius=4_split=0_time=12_29}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_alpha=auto_gamma=1000_radius=4_split=0_time=12_36}.png}
+\end{overlayarea}
 
-% \\
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_CanICA_26}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_CanICA_9}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_CanICA_31}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_CanICA_28}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_CanICA_23}.png}
-% \\
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_tCanICA_26}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_tCanICA_9}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_tCanICA_31}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_tCanICA_28}.png}
-% \includegraphics[width=0.2\linewidth]{{figures/components_LANGUAGE_nc=40_tCanICA_23}.png}
-
-% \mydot Each column represents an atom of the estimated dictionary
-%% , where atoms from
-%%   the different models (the rows of the plots) have been matched via a Hungarian algorithm. Here, we only show a limited number of the most ``intepretable'' atoms.
-
-\mydot Our method (Smooth-SODL) produces \emph{the coolest brain maps!}
-%% We see that our proposed approach produces more structured dictionaries: the atoms are well-segmented piece-wise smooth and compact, making up blobs, as opposed to scattered patterns of activation.
-
-% \mydot  Maps corresponding to hard-thresholded CanICA
-% \mycite{Varoquaux 2010} components have also been included, and have been called tCanICA.
-% In contrast, the maps from vanilla \mycite{Mairal 2010} and our proposed method were not been thresholded.
 \end{frame}
 
 \begin{frame}
@@ -922,6 +812,98 @@
 \end{frame}
 
 
+\subsection{Extension: proximal online updates for dictionary-learning}
+\begin{frame}
+  \frametitle{Ongoing work: proximal online updates }
+  \vspace{-2em}
+\begin{table}[H]
+  \begin{tabular}{p{3.cm}|c|p{13cm}}\hline
+    \emph{penalty $g$} & \emph{$\B{p} = \prox_{\gamma g}(\B{z})$} & \emph{comments}\\\hline
+    L2 ball constraint & $p_v = \B{z}_v\frac{\gamma}{\max(\gamma,\|\B{z}\|_2)}$ & \mycite{Mairal 2010}\\ \hline
+%    nonneg. constraint & $p_v = (\B{z}_v)_+$ & used in NMF\\ \hline
+    convex constraint & $\B{p} = \proj_{\mathcal K}(\B{z})$ & interesting for simple $\mathcal K$\\ \hline
+    L1 penalty & $p_v = z_v\left(1 - \frac{\alpha}{|z_v|}\right)_+$ & soft-thresholding \\\hline
+    Group L2/L1 & $\B{p}_v = \B{z}_v\left(1 - \frac{\gamma}{\|\B{z}_v\|_2}\right)_+$ & $i$ is a group of features\\\hline
+    Social sparsity \newline \mycite{Kowalski '09} & $p_v = z_v\left(1 - \frac{\gamma}{\|\boldsymbol{\omega}_v * \B{z}\|_2}\right)_+$
+                                                    & feature $i$ survives if avg. \newline energy in neigh. is high\\\hline
+    % Social sparsity & $p_v = z_v\left(1 - \frac{\gamma}{\left(\sum_{l \in \mathcal N(i)}(\omega^{l}_{i})^2z_{l}^2\right)^{1/2}}\right)_+$
+    %                                                 & denominator is just a \newline
+    %                                                 convolution\\\hline
+%    etc. & etc. & etc.\\\hline
+  \end{tabular}
+\end{table}
+
+\vspace{-1.5em}
+\begin{overlayarea}{\textwidth}{\textheight}
+\begin{columns}
+  \column{.35\linewidth}
+  \only<2->{
+    \vspace{3.5em}
+    \includegraphics[width=.8\linewidth]{social.png}
+  }
+
+\vspace{-4em}  
+\column{.65\linewidth}
+\only<3->{
+  \emph{Zoom on social sparsity }\mycite{Kowalski '09}
+
+  \mydot $\|\boldsymbol{\omega}_v * \B{z}\|_2^2 := \sum_{l \in \mathcal N(i)}\omega^{l}_{i}z_{l}^2 \ge 0$%, a convolution with weights $\omega_v^1, \ldots,\omega_v^p \ge 0$,
+%  where $\sum_{i}\omega_v^l = 1$, $\forall l \in [\![p]\!]$
+
+  \bigskip
+  
+  \mydot Imposes \emph{sparsity} and \emph{smoothness}!
+  }
+\end{columns}
+\end{overlayarea}
+\end{frame}
+
+\begin{frame}
+  \frametitle{{Ongoing work: proximal online updates }}
+  % \mydot Our proposed model can an be extended to more general structured penalties of the form \emph{$\Omega(\B{D}) := \sum_{j=1}^kg_j(\B{d}^j)$}. Viz,
+  \mydot \emph{N.B.:}  Ongoing work
+  
+  \begin{overprint}
+    \onslide<1>
+    \begin{eqnarray*}
+      \begin{split}
+        &\min_{\B{D} \in \mathbb R^{p \times k}}\frac{1}{n}\sum_{t=1}^n\left(\min_{\B{c}_t \in \mathbb R^{k}}\frac{1}{2} \|\B{x}_t-\B{D}\B{c}_t\|_2^2 +  \alpha\|\B{c}_t\|_2^2\right) + \gamma\textcolor{red}{\sum_{j=1}^k\Omega_{\text{Lap}}(\B{d}^j)}.\\
+    &\textcolor{red}{\text{subject to } \B{d}^1,\ldots,\B{d}^k \in \mathcal K}
+  \end{split}
+    \end{eqnarray*}
+\onslide<2->
+\begin{eqnarray*}
+  \begin{split}
+&\min_{\B{D} \in \mathbb R^{p \times k}}\frac{1}{n}\sum_{t=1}^n\left(\min_{\B{c}_t \in \mathbb R^{k}}\frac{1}{2} \|\B{x}_t-\B{D}\B{c}_t\|_2^2 +  \alpha\|\B{c}_t\|_2^2\right)
+     + \gamma\textcolor{green}{\sum_{j=1}^kg_j(\B{d}^j)}.
+   \end{split}
+\end{eqnarray*}
+\end{overprint}
+
+% \mydot Here, the \emph{$g_j$}'s are \textit{proximable} (e.g group-Lasso, social sparsity)
+% \bigskip
+\uncover<3->{
+\textbf{\textcolor{orange}{The proximal online BCD updates:}}\\
+\begin{equation*}
+  \begin{split}
+    \vspace*{-1em}
+    \rlap{\smash{\includegraphics[width=2em]{loop}}}%      
+    \quad\quad\B{d}^j \leftarrow \prox_{\gamma a_{j,j}^{-1}g_j}(\B{z}^{-j}),\;j \leftarrow j + 1 \text{ (go to next atom)}
+  \end{split}
+  \end{equation*}
+\mydot $\B{z}^{-j} := a_{j,j}^{-1}\B{r}^j$ and $\B{R} := \left(\B{b}^j-\sum\nolimits_{l \ne j}a_{j,l}\B{d}^l\right) = \B{B}- \B{DA} + \B{d}^j \circ \B{a}^j $.
+}
+
+\uncover<4->
+{
+  \mydot \emph{Bonus:} It suffices to specify the $g_j$'s only via their prox!
+\begin{itemize}
+\item E.g Social sparsity! \mycite{Kowalski '09}
+\end{itemize}
+}
+
+\end{frame}
+
 \section{Predicting task activation from resting-state data}
 \begin{frame}
   \frametitle{Can we infer these cognitive maps from resting-state data ?}
@@ -950,116 +932,83 @@
 
 \end{frame}
 
-subsection{Deep semi-supervised ML}
+\subsection{Deep semi-supervised ML}
 \begin{frame}
   \frametitle{Proposal: Deep semi-supervised voxel encoding}
-
-  \includegraphics[width=1.\linewidth]{gen_model.jpg}
+  \includegraphics[width=1.\linewidth]{gen_model.png}
   
- \mydot $\B{Y} \in \mathbb R^{p \times C}$: (GLM) maps of brain activity to $C$ different specific cognitive task contrasts
+  \mydot $\B{Y} \in \mathbb R^{p \times C}$: subject-specific GLM maps of brain activity
+  % for $C$ different % specific cognitive
+%   task contrasts
 
- \mydot $\B{X} \in \mathbb R^{p \times T}$: resting-state data % (subjects lying in the scanner focusing on nothing)
-    
-  \emph{\textbf{Goal:}}
+ \mydot $\B{X} \in \mathbb R^{p \times T}$: resting-state fMRI data % (subjects lying in the scanner focusing on nothing)
 
-  \quad \mydot Develop model for predicting $\B{Y}$ from $\B{X}$.
+ 
+%   \emph{\textbf{Goal:}} Develop model for predicting $\B{Y}$ from $\B{X}$.
 
-\uncover<2->{  
-  \emph{\textbf{Strategy:}}
+% \uncover<2->{  
+%   \emph{\textbf{Strategy:}}
 
-  \quad \mydot \emph{Learn unsupervised voxel encoding} $\mathbb R^T \ni \B{x} \mapsto  \phi(\B{x}) \in \mathbb R^k$.
+%   \quad \mydot \emph{Learn unsupervised voxel encoding} $\mathbb R^T \ni \B{x} \mapsto  \phi(\B{x}) \in \mathbb R^k$.
   
-  \quad\quad \mydot DL (dictionary-learning) = shared-encoder layer
+%   \quad\quad \mydot DL (dictionary-learning) = shared-encoder layer
   
-  \quad \mydot Plug the output into a \emph{linear regressor}: $\mathbb R^C \ni \B{y} \approx \phi(\B{x})^T\B{W}$.
-  }
+%   \quad \mydot Plug the output into a \emph{linear regressor}: $\mathbb R^C \ni \B{y} \approx \phi(\B{x})^T\B{W}$.
+%   }
 \end{frame}
 
 
-\subsection{Tables}
-\begin{frame}\frametitle{Tables}
-\begin{tabular}{|c|c|c|}
-\hline
-\textbf{Date} & \textbf{Instructor} & \textbf{Title} \\
-\hline
-WS 04/05 & Sascha Frank & First steps with  \LaTeX  \\
-\hline
-SS 05 & Sascha Frank & \LaTeX \ Course serial \\
-\hline
-\end{tabular}
-\end{frame}
+\begin{frame}
+  \frametitle{Deep semi-supervised ML: learned features}
 
+  \begin{overlayarea}{\textwidth}{\textheight}    
+    \only<1->{
+      \includegraphics[width=0.32\linewidth]{figures/RH.png}
+    }
+    \only<2->{
+      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_16}
+    }
+    \only<3->{
+      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_08}
+      }
+      % \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_09}
+    \only<4->{
+      \includegraphics[width=0.32\linewidth]{figures/STORY-MATH.png}
+    }
+    \only<5->{
+      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_03}
+    }
+    \only<6->{
+      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_12}
+      }
+      % \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_15}
 
-\begin{frame}\frametitle{Tables with pause}
-\begin{tabular}{c c c}
-A & B & C \\ 
-\pause 
-1 & 2 & 3 \\  
-\pause 
-A & B & C \\ 
-\end{tabular} 
+      \bigskip
+\only<7->{    
+  \mydot Learned the a presentation of task activity in resting-state space!
+
+  \bigskip
+  
+  \mydot This is ongoing application of models developed in previous sections!
+
+  }      
+    \end{overlayarea}
+
 \end{frame}
 
 \section{Concluding remarks}
-\subsection{blocs}
-\begin{frame}\frametitle{blocs}
+\begin{frame}\Large
+  \frametitle{Concluding remarks}
+  This PhD has realized:
+  
+  \mydot Encoding models for inter-subject variability
 
-\begin{block}{title of the bloc}
-bloc text
-\end{block}
+  \bigskip
+  
+  \mydot New and improved models for multi-variate decoding
 
-\begin{exampleblock}{title of the bloc}
-bloc text
-\end{exampleblock}
+  \bigskip
 
-
-\begin{alertblock}{title of the bloc}
-bloc text
-\end{alertblock}
+  \mydot ...
 \end{frame}
-
-\subsection{Pictures} 
-\begin{frame}\frametitle{pictures in latex beamer class}
-  % \begin{figure}
-  \centering
-\includegraphics[scale=.32]{howbrainworks0} 
-% \caption{show an example picture}
-% \end{figure}
-\end{frame}
-
-\subsection{joining picture and lists} 
-
-\begin{frame}
-\frametitle{pictures and lists in beamer class}
-\begin{columns}
-\begin{column}{5cm}
-\begin{itemize}
-\item<1-> subject 1
-\item<3-> subject 2
-\item<5-> subject 3
-\end{itemize}
-\vspace{3cm} 
-\end{column}
-\begin{column}{5cm}
-\begin{overprint}
-\includegraphics<2>{PIC1}
-\includegraphics<4>{PIC2}
-\includegraphics<6>{PIC3}
-\end{overprint}
-\end{column}
-\end{columns}
-\end{frame}
-
-
-\subsection{pictures which need more space} 
-\begin{frame}[plain]
-\frametitle{plain, or a way to get more space}
-\begin{figure}
-\includegraphics[scale=0.5]{PIC1} 
-\caption{show an example picture}
-\end{figure}
-\end{frame}
-
-
-
 \end{document}
