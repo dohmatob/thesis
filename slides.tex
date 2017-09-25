@@ -26,7 +26,7 @@
 \DeclareMathOperator{\prox}{prox}
 \DeclareMathOperator{\proj}{proj}
 
-\newcommand{\mycite}[1]{\textcolor{myblue}{[#1]}}
+\newcommand{\mycite}[1]{\textcolor{myblue}{\text{ [#1]}}}
 
 %% put page number in slide footer
 \newcommand*\oldmacro{}%
@@ -56,13 +56,13 @@
 \setlength\abovecaptionskip{-2pt}
 
 \title{Modelling inter-subject functional variability}  
-\author{\emph{Elvis Dohmatob}\\
-  % Phd defense \\
-  (Supervised by B. Thirion and G. Varoquaux)}
+\author[\emph{Elvis Dohmatob}]{\emph{Elvis Dohmatob}\\
+  (PhD supervised by B. Thirion and G. Varoquaux)}
 
 % \logo{
 %}
 
+\institute{Parietal Team, INRIA}
 \date{\today} 
 
 
@@ -98,7 +98,7 @@
 \end{frame} 
 
 \section{Introduction} 
-\subsection{Brain and functional networks}
+\subsection{Regions and functional networks}
 \begin{frame}\frametitle{Brain function regions and networks}
     \centering
 \includegraphics[scale=.3]{howbrainworks0} 
@@ -174,44 +174,16 @@
 % \mydot There are as many features as voxels (up to \textcolor{red}{$10^6$}).
 \end{frame}
 
-\begin{frame}\frametitle{Masking}
-  \begin{columns}
-    \column{.65\linewidth}
-    \includegraphics[width=1\linewidth]{masking.jpg}
-    
-    \photocredit{Alexandre Abraham}
-    \column{.5\linewidth}
-    \mydot time or sequence of subjects
-
-    \bigskip
-   
-    \mydot 3D image $\iff$ vector in $\mathbb R^p$% (via mask).
-
-    \bigskip
-    
-    \mydot Masking destroys spatial struct.
-      \vspace{-1.5em}
-      \begin{itemize}
-      \item How to keep it ?
-      \end{itemize}
-
-    \bigskip
-      
-    \mydot It is all about matrices
-  \end{columns}
-\end{frame}
-
-
 \begin{frame}\frametitle{What we mean by ``structured''}
   \begin{overlayarea}{\textwidth}{\textheight}
     \only<1->{
 \begin{columns}
   \begin{column}{7.5cm}
-  \emph{Definition:}
-  \begin{itemize}
-  \item Localized activation patterns -- \emph{sparsity}
-  \item Clusters of active voxels -- \emph{smoothness}
-  \end{itemize}
+    \emph{Definition:}
+    
+  \mydot Localized activation patterns -- \emph{sparsity}
+  
+  \mydot Clusters of active voxels -- \emph{smoothness}
 \end{column}
 \begin{column}{5cm}
     \includegraphics[width=.6\linewidth]{structure.png}
@@ -219,10 +191,13 @@
 \end{columns}
 }
 
-\bigskip
-\bigskip
+\medskip
+\hrule
+\medskip
 \only<2->{
-  \mydot such models are more \emph{intepretable} (i.e small number of \emph{regions})
+  
+  \hspace{-2.3em}\mydot such models are more \emph{intepretable} (i.e small number of \emph{regions})
+
   }
 \end{overlayarea}
 \end{frame}
@@ -241,7 +216,7 @@
       \underset{\B{w}}{\includegraphics[width=.2\linewidth, valign=c]{w.png}}\;\underset{\B{x}_i}{\includegraphics[width=.2\linewidth, valign=c]{3Dfmri.png}}\right)      
     $
 }
-%\hspace{-2em}
+% \hspace{-2em}
 \column{.47\linewidth}
 \uncover<2->{
   
@@ -275,7 +250,7 @@
   }
   \uncover<4->{
 
-  \vspace{-.8em}  
+  \vspace{-1em}  
     \mydot \emph{$\ell({y}_i,f(\B{x}_i^T\B{w}))$} $=
     \begin{cases}\frac{1}{2}(y_i-\langle \B{w}, \B{x}_i\rangle)^2, &\mbox{ \text{ in regression}},\\
       \log(1+\exp(-{y}_i\langle \B{w}, \B{x}_i\rangle)), &\mbox{ \text{ in classif. (OvR)}}\\
@@ -317,31 +292,32 @@
 
     \uncover<3->{
       \vspace{-.5em}
-    \begin{equation*}
-      \begin{split}
-        \mathcal P(\B{w}) = \begin{cases}
+      \[
+%      \begin{split}
+        \hspace{-1em}\mathcal P(\B{w}) = \begin{cases}
           % \rho\|\B{w}\|_1 + \frac{1}{2}(1-\rho)\|\nabla \B{w}\|_{\text{Fro}}^2 =
-          \sum_{j \in [\![p]\!]}\rho|\B{w}_j| + \frac{1}{2}(1-\rho)\|(\nabla \B{w})_j\|_2^2, &\mbox{ for GraphNet / S-Lasso
+          \sum_{j \in [\![p]\!]}\rho|\B{w}_j| + \frac{1}{2}(1-\rho)\|(\nabla \B{w})_j\|_2^2, &\mbox{ \emph{GraphNet},
             % ~\citep{grosenick2013,hebiri2011}
           }\\
     % \|\nabla_\rho \B{w}\|_{1+2,1} =
     % \rho\|\B{w}\|_1 + \|\nabla \B{w}\|_{2,1} =
-    % \sum_{j  \in [\![p]\!]}\rho|\B{w}_j| + (1-\rho)\|(\nabla \B{w})_j\|_2, &\mbox{ for isotropic TV-$\ell_1$
+    \sum_{j  \in [\![p]\!]}\rho|\B{w}_j| + (1-\rho)\|(\nabla \B{w})_j\|_2, &\mbox{ \emph{isotropic TV-L1},
     % ~\citep{baldassarre2012,gramfort2013}
-  % }\\
+    }\\
     % \|\nabla_\rho \B{w}\|_{1,1} =
     % \rho\|\B{w}\|_1 + (1-\rho)\|\nabla \B{w}\|_{1,1} =
-    \sum_{j  \in [\![p]\!]}\rho|\B{w}_j| + (1-\rho)\|(\nabla \B{w})_j\|_1, &\mbox{ for anisotropic TV-$\ell_1$
-    }\\
-    % \|\nabla_\rho \B{w}\|_{2,1} =
-    \sum_{j  \in [\![p]\!]}\|(\nabla_\rho \B{w})_j\|_2, &\mbox{ for Sparse Variation
+    % \sum_{j  \in [\![p]\!]}\rho|\B{w}_j| + (1-\rho)\|(\nabla \B{w})_j\|_1, &\mbox{ anisotropic TV-$\ell_1$
+  % }\\
+  %   \|\nabla_\rho \B{w}\|_{2,1} =
+    \sum_{j \in [\![p]\!]}(\rho^2|\B{w}_j|^2 + (1-\rho)^2\|(\nabla \B{w})_j\|_2^2)^{1/2},
+    % \sum_{j  \in [\![p]\!]}\|(\nabla_\rho \B{w})_j\|_2,
+    &\mbox{ \emph{Sparse Variation},
       %~\citep{eickenberg2015total}
     }
     \\\vdots
     \end{cases}
-  \end{split}
-  \label{eq:penalty}
-\end{equation*}
+ % \end{split}
+\]    
 }
 
 \vspace{-1em}
@@ -467,7 +443,7 @@
   \bigskip
   \bigskip
   \centering
-  we propose a combination of algorithmic and implementation insights which make this models usable in practice
+  We propose a combination of algorithmic and implementation insights which make this models usable in practice
 
   
 \end{frame}
@@ -672,16 +648,16 @@
 \section{Modelling inter-subject variability via dictionary-learning}
 \begin{frame}
   \frametitle{Learn latent model for inter-subject variability}
-  
-    \mydot \emph{Goal:} Summarize inter-subject variability into a latent dimensions
+  % \vspace{-2em}
+  \mydot \emph{Goal:} Learn a latent model of inter-subject functional variability
     \begin{equation*}
       \begin{split}
-      \B{X} &= \B{D} \times \B{C}\\
-      {\includegraphics[width=.45\linewidth, valign=c]{acti.pdf}} &= {\includegraphics[width=.25\linewidth, valign=c]{dico.pdf}^T} \times \;{\includegraphics[width=.28\linewidth, valign=c]{tab.pdf}}
+        % \B{X} &= \B{D} \times \B{C}\\
+        \underset{\text{data }(\B{X})}{\includegraphics[width=.26\linewidth, valign=c]{acti.pdf}} &=  \underset{\text{loadings }(\B{C})}{\includegraphics[width=.235\linewidth, valign=c]{codes.pdf}} \times \;\underset{\text{dictionary }(\B{D})}{\includegraphics[width=.22\linewidth, valign=c]{dico.pdf}}
       \end{split}
     \end{equation*}
-
-    \mydot $\mathbb R^p \ni \B{x}_s \overset{\B{D}}{\longrightarrow} \B{c}_s \in \mathbb R^k$, with $k \ll p$
+    \mydot Each \emph{cognitive map} $\B{x}_i$ with $p$ voxels gets \emph{encoded} over a \emph{dictionary} $\B{D}$ as $k$ \emph{loading coefficients} $\B{c}_i$,
+    with $k \ll p$
 \end{frame}  
 
 
@@ -712,16 +688,16 @@
 \begin{frame}
   \frametitle{Introducing the proposed model \textcolor{orange}{[Dohmatob '16 (NIPS)]}}
   \vspace{-2em}
-    \begin{equation*}
-      \begin{split}
-      {\includegraphics[width=.45\linewidth, valign=c]{acti.pdf}} &= {\includegraphics[width=.25\linewidth, valign=c]{dico.pdf}^T} \times \;{\includegraphics[width=.28\linewidth, valign=c]{tab.pdf}}
+  \begin{equation*}
+    \begin{split}
+      \underset{\B{X}}{\includegraphics[width=.26\linewidth, valign=c]{acti.pdf}} &=  \underset{\B{C}}{\includegraphics[width=.235\linewidth, valign=c]{codes.pdf}} \times \;\underset{\B{D}}{\includegraphics[width=.22\linewidth, valign=c]{dico.pdf}}
       \end{split}
-    \end{equation*}
-\vspace{-1.5em}
+  \end{equation*}
+\vspace{-1em}
 \begin{eqnarray*}
   \begin{split}
-    &\min_{\B{D} \in \mathbb R^{p \times k}}\left(\lim_{n \rightarrow \infty}\frac{1}{n}\sum_{t=1}^n\min_{\B{c}_t \in \mathbb R^{k}}\frac{1}{2} \|\B{x}_t-\B{D}\B{c}_t\|_2^2 +  \frac{1}{2}\alpha\|\B{c}_t\|_2^2\right) + \textcolor{orange}{\gamma\sum_{j=1}^k\Omega_{\text{Lap}}(\B{d}^j)},\\
-    &\textcolor{orange}{\text{subject to } \B{d}^1,\ldots,\B{d}^k \in \mathcal K}
+    &\min_{\B{D} \in \mathbb R^{p \times k}}\left(\lim_{n \rightarrow \infty}\frac{1}{n}\sum_{t=1}^n\min_{\B{c}_t \in \mathbb R^{k}}\frac{1}{2} \|\B{x}_t-\B{D}\B{c}_t\|_2^2 +  \frac{1}{2}\alpha\|\B{c}_t\|_2^2\right) \uncover<3->{+ \textcolor{orange}{\gamma\sum_{j=1}^k\Omega_{\text{Lap}}(\B{d}^j)}}\\
+    &\uncover<2->{\textcolor{orange}{\text{subject to } \B{d}^1,\ldots,\B{d}^k \in \mathcal K}\mycite{Mairal '09'}}\uncover<3->{\quad\quad\quad\quad\quad\quad\quad\mycite{Dohmatob '16'}}
   \end{split}
 \end{eqnarray*}
 
@@ -746,7 +722,7 @@
 \item \emph{Draw a sample} 3D brain image (or mini-batch) $\B{x}_t \in \mathbb R^p$
 }
 \uncover<3->{
-\item \emph{Compute code} (i.e representation w.r.t current dictionary $\B{D}$)
+\item \emph{Compute loadings} (i.e representation w.r.t current dict. $\B{D}$)
   \[
     \B{c}_t \leftarrow \argmin_{\B{u} \in \mathbb R^k}\frac{1}{2}\|\B{x}_t -
     \B{D} \B{u}\|_2^2 + \frac{1}{2}\alpha\|\B{u}\|_2^2.
@@ -840,26 +816,31 @@
 
 
 \begin{frame}
-  \frametitle{Experimental results: quantitative}
+  \frametitle{What's happening}
 
-  \mydot HCP Story vs Math contrast of language task \mycite{van Essen '13}
+%   \mydot HCP Story vs Math contrast of language task \mycite{van Essen '13}
   
   \[
-    \underset{\text{\textbf{Explained variance} on test data}}{\includegraphics[width=.36\linewidth]{figures/ev_scores_LANGUAGE.pdf}}
+    % \underset{\text{\textbf{Explained variance} on test data}}
+    {\includegraphics[width=.4\linewidth]{figures/ev_scores_LANGUAGE.pdf}}
 %  \hspace{.05cm}
-  \underset{\text{\textbf{Predicting  behavioral}  from dictionary loadings}}{\includegraphics[width=.7\linewidth]{figures/behavioral_scores_LANGUAGE.pdf}}
+  % \underset{\text{\textbf{Predicting  behavioral}  from dictionary loadings}}{\includegraphics[width=.7\linewidth]{figures/behavioral_scores_LANGUAGE.pdf}}
   \]
 
   % \mydot \textbf{Left:} Mean explained variance of dictionary atoms
   
   % \mydot \textbf{Right:} Predicting  behavioral  from language activation.
   
-  \mydot Thick bars $\implies$ scores on \emph{train}; faint bars $\implies$ scores on \emph{test}
+%  \mydot Thick bars $\implies$ scores on \emph{train}; faint bars $\implies$ scores on \emph{test}
 
 
   % \bigskip
   % %\textbf{N.B.:} Bold bars represent performance on \textbf{test} set while faint bars in the 
   %  % background represent performance on \textbf{train} set.
+  \mydot Unregularized models \emph{overfit}
+
+  \mydot Models thresholded post-training \emph{underfit}
+ 
 \end{frame}
 
 \begin{frame}
@@ -1146,5 +1127,31 @@
 \end{frame}
 
 
+\begin{frame}\frametitle{Masking}
+  \begin{columns}
+    \column{.65\linewidth}
+    \includegraphics[width=1\linewidth]{masking.jpg}
+    
+    \photocredit{Alexandre Abraham}
+    \column{.5\linewidth}
+    \mydot time or sequence of subjects
+
+    \bigskip
+   
+    \mydot 3D image $\iff$ vector in $\mathbb R^p$% (via mask).
+
+    \bigskip
+    
+    \mydot Masking destroys spatial struct.
+      \vspace{-1.5em}
+      \begin{itemize}
+      \item How to keep it ?
+      \end{itemize}
+
+    \bigskip
+      
+    \mydot It is all about matrices
+  \end{columns}
+\end{frame}
 
 \end{document}

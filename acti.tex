@@ -3,8 +3,9 @@
 \usepackage[export]{adjustbox}
 
 \begin{document}
-$
-\underset{\text{subject 1}}{\includegraphics[width=0.2\linewidth, valign=c]{zmap_0.png}}
-\underset{\text{subject 2}}{\includegraphics[width=0.2\linewidth, valign=c]{zmap_1.png}} \boldsymbol{\ldots}
-$
+\bordermatrix{\text{subj }1 & \includegraphics[width=0.2\linewidth, valign=c]{zmap_0.png} \cr
+  \text{subj }2 & \includegraphics[width=0.2\linewidth, valign=c]{zmap_1.png}
+  \cr
+  \vdots &\vdots \cr
+}
 \end{document}
