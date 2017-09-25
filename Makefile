@@ -33,10 +33,13 @@ tables:
 	mv cv_grid.pdf figures
 
 clean:
-	rm -f *.aux *.log *.glo *.toc *.dvi index.pdf *.out
+	rm -f *.aux *.log *.glo *.toc *.dvi *.out
 	rm -f */*.aux */*.log */*.glo */*.out
 	rm -rf */auto chapter_*/chapter_*.pdf
 
 slides: clean
+	pdflatex codes
+	pdflatex dico
+	pdflatex acti
 	pdflatex slides
 	pdflatex slides

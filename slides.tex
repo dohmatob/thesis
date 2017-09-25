@@ -135,11 +135,11 @@
 
   \smallskip
   
-  \mydot \emph{Forward inference} detects voxels responding to an experimental condition
+  \mydot \emph{Forward inference} \mycite{Friston '95'} detects voxels responding to an experimental condition
 
   \uncover<2->{
-    \mydot \emph{Reverse inference / brain-decoding} predicts the experimental condition
-    that brain signals
+    \mydot \emph{Reverse inference / brain-decoding} \mycite{Dehaene 98; Cox 03} predicts the experimental condition
+    from brain signals
   }
 
   \uncover<3->{
@@ -182,6 +182,8 @@
     \emph{Definition:}
     
   \mydot Localized activation patterns -- \emph{sparsity}
+
+  \medskip
   
   \mydot Clusters of active voxels -- \emph{smoothness}
 \end{column}
@@ -196,8 +198,15 @@
 \medskip
 \only<2->{
   
-  \hspace{-2.3em}\mydot such models are more \emph{intepretable} (i.e small number of \emph{regions})
+  \hspace{-2.3em}\mydot Such a model is much more \emph{intepretable} (i.e small number of \emph{regions}) than classical methods like SVM, Ridge regression, Lasso
 
+  \medskip
+  
+  \hspace{-2.3em}\mydot Performs \emph{model-estimation} and \emph{feature-selection} jointly
+
+  \medskip
+
+  \hspace{-2.3em}\mydot Fights the \emph{curse-of-dimensionality}, via dimensionality reduction.
   }
 \end{overlayarea}
 \end{frame}
@@ -443,8 +452,10 @@
   \bigskip
   \bigskip
   \centering
-  We propose a combination of algorithmic and implementation insights which make this models usable in practice
-
+  \begin{beamerboxesrounded}{\emph{Faster, better, stronger!}}
+    We propose a combination of algorithmic and implementation improvements which make these models usable in practice
+    out-of-the-box
+  \end{beamerboxesrounded}
   
 \end{frame}
 
@@ -458,7 +469,8 @@
     \only<1>{
       \begin{figure}
         \includegraphics[width=1.05\linewidth]{figures/solvers_1.png}
-        \caption{Classification: Visual recognition task \mycite{Haxby '01}}
+        \caption{Classification: Visual recognition task \mycite{Haxby '01}
+        }
       \end{figure}
     }
     \only<2->{
@@ -536,7 +548,7 @@
           
       }
       \only<2->{
-        \mydot Visual object recognition \mycite{Haxby 2001}
+        \mydot Visual object recognition % \mycite{Haxby 2001}
         
         \begin{figure}
           \includegraphics[width=.8\linewidth]{figures/haxby_sp.png}
@@ -607,8 +619,9 @@
         \end{figure}
       }
       \only<2->{
+        \mydot Visual object recognition % \mycite{Haxby 2001}
         \begin{figure}
-          \includegraphics[width=1\linewidth]{figures/haxby_es.png}
+          \includegraphics[width=.9\linewidth]{figures/haxby_es.png}
         \end{figure}
       }      
     \end{overlayarea}
@@ -646,6 +659,7 @@
 % \end{frame}
 
 \section{Modelling inter-subject variability via dictionary-learning}
+\subsection{Preliminaries}
 \begin{frame}
   \frametitle{Learn latent model for inter-subject variability}
   % \vspace{-2em}
@@ -713,6 +727,15 @@
 
 
 \subsection{Algorithms}
+\begin{frame}\frametitle{Reminder on coordinate-descent (CD)}
+  % \vspace{-1em}
+  \mydot Optimize w.r.t  a variable, and then w.r.t to another, and so on ...
+  \centering
+\includegraphics[width=0.5\linewidth]{cd.png}
+  
+
+\end{frame}
+
 \begin{frame}
   \frametitle{The proposed algorithm}
   \rlap{\smash{\includegraphics[width=1.5em]{loop}}}%
@@ -870,149 +893,181 @@
 \end{overlayarea}
 \end{frame}
 
-\begin{frame}
-  \frametitle{{Wrap-up}}%\Large
-  % \mydot Encoding model for \emph{inter-subject functional variability}
+% \begin{frame}
+%   \frametitle{{Wrap-up}}%\Large
+%   % \mydot Encoding model for \emph{inter-subject functional variability}
+
+%   % \bigskip
+  
+%   \mydot Learned latent space captures \emph{inter-subject variability}
+
+%   \bigskip
+
+%   \mydot Model encompasses \emph{known neuro-biological priors} about brain activity
+%   \begin{itemize}
+%     \item \emph{localized blobs}
+%   \end{itemize}
+
+%   \bigskip
+
+%   \mydot \emph{Scales} to small, medium, and large-data regimes alike
+  
+% % \mydot To extract structured functionally discriminating patterns
+% % from \emph{massive brain data} (i.e data-driven atlases), we have extended
+% % the \emph{online dictionary-learning} \mycite{Mairal 2010}, to learn \emph{structured regions}
+% %  representative of brain organization.
+% %  \bigskip
+ 
+% % \mydot Experiments show that the proposed model %--Smooth-SODL model--
+% % extracts structured and \emph{denoised dictionaries} that are more \emph{intepretable} and better
+% % capture \emph{inter-subject variability} in small medium, and large-scale regimes alike,
+% % compared to state-of-the-art models.
+% \end{frame}
+
+
+\section{Concluding remarks}
+\begin{frame}% \Large
+  \frametitle{Concluding remarks}
+  \mydot We have proposed models for \emph{inter-subject functional variability}
+
+  \medskip
+
+  \uncover<2->{
+  \mydot  Some of our notable contributions (not all presented in this defense are):
+
+  \medskip
+  
+  \begin{beamerboxesrounded}{\emph{Structured priors for brain modelling}}
+    \mydot ``Regions'' emerged as the right scale at which to work
+    \begin{itemize}
+    \item A more stable representation of activity patterns across subjects, etc.
+    \end{itemize}
+  }
+  \uncover<3->{
+    \mydot We proposed enhanced models and algorithms
+    for \emph{structured penalized multi-variate models} for brain decoding and region-extraction % (TV-L1, GraphNet, etc.)
+    \mycite{Dohmatob PRNI '14 / '15; ICASSP '15}, \mycite{Eickenberg '15; Varoquaux '15}, with a focus on practical usability
+  }
+  \end{beamerboxesrounded}
+
+  % This PhD has realized:
+  
+  % \mydot Encoding models for inter-subject variability
 
   % \bigskip
   
-  \mydot Learned latent space captures \emph{inter-subject variability}
+  % \mydot New and improved models for multi-variate decoding
 
-  \bigskip
+  % \bigskip
 
-  \mydot Model encompasses \emph{known neuro-biological priors} about brain activity
-  \begin{itemize}
-    \item \emph{localized blobs}
-  \end{itemize}
-
-  \bigskip
-
-  \mydot \emph{Scales} to small, medium, and large-data regimes alike
-  
-% \mydot To extract structured functionally discriminating patterns
-% from \emph{massive brain data} (i.e data-driven atlases), we have extended
-% the \emph{online dictionary-learning} \mycite{Mairal 2010}, to learn \emph{structured regions}
-%  representative of brain organization.
-%  \bigskip
- 
-% \mydot Experiments show that the proposed model %--Smooth-SODL model--
-% extracts structured and \emph{denoised dictionaries} that are more \emph{intepretable} and better
-% capture \emph{inter-subject variability} in small medium, and large-scale regimes alike,
-% compared to state-of-the-art models.
+  % \mydot ...
 \end{frame}
-
-
-\section{Predicting task activation from resting-state data}
-\begin{frame}
-  \frametitle{Can we infer these cognitive maps from resting-state data ?}
-  \vspace{-2.3em}
-  \begin{equation*}
-    \bordermatrix{&{\textcolor{orange}{\text{activity at rest }}} \cr
-      \B{X}_1 & \includegraphics[width=.25\linewidth, valign=c]{connectome.png}\cr
-      % \B{X}_2 & \includegraphics[width=.2\linewidth, valign=c]{connectome.png}\cr
-      \vdots &\vdots \cr
-      \B{X}_N & \includegraphics[width=.25\linewidth, valign=c]{connectome.png}
-      }
-      \underset{\textbf{ML model}}{\includegraphics[width=.2\linewidth, valign=c]{arrow.png}}\;
-    \bordermatrix{&{\textcolor{orange}{\text{cognitive maps}}} \cr
-      \B{Y}_1 & \includegraphics[width=.25\linewidth, valign=c]{{cogmaps_diff}.png}
-      % \hspace{-7em}\includegraphics[width=.2\linewidth, valign=c]{{cogmaps_diff}.png}
-      \cr
-      % \B{Y}_2 & \includegraphics[width=.2\linewidth, valign=c]{{cogmaps_diff}.png}\cr
-      \vdots &\vdots \cr
-      \B{Y}_N & \includegraphics[width=.25\linewidth, valign=c]{{cogmaps_diff}.png}
-      }
-   \end{equation*}
-
-   \mydot $\B{X}_s$: resting-state functional connectivity graph for subject $s$
- 
-   \mydot $\B{Y}_s$: task-specific activation maps for subject $s$
-
-\end{frame}
-
-\subsection{Deep semi-supervised ML}
-\begin{frame}
-  \frametitle{Proposal: Deep semi-supervised voxel encoding}
-  \includegraphics[width=1.\linewidth]{gen_model.png}
-
-  \bigskip
-  
-  \mydot $\B{Y} \in \mathbb R^{p \times C}$: subject-specific GLM maps of brain activity
-  % for $C$ different % specific cognitive
-%   task contrasts
-
-  \bigskip
-  
- \mydot $\B{X} \in \mathbb R^{p \times T}$: resting-state fMRI data % (subjects lying in the scanner focusing on nothing)
-
- 
-%   \emph{\textbf{Goal:}} Develop model for predicting $\B{Y}$ from $\B{X}$.
-
-% \uncover<2->{  
-%   \emph{\textbf{Strategy:}}
-
-%   \quad \mydot \emph{Learn unsupervised voxel encoding} $\mathbb R^T \ni \B{x} \mapsto  \phi(\B{x}) \in \mathbb R^k$.
-  
-%   \quad\quad \mydot DL (dictionary-learning) = shared-encoder layer
-  
-%   \quad \mydot Plug the output into a \emph{linear regressor}: $\mathbb R^C \ni \B{y} \approx \phi(\B{x})^T\B{W}$.
-%   }
-\end{frame}
-
 
 \begin{frame}
-  \frametitle{Deep semi-supervised ML: learned features}
-
-  \begin{overlayarea}{\textwidth}{\textheight}    
-    \only<1->{
-      \includegraphics[width=0.32\linewidth]{figures/RH.png}
-    }
-    \only<2->{
-      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_16}
-    }
-    \only<3->{
-      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_08}
-      }
-      % \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_09}
-    \only<4->{
-      \includegraphics[width=0.32\linewidth]{figures/STORY-MATH.png}
-    }
-    \only<5->{
-      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_03}
-    }
-    \only<6->{
-      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_12}
-      }
-      % \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_15}
-
-      \bigskip
-\only<7->{    
-  \mydot Learned the a presentation of task activity in resting-state space!
-
-  \bigskip
-  
-  \mydot This is ongoing application of models developed in previous sections!
-
-  }      
-    \end{overlayarea}
-
-\end{frame}
-
-\section{Concluding remarks}
-\begin{frame}\Large
   \frametitle{Concluding remarks}
-  This PhD has realized:
-  
-  \mydot Encoding models for inter-subject variability
+  \begin{beamerboxesrounded}{\emph{Structured dictionary-learning}}
+    \mydot The notion of regions (via structured priors) was used to develop as the basis for a latent model
+    of inter-subject variability \mycite{Dohmatob NIPS '16}
 
-  \bigskip
-  
-  \mydot New and improved models for multi-variate decoding
-
-  \bigskip
-
-  \mydot ...
+  \end{beamerboxesrounded}
 \end{frame}
+    
+% \section{Predicting task activation from resting-state data}
+% \begin{frame}
+%   \frametitle{Can we infer these cognitive maps from resting-state data ?}
+%   \vspace{-2.3em}
+%   \begin{equation*}
+%     \bordermatrix{&{\textcolor{orange}{\text{activity at rest }}} \cr
+%       \B{X}_1 & \includegraphics[width=.25\linewidth, valign=c]{connectome.png}\cr
+%       % \B{X}_2 & \includegraphics[width=.2\linewidth, valign=c]{connectome.png}\cr
+%       \vdots &\vdots \cr
+%       \B{X}_N & \includegraphics[width=.25\linewidth, valign=c]{connectome.png}
+%       }
+%       \underset{\textbf{ML model}}{\includegraphics[width=.2\linewidth, valign=c]{arrow.png}}\;
+%     \bordermatrix{&{\textcolor{orange}{\text{cognitive maps}}} \cr
+%       \B{Y}_1 & \includegraphics[width=.25\linewidth, valign=c]{{cogmaps_diff}.png}
+%       % \hspace{-7em}\includegraphics[width=.2\linewidth, valign=c]{{cogmaps_diff}.png}
+%       \cr
+%       % \B{Y}_2 & \includegraphics[width=.2\linewidth, valign=c]{{cogmaps_diff}.png}\cr
+%       \vdots &\vdots \cr
+%       \B{Y}_N & \includegraphics[width=.25\linewidth, valign=c]{{cogmaps_diff}.png}
+%       }
+%    \end{equation*}
+
+%    \mydot $\B{X}_s$: resting-state functional connectivity graph for subject $s$
+ 
+%    \mydot $\B{Y}_s$: task-specific activation maps for subject $s$
+
+% \end{frame}
+
+% \subsection{Deep semi-supervised ML}
+% \begin{frame}
+%   \frametitle{Proposal: Deep semi-supervised voxel encoding}
+%   \includegraphics[width=1.\linewidth]{gen_model.png}
+
+%   \bigskip
+  
+%   \mydot $\B{Y} \in \mathbb R^{p \times C}$: subject-specific GLM maps of brain activity
+%   % for $C$ different % specific cognitive
+% %   task contrasts
+
+%   \bigskip
+  
+%  \mydot $\B{X} \in \mathbb R^{p \times T}$: resting-state fMRI data % (subjects lying in the scanner focusing on nothing)
+
+ 
+% %   \emph{\textbf{Goal:}} Develop model for predicting $\B{Y}$ from $\B{X}$.
+
+% % \uncover<2->{  
+% %   \emph{\textbf{Strategy:}}
+
+% %   \quad \mydot \emph{Learn unsupervised voxel encoding} $\mathbb R^T \ni \B{x} \mapsto  \phi(\B{x}) \in \mathbb R^k$.
+  
+% %   \quad\quad \mydot DL (dictionary-learning) = shared-encoder layer
+  
+% %   \quad \mydot Plug the output into a \emph{linear regressor}: $\mathbb R^C \ni \B{y} \approx \phi(\B{x})^T\B{W}$.
+% %   }
+% \end{frame}
+
+
+% \begin{frame}
+%   \frametitle{Deep semi-supervised ML: learned features}
+
+%   \begin{overlayarea}{\textwidth}{\textheight}    
+%     \only<1->{
+%       \includegraphics[width=0.32\linewidth]{figures/RH.png}
+%     }
+%     \only<2->{
+%       \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_16}
+%     }
+%     \only<3->{
+%       \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_08}
+%       }
+%       % \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_09}
+%     \only<4->{
+%       \includegraphics[width=0.32\linewidth]{figures/STORY-MATH.png}
+%     }
+%     \only<5->{
+%       \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_03}
+%     }
+%     \only<6->{
+%       \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_12}
+%       }
+%       % \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_15}
+
+%       \bigskip
+% \only<7->{    
+%   \mydot Learned the a presentation of task activity in resting-state space!
+
+%   \bigskip
+  
+%   \mydot This is ongoing application of models developed in previous sections!
+
+%   }      
+%     \end{overlayarea}
+
+% \end{frame}
+
 
 \section{Appendix}
 \begin{frame}
