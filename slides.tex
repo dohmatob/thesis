@@ -463,7 +463,7 @@
 
 \subsection{Algorithms}
 \begin{frame}
-  \frametitle{Structured penalties only work if well-optimized}
+  \frametitle{Penalties \leadto interpretable maps only if well-optimized}
   \uncover<1->{
     \includegraphics[width=.31\linewidth]{01.png}%
     \llap{\color{white}\raisebox{.15\linewidth}{\rlap{\sffamily
@@ -489,7 +489,7 @@
 \bigskip
 
 \uncover<5->{
-  \mydot But corresponding optimization problem is much \emph{harder}
+  \mydot Corresponding optim. problem is much \emph{harder} (than SVM, etc.)
   \begin{itemize}
     \item \emph{high-dimensional non-smooth ill-conditioned} problem
     \item Can't compute \emph{prox operator} analytically
@@ -516,8 +516,7 @@
   \bigskip
   \centering
   \begin{beamerboxesrounded}{\emph{Faster, better, stronger!}}
-    We propose a combination of algorithmic and implementation improvements which make these models usable in practice
-    out-of-the-box
+    We propose a combination of \emph{algorithmic} and \emph{implementation} improvements that make these models usable out-of-the-box
   \end{beamerboxesrounded}
   
 \end{frame}
@@ -526,30 +525,36 @@
   \frametitle{Looking for the ideal solver}
   % \vspace{-.5em}
   \mycite{Dohmatob '14, '15 (PRNI); Varoquaux '15 (Gretsi)}
+  \medskip
+
+  \mydot Solver speed sensitive to hyper-parameter
+
+  \medskip      
+\mydot Retained strategy is nested \textcolor{red}{FISTA} \mycite{Beck '09} algorithm
+  
   % \vspace{-.5em}
 
-  \begin{overlayarea}{\textwidth}{\textheight}
-    \only<1>{
-      \begin{figure}
-        \includegraphics[width=1.05\linewidth]{figures/solvers_1.png}
-        \caption{Classification: Visual recognition task \mycite{Haxby '01}
-        }
-      \end{figure}
-    }
-    \only<2->{
+  % \begin{overlayarea}{\textwidth}{\textheight}
+  %   \only<1>{
+  %     \begin{figure}
+  %       \includegraphics[width=1.05\linewidth]{figures/solvers_1.png}
+  %       \caption{Classification: Visual recognition task \mycite{Haxby '01}
+  %       }
+  %     \end{figure}
+  %   }
+  %   \only<2->{
       \begin{figure}
         \includegraphics[width=1.05\linewidth]{figures/solvers_2.png}
-        \caption{Mixed-gambles \mycite{Jimura '12}}
+        \caption{Benchmarks on ``mixed-gambles'' task \mycite{Jimura '12}}
       \end{figure}
-    }
+    % }
 
-    \bigskip
-    \only<3->{
-      \mydot Retained strategy is nested FISTA \mycite{Beck '09} algorithm.
-      }
-    
-  \end{overlayarea}
-
+    % \bigskip
+    % \only<3->{
+      % }
+      
+    % \end{overlayarea}
+  
 \end{frame}
 
 \begin{frame}\frametitle{More speed via univariate feature-screening}
@@ -697,7 +702,7 @@
         \mydot Solve on subset of features
 
         \bigskip 
-    \mydot Yields upto \emph{x10 speedup!}
+    \mydot Yields up to \emph{x10 speedup!}
 
     \bigskip
     
@@ -720,6 +725,23 @@
 %     {\includegraphics[width=.28\textwidth]{graphnet_with_title.png}}
 %     {\includegraphics[width=.28\textwidth]{tvl1_with_title.png}}
 % \end{frame}
+
+\begin{frame}\frametitle{Section wrap-up}
+  \mydot Building on prior work, we have developed enhanced structured penalties for multi-variate brain-decoding
+
+  \bigskip
+  
+  \mydot Such penalties lead to more interpretable brain maps (localized blobs)
+
+  \bigskip
+  
+  \mydot Focus on practical usability (fast model training)
+
+  \bigskip
+  
+  \mydot Our contributions are available as part of \emph{Nilearn} toolkit.
+  
+\end{frame}
 
 \section{Modelling inter-subject variability via dictionary-learning}
 \subsection{Preliminaries}
@@ -764,7 +786,7 @@
 \subsection{Introducing the proposed model}
 \begin{frame}
   \frametitle{Introducing the proposed model \textcolor{orange}{[Dohmatob '16 (NIPS)]}}
-  \vspace{-2em}
+  \vspace{-2.1em}
   \begin{equation*}
     \begin{split}
       \underset{\B{X}}{\includegraphics[width=.26\linewidth, valign=c]{acti.pdf}} &=  \underset{\B{C}}{\includegraphics[width=.235\linewidth, valign=c]{codes.pdf}} \times \;\underset{\B{D}}{\includegraphics[width=.22\linewidth, valign=c]{dico.pdf}}
@@ -878,7 +900,7 @@
   }
 
 \only<3->{
-\mydot Our method produces localized and blobby decompositions
+\mydot Our method produces localized and smooth decompositions
 }
   
 \end{overlayarea}
@@ -887,15 +909,18 @@
 
 \begin{frame}\frametitle{Learned latent dimensions capture inter-subject variability}
   \mydot Predicting behavior from compressed Story vs Math contrast of language task maps \mycite{van Essen '12}
+
   \begin{center}
     % \underset{\text{\textbf{Predicting  behavioral}  from dictionary loadings}}
+      \vspace{-.5em}
     {\includegraphics[width=.8\linewidth]{figures/behavioral_scores_LANGUAGE.pdf}}
 \end{center}
 
-\vspace{-.6em}
-  \mydot Thick bars $\implies$ scores on \emph{train}; faint bars $\implies$ scores on \emph{test}
+\vspace{-1.05em}
+    \mydot Thick bars $\implies$ scores on \textbf{test} set; faint bars $\implies$ on \textbf{train}
 
-  \mydot Our proposed method overfits the least
+
+  \mydot Proposed \emph{Smooth-SODL} overfits the least (i.e generalizes best)
   
 \end{frame}
   
@@ -939,7 +964,7 @@
   \only<1->{
 \begin{table}[H]
   \begin{tabular}{|c|c|c|c|c}\hline%\hline
-    {Nb. subjects} & {vanilla \mycite{Mairal '10}} & {proposed model} & {gain factor} \\ \hline
+    {Nb. subjects} & {vanilla \mycite{Mairal '10}} & {Proposed model} & {gain factor} \\ \hline
 17 & {2\%} & \emph{31\%} & \emph{13.8}\\\hline
 92 & 37\% & \emph{50\%} & \emph{1.35}\\\hline
 167 & 47\% & \emph{54\%} & \emph{1.15}\\\hline
