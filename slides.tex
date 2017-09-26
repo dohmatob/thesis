@@ -1025,6 +1025,7 @@
 
 
 \section{Concluding remarks}
+\subsection{Wrap-up}
 \begin{frame}% \Large
   \frametitle{Concluding remarks}
   \mydot We have proposed models for \emph{inter-subject functional variability}
@@ -1032,11 +1033,11 @@
   \medskip
 
   \uncover<2->{
-  \mydot  Some of our notable contributions (not all presented in this defense are):
+  % \mydot  Some of our notable contributions (not all presented in this defense are):
 
-  \medskip
+  % \medskip
   
-  \begin{beamerboxesrounded}{\emph{Structured priors for brain modelling}}
+  % \begin{beamerboxesrounded}{\emph{Structured priors for brain modelling}}
     \mydot ``Regions'' emerged as the right scale at which to work
     \begin{itemize}
     \item A more stable representation of activity patterns across subjects, etc.
@@ -1044,10 +1045,19 @@
   }
   \uncover<3->{
     \mydot We proposed enhanced models and algorithms
-    for \emph{structured penalized multi-variate models} for brain decoding and region-extraction % (TV-L1, GraphNet, etc.)
-    \mycite{Dohmatob PRNI '14 / '15; ICASSP '15}, \mycite{Eickenberg '15; Varoquaux '15}, with a focus on practical usability
+    for \emph{structured penalized multi-variate models} for brain decoding
+    % and region-extraction % (TV-L1, GraphNet, etc.)
+    %\mycite{Dohmatob PRNI '14 / '15; ICASSP '15}, \mycite{Eickenberg '15; Varoquaux '15}, with a focus  on practical usability
   }
-  \end{beamerboxesrounded}
+
+  \bigskip
+  
+  \uncover<4->{
+      \mydot The notion of regions (via structured priors) was used to develop as the basis for a latent model
+    of inter-subject variability \mycite{Dohmatob NIPS '16}
+  }
+  
+% \end{beamerboxesrounded}
 
   % This PhD has realized:
   
@@ -1061,19 +1071,10 @@
 
   % \mydot ...
 \end{frame}
-
-\begin{frame}
-  \frametitle{Concluding remarks}
-  \begin{beamerboxesrounded}{\emph{Structured dictionary-learning}}
-    \mydot The notion of regions (via structured priors) was used to develop as the basis for a latent model
-    of inter-subject variability \mycite{Dohmatob NIPS '16}
-
-  \end{beamerboxesrounded}
-\end{frame}
     
-\section{Predicting task activation from resting-state data}
+\subsection{Perspective: predicting task activation from resting-state data}
 \begin{frame}
-  \frametitle{Can we infer these cognitive maps from resting-state data ?}
+  \frametitle{Can we predict task maps from resting-state data ?}
   \vspace{-2.3em}
   \begin{equation*}
     \bordermatrix{&{\textcolor{orange}{\text{activity at rest }}} \cr
@@ -1099,7 +1100,6 @@
 
 \end{frame}
 
-\subsection{Deep semi-supervised ML}
 \begin{frame}
   \frametitle{Proposal: Deep semi-supervised voxel encoding}
   \includegraphics[width=1.\linewidth]{gen_model.png}
@@ -1130,7 +1130,7 @@
 
 
 \begin{frame}
-  \frametitle{Deep semi-supervised ML: learned features}
+  \frametitle{Preliminary results: learned features}
 
   \begin{overlayarea}{\textwidth}{\textheight}    
     \only<1->{
@@ -1167,6 +1167,33 @@
 
 \end{frame}
 
+\begin{frame}\frametitle{Preliminary results: predicted individual maps}
+  \begin{center}
+  \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_135528_01bags.pdf}
+  \hspace{-.2cm}
+  \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_173536_01bags.pdf}
+  \hspace{-.2cm}
+  \includegraphics[width=.33\linewidth]{figures/brain_2BK-0BK_137633_01bags.pdf}
+
+  \textbf{2BK vs 0BK} contrast of the \text{Working Memory} task \mycite{van Essen '12}
+\end{center}
+
+\mydot \textcolor{magenta}{magenta} = population mean
+
+\mydot \textcolor{cyan}{reference method} \mycite{Tavor '16}
+
+\mydot \textcolor{green}{proposed method}
+\begin{itemize}
+\item Prediction agrees with subject's topography more faithfully
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Preliminary results: quantitative}
+  \centering
+  \includegraphics[width=1.\linewidth]{figures/confusion_STORY-MATH.png}
+
+  \textbf{Confusion matrix} for predicted versus true activation maps
+\end{frame}
 
 \section{Appendix}
 \begin{frame}
