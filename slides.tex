@@ -122,7 +122,7 @@
 
   \smallskip
   
-  \mydot \emph{Forward inference} \mycite{Friston '95'} detects voxels responding to an experimental condition
+  \mydot \emph{Forward inference} \mycite{Friston '95'} detects voxels responding to a given experimental condition
 
   \uncover<2->{
     \mydot \emph{Reverse inference / brain-decoding} \mycite{Dehaene 98; Cox 03} predicts the experimental condition
@@ -196,8 +196,9 @@
 
 \begin{frame}
   \frametitle{Variability in both location and magnitude of activations}%\Large
-  \mydot Inter-subject functional variability \textcolor{red}{$\ne$} noise!
+  \mydot Inter-subject \textcolor{red}{functional variability $\ne$ noise!}
   \begin{itemize}
+    \item Usually (incorrectly) discarded in standard analysis
   \item Is predictive of behavioral differences between individuals
   \end{itemize}
 
@@ -440,7 +441,7 @@
 \end{frame}
 
 \begin{frame}\frametitle{References for the penalties}\Large
-  \vspace{-.75em}
+  \vspace{-1em}
   \bigskip
  \mydot Total-Variation (TV) \mycite{Michel '11}
 
@@ -459,12 +460,12 @@
  \mydot Sparse-Variation \textcolor{myblue}{[Eickenberg '15]}
 
  \uncover<2->{
- \begin{beamerboxesrounded}{Some notes}
+ \begin{beamerboxesrounded}{\emph{Some notes}}
    \mydot TV is a very tight convex relaxation of Markovian prior
    
    \mydot
    % Laplacian (``Dirichlet energy'')
-   GraphNet (``Dirichlet energy'') is weaker, but easier to optimize
+   GraphNet (``Dirichlet energy'') is weaker, but easier to optimize (smooth convex optimization problem)
    
  \end{beamerboxesrounded}
  }
@@ -486,7 +487,8 @@
 
 \end{frame}
 
-\subsection{Algorithms}
+% \subsection{Algorithms}
+\subsection{Contributions}
 \begin{frame}
   \frametitle{Penalties \leadto interpretable maps only if well-optimized}
   \uncover<1->{
@@ -517,7 +519,7 @@
   \mydot Corresponding optim. problem is much \emph{harder} (than SVM, etc.)
   \begin{itemize}
     \item \emph{high-dimensional non-smooth ill-conditioned} problem
-    \item Can't compute \emph{prox operator} analytically
+    % \item Can't compute \emph{prox operator} analytically
   \end{itemize}
 }
 
@@ -525,11 +527,9 @@
 
 \uncover<6->{
 \mydot Lack of fast solver can lead to \emph{wrong conclusions about model}
-}
 
 \bigskip
 
-\uncover<7->{
   \mydot We need \emph{fast solvers!}
 }
 \end{frame}
@@ -756,7 +756,7 @@
 
   \bigskip
   
-  \mydot Such penalties lead to more interpretable brain maps (localized blobs)
+  \mydot Such penalties lead to more interpretable brain maps (a small number of smooth spatially localized regions)
 
   \bigskip
   
@@ -795,7 +795,7 @@
 
   \bigskip
 
-  \mydot \textcolor{red}{Spatial blobs:} each atom = interpretable blobs
+  \mydot \textcolor{red}{Smooth regions:} each atom = interpretable blobs
 
   \bigskip
 
@@ -929,7 +929,7 @@
 
 \begin{frame}\frametitle{Learned latent dimensions capture inter-subject variability}
   \uncover<1->{
-  \mydot Predicting behavior from compressed Story vs Math contrast of language task maps \mycite{van Essen '12}
+  \mydot Predicting behavior from \emph{compressed representation} of Story vs Math contrast of language task maps \mycite{van Essen '12}
 }  
   \begin{overlayarea}{\textwidth}{\textheight}
     \only<1>{
@@ -942,11 +942,11 @@
     \only<2->{
       \begin{center}
         % \underset{\text{\textbf{Predicting  behavioral}  from dictionary loadings}}
-        \vspace{-.9em}
+        \vspace{-.6em}
         {\includegraphics[width=.8\linewidth]{dessin2}}
       \end{center}
       
-      \vspace{-1.05em}
+      \vspace{-.9em}
       \mydot Thick bars $\implies$ scores on \textbf{test} set; faint bars $\implies$ on \textbf{train}
       
       
