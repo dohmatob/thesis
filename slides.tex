@@ -101,6 +101,7 @@
 \section{Introduction} 
 \subsection{Regions and functional networks}
 \begin{frame}\frametitle{Brain function regions and networks}
+  \vspace{-.5em}
   \begin{figure}
     \caption{\emph{Part of the language network}}
     
@@ -139,8 +140,10 @@
 \begin{frame}\frametitle{A zoom on  brain-decoding}
   \begin{overlayarea}{\textwidth}{\textheight}
     \only<1->{
+      \photocredit{F. Pedregosa}
+      
   \includegraphics[width=.9\linewidth]{decoding.png}
-        
+  
   \quad\quad\quad$\B{y}_i$\quad\quad\quad\quad\quad\quad\;\;$\B{x}_i$
   \quad\quad\quad\quad\quad\quad\;$\B{w}$
   \quad\quad\quad\quad$\hat{\B{y}}_i$
@@ -201,13 +204,17 @@
   \bigskip
   
   \mydot Cannot be corrected via \emph{spatial normalization}, etc.
+  \begin{itemize}
+  \item E.g spatial normalization cannot correct for differences in activation magnitude
+  \end{itemize}
 
+  \uncover<2->{
   \bigskip
   \mydot Driven by genetic and behavioral inter-individual differences
 
   \bigskip
   \mydot Functional diseases can be seen as extremes of this variation
-  
+  }
   
 \end{frame}
 
@@ -433,6 +440,7 @@
 \end{frame}
 
 \begin{frame}\frametitle{References for the penalties}\Large
+  \vspace{-.75em}
   \bigskip
  \mydot Total-Variation (TV) \mycite{Michel '11}
 
@@ -449,7 +457,17 @@
   \bigskip
    
  \mydot Sparse-Variation \textcolor{myblue}{[Eickenberg '15]}
- 
+
+ \uncover<2->{
+ \begin{beamerboxesrounded}{Some notes}
+   \mydot TV is a very tight convex relaxation of Markovian prior
+   
+   \mydot
+   % Laplacian (``Dirichlet energy'')
+   GraphNet (``Dirichlet energy'') is weaker, but easier to optimize
+   
+ \end{beamerboxesrounded}
+ }
 \end{frame}
 
 \begin{frame}
@@ -773,20 +791,15 @@
 
   \bigskip
 
-  \uncover<2->{
   \mydot \textcolor{red}{Sparsity:} spatially localized atoms
-}
+
   \bigskip
 
-  \uncover<3->{
   \mydot \textcolor{red}{Spatial blobs:} each atom = interpretable blobs
-}
 
   \bigskip
 
-  \uncover<4->{
     \mydot \textcolor{red}{Scalable / online:} model should trainable online
-    }
 \end{frame}
 
 
@@ -930,7 +943,7 @@
       \begin{center}
         % \underset{\text{\textbf{Predicting  behavioral}  from dictionary loadings}}
         \vspace{-.9em}
-        {\includegraphics[width=.8\linewidth]{figures/behavioral_scores_LANGUAGE.pdf}}
+        {\includegraphics[width=.8\linewidth]{dessin2}}
       \end{center}
       
       \vspace{-1.05em}
@@ -951,7 +964,7 @@
   
   \[
     % \underset{\text{\textbf{Explained variance} on test data}}
-    {\includegraphics[width=.4\linewidth]{figures/ev_scores_LANGUAGE.pdf}}
+    {\includegraphics[width=.4\linewidth]{dessin1}}
 %  \hspace{.05cm}
   % \underset{\text{\textbf{Predicting  behavioral}  from dictionary loadings}}{\includegraphics[width=.7\linewidth]{figures/behavioral_scores_LANGUAGE.pdf}}
   \]
@@ -1035,7 +1048,8 @@
 \subsection{Wrap-up}
 \begin{frame}% \Large
   \frametitle{Concluding remarks}
-  \mydot We have proposed models for \emph{inter-subject functional variability}
+  % \mydot We have proposed models for \emph{inter-subject functional variability}
+  \mydot The goal of this thesis was to develop models for \emph{inter-subject variability}
 
   \medskip
 
