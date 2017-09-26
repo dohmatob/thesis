@@ -63,7 +63,7 @@
 %}
 
 \institute{Parietal Team, INRIA}
-\date{\today} 
+\date{September 26, 2017} 
 
 
 \begin{frame}
@@ -97,11 +97,14 @@
 \begin{frame}\frametitle{Table of contents}\tableofcontents
 \end{frame} 
 
-\section{Introduction} 
+\section{Inter-subject functional variability} 
 \subsection{Regions and functional networks}
 \begin{frame}\frametitle{Brain function regions and networks}
-    \centering
-\includegraphics[scale=.3]{howbrainworks0} 
+  \begin{figure}
+    \caption{\emph{Part of the language network}}
+    
+    \includegraphics[scale=.3]{language}
+  \end{figure}
 
 \photocredit{Gael Varoquaux}
 \end{frame}
@@ -249,15 +252,15 @@
 }
 \medskip
 
-  \uncover<5->{
-    \mydot \emph{MAP} estimation problem:
+  \uncover<4->{
+    \mydot Optimization problem:
     \vspace{-.8em}
     \[
       \min_{\B{w} \in \mathbb R^p}%\left\{E(\B{w}) :=
       \underbrace{\frac{1}{n}\sum_{i=1}^n \ell({y}_i, f(\langle \B{w}, \B{x}_i\rangle))}_{\text{\emph{data / loss term}}} + \underbrace{\alpha\mathcal P(\B{w})}_{\text{penalty}}%\right\}
     \]
   }
-  \uncover<4->{
+  \uncover<5->{
 
   \vspace{-1em}  
     \mydot \emph{$\ell({y}_i,f(\B{x}_i^T\B{w}))$} $=
@@ -972,101 +975,101 @@
   \end{beamerboxesrounded}
 \end{frame}
     
-% \section{Predicting task activation from resting-state data}
-% \begin{frame}
-%   \frametitle{Can we infer these cognitive maps from resting-state data ?}
-%   \vspace{-2.3em}
-%   \begin{equation*}
-%     \bordermatrix{&{\textcolor{orange}{\text{activity at rest }}} \cr
-%       \B{X}_1 & \includegraphics[width=.25\linewidth, valign=c]{connectome.png}\cr
-%       % \B{X}_2 & \includegraphics[width=.2\linewidth, valign=c]{connectome.png}\cr
-%       \vdots &\vdots \cr
-%       \B{X}_N & \includegraphics[width=.25\linewidth, valign=c]{connectome.png}
-%       }
-%       \underset{\textbf{ML model}}{\includegraphics[width=.2\linewidth, valign=c]{arrow.png}}\;
-%     \bordermatrix{&{\textcolor{orange}{\text{cognitive maps}}} \cr
-%       \B{Y}_1 & \includegraphics[width=.25\linewidth, valign=c]{{cogmaps_diff}.png}
-%       % \hspace{-7em}\includegraphics[width=.2\linewidth, valign=c]{{cogmaps_diff}.png}
-%       \cr
-%       % \B{Y}_2 & \includegraphics[width=.2\linewidth, valign=c]{{cogmaps_diff}.png}\cr
-%       \vdots &\vdots \cr
-%       \B{Y}_N & \includegraphics[width=.25\linewidth, valign=c]{{cogmaps_diff}.png}
-%       }
-%    \end{equation*}
+\section{Predicting task activation from resting-state data}
+\begin{frame}
+  \frametitle{Can we infer these cognitive maps from resting-state data ?}
+  \vspace{-2.3em}
+  \begin{equation*}
+    \bordermatrix{&{\textcolor{orange}{\text{activity at rest }}} \cr
+      \B{X}_1 & \includegraphics[width=.25\linewidth, valign=c]{connectome.png}\cr
+      % \B{X}_2 & \includegraphics[width=.2\linewidth, valign=c]{connectome.png}\cr
+      \vdots &\vdots \cr
+      \B{X}_N & \includegraphics[width=.25\linewidth, valign=c]{connectome.png}
+      }
+      \underset{\textbf{ML model}}{\includegraphics[width=.2\linewidth, valign=c]{arrow.png}}\;
+    \bordermatrix{&{\textcolor{orange}{\text{cognitive maps}}} \cr
+      \B{Y}_1 & \includegraphics[width=.25\linewidth, valign=c]{{cogmaps_diff}.png}
+      % \hspace{-7em}\includegraphics[width=.2\linewidth, valign=c]{{cogmaps_diff}.png}
+      \cr
+      % \B{Y}_2 & \includegraphics[width=.2\linewidth, valign=c]{{cogmaps_diff}.png}\cr
+      \vdots &\vdots \cr
+      \B{Y}_N & \includegraphics[width=.25\linewidth, valign=c]{{cogmaps_diff}.png}
+      }
+   \end{equation*}
 
-%    \mydot $\B{X}_s$: resting-state functional connectivity graph for subject $s$
+   \mydot $\B{X}_s$: resting-state functional connectivity graph for subject $s$
  
-%    \mydot $\B{Y}_s$: task-specific activation maps for subject $s$
+   \mydot $\B{Y}_s$: task-specific activation maps for subject $s$
 
-% \end{frame}
+\end{frame}
 
-% \subsection{Deep semi-supervised ML}
-% \begin{frame}
-%   \frametitle{Proposal: Deep semi-supervised voxel encoding}
-%   \includegraphics[width=1.\linewidth]{gen_model.png}
+\subsection{Deep semi-supervised ML}
+\begin{frame}
+  \frametitle{Proposal: Deep semi-supervised voxel encoding}
+  \includegraphics[width=1.\linewidth]{gen_model.png}
 
-%   \bigskip
+  \bigskip
   
-%   \mydot $\B{Y} \in \mathbb R^{p \times C}$: subject-specific GLM maps of brain activity
-%   % for $C$ different % specific cognitive
-% %   task contrasts
+  \mydot $\B{Y} \in \mathbb R^{p \times C}$: subject-specific GLM maps of brain activity
+  % for $C$ different % specific cognitive
+%   task contrasts
 
-%   \bigskip
+  \bigskip
   
-%  \mydot $\B{X} \in \mathbb R^{p \times T}$: resting-state fMRI data % (subjects lying in the scanner focusing on nothing)
+ \mydot $\B{X} \in \mathbb R^{p \times T}$: resting-state fMRI data % (subjects lying in the scanner focusing on nothing)
 
  
-% %   \emph{\textbf{Goal:}} Develop model for predicting $\B{Y}$ from $\B{X}$.
+%   \emph{\textbf{Goal:}} Develop model for predicting $\B{Y}$ from $\B{X}$.
 
-% % \uncover<2->{  
-% %   \emph{\textbf{Strategy:}}
+% \uncover<2->{  
+%   \emph{\textbf{Strategy:}}
 
-% %   \quad \mydot \emph{Learn unsupervised voxel encoding} $\mathbb R^T \ni \B{x} \mapsto  \phi(\B{x}) \in \mathbb R^k$.
+%   \quad \mydot \emph{Learn unsupervised voxel encoding} $\mathbb R^T \ni \B{x} \mapsto  \phi(\B{x}) \in \mathbb R^k$.
   
-% %   \quad\quad \mydot DL (dictionary-learning) = shared-encoder layer
+%   \quad\quad \mydot DL (dictionary-learning) = shared-encoder layer
   
-% %   \quad \mydot Plug the output into a \emph{linear regressor}: $\mathbb R^C \ni \B{y} \approx \phi(\B{x})^T\B{W}$.
-% %   }
-% \end{frame}
+%   \quad \mydot Plug the output into a \emph{linear regressor}: $\mathbb R^C \ni \B{y} \approx \phi(\B{x})^T\B{W}$.
+%   }
+\end{frame}
 
 
-% \begin{frame}
-%   \frametitle{Deep semi-supervised ML: learned features}
+\begin{frame}
+  \frametitle{Deep semi-supervised ML: learned features}
 
-%   \begin{overlayarea}{\textwidth}{\textheight}    
-%     \only<1->{
-%       \includegraphics[width=0.32\linewidth]{figures/RH.png}
-%     }
-%     \only<2->{
-%       \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_16}
-%     }
-%     \only<3->{
-%       \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_08}
-%       }
-%       % \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_09}
-%     \only<4->{
-%       \includegraphics[width=0.32\linewidth]{figures/STORY-MATH.png}
-%     }
-%     \only<5->{
-%       \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_03}
-%     }
-%     \only<6->{
-%       \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_12}
-%       }
-%       % \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_15}
+  \begin{overlayarea}{\textwidth}{\textheight}    
+    \only<1->{
+      \includegraphics[width=0.32\linewidth]{figures/RH.png}
+    }
+    \only<2->{
+      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_16}
+    }
+    \only<3->{
+      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_08}
+      }
+      % \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_09}
+    \only<4->{
+      \includegraphics[width=0.32\linewidth]{figures/STORY-MATH.png}
+    }
+    \only<5->{
+      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_03}
+    }
+    \only<6->{
+      \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_12}
+      }
+      % \includegraphics[width=0.32\linewidth]{figures/layer_2_dim_15}
 
-%       \bigskip
-% \only<7->{    
-%   \mydot Learned the a presentation of task activity in resting-state space!
+      \bigskip
+\only<7->{    
+  \mydot Learned the a presentation of task activity in resting-state space!
 
-%   \bigskip
+  \bigskip
   
-%   \mydot This is ongoing application of models developed in previous sections!
+  \mydot This is ongoing application of models developed in previous sections!
 
-%   }      
-%     \end{overlayarea}
+  }      
+    \end{overlayarea}
 
-% \end{frame}
+\end{frame}
 
 
 \section{Appendix}

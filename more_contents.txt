@@ -1,0 +1,125 @@
+- Don't call diagram on slide 5 (don't call it the language network), say it's sub-network
+
+- articulate
+- rehearse 1st slide
+
+
+- inter-subject variability:
+
+- make slide showing inter-subject variability. E.g use HCP
+slide could come between slides 2 and 3
+
+section "intrdocution" should be re-labelled to something like "inter-subject variability"
+
+
+- Spatial variability is removed (at least attempt) via spatial normalization and smoothing but this is not enought (e.g activation magnitude still varies)
+
+- Normalization the only thing we have to mitigate variability, but is not enough
+
+- On slide 6 replace right hand image with activation images across difference subjects to convey the message more clearly
+
+- slides 8 and 9 should become part of introduction (because of transition problem), slide 7 should only come after all things have been comprehensively laid down
+
+Slide 8: so can say say lets talk abit about ...
+
+Introduction to part one (strucuted blablaa) should start be somewhere between slides 9 and 10
+
+
+
+Slide 10: spent too much time on it, simplify msg, less stuff
+
+- Slide 11: call weights "double-you" not "omega" as was done orally
+
+- Slide 11: transition order is weird
+
+- slide 11: move concept of MAP to slide 12 were we talk about the penalty
+
+- Slide 13: say TV is important is very important because it's the tightest convex relation to the "markovian" penalty wherein we constrain neighbours to have similar value, blabla
+
+-All say it's state of the art
+- GraphNet is an easier relaxion but is not as atight as TV-L1
+
+- Slide 14: show all images at once. The point of the slide is pretty straightforward so don't spend too much time
+
+- Slide 15: message should be spatial penalties intepretable only if well-optimized
+
+- replace "lead to" with an implication arrow
+Also say "harder __than__ (SVM, ...)", "more interpretable __than__ (SVM, etc.)"
+
+- Also don't navigate back and ford on slide
+
+- Slide 16: which == that
+ in "practice out-of-the-box" is a bit redundant
+
+- Merge slides 17 and 18 and only keep figures in 18.
+
+Also on slide 18, mydot message should appear on top on figure and at once (not progressive)
+
+message of the slide should be that depending on the huper-parameter setting the behavior of the solver changes, no universal choice
+
+- title: 
+- Slide 17: FISTA
+
+Note that TV-L1, etc. it's a pretty distributed effect
+
+- Slides 19: pause and comment on figures
+
+- Slide 20: standard material, don't spend too much time, don't try to show stuff with hands, etc.
+
+- Slide 21: upto ==> up to
+also say structured penalties are probably not an edge hear since effect is rather distributed. Probably the reason why early stopping doesn't harm here
+
+- Slide 22: bad transition, probably need to rehearse all transitions
+
+- Slide 23:
+say we can model stuff by mean, but we want to capture the modes of variation around this mean
+
+- don't use "latent factors to control", weight phrase (we don't control, we capture)
+
+- Slide 24: don't spend too much time (already explained in previous section),
+also no progressive display
+
+- Slide 25
+
+- There was weird transition from 24 back to 23, and from 29 back to 23
+ (avoid moving back and forth in slides)
+
+
+- Slide 28: blobby ==> smooth
+
+- Slide 28: last row of figures: smooth-sodl
+is closer to known organisation of the attentional network
+
+- Also make transition of thumbnails more fluid
+
+- Our method ==> smooth-SODL
+
+- Slide 29: put image of loading vectors.
+inversion: train ==> test ==> train
+
+- Slide 30: msg should be clear use, make link to previuos, add images
+
+- Slide 31: good, but should be explained more quickly and fluidly. Also clarify message.
+
+Conclusion:
+- too many phrases and too long
+
+- don't talk about publications
+
+- 1 or 2 more slides presenting "where to go from here": predicint task activation from resting-state
+- say, inter-subject variability is somehow incoprenhensive
+
+- Remove all occurences of etc., blob*, potato, etc.
+
+- say inter-subject variability is not NOISE (since it predicts behavioral
+
+
+
+
+
+
+
+
+
+
+ 
