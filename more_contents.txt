@@ -25,7 +25,6 @@ Slide 8: so can say say lets talk abit about ...
 Introduction to part one (strucuted blablaa) should start be somewhere between slides 9 and 10
 
 
-
 Slide 10: spent too much time on it, simplify msg, less stuff
 
 - Slide 11: call weights "double-you" not "omega" as was done orally
