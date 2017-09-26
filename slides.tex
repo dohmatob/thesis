@@ -22,6 +22,7 @@
 \def\B#1{\mathbf{#1}}
 \def\emph#1{\textbf{\textcolor{orange}{#1}}}
 \def\photocredit#1{\vspace{-.5em}{\tiny \textit{(Picture is courtesy of #1)}}}
+\def\leadto{$\mathbf{\implies}$}
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\prox}{prox}
 \DeclareMathOperator{\proj}{proj}
@@ -97,7 +98,7 @@
 \begin{frame}\frametitle{Table of contents}\tableofcontents
 \end{frame} 
 
-\section{Inter-subject functional variability} 
+\section{Introduction} 
 \subsection{Regions and functional networks}
 \begin{frame}\frametitle{Brain function regions and networks}
   \begin{figure}
@@ -109,24 +110,6 @@
 \photocredit{Gael Varoquaux}
 \end{frame}
 
-
-\subsection{Motivation of the problems}
-\begin{frame}
-  \frametitle{Intra- / inter-subject variability is a crucial concern}
-
-  \begin{overlayarea}{\textwidth}{\textheight}
-    \only<1->{\includegraphics[width=.38\linewidth, valign=c]{preproc.png}\;}\only<2->{\includegraphics[width=.2\linewidth, valign=c]{arrow.png}\includegraphics[width=.3\linewidth, valign=c]{statsmodel.png}}
-
-    \only<1->{\tiny \textit{(Adapted from Marion Oberhuber \& Giles Story)}
-}
-  \end{overlayarea}
-
-\end{frame}
-
-
-
-\section{Structured penalties for multi-variate brain-decoding}
-\subsection{Preliminaries}
 
 \begin{frame}
   \frametitle{Mapping cognitive circuits in the brain}
@@ -148,10 +131,53 @@
   \uncover<3->{
     \mydot We will focus on \emph{reverse-inference / brain-decoding}
   }
-  
-  
+    
 \end{frame}
 
+
+
+\subsection{Inter-subject functional variability}
+\begin{frame}
+  \frametitle{Variability in both location and magnitude of activations}
+  \uncover<1->{\mydot
+    % Group mean and individual activation maps,
+    Story vs Math language contrast of HCP dataset \mycite{van Essen '12}}
+  
+  \medskip
+  
+\begin{overlayarea}{\textwidth}{\textheight}
+  \only<1>{
+    \centering
+    \includegraphics[width=0.34\linewidth]{intersubject_var_01.png}
+  }
+  \only<2>{
+    \includegraphics[width=1.1\linewidth]{intersubject_var_figure_00.pdf}
+  }
+\end{overlayarea}
+
+  % \includegraphics[width=1.1\linewidth]{intersubject_var_figure_00.pdf}
+%   \begin{overlayarea}{\textwidth}{\textheight}
+%     \only<1->{\includegraphics[width=.38\linewidth, valign=c]{preproc.png}\;}\only<2->{\includegraphics[width=.2\linewidth, valign=c]{arrow.png}\includegraphics[width=.3\linewidth, valign=c]{statsmodel.png}}
+
+%     \only<1->{\tiny \textit{(Adapted from Marion Oberhuber \& Giles Story)}
+% }
+%   \end{overlayarea}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Variability in both location and magnitude of activations}\Large
+  \mydot Inter-subject functional variability \textcolor{red}{$\ne$} noise!
+  \begin{itemize}
+  \item Is predictive of behavioral differences between individuals
+  \end{itemize}
+
+  \bigskip
+  
+  \mydot Cannot be corrected via spatial normalization, etc.
+\end{frame}
+
+\subsection{Brain-decoding}
 \begin{frame}\frametitle{A zoom on  brain-decoding}
   \begin{overlayarea}{\textwidth}{\textheight}
     \only<1->{
@@ -177,6 +203,59 @@
 % \mydot There are as many features as voxels (up to \textcolor{red}{$10^6$}).
 \end{frame}
 
+
+\section{Structured penalties for multi-variate brain-decoding}
+\subsection{Preliminaries}
+
+% \begin{frame}
+%   \frametitle{Mapping cognitive circuits in the brain}
+%   \begin{center}
+%   \includegraphics[width=.9\linewidth]{forwardback_inference.png}
+% \end{center}
+% \vspace{-1.em}
+%   \photocredit{Yannick Schwarz}
+
+%   \smallskip
+  
+%   \mydot \emph{Forward inference} \mycite{Friston '95'} detects voxels responding to an experimental condition
+
+%   \uncover<2->{
+%     \mydot \emph{Reverse inference / brain-decoding} \mycite{Dehaene 98; Cox 03} predicts the experimental condition
+%     from brain signals
+%   }
+
+%   \uncover<3->{
+%     \mydot We will focus on \emph{reverse-inference / brain-decoding}
+%   }
+  
+  
+% \end{frame}
+
+% \begin{frame}\frametitle{A zoom on  brain-decoding}
+%   \begin{overlayarea}{\textwidth}{\textheight}
+%     \only<1->{
+%   \includegraphics[width=.9\linewidth]{decoding.png}
+        
+%   \quad\quad\quad$\B{y}_i$\quad\quad\quad\quad\quad\quad\;\;$\B{x}_i$
+%   \quad\quad\quad\quad\quad\quad\;$\B{w}$
+%   \quad\quad\quad\quad$\hat{\B{y}}_i$
+% }
+%     \medskip
+
+% \only<2->{    
+%     \mydot This is \emph{supervised machine-learning}
+    
+%     \mydot We don't just want good predictions, we want \emph{regions}
+%   }
+%   \end{overlayarea}
+
+% % \mydot \emph{$\B{X}_i$}: each sample is a 3D MRI brain image scanned at a particular instant $i$.
+
+% % \mydot \emph{$\B{y}_i$}: target, the class of the stimulus at instant $i$.
+
+% % \mydot There are as many features as voxels (up to \textcolor{red}{$10^6$}).
+% \end{frame}
+
 \begin{frame}\frametitle{What we mean by ``structured''}
   \begin{overlayarea}{\textwidth}{\textheight}
     \only<1->{
@@ -201,7 +280,7 @@
 \medskip
 \only<2->{
   
-  \hspace{-2.3em}\mydot Such a model is much more \emph{intepretable} (i.e small number of \emph{regions}) than classical methods like SVM, Ridge regression, Lasso
+  \hspace{-2.3em}\mydot Such a model is much more \emph{interpretable} (i.e small number of \emph{regions}) than classical methods like SVM, Ridge regression, Lasso
 
   \medskip
   
@@ -367,37 +446,18 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Spatial penalties lead to more intepretable brain maps}
-% Faces vs objects classification on \textcolor{myblue}{[Haxby 2001]}
-\begin{overlayarea}{\textwidth}{\textheight}
-  \vspace{-1.em}
-  \uncover<1->{
-    % \begin{figure}
-    \centering
-      {\includegraphics[width=.28\textwidth]{svm_with_title.png}}
-      % \caption{SVM weights}
-    % \end{figure}
-    }
+  \frametitle{Spatial penalties \leadto more interpretable brain maps}
+  % Faces vs objects classification on \textcolor{myblue}{[Haxby 2001]}
+  \centering
+  {\includegraphics[width=.28\textwidth]{svm_with_title.png}}
 
-    \medskip
-
-    \hrule
-
-    \medskip
-  \uncover<3->{
-    % \begin{figure}
-      {\includegraphics[width=.28\textwidth]{graphnet_with_title.png}}
-      % \caption{Graph-Net weights}
-    % \end{figure}
-  }
-  \uncover<4->{
-    % \begin{figure}
-      {\includegraphics[width=.28\textwidth]{tvl1_with_title.png}}
-      % \caption{TV-L1 weights}
-    % \end{figure}
-    }  
-% \hrule
-\end{overlayarea}
+  \medskip
+  
+  \hrule
+  
+  \medskip
+  {\includegraphics[width=.28\textwidth]{graphnet_with_title.png}}
+  {\includegraphics[width=.28\textwidth]{tvl1_with_title.png}}
 
 \end{frame}
 
@@ -423,7 +483,7 @@
 \bigskip
 
 \uncover<4->{
-  \mydot Structured penalties lead to \emph{more intepretable models}
+  \mydot Structured penalties $\implies$ \emph{more interpretable models}
 }
 
 \bigskip
@@ -690,7 +750,7 @@
   \bigskip
 
   \uncover<3->{
-  \mydot \textcolor{red}{Spatial blobs:} each atom = intepretable blobs
+  \mydot \textcolor{red}{Spatial blobs:} each atom = interpretable blobs
 }
 
   \bigskip
@@ -826,7 +886,7 @@
 \end{frame}
 
 \begin{frame}\frametitle{Learned latent dimensions capture inter-subject variability}
-  \mydot Predicting behavior from compressed Story vs Math contrast of language task maps \mycite{van Essen '13}
+  \mydot Predicting behavior from compressed Story vs Math contrast of language task maps \mycite{van Essen '12}
   \begin{center}
     % \underset{\text{\textbf{Predicting  behavioral}  from dictionary loadings}}
     {\includegraphics[width=.8\linewidth]{figures/behavioral_scores_LANGUAGE.pdf}}
@@ -844,7 +904,7 @@
 \begin{frame}
   \frametitle{What's happening}
 
-%   \mydot HCP Story vs Math contrast of language task \mycite{van Essen '13}
+%   \mydot HCP Story vs Math contrast of language task \mycite{van Essen '12}
   
   \[
     % \underset{\text{\textbf{Explained variance} on test data}}
@@ -922,7 +982,7 @@
 % %  \bigskip
  
 % % \mydot Experiments show that the proposed model %--Smooth-SODL model--
-% % extracts structured and \emph{denoised dictionaries} that are more \emph{intepretable} and better
+% % extracts structured and \emph{denoised dictionaries} that are more \emph{interpretable} and better
 % % capture \emph{inter-subject variability} in small medium, and large-scale regimes alike,
 % % compared to state-of-the-art models.
 % \end{frame}
