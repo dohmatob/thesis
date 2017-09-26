@@ -752,7 +752,7 @@
     \begin{equation*}
       \begin{split}
         % \B{X} &= \B{D} \times \B{C}\\
-        \underset{\text{data }(\B{X})}{\includegraphics[width=.26\linewidth, valign=c]{acti.pdf}} &=  \underset{\text{loadings }(\B{C})}{\includegraphics[width=.235\linewidth, valign=c]{codes.pdf}} \times \;\underset{\text{dictionary }(\B{D})}{\includegraphics[width=.22\linewidth, valign=c]{dico.pdf}}
+        \underset{\text{individual maps }(\B{X})}{\includegraphics[width=.26\linewidth, valign=c]{acti.pdf}} &=  \underset{\text{loadings }(\B{C})}{\includegraphics[width=.235\linewidth, valign=c]{codes.pdf}} \times \;\underset{\text{dictionary }(\B{D})}{\includegraphics[width=.22\linewidth, valign=c]{dico.pdf}}
       \end{split}
     \end{equation*}
     \mydot Each \emph{cognitive map} $\B{x}_i$ with $p$ voxels gets \emph{encoded} over a \emph{dictionary} $\B{D}$ as $k$ \emph{loading coefficients} $\B{c}_i$,
@@ -908,20 +908,31 @@
 \end{frame}
 
 \begin{frame}\frametitle{Learned latent dimensions capture inter-subject variability}
+  \uncover<1->{
   \mydot Predicting behavior from compressed Story vs Math contrast of language task maps \mycite{van Essen '12}
-
-  \begin{center}
-    % \underset{\text{\textbf{Predicting  behavioral}  from dictionary loadings}}
-      \vspace{-.5em}
-    {\includegraphics[width=.8\linewidth]{figures/behavioral_scores_LANGUAGE.pdf}}
-\end{center}
-
-\vspace{-1.05em}
-    \mydot Thick bars $\implies$ scores on \textbf{test} set; faint bars $\implies$ on \textbf{train}
-
-
-  \mydot Proposed \emph{Smooth-SODL} overfits the least (i.e generalizes best)
-  
+}  
+  \begin{overlayarea}{\textwidth}{\textheight}
+    \only<1>{
+      \vspace{-1.5em}
+      \[
+        \underset{\text{individual maps }(\B{X})}{\includegraphics[width=.26\linewidth, valign=c]{acti.pdf}}\;\underset{\text{Smooth-SODL}}{\includegraphics[width=.15\linewidth, valign=c]{arrow.png}}\;\underset{\text{loadings }(\B{C})}{\includegraphics[width=.235\linewidth, valign=c]{codes.pdf}}\;\underset{\text{prediction}}{\includegraphics[width=.15\linewidth, valign=c]{arrow.png}}\;
+        \textbf{\text{IQ, age, etc.}}
+      \]
+    }
+    \only<2->{
+      \begin{center}
+        % \underset{\text{\textbf{Predicting  behavioral}  from dictionary loadings}}
+        \vspace{-.9em}
+        {\includegraphics[width=.8\linewidth]{figures/behavioral_scores_LANGUAGE.pdf}}
+      \end{center}
+      
+      \vspace{-1.05em}
+      \mydot Thick bars $\implies$ scores on \textbf{test} set; faint bars $\implies$ on \textbf{train}
+      
+      
+      \mydot Proposed \emph{Smooth-SODL} overfits the least (i.e generalizes best)
+    }
+  \end{overlayarea}
 \end{frame}
   
 
