@@ -43,3 +43,5 @@ slides: clean
 	pdflatex acti
 	pdflatex slides
 	pdflatex slides
+	bibtex slides
+	pdflatex slides

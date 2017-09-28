@@ -12,6 +12,17 @@
 \setbeamertemplate{navigation symbols}{}
 \usetheme{Warsaw}
 
+\usepackage[backend=bibtex,maxnames=5]{biblatex}
+\addbibresource{slides_bib.bib}
+
+\DeclareBibliographyCategory{dohmatob}
+\addtocategory{dohmatob}{dohmatob2014benchmarking}
+\addtocategory{dohmatob}{eickenberg2015total}
+\addtocategory{dohmatob}{dohmatob2015speeding}
+\addtocategory{dohmatob}{dohmatob2015local}
+\addtocategory{dohmatob}{dohmatob2016}
+\addtocategory{dohmatob}{abraham2013}
+
 \usepackage[export]{adjustbox}
 
 \usepackage[thinlines]{easytable}
@@ -1216,4 +1227,9 @@
   \textbf{Confusion matrix} for predicted versus true activation maps
 \end{frame}
 
+
+\begin{frame}[t,allowframebreaks]
+  \frametitle{Relevant contributions}
+  \printbibliography[category=dohmatob]
+\end{frame}
 \end{document}
