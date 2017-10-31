@@ -178,18 +178,18 @@ $\B{c}_1, \ldots, \B{c}_n \in \mathbb R^{k \times 1}$ called \textit{codes} (one
 \B{x}_i \approx \B{D} \B{c}_i, \text{ for } i=1,2,\ldots,n
 \end{eqnarray}
 where $\B{D} := [\B{d}^1|\ldots|\B{d}^k] \in \mathbb{R}^{p \times k}$, an unknown dictionary to be estimated.
+
 \begin{figure}
-    \centering
-    \def\svgwidth{\columnwidth}
-    \input{figures/dlsvg.pdf_tex}
-    \caption{\textbf{Dictionary-learning} with smoothness and sparsity constraints on the atoms. On the right, each time point is a masked 3D brain
-      image and corresponds to a sample, and each voxel corresponds to a feature, giving an $p$-by-$n$ matrix $\B{X}$, where $n$ is the number
-      of samples and $p$ is the number of features.
-      On the right of the equation, the sought-for $p$-by-$k$ dictionary $\B{V}$  is a low-dimensional representation these images,
-      by means of a (non-orthonormal) basis of $k$ $\ll \min(n,p)$ smooth and sparse 3D brain images called \textit{atoms}.
+  \centering
+  \includegraphics[width=1\linewidth]{smoothdict}  
+  \caption{\textbf{Dictionary-learning} with smoothness and sparsity constraints on the atoms. On the right, each time point is a masked 3D brain
+    image and corresponds to a sample, and each voxel corresponds to a feature, giving an $p$-by-$n$ matrix $\B{X}$, where $n$ is the number
+    of samples and $p$ is the number of features.
+    On the right of the equation, the sought-for $p$-by-$k$ dictionary $\B{D}$  is a low-dimensional representation these images,
+    by means of a (non-orthonormal) basis of $k$ $\ll \min(n,p)$ smooth and sparse 3D brain images called \textit{atoms}.
       In this representation, each sample point (i.e 3D brain image) $\B{X}_i \in \mathbb R^p$
-      is mapped onto $k$-dimensional vector $\B{u}_i$, called the \textit{code} of $\B{X}_i$.
-      }
+      is mapped onto $k$-dimensional vector $\B{c}_i$, called the \textit{code} of $\B{X}_i$.
+    }
     \label{fig:smoothdict}
   \end{figure}
 Typically, $p \sim 10^{5}$ --
@@ -738,8 +738,15 @@ The voxel space of worth $p=261596$ voxels is reduced to $k=40$ components, and 
   \end{pagefigure}
 
 
-\paragraph{Prediction of behavioral variables.}
-If Smooth-SODL captures the patterns of inter-subject variability, then it should be possible to predict cognitive scores $\y$ like picture vocabulary, reading proficiency, math aptitude, etc. (the behavioral variables are explained in the HCP wiki   ~\citep{hcpwiki}) by projecting new subjects' data into this learned low-dimensional space (via solving the ridge problem \eqref{eq:coding} for each sample $\B{x}_t$), without loss of performance compared with using the raw $Z$-values values $\X$. Let RAW refer to the direct prediction of targets $\y$ from $\X$, using the top 2000 most voxels most correlated with the target variable. Results of the comparison are shown in Fig. \ref{fig:dictscores}.  Only variables predicted with a positive mean (across the different methods and across subjects) $R$-score are reported.
+  \paragraph{Prediction of behavioral variables.}
+  If Smooth-SODL captures the patterns of inter-subject variability, then it should be possible to predict cognitive scores $\y$ like picture vocabulary, reading proficiency, math aptitude, etc. (the behavioral variables are explained in the HCP wiki   ~\citep{hcpwiki}) by projecting new subjects' data into this learned low-dimensional space (via solving the ridge problem \eqref{eq:coding} for each sample $\B{x}_t$), without loss of performance compared with using the raw $Z$-values values $\X$.
+
+    \begin{equation*}
+        \underset{\text{individual maps }(\B{X})}{\includegraphics[width=.26\linewidth, valign=c]{../acti.pdf}}\;\underset{\text{Smooth-SODL}}{\includegraphics[width=.15\linewidth, valign=c]{../arrow.png}}\;\underset{\text{loadings }(\B{C})}{\includegraphics[width=.235\linewidth, valign=c]{../codes.pdf}}\;\underset{\text{prediction}}{\includegraphics[width=.15\linewidth, valign=c]{../arrow.png}}\;
+        \textbf{\text{IQ, age, etc.}}
+      \end{equation*}
+
+  Let RAW refer to the direct prediction of targets $\y$ from $\X$, using the top 2000 most voxels most correlated with the target variable. Results of the comparison are shown in Fig. \ref{fig:dictscores}.  Only variables predicted with a positive mean (across the different methods and across subjects) $R$-score are reported.
 %% Indeed, prediction results (Fig. \ref{fig:results}) show that the enhanced dictionaries obtained by our proposed method ($\gamma > 0$) is not at the expense of a decreased predictive power.
 We see that the RAW model, as expected over-fits drastically, scoring an $R^2$ of 0.3 on training data and only 0.14 on test data. Overall, for this metric CanICA performs best than all the other models in predicting the different behavioral variables on test data. However, our proposed Smooth-SODL model outperforms both SODL   ~\citep{mairal2010} and tCanICA, the thresholded version of CanICA.
 
@@ -803,15 +810,16 @@ SSODL \eqref{eq:ss} model will soon be made available as part of the
 \paragraph{More general structure-imposing penalties.}
 One can envisage to replace the Laplacian regularization with a general structure-inducing penalty for which the proximal operator is easy to compute. Such a framework is developed in chapter \ref{chap:proxdict}, and produces an entire family of models, with potentially different properties.
 
-\paragraph{Replacing the dictionary with a general neural net.}
-One notes that the proposed model \eqref{eq:ss} can be seen as an auto-encoding model of brain data with linear generator
 \begin{marginfigure}
   \includegraphics[width=1\linewidth]{figures/gen_model.pdf}
-  \caption{\textbf{General neural net} schema for structured online dictionary learning. The model is trained via stochastic gradient descent --SGD. For an incoming image $\B{x} \in \mathbb R^p$ (or mini-batch of images), a code $\B{z} \in \mathbb R^k$ is sampled and fed into th generator $G_{\boldsymbol{\theta}}$ to produce a reconstructed image $\B{x}_{\text{recon}} \in \mathbb R^p$, which is compared with the original via a loss function. The gradient (and perhaps sub-gradients, in case of constraints) of this loss w.r.t the code $\B{z}$ (resp. the parameters $\boldsymbol{\theta}$) is \textit{back-propagated} through the code (resp. the parameters) to update it towards better reconstructions.
+  \caption{\textbf{General neural net} schema for structured online dictionary learning. The model is trained via stochastic gradient descent --SGD. For an incoming image $\B{x} \in \mathbb R^p$ (or mini-batch of images), a code $\B{z} \in \mathbb R^k$ is sampled and fed into th generator $G_{\boldsymbol{\theta}}$ to produce a reconstructed image $\B{x}_{\text{recon}} \in \mathbb R^p$, which is compared with the original via a loss function. % The gradient (and perhaps sub-gradients, in case of constraints) of this loss w.r.t the code $\B{z}$ (resp. the parameters $\boldsymbol{\theta}$) is \textit{back-propagated} through the code (resp. the parameters) to update it towards better reconstructions.
 The model \eqref{eq:ss} corresponds to a linear generator $G_{\boldsymbol{\theta}} = G_{\B{D}} = \langle \B{D},.\rangle$, and can be solved via Alg. \ref{Tab:algo_sobdict}.
   }
   \label{fig:gen_net}
 \end{marginfigure}
+
+\paragraph{Replacing the dictionary with a general neural net.}
+One notes that the proposed model \eqref{eq:ss} can be seen as an auto-encoding model of brain data with linear generator
 
 \begin{equation}
   G_{\B{D}} = \langle \B{D}, .\rangle: \mathbb R^k \rightarrow \mathbb R^p,\; \B{c} \mapsto \B{x}:=\B{Dc},

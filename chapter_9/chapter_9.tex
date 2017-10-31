@@ -111,6 +111,26 @@ computation packages.
 
 \section{Applications}
 Now that we have the hammer, where are the nails...
+
+% \begin{table}
+%   \begin{tabular}{|c|c|c|}\hline
+%   % \begin{tabular}{|p{7cm}|c|p{6cm}|}\hline
+%     {penalty $g$} & {$\B{p} = \prox_{\gamma g}(\B{z})$} & {comments}\\\hline\hline
+%     L2 ball constraint & $p_v = \B{z}_v\frac{\gamma}{\max(\gamma,\|\B{z}\|_2)}$ & \citep{mairal2009,mairal2010}\\ \hline
+% %    nonneg. constraint & $p_v = (\B{z}_v)_+$ & used in NMF\\ \hline
+%     convex constraint & $\B{p} = \proj_{\mathcal K}(\B{z})$ & interesting for simple $\mathcal K$\\ \hline
+%     L1 penalty & $p_v = z_v\left(1 - \frac{\alpha}{|z_v|}\right)_+$ & soft-thresholding \\\hline
+%     Group L2/L1 & $\B{p}_v = \B{z}_v\left(1 - \frac{\gamma}{\|\B{z}_v\|_2}\right)_+$ & $i$ is a group of features\\\hline
+%     Social sparsity \citep{kowalski2013social,kowalski2009structured} & $p_v = z_v\left(1 - \frac{\gamma}{\|\boldsymbol{\omega}_v * \B{z}\|_2}\right)_+$
+%                                                     & feature $i$ survives if avg. energy in neigh. is high\\\hline
+%     % Social sparsity & $p_v = z_v\left(1 - \frac{\gamma}{\left(\sum_{l \in \mathcal N(i)}(\omega^{l}_{i})^2z_{l}^2\right)^{1/2}}\right)_+$
+%     %                                                 & denominator is just a \newline
+%     %                                                 convolution\\\hline
+%     %                                                 etc. & etc. & etc.\\\hline
+%   \end{tabular}
+%   \caption{\textbf{Prox}...}  
+% \end{table}
+
 \subsection{Special cases}
 \subsubsection{Constraint sets}
 If we take $g_j := i_{C_j}$, the indicator function of a closed convex subset of $\mathbb R^p$, so that each atom $\B{d}^j$ is constrained to satisfy a set of constraints prescribed by $C_j$, then the above updates reduce to projecting $\B{z}^{-j}$ onto $C_j$, namely

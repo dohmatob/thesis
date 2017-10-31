@@ -1,4 +1,4 @@
-\begin{thebibliography}{17}
+\begin{thebibliography}{18}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -124,6 +124,11 @@ K.R.A. Van~Dijk, M.R. Sabuncu, and R.L. Buckner.
 \newblock {The influence of head motion on intrinsic functional connectivity
   MRI}.
 \newblock \emph{Neuroimage}, 59, 2012.
+
+\bibitem[{van Essen} et~al.(2012)]{VanEssen20122222}
+D.C. {van Essen} et~al.
+\newblock The human connectome project: A data acquisition perspective.
+\newblock \emph{NeuroImage}, 62\penalty0 (4), 2012.
 
 \bibitem[Xu et~al.(2009)Xu, Johnson, Nichols, and Nee]{Xu2009}
 Lei Xu, Timothy~D. Johnson, Thomas~E. Nichols, and Derek~E. Nee.

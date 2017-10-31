@@ -109,54 +109,52 @@ running a multi-subject decomposition algorithm like PCA, ICA, or dictionary-lea
 (more details on obtaining $\B{D}$ later).
 %
 We assume $\B{D}$ to be under-complete -- i.e $k \ll \min(\min_s(n_s), p)$--
-and therefore full-rank (i.e $\B{D}\B{D}^T$ is invertible).
+and therefore full-rank (i.e $\hat{\B{D}}\hat{\B{D}}^T$ is invertible).
 
 The standard
 ``dual-regression'' procedure\citep{tavor2016task} then proceeds as follows:
 \begin{itemize}
 \item Compute the $n_s$-by-$k$ matrix of subject-to-components temporal dynamics $\B{C}_s$
-  by regressing the group-level dictionary $\B{D}$ onto subject data $\B{X}_s$:
+  by regressing the group-level dictionary $\hat{\B{D}}$ onto subject data $\B{X}_s$:
   \begin{equation}
-  % \B{X}_s \approx \B{C}_s\B{D}.
-    {\B{C}}_s \in \text{argmin}_\B{C} \|\B{X}_s - \B{C}\B{D}\|^2_{\text{Fro}}
+  % \B{X}_s \approx \B{C}_s\hat{\B{D}}.
+    \hat{{\B{C}}}_s \in \text{argmin}_{\B{C}_s \in \mathbb R^{n_s \times k}} \|\B{X}_s - \B{C}_s\hat{\B{D}}\|^2_{\text{Fro}}
     \label{eq:dr1}  
     \end{equation}
 % \textbf{XXX rather write it: }
-  \item Compute individual dictionary $\B{Z}_s$ by regressing subject-to-components temporal
-    dynamics $\B{C}_s$ onto subject data $\B{X}_s$:
+  \item Compute individual dictionary $\hat{\B{D}}_s = (\hat{\B{d}}_{s,j}^v)_{1 \le j \le k,1 \le v \le p} \in \mathbb R^{k \times p}$ by regressing the subject's resting-state data $\B{X}_s \in \mathbb R^{n_s \times p}$  onto her subject-to-components temporal dynamics $\hat{\B{C}}_s \in \mathbb R^{n_s \times k}$:
   \begin{equation}
     % \B{X}_s \approx \B{C}_s\B{Z}_s.
-    \B{Z}_s \in \text{argmin}_\B{Z} \|\B{X}_s - \B{C}_s\B{Z}\|^2_{\text{Fro}}
+    \hat{\B{D}}_s \in \text{argmin}_{\B{D} \in \mathbb R^{k \times p}} \|\B{X}_s - \hat{\B{C}}_s\B{D}\|^2_{\text{Fro}}
     \label{eq:dr2}
   \end{equation}%\textbf{XXX idem}
 \end{itemize}
 The end result is that for each subject $s$ and each voxel $v$, we
-obtain $k$ scalars,  namely the $vth$
-column of $\B{Z}_s$, which represent the functional-connectivity profile w.r.t the group-level $k$-dimensional latent space.
+obtain a $k$-dimensional encoding $\hat{\B{d}}_{s,v} \in \mathbb R^k$ of the voxel's time-series $\B{x}_{x,v} \in \mathbb R^{n_s}$ in a common group-level space.
 These are the features (see Fig. \ref{fig:fe}).
 
 \subsection{Using only a single regression step}
 For the standard ``dual-regression'' feature-extraction method\citep{tavor2016task},
 a total of 2 regression steps are done (hence the name of the procedure).
 As a first (conceptual) improvement, we note that the individual dictionary
-$\B{Z}_s = \B{C}_s^\dagger\B{X}_s$ can be rewritten as
+$\hat{\B{D}}_s = \hat{\B{C}}_s^\dagger\B{X}_s$ can be rewritten as
 \[
   \begin{split}
-    \B{Z}_s  &= (\B{C}_s^T\B{C}_s)^{-1}\B{C}_s^T\B{X}_s
+    \hat{\B{D}}_s  &= (\hat{\B{C}}_s^T\hat{\B{C}}_s)^{-1}\hat{\B{C}}_s^T\B{X}_s
     \\
-    &= ((\B{D}\B{D}^T)^{-1}\B{D}\B{X}_s^T\B{X}_s\B{D}^T(\B{D}\B{D}^T)^{-1})^{-1}(\B{D}\B{D}^T)^{-1}\B{D}\B{X}_s^T\B{X}_s\\
-    &= \B{D}\B{D}^T(\B{D}\B{X}_s^T\B{X}_s\B{D}^T)^{-1}\B{D}\B{X}_s^T\B{X}_s\\
+    &= ((\hat{\B{D}}\hat{\B{D}}^T)^{-1}\hat{\B{D}}\B{X}_s^T\B{X}_s\hat{\B{D}}^T(\hat{\B{D}}\hat{\B{D}}^T)^{-1})^{-1}(\hat{\B{D}}\hat{\B{D}}^T)^{-1}\hat{\B{D}}\B{X}_s^T\B{X}_s\\
+    &= \hat{\B{D}}\hat{\B{D}}^T(\hat{\B{D}}\B{X}_s^T\B{X}_s\hat{\B{D}}^T)^{-1}\hat{\B{D}}\B{X}_s^T\B{X}_s\\
     &=
-    \B{D}\B{D}^T\underbrace{\B{D}\B{X}_s^T(\B{X}_s\B{D}^T\B{D}\B{X}_s^T)^{\dagger}\B{X}_s}_{\text{OLS}(\B{X}_s\B{D}^T,\B{X}_s)}.
+    \hat{\B{D}}\hat{\B{D}}^T\underbrace{\hat{\B{D}}\B{X}_s^T(\B{X}_s\hat{\B{D}}^T\hat{\B{D}}\B{X}_s^T)^{\dagger}\B{X}_s}_{\text{OLS}(\B{X}_s\hat{\B{D}}^T,\B{X}_s)}.
     \end{split}
   \label{eq:mr}
 \]
-That is, we regress the $n_s$-by-$k$ matrix $\tilde{\B{C}}_s := \B{X}_s\B{D}^T$
-  onto the subject's resting-state time-series data $\B{X}_s$ and then
-  reweight the result by the component-to-component covariance matrix $\B{D}\B{D}^T$ of the group-level dictionary. All in all, only a 1 regression step
+That is, we regress the subject's resting-state time-series data $\B{X}_s$ 
+  onto  $n_s$-by-$k$ matrix $\hat{\B{C}}_s := \B{X}_s\hat{\B{D}}^T$ and then
+  reweight the result by the component-to-component covariance matrix $\hat{\B{D}}\hat{\B{D}}^T$ of the group-level dictionary. All in all, only a 1 regression step
   is needed.
 
-\subsection{Obtaining the global dictionary $\B{D}$}
+\subsection{Obtaining the global dictionary $\hat{\B{D}}$}
 Since the resting-state time-series data are large (for example $1200$ 3D volumes of
 $2 \times 10^5$ voxels in each subject in the HCP --Human Connectome Project-- dataset \citep{VanEssen20122222}), a decomposition
 method that scales well is required. We use a variant of online
@@ -190,28 +188,38 @@ Incremental PCA/ICA-based methods\citep{smith2014group,varoquaux2010group} are a
 
 \subsection{Relationship between dual-regression and hyper-alignment}
 \label{sec:haIsDr}
-It turns out that the ``hyper-alignment'' (HA) framework \citep{haxby2011} and the ``dual regression'' (DR) scheme
+It turns out that the \textit{shared-response} ``hyper-alignment'' (HA) framework \citep{haxby2011} and the ``dual regression'' (DR) scheme
 \citep{tavor2016task} we just presented are very closely related.
 % more or less the same technology.
 Indeed,  \citep{haxby2011} considers the following problem
 
 \begin{eqnarray}
   \begin{split}
-    &\text{minimize }\frac{1}{2N}\sum_{s=1}^N\|\B{X}_s - \A\B{Z}_s\|^2_{\text{Fro}}\\
+    &\text{minimize }\frac{1}{N}\sum_{s=1}^N\|\B{X}_s - {\B{C}}_s{\B{D}}\|^2_{\text{Fro}}\\
     &\text{ over }
-  \A \in \mathbb R^{n \times k},\;\B{Z}_1,\ldots,\B{Z}_N \in \mathbb R^{k \times p},
+  {\B{D}} \in \mathbb R^{k \times p},\;{\B{C}}_s \in \mathbb R^{n_s \times k},
   \\
-  &\text{ subject to }\B{Z}_s\B{Z}_s^T = \Id_k,\; \forall s \in [1\ldots N].
-  \end{split}
+  &\text{ subject to }{\B{C}}_s^T{\B{C}}_s = \Id_k,\; \forall s \in [1\ldots N].
+\end{split}
+    \label{eq:ha}
 \end{eqnarray}
-This can be solved via a simple EM (\textit{expectation maximization}) algorithm:
+Without the orthonormality constraints ``${\B{C}}_s^T{\B{C}}_s = \Id_k$'',  this problem is precisely the DR problem. \eqref{eq:ha} is usually solved via an alternating minimization scheme. Viz,
 
 \begin{itemize}
-\item \textbf{M-step:} $\B{Z}_s^{(k)} = \U_s^{(k)}{\V_s^{(k)}}^T\; \forall s$, where ${\A^{(k)}}^T\B{X}_s = \U_s^{(k)}\boldsymbol{\Sigma}_s{\V_s^{(k)}}^T$ is an SVD
-\item \textbf{E-step:} $\A_s^{(k+1)} = \frac{1}{N}\sum_{s=1}^N\A_s^{(k)}$, where $\A_s^{(k)} := \B{X}_s{{}\B{Z}_s^{(k)}}^T$
+\item \textbf{Update rotations (orthonormal Procrustes analysis):}
+  $${\B{C}}_s^{(t + 1)} = \U_s^{(t)}{\V_s^{(t)}}^T\; \forall s \in [1\ldots N],
+  $$
+  where $\U_s^{(k)}\boldsymbol{\Sigma}_s{\V_s^{(t)}}^T$ is the SVD of the $n_s$-by-$k$ matrix $\B{X}_s{\B{D}^{(t)}}^T$.
+\item \textbf{Update shared-dictionary:}
+  $$\B{D}_s^{(t+1)} = \frac{1}{N}\sum_{s=1}^N\B{D}_s^{(t+1)},
+  $$ where $\B{D}_s^{(t+1)} := {\B{C}_s^{(t+1)}}^T\B{X}_s$.
 \end{itemize}
 
-However DR is much more attractive due to its low cost: HA performs an SVD per subject per iteration.
+However,
+\begin{itemize}
+\item DR is much more attractive due to its low cost: HA performs an SVD per subject per iteration.
+\item HA is usually done parcel-wise (i.e locally) because, the orthonormality conditions are unreasonable globally (i.e full-brain).
+\end{itemize}
 
 \section{Bags of low-rank multi-target linear models}
 \label{sec:bags}
@@ -224,7 +232,7 @@ However DR is much more attractive due to its low cost: HA performs an SVD per s
     parcel. In the parcellation shown here, each parcel contains approximately 1000 voxels.}
   \label{fig:parcels}
 \end{marginfigure}
-We now develop our model for predicting subject-specific activation maps $\B{Y}_s$ from resting-state features $\B{Z}_s$
+We now develop our model for predicting subject-specific activation maps $\B{Y}_s$ from resting-state features ${\B{D}}_s$
 (refer to section \ref{sec:fe}).
 Our model considers bootstraps of sub-samples of subjects instead of on a subject-by-subject
 basis enforces a reduction in the complexity of the model without loss in capacity.

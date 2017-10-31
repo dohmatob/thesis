@@ -1,4 +1,4 @@
-all: clean tables dot tikz svg
+all: clean common tables dot tikz svg
 	pdflatex index
 	bibtex abstract.aux
 	bibtex chapter_1/chapter_1.aux
@@ -14,6 +14,8 @@ all: clean tables dot tikz svg
 	bibtex chapter_11/chapter_11.aux
 	pdflatex index
 	pdflatex index
+	pdftk modele_de_couverture_de_these_07_2017_1_0.pdf index.pdf cat output toto.pdf
+	mv toto.pdf index.pdf
 
 tikz:
 	pdflatex chapter_1/tikz1.tex
@@ -37,7 +39,13 @@ clean:
 	rm -f */*.aux */*.log */*.glo */*.out
 	rm -rf */auto chapter_*/chapter_*.pdf
 
-slides: clean
+common:
+	pdflatex acti
+	pdflatex dico
+	pdflatex codes
+
+
+slides: clean common
 	pdflatex codes
 	pdflatex dico
 	pdflatex acti
@@ -45,3 +53,13 @@ slides: clean
 	pdflatex slides
 	bibtex slides
 	pdflatex slides
+
+
+parietal: clean common
+	pdflatex codes
+	pdflatex dico
+	pdflatex acti
+	pdflatex parietal
+	pdflatex parietal
+	bibtex parietal
+	pdflatex parietal
