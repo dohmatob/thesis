@@ -1,4 +1,4 @@
-all: clean common tables dot tikz svg
+all: clean common tables dot tikz svg slides
 	pdflatex index
 	bibtex abstract.aux
 	bibtex chapter_1/chapter_1.aux
@@ -46,12 +46,9 @@ common:
 
 
 slides: clean common
-	pdflatex codes
-	pdflatex dico
-	pdflatex acti
-	pdflatex slides
 	pdflatex slides
 	bibtex slides
+	pdflatex slides
 	pdflatex slides
 
 

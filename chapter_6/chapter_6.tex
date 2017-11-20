@@ -29,7 +29,7 @@ While preparing this PhD project, I have made contributions to numerous open-sou
 \begin{itemize}
 \item \textit{Nilearn} \url{http://nilearn.github.io/index.html}: Python package for leveraging machine learning algorithm in neuro-imaging. For example, the multi-variate models presented in chapter \ref{chap:structured_priors} are implemented as part of this package.
 \item \textit{Pypreprocess} https://github.com/neurospin/pypreprocess: Python scripts scripts for preprocessing and QA of MRI data.
-\item \textit{Nistats} \url{https://github.com/nistats/nistats}: Python package for statistical analyis (GLM, permutation tests, etC.) on MRI data.
+\item \textit{Nistats} \url{https://github.com/nistats/nistats}: Python package for statistical analyis (GLM, permutation tests, etc.) on MRI data.
 \end{itemize}
     
 
@@ -38,6 +38,72 @@ While preparing this PhD project, I have made contributions to numerous open-sou
 We are preparing journal paper synthesizing all our contributions in the regarding structured models for brain decoding and segmentation presented in chapter \ref{chap:structured_priors}. This will bring these methods to the doorsteps of the neuroscience practitioner.
 \paragraph{Non-linear generative models for inter-subject brain data and prediction of task-fMRI activity from resting-state data.}
 As concerns the modelling of inter-subject variability (chapters \ref{chap:func_var} and \ref{chap:rsfmri2tfmri}), most of the work done in this thesis can be cast in a more flexible framework of generative encoder-less models (see Fig. \ref{fig:gen_net}, for example)\footnote{Since the encoding representation is gotten by simply minimizing a reconstruction loss between the generated and the true brain image.}, with the space of parameters carefully constrained to ensure tractability and intepretability.
+  
+\chapter{\;\;Synthèse en français}\label{chap:synthese}
+\markright{{~{\rm \ref{chap:synthese}}. Synthèse}\hfill}{}
+
+La thèse à démarrée avec l'objectif de développer des nouvelles méthodes pour la modélisation de la variabilité inter-sujet fonctionnelle, le but ultime étant l'amélioration de l'estimation de connectômes fonctionnelles sur des populations de sujets (chapitre \ref{chap:bigpic}).
+
+
+Cette quête à conduit à la proposition des méthodes de pénalisation structurée (parcimonie, variation totale, etc.) multi-variées pour l'\textit{encoding / decoding}~\citep{dohmatob2015speeding,abrahamregion,eickenberg2015total,pelle2016multivariate}. Le récalage fonctionnel est aussi souvenu naturellement, est nous avons contribué une méthode pour le récalage directe des images fonctionnelles (EPI) vers un cerveau standard (\textit{template}) ~\citep{dohmatob2016epi2epi} (soumit au \textit{Frontiers}). Voir chapitres \ref{chap:structured_priors}, \ref{chap:efficient_opt}, \ref{chap:speeding}, \ref{chap:igraphnet}, \ref{chap:epi2epi}, et \ref{chap:admm}.
+
+Nous avons aussi amélioré l'état de l'art sur l'extraction de régions d'intérêt et la réduction de dimension en neuro-imagérie, par des méthodes combinant des techniques d'apprentissage en ligne et de parcimonie structurée (par exemple avec les pénalités TV-L1). Notre proposition est une nouvelle technique d'apprentissage de dictionnaire pour la décomposition d'images de cerveau plus conformes avec des a priori neurobiologique sur l'organisation fonctionnelle du cerveau: des réseaux spatialement localisés avec des contours bien délimités. Il s'agit d'un modèle génératif de base dimension, encodant succinctement la variabilité inter-sujet. Nous referons le lecteur aux chapitres \ref{chap:func_var} et \ref{chap:proxdict}.
+
+Finalement, nous nous sommes intéressés à l’utilisation de techniques d’apprentissage supervisé pour expliquer la relation entre l’activité spontanée (activité au repos) et les enregistrements avec stimulations (activité évoquée dans des conditions précises). Nous avons proposé une méthode couplant un apprentissage non-supervisé (de type réduction de dimension par apprentissage de dictionnaire partagé) et des modèles prédictifs de faible rang pour exploiter les interdépendances entre les différentes fonctions cognitives. Les expériences numériques réalisées (200 sujets du projet HCP~\citep{VanEssen20122222}) montrent que nous apportons une amélioration considérable à l'état de l'art. Voir chapitre \ref{chap:rsfmri2tfmri}.
+
+Les travaux réalisés on donné lieu à des nombreuses publication à des conférences et journaux tels que NIPS, ICASSP, MICCAI, Frontiers in Neurosciences, etc.
+Une liste complète des publications peut être consulter ma page Google scholar \url{https://scholar.google.fr/citations?user=FDWgJY8AAAAJ&hl=fr}. En chiffres
+\begin{shaded}
+\begin{itemize}
+\item Citations $\ge 194$.
+  \item Nombre total de publications $\ge 15$.
+  \item h index $\ge 4$.
+  \item 110 index $ \ge 3$,
+  \end{itemize}
+\end{shaded}
+\begin{shaded}
+  dont
+\begin{itemize}
+  \item{Parcimonie et régularisation spatiale:}
+     ~\citep{dohmatob2014benchmarking},  \citep{dohmatob2015speeding},
+     ~\citep{abrahamregion},  ~\citep{eickenberg2015total},
+     ~\citep{pelle2016multivariate}
+  \item{Récalage:}
+    ~\citep{dohmatob2016epi2epi}
+  \item{Optimisation:}
+     ~\citep{dohmatob2015local},  ~\citep{varoquaux2015faasta},  ~\citep{dohmatob2015simple}
+  \item Modelisation de variabilité fonctionnelle inter-sujet:
+     ~\citep{dohmatob2016}
+  \item{Neurosciences:}
+     ~\citep{rahim2015integrating},  ~\citep{thirion2014fmri}
+  %\item{Others:}  ~\citep{Intheory,Youcrackunderpressure!}
+\end{itemize}
+\end{shaded}
+
+Il y a aussi des manuscrits en cours de préparation pour être publier dans des journaux:
+
+\begin{shaded}
+\begin{itemize}
+  \item Vue globale sur la parcimonie et régularisation spatiale en neuro-imagérie:
+    \textit{``Structured penalties for brain decomposition and decoding: a unified view''},
+    pour \textit{Neuroimage}
+    
+   \item \textit{``Inter-subject registration of functional images: do we need anatomical images ?''} , pour \textit{Frontiers}
+   \item \textit{``Enhanced prediction of task-based activation maps from resting-state data''}, pour \textit{Neuroimage}
+\end{itemize}
+\end{shaded}
+
+
+\paragraph{Logicielles contribuées.}
+Pendant la préparation de la thèse, des nombreuses contributions dans de projets open-source on été réalisées. Pour en citer quelques unes:
+\begin{itemize}
+\item \textit{Nilearn} \url{http://nilearn.github.io/index.html}: Librairie Python pour l'apprentissage statistique pour la neuro-imagerie. Par exemple les méthodes multi-variées présentées au chapitre
+  \ref{chap:structured_priors} font partir des modules de cette librairie.
+  \item \textit{Pypreprocess} https://github.com/neurospin/pypreprocess: Des scripts Python pour le pré-traitement d'images IRMf.
+  \item \textit{Nistats} \url{https://github.com/nistats/nistats}: Outils d'analyse statistique en Python, pour les données la neuro-imagérie.
+\end{itemize}
+    
+
   
 % \clearpage
 \bibliographystyle{plainnat}
