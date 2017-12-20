@@ -23,7 +23,7 @@ $\nabla_{\B{d}^j}\left(\frac{1}{2n}\|\B{X} - \B{D}\B{C}\|_{\text{F}}^2\right) = 
   \begin{split}
     &\B{p} = \argmin_{\B{d}^j \in \mathbb R^p,\;\B{d}^l\text{ fixed }\forall l \ne j}E(\B{D}) \iff
     \B{0} \in \partial_{\B{d}^j}E(\B{D}) = \B{D}\B{a}^j-\B{b}^j\big|_{\B{d}^j = \B{p}} + \gamma \partial g_j(\B{p})\\
-    &\iff a_{j,j}\B{p} - \left(\B{b}^j-\sum_{l \ne j}a_{j,l}\B{d}^l\right) \in \gamma \partial (g_j)(\B{p})
+    &\iff \left(\B{b}^j-\sum_{l \ne j}a_{j,l}\B{d}^l\right)-a_{j,j}\B{p} \in \gamma \partial g_j(\B{p})
     \overset{\text{Lemma} \ref{thm:implicit_grad}}{\iff} \B{p} = \prox_{\gamma a_{j,j}^{-1}g_j}(\B{z}^{-j})
 \end{split}
 \end{eqnarray*}
@@ -103,9 +103,9 @@ where $\B{z}^{-j} := a_{j,j}^{-1}\B{r}^j$ and $\B{r}^j := \left(\B{b}^j-\sum\nol
 \end{shaded}
 For the purposes of practical implementation, one notes that $\B{r}^j$ is precisely the $j$th column of the $p$-by-$k$ matrix
 \begin{equation}
-  \B{R} := \B{DA} - \B{B} + \B{d}^j \circ \B{a}^j.
+  \B{R} :=  \B{B} - \B{DA} + \B{d}^j \circ \B{a}^j.
 \end{equation}
-Thus at the beging of the BCD updates, we precompute the difference $\B{D}\B{A} - \B{B}$, and substract (resp. add) the rank-1 term $\B{d}^j \circ \B{a}^j$
+Thus at the begining of the BCD updates, we precompute the difference $\B{D}\B{A} - \B{B}$, and substract (resp. add) the rank-1 term $\B{d}^j \circ \B{a}^j$
 before and after updating the $j$ atom $\B{d}$ according to \eqref{eq:rank1}. Such rank-1 updates are natively optimized in all linear algebra scientific
 computation packages.
 
